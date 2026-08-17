@@ -9,7 +9,11 @@ import {
   getFirestore,
   doc,
   setDoc,
-  getDoc,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp
 } from "firebase/firestore";
 
 
@@ -75,15 +79,26 @@ export const saveChatToCloud =
     try {
 
       await setDoc(
-        doc(
-          db,
-          "users",
-          userId,
-          "chats",
-          String(chat.id)
-        ),
-        chat
-      );
+  doc(db, "users", userId),
+  {
+    createdAt: serverTimestamp()
+  },
+  { merge: true }
+);
+
+await setDoc(
+  doc(
+    db,
+    "users",
+    userId,
+    "chats",
+    Date.now().toString()
+  ),
+  {
+    messages: chat,
+    createdAt: serverTimestamp()
+  }
+);
 
     } catch (error) {
 
@@ -102,26 +117,28 @@ export const loadUserChats =
 
     try {
 
-      const chatDoc =
-        await getDoc(
-          doc(
-            db,
-            "users",
-            userId
-          )
-        );
+      const q = query(
+        collection(
+          db,
+          "users",
+          userId,
+          "chats"
+        ),
+        orderBy(
+          "createdAt",
+          "desc"
+        )
+      );
 
-      if (
-        chatDoc.exists()
-      ) {
+      const snapshot =
+        await getDocs(q);
 
-        return (
-          chatDoc.data()
-            .chats || []
-        );
-      }
-
-      return [];
+      return snapshot.docs.map(
+        (doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })
+      );
 
     } catch (error) {
 

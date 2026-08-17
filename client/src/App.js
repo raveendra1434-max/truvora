@@ -1,4 +1,6 @@
 import "./App.css";
+import { languageGroups } from "./data/languageGroups";
+import Select from "react-select";
 
 import {
   useState,
@@ -17,6 +19,7 @@ import {
   FiUpload,
   FiMic,
   FiSquare,
+  FiVolume2,
 } from "react-icons/fi";
 
 import {
@@ -30,8 +33,7 @@ import remarkGfm from "remark-gfm";
 import { useDropzone }
 from "react-dropzone";
 
-import * as pdfjsLib
-from "pdfjs-dist";
+// import * as pdfjsLib from "pdfjs-dist";
 
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -54,17 +56,103 @@ import {
   signOut,
 } from "firebase/auth";
 
+// pdfjsLib.GlobalWorkerOptions.workerSrc =
+//   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+function saveChat(chat) {
+  localStorage.setItem(
+    `truvora-chat-${Date.now()}`,
+    JSON.stringify(chat)
+  );
 
-
+  alert("✅ Chat saved successfully!");
+}
 function App() {
+  const citationRefs = (sources = []) =>
+    sources.map((source, index) => ({
+      ...source,
+      citationNumber: index + 1,
+      sourceUrl:
+        source.url ||
+        source.videoUrl ||
+        source.youtubeUrl ||
+        "#",
+    }));
+
+  const [activeCitation, setActiveCitation] =
+    useState(null);
+
+  const [citationPreviewOpen, setCitationPreviewOpen] =
+    useState(false);
+  
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const youtubeUrl = params.get("youtube");
+
+    if (youtubeUrl) {
+      const url = decodeURIComponent(youtubeUrl);
+
+      handleYouTube(url);
+
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
 
   const [input, setInput] =
     useState("");
+    const [selectedVoice, setSelectedVoice] = useState("alloy");
+    const [personalVoice, setPersonalVoice] = useState(null);
+    const [showPersonalVoice, setShowPersonalVoice] = useState(false);
 
+    const voiceOptions = [
+  { id: "alloy", name: "Alloy" },
+  { id: "ash", name: "Ash" },
+  { id: "ballad", name: "Ballad" },
+  { id: "coral", name: "Coral" },
+  { id: "echo", name: "Echo" },
+  { id: "fable", name: "Fable" },
+  { id: "nova", name: "Nova" },
+  { id: "onyx", name: "Onyx" },
+  { id: "sage", name: "Sage" },
+  { id: "shimmer", name: "Shimmer" },
+  { id: "verse", name: "Verse" },
+  { id: "marin", name: "Marin" },
+  { id: "cedar", name: "Cedar" },
+
+  { id: "personal", name: "🎤 Add Personal Voice" },
+];
+const [username, setUsername] = useState("");
+const [password, setPassword] = useState("");
+const [loggedIn, setLoggedIn] = useState(
+  localStorage.getItem("truvoraLoggedIn") === "true"
+);
+const [loginError, setLoginError] = useState("");
   const [messages,
     setMessages] =
     useState([]);
+    const [sidebarOpen,
+  setSidebarOpen] =
+  useState(true);
+const [chats,
+  setChats] =
+  useState([]);
+useEffect(() => {
+  const saved = [];
 
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+
+    if (key.startsWith("truvora-chat-")) {
+      saved.push(
+        JSON.parse(localStorage.getItem(key))
+      );
+    }
+  }
+
+  setChats(saved);
+}, []);
+const [currentChatId,
+  setCurrentChatId] =
+  useState(null);
   const [loading,
     setLoading] =
     useState(false);
@@ -84,6 +172,9 @@ function App() {
   const [chatHistory,
     setChatHistory] =
     useState([]);
+    const [searchTerm,
+  setSearchTerm] =
+  useState("");
 
   const [pdfText,
     setPdfText] =
@@ -100,19 +191,44 @@ function App() {
   const [stopGeneration,
     setStopGeneration] =
     useState(false);
+const [voiceEnabled, setVoiceEnabled] = useState(true);
+const [showAnalyzeMenu, setShowAnalyzeMenu] = useState(false);
 
-  const messagesEndRef =
-    useRef(null);
+const [showYouTubeSearch, setShowYouTubeSearch] = useState(false);
+const [youtubeQuery, setYoutubeQuery] = useState("");
+
+const [showCamera, setShowCamera] = useState(false);
+
+const [selectedLanguage, setSelectedLanguage] = useState("English");
+const languageOptions = languageGroups;
+console.log("Language Options:", languageOptions);
+const getLanguageCode = () => {
+  for (const group of languageOptions) {
+    const found = group.options.find(
+      (lang) => lang.label === selectedLanguage
+    );
+
+    if (found) {
+      return found.value;
+    }
+  }
+
+  return "en";
+};
+const videoRef = useRef(null);
+const canvasRef = useRef(null);
+
+const messagesEndRef = useRef(null);
 
 
 
   /* VOICE */
 
   const {
-    transcript,
-    resetTranscript,
-  } =
-    useSpeechRecognition();
+  transcript,
+  resetTranscript,
+  listening,
+} = useSpeechRecognition();
 
 
 
@@ -123,8 +239,19 @@ function App() {
     );
 
   }, [transcript]);
+useEffect(() => {
+  if (transcript.trim()) {
+    console.log("Voice detected:", transcript);
+  }
+}, [transcript]);
+useEffect(() => {
+  if (!listening && transcript.trim()) {
 
+    handleSend(transcript);
 
+    resetTranscript();
+  }
+}, [listening]);
 
   /* AUTO SCROLL */
 
@@ -142,40 +269,64 @@ function App() {
 
   /* FIREBASE AUTH */
 
-  useEffect(() => {
+useEffect(() => {
 
-    const unsubscribe =
-      onAuthStateChanged(
-        auth,
-        async (currentUser) => {
+  const unsubscribe =
+    onAuthStateChanged(
+      auth,
+      async (currentUser) => {
 
-          if (currentUser) {
+        if (currentUser) {
 
-            setUser(
-              currentUser
+          setUser(currentUser);
+
+          const userChats =
+            await loadUserChats(
+              currentUser.uid
             );
 
-            const chats =
-              await loadUserChats(
-                currentUser.uid
-              );
+          setChats(userChats);
+setChatHistory(
+  userChats.map(
+    (chat) => chat.messages
+  )
+);
+          console.log(
+            "Loaded Chats:",
+            userChats
+          );
 
-            setChatHistory(
-              chats
-            );
+        } else {
 
-          } else {
+          setUser(null);
 
-            setUser(null);
-          }
+          setChats([]);
         }
-      );
+      }
+    );
 
-    return () =>
-      unsubscribe();
+  return () =>
+    unsubscribe();
 
-  }, []);
+}, []);
+useEffect(() => {
 
+  if (!showCamera) return;
+
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then((stream) => {
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+}, [showCamera]);
 
 
   /* LOGIN */
@@ -208,117 +359,293 @@ function App() {
 
 
 
-  /* SAVE CHAT */
+ /* SAVE CHAT */
 
-  const saveCurrentChat =
-    async (
+const saveCurrentChat =
+  async (
+    updatedMessages
+  ) => {
+
+    if (!user) return;
+
+    await saveChatToCloud(
+      user.uid,
       updatedMessages
-    ) => {
+    );
 
-      if (!user) return;
-
-      await saveChatToCloud(
-        user.uid,
-        updatedMessages
+    const chats =
+      await loadUserChats(
+        user.uid
       );
+console.log("LOADED CHATS:");
+console.log(chats[0]);
+    setChats(
+      chats
+    );
+setChatHistory(
+  chats.map(
+    (chat) => chat.messages
+  )
+);
+    console.log(
+      "Chats Saved:",
+      chats
+    );
 
-      const chats =
-        await loadUserChats(
-          user.uid
-        );
-
-      setChatHistory(
-        chats
-      );
-    };
-
-
-
-  /* SPEAK */
-
-  const speakText =
-    (text) => {
-
-      const speech =
-        new SpeechSynthesisUtterance(
-          text
-        );
-
-      speech.lang =
-        "en-US";
-
-      window.speechSynthesis
-        .speak(speech);
-    };
+  };
 
 
+/* SPEAK */
+const speakText = async (text) => {
+  try {
+    const response = await fetch("http://localhost:5000/tts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+  text,
+  voice: selectedVoice,
+}),
+    });
 
+    if (!response.ok) {
+      throw new Error("TTS request failed");
+    }
+
+    const data = await response.json();
+
+    const audio = new Audio(data.audioUrl);
+    audio.play();
+
+  } catch (error) {
+    console.error("TTS Error:", error);
+    alert("Voice generation failed.");
+  }
+};
+
+  
   /* PDF */
+const capturePhoto = async () => {
+  const video = videoRef.current;
+  const canvas = canvasRef.current;
 
-  const handlePdfUpload =
-    async (file) => {
+  if (!video || !canvas) return;
 
-      const fileReader =
-        new FileReader();
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
 
-      fileReader.onload =
-        async function () {
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0);
 
-          const typedArray =
-            new Uint8Array(
-              this.result
-            );
+  const imageData = canvas.toDataURL("image/jpeg", 0.95);
+console.log(imageData);
+  setImage(imageData);
+  const userImageMessage = {
+  role: "user",
+  text: "📷 Captured Image",
+  content: imageData,
+};
+const response = await fetch("http://localhost:5000/analyze-image", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    image: imageData,
+  }),
+});
 
-          const pdf =
-            await pdfjsLib
-              .getDocument(
-                typedArray
-              ).promise;
+const data = await response.json();
 
-          let extractedText =
-            "";
+setMessages((prev) => [
+  ...prev,
 
-          for (
-            let i = 1;
-            i <= pdf.numPages;
-            i++
-          ) {
+  userImageMessage,
 
-            const page =
-              await pdf.getPage(
-                i
-              );
+  {
+    role: "assistant",
+    text: data.answer,
+  },
+]);
+  setShowCamera(false);
+};
+const handlePdfUpload = async (file) => {
 
-            const content =
-              await page.getTextContent();
+  const formData = new FormData();
 
-            const strings =
-              content.items.map(
-                (item) =>
-                  item.str
-              );
+  formData.append(
+    "file",
+    file
+  );
 
-            extractedText +=
-              strings.join(
-                " "
-              ) + "\n";
-          }
+  const response =
+    await fetch(
+      "http://localhost:5000/analyze-document",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-          setPdfText(
-            extractedText
-          );
+  const data =
+    await response.json();
 
-          alert(
-            "PDF uploaded successfully"
-          );
-        };
+  setPdfText(
+    data.analysis
+  );
+};
 
-      fileReader.readAsArrayBuffer(
-        file
+
+const handleVideoUpload = async (file) => {
+
+  const formData = new FormData();
+
+  formData.append("video", file);
+const lowerMessage = input.toLowerCase();
+
+if (lowerMessage.includes("pdf"))
+  formData.append("type", "pdf");
+
+else if (
+  lowerMessage.includes("word") ||
+  lowerMessage.includes("doc")
+)
+  formData.append("type", "docx");
+
+else if (
+  lowerMessage.includes("excel") ||
+  lowerMessage.includes("xlsx")
+)
+  formData.append("type", "xlsx");
+
+else if (
+  lowerMessage.includes("powerpoint") ||
+  lowerMessage.includes("ppt")
+)
+  formData.append("type", "pptx");
+  const response = await fetch(
+  "http://localhost:5000/upload-video",
+  {
+    method: "POST",
+    body: formData,
+  }
+);
+
+const text = await response.text();
+
+console.log("SERVER RESPONSE:", text);
+
+const data = JSON.parse(text);
+
+  
+
+  setMessages((prev) => [
+  ...prev,
+  {
+    role: "assistant",
+    text: data.summary,
+    image: data.frameUrl || null,
+    document: data.document || null,
+  },
+]);
+
+  setShowAnalyzeMenu(false);
+
+};
+const handleYouTube = async (query) => {
+  if (!query?.trim()) return;
+
+  const trimmedQuery = query.trim();
+
+  const urlMatch = trimmedQuery.match(
+    /(?:youtube\.com\/watch\?v=|youtube\.com\/shorts\/|youtu\.be\/)([A-Za-z0-9_-]{10,11})/
+  );
+
+  try {
+    if (urlMatch) {
+      const videoId = urlMatch[1];
+
+      const youtubeUrl =
+        `https://www.youtube.com/watch?v=${videoId}`;
+
+      console.log("YOUTUBE URL:", youtubeUrl);
+
+      const response = await fetch(
+        "http://localhost:5000/analyze-youtube",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: youtubeUrl,
+          }),
+        }
       );
-    };
+
+      const data = await response.json();
+
+      console.log("YOUTUBE RESPONSE:", data);
+
+      if (!data.success) {
+        alert(data.error || "YouTube analysis failed.");
+        return;
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text: data.analysis || "No analysis returned.",
+        },
+      ]);
+
+      setShowYouTubeSearch(false);
+      setYoutubeQuery("");
+
+      return;
+    }
 
 
+  } catch (err) {
+    console.error("YOUTUBE ERROR:", err);
+    alert("Unable to process YouTube.");
+  }
+};
+
+const handleAudioUpload = async (file) => {
+
+  const formData = new FormData();
+
+  formData.append("audio", file);
+
+  const response = await fetch(
+    "http://localhost:5000/upload-audio",
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  const text = await response.text();
+
+  console.log("SERVER RESPONSE:", text);
+
+  const data = JSON.parse(text);
+
+  setMessages((prev) => [
+    ...prev,
+    {
+      role: "assistant",
+      text: data.summary,
+      document: data.document || null,
+    },
+  ]);
+
+  setShowAnalyzeMenu(false);
+
+};
 
   /* UPLOAD */
 
@@ -328,274 +655,626 @@ function App() {
   } = useDropzone({
 
     accept: {
-      "application/pdf":
-        [".pdf"],
-      "image/*":
-        [],
+  "application/pdf": [".pdf"],
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+  "application/msword": [".doc"],
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+  "application/vnd.ms-excel": [".xls"],
+  "image/*": [],
+},
+
+    onDrop: async (acceptedFiles) => {
+
+  const file = acceptedFiles[0];
+
+  if (!file) return;
+
+  try {
+
+    if (
+      file.type === "application/pdf" ||
+      file.name.endsWith(".docx") ||
+      file.name.endsWith(".xlsx") ||
+      file.name.endsWith(".doc") ||
+      file.name.endsWith(".xls")
+    ) {
+
+      const formData = new FormData();
+
+      formData.append("file", file);
+
+      const response = await fetch(
+        "http://localhost:5000/analyze-document",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.analysis) {
+
+  setPdfText(data.documentText);
+
+  setMessages((prev) => [
+    ...prev,
+
+    {
+      role: "user",
+      text: `📊 Uploaded: ${file.name}`,
     },
 
-    onDrop:
-      async (
-        acceptedFiles
-      ) => {
+    {
+      role: "assistant",
+      text: data.analysis,
+    },
+  ]);
 
-        const file =
-          acceptedFiles[0];
+  // speakText(data.analysis);
+}
 
-        if (!file)
-          return;
+      return;
+    }
 
-        if (
-          file.type ===
-          "application/pdf"
-        ) {
+    const imageFormData = new FormData();
 
-          handlePdfUpload(
-            file
-          );
+    imageFormData.append("image", file);
 
-        } else {
+    const imageResponse = await fetch(
+      "http://localhost:5000/upload-image",
+      {
+        method: "POST",
+        body: imageFormData,
+      }
+    );
 
-          try {
+    const imageData = await imageResponse.json();
 
-            const formData =
-              new FormData();
+    setImage(imageData.imageUrl);
 
-            formData.append(
-              "image",
-              file
-            );
+    } catch (error) {
 
-            const response =
-              await fetch(
-                "http://localhost:5000/upload-image",
-                {
-                  method:
-                    "POST",
+    console.error("UPLOAD ERROR:", error);
 
-                  body:
-                    formData,
-                }
-              );
+    alert("Upload failed");
+  }
 
-            const data =
-              await response.json();
+},
+});
 
-            console.log(
-              data
-            );
 
-            if (
-              data.imageUrl
-            ) {
-
-              setImage(
-                data.imageUrl
-              );
-
-              alert(
-                "Image uploaded successfully"
-              );
-
-            } else {
-
-              alert(
-                "Image upload failed"
-              );
-            }
-
-          } catch (error) {
-
-            console.log(
-              error
-            );
-
-            alert(
-              "Upload failed"
-            );
-          }
-        }
+const handleLogin = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-  });
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+  setLoggedIn(true);
+  localStorage.setItem("truvoraLoggedIn", "true");
+  setLoginError("");
+  alert("✅ Login successful");
+} else {
+      setLoginError(data.message);
+    }
+  } catch (err) {
+    setLoginError("Network error");
+  }
+};
+
+ /* SEND */
+
+const handleSend = async (voiceText = null) => {
+
+const finalPrompt =
+  typeof voiceText === "string"
+    ? voiceText
+    : input;
+
+  if (
+    !finalPrompt?.trim() &&
+    !pdfText &&
+    !image
+  )
+    return;
+
+  setStopGeneration(false);
+
+  const userMessage = {
+    role: "user",
+    text:
+      image
+        ? `🖼️ Image Uploaded\n\n${finalPrompt}`
+        : pdfText
+        ? `📄 PDF Uploaded\n\n${finalPrompt}`
+        : finalPrompt,
+  };
+
+  const updatedMessages = [
+    ...messages,
+    userMessage,
+  ];
+
+  setMessages(updatedMessages);
+
+  setInput("");
+
+  setLoading(true);
+// CHECK FOR DOCUMENT REQUEST
+const promptLower = finalPrompt.toLowerCase();
+
+let requestedDocumentType = null;
+
+if (
+  /\b(xlsx|excel|xl\s*sheet|spreadsheet)\b/.test(promptLower) &&
+  /\b(create|make|generate|prepare|export|download|build)\b/.test(promptLower)
+) {
+  requestedDocumentType = "xlsx";
+}
+
+console.log(
+  "REQUESTED DOCUMENT TYPE:",
+  requestedDocumentType
+);
+  try {
+
+    const response =
+      await fetch(
+        "http://localhost:5000/ask",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+  message: finalPrompt,
+  history: updatedMessages,
+  language: getLanguageCode(),
+  web: webEnabled,
+  agentMode: agentMode,
+  imageUrl: image,
+}),
+        }
+      );
+
+    const data =
+      await response.json();
+console.log("SERVER RESPONSE:");
+console.log(data);
+
+console.log("SOURCES:");
+console.log(data.sources);
+    console.log("SOURCES:");
+console.log(data.sources);
 
 
+let currentText = "";
 
-  /* SEND */
-
-  const handleSend =
-    async () => {
+    for (
+      let char of data.reply
+    ) {
 
       if (
-        !input.trim() &&
-        !pdfText &&
-        !image
+        stopGeneration
       )
-        return;
+        break;
 
-      setStopGeneration(
-        false
+      currentText += char;
+
+      setTypingText(
+        currentText
       );
 
-      const finalPrompt =
-        pdfText
-          ? `
-PDF CONTENT:
-
-${pdfText}
-
-USER QUESTION:
-
-${input}
-          `
-          : input;
-
-      const userMessage = {
-
-        role: "user",
-
-        text:
-          image
-            ? `🖼️ Image Uploaded\n\n${input}`
-            : pdfText
-            ? `📄 PDF Uploaded\n\n${input}`
-            : input,
-      };
-
-      const updatedMessages =
-        [
-          ...messages,
-          userMessage,
-        ];
-
-      setMessages(
-        updatedMessages
-      );
-
-      await saveCurrentChat(
-        updatedMessages
-      );
-
-      setInput("");
-
-      setLoading(true);
-
-      try {
-
-        const response =
-          await fetch(
-            "http://localhost:5000/ask",
-            {
-              method:
-                "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
-              body:
-                JSON.stringify({
-                  message:
-                    finalPrompt,
-
-                  web:
-                    webEnabled,
-
-                  agentMode:
-                    agentMode,
-
-                  imageUrl:
-                    image,
-                }),
-            }
-          );
-
-        const data =
-          await response.json();
-
-        let currentText =
-          "";
-
-        for (
-          let char of data.reply
-        ) {
-
-          if (
-            stopGeneration
+      await new Promise(
+        (resolve) =>
+          setTimeout(
+            resolve,
+            8
           )
-            break;
+      );
+    }
 
-          currentText +=
-            char;
+    const finalMessages = [
+  ...updatedMessages,
+  {
+  role: "assistant",
+  text: currentText,
+  image: data.image || null,
+  document: data.document || null,
+  sources: data.sources || [],
+},
+];
 
-          setTypingText(
-            currentText
-          );
+    setMessages(
+      finalMessages
+    );
 
-          await new Promise(
-            (resolve) =>
-              setTimeout(
-                resolve,
-                8
-              )
-          );
-        }
+    await saveCurrentChat(
+      finalMessages
+    );
+    // if (voiceEnabled) {
+//     speakText(currentText);
+// }
 
-        const finalMessages =
-          [
-            ...updatedMessages,
+    setTypingText("");
+    
 
-            {
-              role:
-                "assistant",
+  } catch (error) {
 
-              text:
-                currentText,
-            },
-          ];
+    console.log(error);
 
-        setMessages(
-          finalMessages
-        );
+    alert("Server error");
 
-        await saveCurrentChat(
-          finalMessages
-        );
+  }
 
-        speakText(
-          currentText
-        );
+  setLoading(false);
+};
 
-        setTypingText("");
 
-        setPdfText("");
+const handleGenerateDocument = async (type, text) => {
+  console.log("DOCUMENT TEXT:");
+  console.log(text);
+  console.log(typeof text);
+  console.log(messages[messages.length - 1]);
 
-        setImage(null);
+  const lastMessage = [...messages]
+    .reverse()
+    .find((msg) => msg.role === "assistant");
 
-      } catch (error) {
+  const summary = (
+  text ||
+  lastMessage?.text ||
+  lastMessage?.summary ||
+  lastMessage?.content ||
+  ""
+)
+    .replace(/^☑\s*Quick Answer\s*/i, "")
+    .replace(/^✅\s*Quick Answer\s*/i, "")
+    .trim();
 
-        console.log(error);
+  console.log("FINAL SUMMARY:");
+  console.log(summary);
+  console.log("SUMMARY LENGTH:", summary.length);
 
-        alert(
-          "Server error"
-        );
+  try {
+    // Find the latest AI answer
+    
+const recommendations = `
+• Verify important information using official sources.
+
+• Review AI-generated content before making important decisions.
+
+• Cross-check facts from multiple trusted sources.
+
+• Continue monitoring this topic because information may change.
+`;
+
+const sources = [
+  "https://news.google.com",
+  "https://www.reuters.com",
+  "https://apnews.com",
+];
+console.log("SENDING SUMMARY:");
+console.log(summary);
+console.log("LENGTH:", summary.length);
+    const response = await fetch(
+      "http://localhost:5000/generate-document",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+  type,
+  summary: summary,
+analysis: summary,
+  recommendations,
+  sources,
+}),
       }
+    );
 
-      setLoading(false);
-    };
+    const data = await response.json();
+
+    console.log("DOCUMENT RESPONSE:");
+    console.log(data);
+
+    if (!data.success) {
+      alert("Document generation failed.");
+      return;
+    }
+
+    const url = `http://localhost:5000${data.document}?t=${Date.now()}`;
+const link = document.createElement("a");
+link.href = url;
+link.download = data.document.split("/").pop();
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+
+  } catch (err) {
+
+    console.log(err);
+
+    alert("Server error");
+
+  }
+
+};
 
 
-
+   if (!loggedIn) {
   return (
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        background: "#111",
+        color: "#fff",
+      }}
+    >
+      <h1>TRUVORA LOGIN</h1>
 
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        style={{
+          margin: "10px",
+          padding: "10px",
+          width: "250px",
+        }}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        style={{
+          margin: "10px",
+          padding: "10px",
+          width: "250px",
+        }}
+      />
+
+      <button
+        onClick={handleLogin}
+        style={{
+          marginTop: "20px",
+          padding: "10px 30px",
+        }}
+      >
+        Login
+      </button>
+
+      {loginError && (
+        <p style={{ color: "red" }}>
+          {loginError}
+        </p>
+      )}
+    </div>
+  );
+}
+
+return (
+  <>
+    {showAnalyzeMenu && (
+      <div className="analyze-overlay">
+        <div className="analyze-menu">
+
+          <h2>🔍 Analyze Anything</h2>
+
+  <button
+  onClick={() => {
+    document.querySelector('input[type="file"]')?.click();
+    setShowAnalyzeMenu(false);
+  }}
+>
+  📄 Document
+</button>
+
+  <button
+  onClick={() => {
+    document.querySelector('input[type="file"]')?.click();
+    setShowAnalyzeMenu(false);
+  }}
+>
+  🖼 Image
+</button>
+
+  <button
+  onClick={() => {
+    setShowAnalyzeMenu(false);
+setShowCamera(true);
+  }}
+>
+  📷 Live Camera
+</button>
+
+  <button
+  onClick={() => document.getElementById("videoUpload").click()}
+>
+  🎥 Video
+</button>
+
+  <button
+  onClick={() =>
+    document.getElementById("audioUpload").click()
+  }
+>
+  🎙 Audio
+</button>
+
+  <button
+  onClick={() => {
+  setShowAnalyzeMenu(false);
+  setShowYouTubeSearch(true);
+}}
+>
+  ▶️ YouTube
+</button>
+
+  <button>🌐 Website</button>
+
+  <button
+    onClick={() => setShowAnalyzeMenu(false)}
+  >
+    ❌ Cancel
+  </button>
+    
+<input
+  id="videoUpload"
+  type="file"
+  accept="video/*"
+  style={{ display: "none" }}
+  onChange={(e) => {
+    if (e.target.files[0]) {
+      handleVideoUpload(e.target.files[0]);
+    }
+  }}
+/>
+<input
+  id="audioUpload"
+  type="file"
+  accept="audio/*"
+  style={{ display: "none" }}
+  onChange={(e) => {
+    if (e.target.files[0]) {
+      handleAudioUpload(e.target.files[0]);
+    }
+  }}
+/>
+</div>
+  </div>
+)}
+{showYouTubeSearch && (
+  <div className="analyze-overlay">
+    <div className="analyze-menu">
+      <h2>🎥 YouTube</h2>
+
+<p
+  style={{
+    color: "#ccc",
+    textAlign: "center",
+    marginBottom: "15px",
+    fontSize: "14px",
+  }}
+>
+  Search YouTube or paste a YouTube video URL
+</p>
+
+      <input
+        type="text"
+        placeholder="🔍 Search YouTube videos..."
+        value={youtubeQuery}
+        onChange={(e) => {
+  const value = e.target.value;
+  setYoutubeQuery(value);
+  if (
+  value.includes("youtube.com/watch") ||
+  value.includes("youtu.be/")
+) {
+  console.log("🎥 YouTube URL detected:", value);
+}
+}}
+/>
+
+<button
+  onClick={async () => {
+    const value = youtubeQuery.trim();
+
+    if (!value) return;
+
+    if (
+      value.includes("youtube.com/watch") ||
+      value.includes("youtu.be/")
+    ) {
+      await handleYouTube(value);
+      return;
+    }
+
+    window.open(
+      `https://www.youtube.com/results?search_query=${encodeURIComponent(value)}`,
+      "_blank"
+    );
+  }}
+>
+  🚀 Search YouTube
+</button>
+
+{youtubeQuery.trim() && (
+  <div
+    style={{
+      marginTop: "20px",
+      padding: "15px",
+      background: "#1a1a1a",
+      borderRadius: "10px",
+      color: "#fff",
+    }}
+  >
+    <h3>📺 Search Preview</h3>
+
+    <p>
+      Search YouTube for:
+      <br />
+      <strong>{youtubeQuery}</strong>
+    </p>
+
+    <button
+      onClick={() =>
+        window.open(
+          `https://www.youtube.com/results?search_query=${encodeURIComponent(
+            youtubeQuery
+          )}`,
+          "_blank"
+        )
+      }
+    >
+      ▶ Open YouTube
+    </button>
+  </div>
+)}
+      <button onClick={() => setShowYouTubeSearch(false)}>
+        ❌ Cancel
+      </button>
+    </div>
+  </div>
+)}
     <div className="app">
 
-      <div className="sidebar">
+      <div
+  className="sidebar"
+  style={{
+    width: sidebarOpen ? "260px" : "0",
+    minWidth: sidebarOpen ? "260px" : "0",
+    padding: sidebarOpen ? "20px" : "0",
+    overflow: "hidden",
+    transition: "all .3s ease"
+  }}
+>
 
         <div className="logo">
 
           <div className="logo-icon">
-            T
+            
           </div>
 
           <div className="logo-text">
@@ -609,15 +1288,27 @@ ${input}
 
 
 
-        <button className="new-chat">
+        <button
+  className="new-chat"
+  onClick={() => {
+    setMessages([]);
+    setInput("");
+    setPdfText("");
+    setImage(null);
+  }}
+>
+  <FiPlus />
+  New Chat
+</button>
 
-          <FiPlus />
-
-          New Chat
-
-        </button>
-
-
+<input
+  type="text"
+  placeholder="Search chats..."
+  value={searchTerm}
+  onChange={(e) =>
+    setSearchTerm(e.target.value)
+  }
+/>
 
         <p className="chat-title">
 
@@ -629,45 +1320,81 @@ ${input}
 
         <div className="chat-list">
 
-          {chatHistory.map(
-            (
-              chat,
-              index
-            ) => (
-
-              <div
-                key={index}
-                className="chat-item"
-              >
-
-                {chat[0]?.text?.slice(
-                  0,
-                  25
-                )}
-
-              </div>
-            )
-          )}
+      {chats &&
+chats
+  .filter((chat) =>
+  Array.isArray(chat.messages) &&
+  chat.messages.some((msg) =>
+      msg.text?.toLowerCase().includes(
+        searchTerm.toLowerCase()
+      )
+    )
+  )
+  .map((chat, index) => (
+    <div
+  key={index}
+  className="chat-item"
+  onClick={() => {
+  setMessages(Array.isArray(chat.messages) ? chat.messages : []);
+  localStorage.setItem(
+    "current-chat",
+    JSON.stringify(chat)
+  );
+}}
+>
+      {chat.messages?.[0]?.text?.slice(0, 25)}
+    </div>
+  ))
+}
         </div>
       </div>
 
 
 
       <div className="main">
+{showCamera && (
+  <div className="camera-box">
+    <video
+  ref={videoRef}
+  autoPlay
+  playsInline
+  width="100%"
+  style={{
+    borderRadius: "15px",
+    maxHeight: "400px"
+  }}
+/>
 
-        <div className="topbar">
+<canvas
+  ref={canvasRef}
+  style={{ display: "none" }}
+/>
 
-          <div className="menu-btn">
+<button
+  onClick={capturePhoto}
+  style={{
+    marginTop: "15px",
+    padding: "10px 20px",
+    borderRadius: "10px",
+    cursor: "pointer"
+  }}
+>
+  📸 Capture
+</button>
+  </div>
+)}
+  <div className="topbar">
 
-            <FiMenu />
+    <div
+      className="menu-btn"
+      onClick={() => setSidebarOpen(!sidebarOpen)}
+    >
+      <FiMenu />
+    </div>
 
-          </div>
-
-          <div className="top-title">
-
-            TRUVORA GLOBAL AI
-
-          </div>
+    <div className="top-title">
+      TRUVORA GLOBAL AI
+    </div>
 
 
 
@@ -705,98 +1432,714 @@ ${input}
 
         <div className="messages">
 
-          {messages.map(
-            (
-              msg,
-              index
-            ) => (
+  {messages.map((msg, index) => (
 
-              <div
-                key={index}
+    <div
+  key={index}
+  className={`message ${
+    msg.role === "user"
+      ? "user-message"
+      : ""
+  }`}
+>
+  <div className="avatar">
+    {msg.role === "user" ? <FiUser /> : "T"}
+  </div>
 
-                className={`message ${
-                  msg.role === "user"
-                    ? "user-message"
-                    : ""
-                }`}
-              >
+  <div className="bubble">
 
-                <div className="avatar">
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        a: ({ href, children }) => (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "#4da6ff",
+              textDecoration: "underline",
+            }}
+          >
+            {children}
+          </a>
+        ),
+      }}
+    >
+      {(msg.text ?? "").replace(
+        /(https?:\/\/[^\s]+)/g,
+        "[$1]($1)"
+      )}
+        </ReactMarkdown>
 
-                  {msg.role ===
-                  "user"
-                    ? <FiUser />
-                    : "T"}
+    {(msg.image || msg.content) && (
+      <div style={{ marginTop: "15px" }}>
+        <img
+          src={
+            msg.content
+  ? (
+      msg.content.startsWith("data:")
+        ? msg.content
+        : msg.content.startsWith("http")
+          ? msg.content
+          : `http://localhost:5000${msg.content}`
+    )
+              : (
+                  msg.image.startsWith("http")
+                    ? msg.image
+                    : `http://localhost:5000${msg.image}`
+                )
+          }
+          alt="Generated"
+          style={{
+            width: "100%",
+            maxWidth: "420px",
+            borderRadius: "16px",
+            display: "block",
+            marginTop: "10px",
+            objectFit: "cover",
+          }}
+        />
 
-                </div>
-
-
-
-                <div className="bubble">
-
-                  <ReactMarkdown
-                    remarkPlugins={[
-                      remarkGfm,
-                    ]}
-                  >
-
-                    {msg.text}
-
-                  </ReactMarkdown>
-
-
-
-                  <CopyToClipboard
-                    text={msg.text}
-                  >
-
-                    <button
-                      className="copy-btn"
-                    >
-
-                      <FiCopy />
-
-                    </button>
-                  </CopyToClipboard>
-                </div>
-              </div>
-            )
-          )}
-
-
-
-          {typingText && (
-
-            <div className="message">
-
-              <div className="avatar">
-                T
-              </div>
-
-              <div className="bubble">
-
-                {typingText}
-
-              </div>
-            </div>
-          )}
-
-
-
+        {msg.image && (
           <div
-            ref={
-              messagesEndRef
+            style={{
+              marginTop: "10px",
+              textAlign: "center",
+            }}
+          >
+            <button
+              className="copy-btn"
+              onClick={async () => {
+                const imageUrl = msg.image.startsWith("http")
+                  ? msg.image
+                  : `http://localhost:5000${msg.image}`;
+
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "truvora-image.png";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                window.URL.revokeObjectURL(url);
+              }}
+            >
+              ⬇ Download Image
+            </button>
+          </div>
+        )}
+
+        <div
+          style={{
+            marginTop: "15px",
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
+          <button
+            className="copy-btn"
+            onClick={() =>
+              handleGenerateDocument(
+                "pdf",
+                msg.text || msg.content || ""
+              )
             }
-          />
+          >
+            📄 PDF
+          </button>
+
+          <button
+            className="copy-btn"
+            onClick={() => handleGenerateDocument("docx", msg.text)}
+          >
+            📝 DOCX
+          </button>
+
+          <button
+            className="copy-btn"
+            onClick={() => handleGenerateDocument("xlsx", msg.text)}
+          >
+            📊 XLSX
+          </button>
+
+          <button
+            className="copy-btn"
+            onClick={() => handleGenerateDocument("pptx", msg.text)}
+          >
+            📽 PPTX
+          </button>
+          <button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "md",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📝 MD
+</button>
         </div>
 
+        {msg.document && (
+          <div style={{ marginTop: "10px" }}>
+            <a
+              href={`http://localhost:5000${msg.document}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className="source-link"
+            >
+              ⬇ Download Generated File
+            </a>
+          </div>
+        )}
+      </div>
+    )}
+{/* 🔗 TRUVORA CITATIONS — PREMIUM, READABLE SOURCE FEED */}
+{msg.sources && msg.sources.length > 0 && (
+  <div
+    style={{
+      marginTop: "18px",
+      paddingTop: "14px",
+      borderTop: "1px solid rgba(148,163,184,0.10)",
+    }}
+  >
+    {/* HEADER */}
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "10px",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        <div
+          style={{
+            width: "30px",
+            height: "30px",
+            borderRadius: "9px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background:
+              "linear-gradient(135deg,#0ea5e9,#2563eb)",
+            color: "#fff",
+            fontSize: "14px",
+            boxShadow:
+              "0 4px 14px rgba(14,165,233,0.25)",
+            flexShrink: 0,
+          }}
+        >
+          🔗
+        </div>
 
+        <span
+          style={{
+            color: "#e2e8f0",
+            fontSize: "14px",
+            fontWeight: "650",
+          }}
+        >
+          Sources
+        </span>
 
-        <div className="input-area">
+        <span
+          style={{
+            color: "#64748b",
+            fontSize: "12px",
+            fontWeight: "500",
+          }}
+        >
+          {msg.sources.length}
+        </span>
+      </div>
 
-          <div className="input-box">
+      <span
+        style={{
+          color: "#64748b",
+          fontSize: "11px",
+        }}
+      >
+        Click a source
+      </span>
+    </div>
 
-            <div className="left-buttons">
+    {/* SOURCE FEED */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "7px",
+
+        maxHeight: "330px",
+
+        overflowY: "auto",
+        overflowX: "hidden",
+
+        paddingRight: "4px",
+
+        scrollBehavior: "smooth",
+        WebkitOverflowScrolling: "touch",
+
+        scrollbarWidth: "thin",
+        scrollbarColor:
+          "rgba(14,165,233,0.45) transparent",
+      }}
+      className="truvora-source-feed"
+    >
+      {msg.sources.map((source, index) => {
+        const sourceUrl =
+          source.url ||
+          source.videoUrl ||
+          source.youtubeUrl;
+
+        if (!sourceUrl) return null;
+
+        let domain = source.source || "";
+
+        try {
+          if (!domain) {
+            domain = new URL(sourceUrl)
+              .hostname
+              .replace(/^www\./, "");
+          }
+        } catch {
+          domain = "web source";
+        }
+
+        const title =
+          source.title ||
+          source.name ||
+          domain ||
+          "Web Source";
+
+        return (
+          <a
+            key={index}
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            draggable="true"
+            title={`Open ${title}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+
+              minHeight: "58px",
+              width: "100%",
+              boxSizing: "border-box",
+
+              padding: "8px 10px",
+
+              borderRadius: "12px",
+
+              textDecoration: "none",
+
+              background:
+                "linear-gradient(90deg,rgba(15,23,42,0.94),rgba(18,35,58,0.76))",
+
+              border:
+                "1px solid rgba(56,189,248,0.16)",
+
+              cursor: "pointer",
+
+              transition:
+                "transform 180ms cubic-bezier(.2,.8,.2,1), background 180ms ease, border-color 180ms ease, box-shadow 180ms ease",
+
+              userSelect: "none",
+
+              position: "relative",
+
+              overflow: "hidden",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform =
+                "translateX(4px)";
+
+              e.currentTarget.style.borderColor =
+                "rgba(56,189,248,0.48)";
+
+              e.currentTarget.style.background =
+                "linear-gradient(90deg,rgba(14,165,233,0.15),rgba(30,64,175,0.11))";
+
+              e.currentTarget.style.boxShadow =
+                "0 5px 18px rgba(14,165,233,0.12)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform =
+                "translateX(0)";
+
+              e.currentTarget.style.borderColor =
+                "rgba(56,189,248,0.16)";
+
+              e.currentTarget.style.background =
+                "linear-gradient(90deg,rgba(15,23,42,0.94),rgba(18,35,58,0.76))";
+
+              e.currentTarget.style.boxShadow =
+                "none";
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform =
+                "translateX(2px) scale(0.995)";
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform =
+                "translateX(4px)";
+            }}
+          >
+            {/* CITATION NUMBER */}
+            <div
+              style={{
+                flex: "0 0 auto",
+
+                width: "34px",
+                height: "34px",
+
+                borderRadius: "10px",
+
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+
+                background:
+                  "linear-gradient(135deg,#0ea5e9,#2563eb)",
+
+                color: "#fff",
+
+                fontSize: "13px",
+                fontWeight: "700",
+
+                boxShadow:
+                  "0 3px 10px rgba(14,165,233,0.28)",
+              }}
+            >
+              {index + 1}
+            </div>
+
+            {/* SOURCE CONTENT */}
+            <div
+              style={{
+                flex: "1",
+                minWidth: 0,
+
+                marginLeft: "11px",
+
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+
+                gap: "4px",
+              }}
+            >
+              {/* TITLE */}
+              <div
+                style={{
+                  color: "#e2e8f0",
+
+                  fontSize: "14px",
+                  fontWeight: "600",
+
+                  lineHeight: "1.3",
+
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {title}
+              </div>
+
+              {/* DOMAIN */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+
+                  color: "#38bdf8",
+
+                  fontSize: "11px",
+                  fontWeight: "500",
+
+                  lineHeight: "1.2",
+                }}
+              >
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+
+                    borderRadius: "50%",
+
+                    background: "#38bdf8",
+
+                    boxShadow:
+                      "0 0 8px rgba(56,189,248,0.65)",
+
+                    flexShrink: 0,
+                  }}
+                />
+
+                <span
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {domain}
+                </span>
+              </div>
+            </div>
+
+            {/* OPEN BUTTON */}
+            <div
+              style={{
+                flex: "0 0 auto",
+
+                width: "32px",
+                height: "32px",
+
+                borderRadius: "9px",
+
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+
+                background:
+                  "rgba(14,165,233,0.08)",
+
+                border:
+                  "1px solid rgba(56,189,248,0.20)",
+
+                color: "#38bdf8",
+
+                fontSize: "15px",
+                fontWeight: "600",
+
+                transition:
+                  "all 180ms ease",
+              }}
+            >
+              ↗
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    {/* SCROLL HINT */}
+    {msg.sources.length > 5 && (
+      <div
+        style={{
+          marginTop: "8px",
+
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+
+          color: "#64748b",
+          fontSize: "10px",
+        }}
+      >
+        ↓ Scroll for more sources
+      </div>
+    )}
+  </div>
+)}
+    <CopyToClipboard text={msg.text}>
+      <button className="copy-btn">
+        <FiCopy />
+      </button>
+    </CopyToClipboard>
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "pdf",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📄 PDF
+</button>
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "docx",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📝 DOCX
+</button>
+
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "xlsx",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📊 XLSX
+</button>
+
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "pptx",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📽 PPTX
+</button>
+
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "html",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  🌐 HTML
+</button>
+
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "md",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📝 MD
+</button>
+
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "txt",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📄 TXT
+</button>
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "json",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📄 JSON
+</button>
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "xml",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📄 XML
+</button>
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "rtf",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📄 RTF
+</button>
+<button
+  className="copy-btn"
+  onClick={() =>
+    handleGenerateDocument(
+      "odt",
+      msg.text || msg.content || ""
+    )
+  }
+>
+  📄 ODT
+</button>
+    <button
+      className="copy-btn"
+      onClick={() => speakText(msg.text)}
+    >
+      <FiVolume2 />
+    </button>
+
+    <button
+      className="copy-btn"
+      onClick={() => {
+        navigator.clipboard.writeText(msg.text);
+        alert("✅ Answer copied and ready to share");
+      }}
+    >
+      📤
+    </button>
+<button
+  className="copy-btn"
+  onClick={() => saveChat(messages)}
+>
+  💾
+</button>
+  </div>
+</div>
+))}
+
+{typingText && (
+  <div className="message">
+    <div className="avatar">
+      T
+    </div>
+
+    <div className="bubble">
+      {typingText}
+    </div>
+  </div>
+)}
+
+<div ref={messagesEndRef} />
+
+</div>
+
+<div className="input-area">
+
+  <div className="input-box">
+
+    <div className="left-buttons">
 
               <button
                 className={`icon-btn ${
@@ -847,51 +2190,181 @@ ${input}
                 />
 
                 <button
-                  className="icon-btn"
-                >
-
-                  <FiUpload />
-
-                </button>
+  type="button"
+  className="icon-btn"
+  onClick={(e) => {
+  e.stopPropagation();
+  setShowAnalyzeMenu(true);
+}}
+>
+  🔍
+</button>
               </div>
 
 
 
               <button
-                className="icon-btn"
+  className="icon-btn"
+  onClick={() => {
+    alert("BUTTON CLICKED");
+    console.log("Starting mic");
 
-                onClick={() => {
-
-                  SpeechRecognition.startListening({
-                    continuous: true,
-                    language: "en-US",
-                  });
-                }}
-              >
-
-                <FiMic />
-
-              </button>
-
-
+    SpeechRecognition.startListening({
+  continuous: false,
+  interimResults: false,
+  language: "en-IN",
+});
+  }}
+>
+  <FiMic />
+</button>
 
               <button
-                className="icon-btn"
+  className="icon-btn"
+  onClick={() =>
+    setVoiceEnabled(!voiceEnabled)
+  }
+>
+  {voiceEnabled ? "🔊" : "🔇"}
+</button>
 
-                onClick={() => {
-
-                  SpeechRecognition.stopListening();
-
-                  resetTranscript();
-                }}
-              >
-
-                <FiSquare />
-
-              </button>
             </div>
 
+<Select
+  className="language-select"
+  classNamePrefix="language"
+  options={languageOptions}
+  value={
+    languageOptions
+      .flatMap((group) => group.options)
+      .find((option) => option.label === selectedLanguage) || null
+  }
+  onChange={(selectedOption) => {
+    if (selectedOption) {
+      setSelectedLanguage(selectedOption.label);
+    }
+  }}
+  placeholder="🌍 Select Language"
+isSearchable
+menuPlacement="auto"
+/>
+<Select
+  className="voice-select"
+  classNamePrefix="voice"
+  options={voiceOptions}
+  value={
+    voiceOptions.find(
+      (option) => option.id === selectedVoice
+    ) || null
+  }
+  getOptionLabel={(option) => option.name}
+  getOptionValue={(option) => option.id}
+  onChange={(selectedOption) => {
+  if (!selectedOption) return;
 
+  if (selectedOption.id === "personal") {
+    setShowPersonalVoice(true);
+return;
+  }
+
+  setSelectedVoice(selectedOption.id);
+}}
+  placeholder="🎙️ Select Voice"
+  isSearchable={false}
+  menuPlacement="top"
+/>
+{showPersonalVoice && (
+  <div className="personal-voice-overlay">
+    <div className="personal-voice-modal">
+
+      <h2>🎙️ Personal Voice</h2>
+
+      <p>Create your personal voice for Truvora.</p>
+
+      <input
+        type="text"
+        placeholder="Enter voice name"
+        className="personal-voice-name"
+      />
+
+      <div className="personal-voice-buttons">
+
+        <button
+          type="button"
+          onClick={async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+
+    console.log("🎙️ Microphone access granted");
+
+    const recorder = new MediaRecorder(stream);
+const audioChunks = [];
+
+recorder.ondataavailable = (event) => {
+  if (event.data.size > 0) {
+    audioChunks.push(event.data);
+  }
+};
+
+recorder.onstop = async () => {
+  const audioBlob = new Blob(audioChunks, {
+    type: "audio/webm",
+  });
+
+  console.log("🎵 Personal voice recording captured");
+  console.log("Audio size:", audioBlob.size, "bytes");
+  const formData = new FormData();
+
+formData.append("voice", audioBlob, "personal-voice.webm");
+
+const response = await fetch("http://localhost:5000/upload-personal-voice", {
+  method: "POST",
+  body: formData,
+});
+
+const data = await response.json();
+
+console.log("✅ Personal voice uploaded:", data);
+if (data.success) {
+  setPersonalVoice(data.audioUrl);
+  setSelectedVoice("personal");
+  setShowPersonalVoice(false);
+}
+};
+
+recorder.start();
+
+console.log("🔴 Recording started");
+
+    setTimeout(() => {
+      recorder.stop();
+      stream.getTracks().forEach(track => track.stop());
+      console.log("⏹️ Recording stopped");
+    }, 5000);
+
+  } catch (error) {
+    console.error("❌ Microphone error:", error);
+    alert("Microphone permission is required.");
+  }
+}}
+        >
+          🎙️ Record Voice
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setShowPersonalVoice(false)}
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)}
 
             <input
               type="text"
@@ -903,6 +2376,8 @@ ${input}
               value={input}
 
               onChange={(e) =>
+
+
                 setInput(
                   e.target.value
                 )
@@ -933,11 +2408,11 @@ ${input}
               <FiSend />
 
             </button>
-          </div>
-        </div>
+                    </div>
+                </div>
       </div>
     </div>
+  </>
   );
 }
-
 export default App;

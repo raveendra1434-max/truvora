@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Truvora AI",
+  "version": "1.0.0",
+  "description": "Send the current YouTube video to Truvora AI for analysis.",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://localhost:5000/*"
+  ],
+    "action": {
+    "default_title": "Ask Truvora AI"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
