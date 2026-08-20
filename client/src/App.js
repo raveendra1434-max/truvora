@@ -403,7 +403,7 @@ setChatHistory(
 /* SPEAK */
 const speakText = async (text) => {
   try {
-    const response = await fetch("http://localhost:5000/tts", {
+    const response = await fetch("https://truvora-backend.onrender.com/tts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -457,7 +457,7 @@ const capturePhoto = async () => {
     };
 
     const response = await fetch(
-      "http://localhost:5000/analyze-image",
+      "https://truvora-backend.onrender.com/analyze-image",
       {
         method: "POST",
         headers: {
@@ -622,7 +622,7 @@ const handlePdfUpload = async (file) => {
   try {
 
     const response = await fetch(
-      "http://localhost:5000/analyze-document",
+      "https://truvora-backend.onrender.com/analyze-document",
       {
         method: "POST",
         body: formData,
@@ -703,7 +703,7 @@ else if (
 )
   formData.append("type", "pptx");
   const response = await fetch(
-  "http://localhost:5000/upload-video",
+  "https://truvora-backend.onrender.com/upload-video",
   {
     method: "POST",
     body: formData,
@@ -750,7 +750,7 @@ const handleYouTube = async (query) => {
       console.log("YOUTUBE URL:", youtubeUrl);
 
       const response = await fetch(
-        "http://localhost:5000/analyze-youtube",
+        "https://truvora-backend.onrender.com/analyze-youtube",
         {
           method: "POST",
           headers: {
@@ -799,7 +799,7 @@ const handleWebsite = async (url) => {
 
   try {
     const response = await fetch(
-      "http://localhost:5000/analyze-website",
+      "https://truvora-backend.onrender.com/analyze-website",
       {
         method: "POST",
         headers: {
@@ -848,7 +848,7 @@ const handleAudioUpload = async (file) => {
   formData.append("audio", file);
 
   const response = await fetch(
-    "http://localhost:5000/upload-audio",
+    "https://truvora-backend.onrender.com/upload-audio",
     {
       method: "POST",
       body: formData,
@@ -911,7 +911,7 @@ const handleAudioUpload = async (file) => {
       formData.append("file", file);
 
       const response = await fetch(
-        "http://localhost:5000/analyze-document",
+        "https://truvora-backend.onrender.com/analyze-document",
         {
           method: "POST",
           body: formData,
@@ -949,7 +949,7 @@ const handleAudioUpload = async (file) => {
     imageFormData.append("image", file);
 
     const imageResponse = await fetch(
-      "http://localhost:5000/upload-image",
+      "https://truvora-backend.onrender.com/upload-image",
       {
         method: "POST",
         body: imageFormData,
@@ -989,7 +989,7 @@ await handleSend(
 
 const handleLogin = async () => {
   try {
-    const response = await fetch("http://localhost:5000/api/login", {
+    const response = await fetch("https://truvora-backend.onrender.com/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1084,7 +1084,7 @@ console.log(
 
     const response =
       await fetch(
-        "http://localhost:5000/ask",
+        "https://truvora-backend.onrender.com/ask",
         {
           method: "POST",
 
@@ -1236,7 +1236,7 @@ console.log("SENDING SUMMARY:");
 console.log(summary);
 console.log("LENGTH:", summary.length);
     const response = await fetch(
-      "http://localhost:5000/generate-document",
+      "https://truvora-backend.onrender.com/generate-document",
       {
         method: "POST",
         headers: {
@@ -1262,7 +1262,7 @@ analysis: summary,
       return;
     }
 
-    const url = `http://localhost:5000${data.document}?t=${Date.now()}`;
+    const url = `https://truvora-backend.onrender.com${data.document}?t=${Date.now()}`;
 const link = document.createElement("a");
 link.href = url;
 link.download = data.document.split("/").pop();
@@ -1455,7 +1455,7 @@ setShowCamera(true);
       formData.append("image", file);
 
       const response = await fetch(
-        "http://localhost:5000/upload-image",
+        "https://truvora-backend.onrender.com/upload-image",
         {
           method: "POST",
           body: formData,
@@ -1886,12 +1886,12 @@ setImage(restoredImage);
         ? msg.content
         : msg.content.startsWith("http")
           ? msg.content
-          : `http://localhost:5000${msg.content}`
+          : `https://truvora-backend.onrender.com${msg.content}`
     )
               : (
                   msg.image.startsWith("http")
                     ? msg.image
-                    : `http://localhost:5000${msg.image}`
+                    : `https://truvora-backend.onrender.com${msg.image}`
                 )
           }
           alt="Generated"
@@ -1917,7 +1917,7 @@ setImage(restoredImage);
               onClick={async () => {
                 const imageUrl = msg.image.startsWith("http")
                   ? msg.image
-                  : `http://localhost:5000${msg.image}`;
+                  : `https://truvora-backend.onrender.com${msg.image}`;
 
                 const response = await fetch(imageUrl);
                 const blob = await response.blob();
@@ -1995,7 +1995,7 @@ setImage(restoredImage);
         {msg.document && (
           <div style={{ marginTop: "10px" }}>
             <a
-              href={`http://localhost:5000${msg.document}`}
+              href={`https://truvora-backend.onrender.com${msg.document}`}
               target="_blank"
               rel="noopener noreferrer"
               download
@@ -2714,7 +2714,7 @@ recorder.onstop = async () => {
 
 formData.append("voice", audioBlob, "personal-voice.webm");
 
-const response = await fetch("http://localhost:5000/upload-personal-voice", {
+const response = await fetch("https://truvora-backend.onrender.com/upload-personal-voice", {
   method: "POST",
   body: formData,
 });
