@@ -197,6 +197,8 @@ const [showAnalyzeMenu, setShowAnalyzeMenu] = useState(false);
 const [showYouTubeSearch, setShowYouTubeSearch] = useState(false);
 const [youtubeQuery, setYoutubeQuery] = useState("");
 
+const [showWebsiteSearch, setShowWebsiteSearch] = useState(false);
+const [websiteUrl, setWebsiteUrl] = useState("");
 const [showCamera, setShowCamera] = useState(false);
 
 const [selectedLanguage, setSelectedLanguage] = useState("English");
@@ -217,6 +219,9 @@ const getLanguageCode = () => {
 };
 const videoRef = useRef(null);
 const canvasRef = useRef(null);
+
+const documentUploadRef = useRef(null);
+const imageUploadRef = useRef(null);
 
 const messagesEndRef = useRef(null);
 
@@ -432,55 +437,191 @@ const capturePhoto = async () => {
 
   if (!video || !canvas) return;
 
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
+  try {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(video, 0, 0);
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
 
-  const imageData = canvas.toDataURL("image/jpeg", 0.95);
-console.log(imageData);
-  setImage(imageData);
-  const userImageMessage = {
-  role: "user",
-  text: "📷 Captured Image",
-  content: imageData,
-};
-const response = await fetch("http://localhost:5000/analyze-image", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    image: imageData,
-  }),
-});
+    const imageData = canvas.toDataURL("image/jpeg", 0.95);
 
-const data = await response.json();
+    console.log("📷 CAMERA IMAGE CAPTURED");
 
-setMessages((prev) => [
-  ...prev,
+    setImage(imageData);
 
-  userImageMessage,
+    const userImageMessage = {
+      role: "user",
+      text: "📷 Captured Image",
+      content: imageData,
+    };
 
-  {
-    role: "assistant",
-    text: data.answer,
-  },
-]);
-  setShowCamera(false);
+    const response = await fetch(
+      "http://localhost:5000/analyze-image",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image: imageData,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Camera analysis failed: ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    console.log("📷 CAMERA RESPONSE:", data);
+
+    let answer = data.answer || "";
+
+    // PRODUCT PRICE RESULTS
+    if (
+      data.type === "product" &&
+      Array.isArray(data.shoppingResults) &&
+      data.shoppingResults.length > 0
+    ) {
+      const results = data.shoppingResults;
+
+      const numericPrices = results
+        .map((item) => {
+          if (!item.price) return null;
+
+          const match = String(item.price).match(
+            /[\d,]+/
+          );
+
+          if (!match) return null;
+
+          return Number(
+            match[0].replace(/,/g, "")
+          );
+        })
+        .filter(
+          (price) =>
+            Number.isFinite(price) &&
+            price > 0
+        );
+
+      let priceRange = "";
+
+      if (numericPrices.length > 0) {
+        const minPrice = Math.min(...numericPrices);
+        const maxPrice = Math.max(...numericPrices);
+
+        priceRange =
+          minPrice === maxPrice
+            ? `₹${minPrice.toLocaleString("en-IN")}`
+            : `₹${minPrice.toLocaleString(
+                "en-IN"
+              )} – ₹${maxPrice.toLocaleString(
+                "en-IN"
+              )}`;
+      }
+
+      const productName =
+        data.product?.name ||
+        data.productName ||
+        "Product";
+
+      const confidence =
+        data.product?.confidence ||
+        data.confidence ||
+        "MEDIUM";
+
+      const identification =
+        data.product?.identification ||
+        data.identification ||
+        "";
+
+      answer = `
+📦 What I found
+
+${productName}
+
+🔎 Identification
+
+${identification}
+
+🎯 Confidence
+
+${confidence}
+
+💰 Current Market Price
+
+${priceRange || "Price unavailable"}
+
+⚠️ Price Note
+
+The exact model was not necessarily identified. The range below is based on matching products found in live shopping results.
+
+🛒 Matching Products
+
+${results
+  .map(
+    (item, index) =>
+      `${index + 1}. ${item.title || "Product"}
+💵 ${item.price || "Price unavailable"}
+🏪 ${item.source || "Seller unavailable"}`
+  )
+  .join("\n\n")}
+      `.trim();
+    }
+
+    // QUESTION RESULT
+    if (data.type === "question") {
+  answer = data.answer || "Unable to determine the answer.";
+}
+
+    // GENERAL IMAGE
+    if (
+      data.type !== "product" &&
+      data.type !== "question" &&
+      !answer
+    ) {
+      answer =
+        data.identification ||
+        data.answer ||
+        "Image analyzed successfully.";
+    }
+
+    setMessages((prev) => [
+      ...prev,
+      userImageMessage,
+      {
+        role: "assistant",
+        text: answer,
+      },
+    ]);
+
+    setShowCamera(false);
+
+  } catch (error) {
+    console.error(
+      "❌ CAMERA ERROR:",
+      error
+    );
+
+    alert(
+      "Camera analysis failed. Please try again."
+    );
+  }
 };
 const handlePdfUpload = async (file) => {
 
   const formData = new FormData();
 
-  formData.append(
-    "file",
-    file
-  );
+  formData.append("file", file);
 
-  const response =
-    await fetch(
+  try {
+
+    const response = await fetch(
       "http://localhost:5000/analyze-document",
       {
         method: "POST",
@@ -488,12 +629,49 @@ const handlePdfUpload = async (file) => {
       }
     );
 
-  const data =
-    await response.json();
+    const data = await response.json();
 
-  setPdfText(
-    data.analysis
-  );
+    console.log("DOCUMENT RESPONSE:", data);
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Document analysis failed"
+      );
+    }
+
+    setPdfText(
+      data.documentText || data.analysis || ""
+    );
+
+    setMessages((prev) => [
+      ...prev,
+
+      {
+        role: "user",
+        text: `📄 Uploaded: ${file.name}`,
+      },
+
+      {
+        role: "assistant",
+        text:
+          data.analysis ||
+          "Document analyzed successfully.",
+      },
+    ]);
+
+    setShowAnalyzeMenu(false);
+
+  } catch (error) {
+
+    console.error(
+      "DOCUMENT UPLOAD ERROR:",
+      error
+    );
+
+    alert(
+      "Document upload failed."
+    );
+  }
 };
 
 
@@ -614,6 +792,55 @@ const handleYouTube = async (query) => {
   }
 };
 
+const handleWebsite = async (url) => {
+  if (!url?.trim()) return;
+
+  const websiteUrl = url.trim();
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/analyze-website",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: websiteUrl,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("WEBSITE RESPONSE:", data);
+
+    if (!data.success) {
+      alert(data.error || "Website analysis failed.");
+      return;
+    }
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "user",
+        text: `🌐 Website: ${websiteUrl}`,
+      },
+      {
+        role: "assistant",
+        text: data.analysis || "No analysis returned.",
+      },
+    ]);
+
+    setShowWebsiteSearch(false);
+    setWebsiteUrl("");
+
+  } catch (err) {
+    console.error("WEBSITE ERROR:", err);
+    alert("Unable to process website.");
+  }
+};
+
 const handleAudioUpload = async (file) => {
 
   const formData = new FormData();
@@ -731,7 +958,23 @@ const handleAudioUpload = async (file) => {
 
     const imageData = await imageResponse.json();
 
-    setImage(imageData.imageUrl);
+console.log("🖼️ IMAGE UPLOAD RESPONSE:", imageData);
+
+const uploadedImageUrl = imageData.imageUrl;
+
+if (!uploadedImageUrl) {
+  throw new Error("Image URL was not returned by server");
+}
+
+setImage(uploadedImageUrl);
+
+console.log("🤖 SENDING IMAGE TO AI:", uploadedImageUrl);
+
+// Automatically analyze image
+await handleSend(
+  input?.trim() || "Analyze this image in detail.",
+  uploadedImageUrl
+);
 
     } catch (error) {
 
@@ -774,31 +1017,42 @@ const handleLogin = async () => {
 
  /* SEND */
 
-const handleSend = async (voiceText = null) => {
+const handleSend = async (voiceText = null, imageUrlOverride = null) => {
 
 const finalPrompt =
   typeof voiceText === "string"
     ? voiceText
     : input;
+const conversationImageUrl =
+  imageUrlOverride ||
+  image ||
+  [...messages]
+    .reverse()
+    .find((msg) => msg.image)?.image ||
+  null;
 
+console.log("🖼️ IMAGE TO SEND:", conversationImageUrl);
   if (
-    !finalPrompt?.trim() &&
-    !pdfText &&
-    !image
-  )
-    return;
+  !finalPrompt?.trim() &&
+  !pdfText &&
+  !image &&
+  !imageUrlOverride
+)
+  return;
 
   setStopGeneration(false);
 
   const userMessage = {
-    role: "user",
-    text:
-      image
-        ? `🖼️ Image Uploaded\n\n${finalPrompt}`
-        : pdfText
-        ? `📄 PDF Uploaded\n\n${finalPrompt}`
-        : finalPrompt,
-  };
+  role: "user",
+  text:
+    conversationImageUrl
+      ? `🖼️ Image Uploaded\n\n${finalPrompt}`
+      : pdfText
+      ? `📄 PDF Uploaded\n\n${finalPrompt}`
+      : finalPrompt,
+
+  image: conversationImageUrl || null,
+};
 
   const updatedMessages = [
     ...messages,
@@ -845,7 +1099,18 @@ console.log(
   language: getLanguageCode(),
   web: webEnabled,
   agentMode: agentMode,
-  imageUrl: image,
+
+  // Current uploaded image
+  imageUrl: conversationImageUrl,
+
+  // All image references available in the conversation
+  imageUrls: [
+    imageUrlOverride || image,
+    ...updatedMessages
+      .filter((msg) => msg.image)
+      .map((msg) => msg.image)
+      .filter(Boolean),
+  ],
 }),
         }
       );
@@ -892,7 +1157,7 @@ let currentText = "";
   {
   role: "assistant",
   text: currentText,
-  image: data.image || null,
+  image: data.image || (data.type === "image" ? data.document : null),
   document: data.document || null,
   sources: data.sources || [],
 },
@@ -1083,19 +1348,14 @@ return (
           <h2>🔍 Analyze Anything</h2>
 
   <button
-  onClick={() => {
-    document.querySelector('input[type="file"]')?.click();
-    setShowAnalyzeMenu(false);
-  }}
+  type="button"
+  onClick={() => documentUploadRef.current?.click()}
 >
   📄 Document
 </button>
-
   <button
-  onClick={() => {
-    document.querySelector('input[type="file"]')?.click();
-    setShowAnalyzeMenu(false);
-  }}
+  type="button"
+  onClick={() => imageUploadRef.current?.click()}
 >
   🖼 Image
 </button>
@@ -1132,14 +1392,42 @@ setShowCamera(true);
   ▶️ YouTube
 </button>
 
-  <button>🌐 Website</button>
-
   <button
-    onClick={() => setShowAnalyzeMenu(false)}
-  >
-    ❌ Cancel
-  </button>
-    
+  onClick={() => {
+    setShowAnalyzeMenu(false);
+    setShowWebsiteSearch(true);
+  }}
+>
+  🌐 Website
+</button>
+
+<button
+  onClick={() => setShowAnalyzeMenu(false)}
+>
+  ❌ Cancel
+</button>
+    <input
+  ref={documentUploadRef}
+  id="documentUpload"
+  type="file"
+  accept=".pdf,.doc,.docx,.xls,.xlsx"
+  style={{ display: "none" }}
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    try {
+      await handlePdfUpload(file);
+      setShowAnalyzeMenu(false);
+    } catch (error) {
+      console.error("DOCUMENT UPLOAD ERROR:", error);
+      alert("Document upload failed.");
+    }
+
+    e.target.value = "";
+  }}
+/>
 <input
   id="videoUpload"
   type="file"
@@ -1149,6 +1437,62 @@ setShowCamera(true);
     if (e.target.files[0]) {
       handleVideoUpload(e.target.files[0]);
     }
+  }}
+/>
+<input
+  ref={imageUploadRef}
+  id="imageUpload"
+  type="file"
+  accept="image/*"
+  style={{ display: "none" }}
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch(
+        "http://localhost:5000/upload-image",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Image upload failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      console.log("IMAGE UPLOAD RESPONSE:", data);
+
+      setImage(data.imageUrl);
+
+setMessages((prev) => [
+  ...prev,
+  {
+    role: "user",
+    text: `🖼️ Image Uploaded: ${file.name}`,
+    image: data.imageUrl,
+  },
+]);
+
+setShowAnalyzeMenu(false);
+// 🤖 Analyze uploaded image with AI
+await handleSend(
+  "Analyze this image in detail. Describe what you see, identify important objects, read visible text, and give me a clear summary.",
+  data.imageUrl
+);
+    } catch (error) {
+      console.error("IMAGE UPLOAD ERROR:", error);
+      alert("Image upload failed.");
+    }
+
+    e.target.value = "";
   }}
 />
 <input
@@ -1258,6 +1602,56 @@ setShowCamera(true);
     </div>
   </div>
 )}
+{showWebsiteSearch && (
+  <div className="analyze-overlay">
+    <div className="analyze-menu">
+      <h2>🌐 Website</h2>
+
+      <p
+        style={{
+          color: "#ccc",
+          textAlign: "center",
+          marginBottom: "15px",
+          fontSize: "14px",
+        }}
+      >
+        Enter a website URL to analyze
+      </p>
+
+      <input
+        type="text"
+        value={websiteUrl}
+        onChange={(e) => setWebsiteUrl(e.target.value)}
+        placeholder="https://example.com"
+        style={{
+          width: "100%",
+          padding: "12px",
+          marginBottom: "12px",
+          borderRadius: "8px",
+          border: "1px solid #555",
+          background: "#111827",
+          color: "#fff",
+          boxSizing: "border-box",
+        }}
+      />
+
+      <button
+        onClick={() => handleWebsite(websiteUrl)}
+      >
+        🌐 Analyze Website
+      </button>
+
+      <button
+        onClick={() => {
+          setShowWebsiteSearch(false);
+          setWebsiteUrl("");
+        }}
+      >
+        ❌ Cancel
+      </button>
+    </div>
+  </div>
+)}
     <div className="app">
 
       <div
@@ -1335,7 +1729,17 @@ chats
   key={index}
   className="chat-item"
   onClick={() => {
-  setMessages(Array.isArray(chat.messages) ? chat.messages : []);
+  const restoredMessages = Array.isArray(chat.messages)
+  ? chat.messages
+  : [];
+
+setMessages(restoredMessages);
+
+const restoredImage = [...restoredMessages]
+  .reverse()
+  .find((msg) => msg.image)?.image || null;
+
+setImage(restoredImage);
   localStorage.setItem(
     "current-chat",
     JSON.stringify(chat)
@@ -1967,7 +2371,7 @@ chats
         <FiCopy />
       </button>
     </CopyToClipboard>
-<button
+    <button
   className="copy-btn"
   onClick={() =>
     handleGenerateDocument(
@@ -1976,7 +2380,7 @@ chats
     )
   }
 >
-  📄 PDF
+  📕 PDF
 </button>
 <button
   className="copy-btn"
@@ -1987,6 +2391,7 @@ chats
     )
   }
 >
+
   📝 DOCX
 </button>
 
@@ -2082,17 +2487,7 @@ chats
 >
   📄 RTF
 </button>
-<button
-  className="copy-btn"
-  onClick={() =>
-    handleGenerateDocument(
-      "odt",
-      msg.text || msg.content || ""
-    )
-  }
->
-  📄 ODT
-</button>
+
     <button
       className="copy-btn"
       onClick={() => speakText(msg.text)}
@@ -2211,7 +2606,7 @@ chats
 
     SpeechRecognition.startListening({
   continuous: false,
-  interimResults: false,
+  interimResults: true,
   language: "en-IN",
 });
   }}

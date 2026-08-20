@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import OpenAI from "openai";
+import OpenAI, { toFile } from "openai";
 import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
 import multer from "multer";
@@ -15,6 +15,7 @@ import mammoth from "mammoth";
 import XLSX from "xlsx";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegPath from "ffmpeg-static";
+import { spawn } from "child_process";
 import ffprobe from "@ffprobe-installer/ffprobe";
 import { YoutubeTranscript } from "@danielxceron/youtube-transcript";
 import { execFileSync } from "child_process";
@@ -40,6 +41,7 @@ import {
   getMemory,
 } from "./memory/memoryManager.js";
 dotenv.config();
+console.log("SERPAPI KEY LOADED:", !!process.env.SERPAPI_KEY);
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobe.path);
 const app = express();
@@ -323,58 +325,567 @@ app.post("/analyze-image", async (req, res) => {
   try {
     const { image } = req.body;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4.1",
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: `Analyze this image professionally.
+    if (!image) {
+      return res.status(400).json({
+        success: false,
+        error: "No image received",
+      });
+    }
 
-Generate a well-structured report using these sections:
+    console.log("📷 CAMERA IMAGE RECEIVED");
 
-Title
+    // ==========================================
+    // 1. UNDERSTAND WHAT IS IN THE IMAGE
+    // ==========================================
 
-Overview
+    const visionResponse =
+      await openai.chat.completions.create({
+        model: "gpt-4.1",
 
-Detailed Analysis
+        response_format: {
+          type: "json_object",
+        },
 
-Key Objects
+        messages: [
+          {
+            role: "system",
 
-Colors and Lighting
+            content: `
+You are Truvora AI's highly accurate visual identification engine.
 
-Environment
+Your job is to inspect the image carefully and determine exactly what is visible.
 
-Important Observations
+CLASSIFY THE IMAGE INTO EXACTLY ONE CATEGORY:
 
-Conclusion
+1. PRODUCT
+2. QUESTION
+3. GENERAL_IMAGE
 
-Write professionally using proper paragraphs and headings.
+========================
+PRODUCT IDENTIFICATION
+========================
 
-Do not use markdown symbols like ** or #.`
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: image
+When the image contains a product or object:
+
+FIRST inspect the image for visible:
+- Brand logos
+- Brand names
+- Product names
+- Model numbers
+- Model names
+- Serial/product labels
+- Printed text
+- Packaging text
+- Distinctive visual markings
+
+VISIBLE TEXT HAS HIGH PRIORITY.
+
+If a logo or brand name is visible, use the visible brand rather than guessing another brand.
+
+For example:
+If the image visibly shows "boAt", identify the brand as boAt.
+Do NOT identify it as Dell, JBL, Sony, Samsung, Apple, etc. unless that brand is actually supported by the image.
+
+Separate your identification into:
+
+- brand
+- product type
+- model
+- visibleText
+
+IMPORTANT:
+Do NOT invent an exact model.
+
+If the model cannot be read or visually determined:
+model = "Unknown"
+
+If the brand is unclear:
+brand = "Unknown"
+
+If there are multiple plausible brands:
+do NOT choose one with HIGH confidence.
+
+Use MEDIUM or LOW confidence.
+
+For a product, return the most defensible identification based ONLY on the image.
+
+========================
+QUESTION DETECTION
+========================
+
+If the image contains a question:
+
+Read the visible question carefully.
+
+This can include:
+- Mathematics
+- Physics
+- Chemistry
+- Biology
+- Engineering
+- Coding
+- Programming
+- School homework
+- College questions
+- Exam questions
+- Printed questions
+- Handwritten questions
+
+Extract the question accurately.
+
+Solve it carefully.
+For percentage questions, interpret natural-language expressions according to the user's intended meaning.
+
+For example:
+- "what 25%67"
+- "25% of 67"
+- "what is 25 percent of 67"
+
+mean "25% of 67", so the answer is 16.75.
+
+Do NOT interpret "%" as the modulo operator unless the question clearly refers to programming, modulo, or remainder.
+For mathematics and technical problems:
+show the important reasoning/calculation steps.
+
+Do not invent text that cannot be read.
+
+========================
+GENERAL IMAGE
+========================
+
+If the image is not primarily a product or question, classify it as GENERAL_IMAGE.
+
+Describe only what can reasonably be observed.
+
+Do not identify real people by name.
+
+========================
+CONFIDENCE
+========================
+
+HIGH:
+The brand/product/model is clearly visible or strongly supported.
+
+MEDIUM:
+The product type or brand is reasonably identifiable but some details are uncertain.
+
+LOW:
+The image is unclear or multiple identifications are possible.
+
+Never use HIGH confidence for an uncertain brand or model.
+
+========================
+OUTPUT
+========================
+
+Return ONLY valid JSON:
+
+{
+  "category": "PRODUCT | QUESTION | GENERAL_IMAGE",
+
+  "brand": "",
+
+  "productType": "",
+
+  "model": "",
+
+  "visibleText": "",
+
+  "identification": "",
+
+  "productName": "",
+
+  "questionText": "",
+
+  "answer": "",
+
+  "confidence": "HIGH | MEDIUM | LOW"
+}
+
+IMPORTANT RULES:
+
+- Never invent a brand.
+- Never invent a model.
+- Never guess a price.
+- Never claim an exact product when the image does not support it.
+- Read visible logos and text carefully.
+- If text is blurry, report it as uncertain.
+- Price will be searched separately using live shopping data.
+`
+          },
+
+          {
+            role: "user",
+
+            content: [
+              {
+                type: "text",
+                text: "Analyze this camera image."
+              },
+
+              {
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
               }
-            }
-          ]
-        }
-      ]
-    });
+            ]
+          }
+        ]
+      });
 
-    res.json({
-      answer: response.choices[0].message.content
+    const rawVision =
+      visionResponse.choices?.[0]?.message?.content || "{}";
+
+    console.log("🤖 CAMERA AI RAW RESULT:");
+    console.log(rawVision);
+
+    let vision;
+
+    try {
+      vision = JSON.parse(rawVision);
+      // ===== CONFIDENCE SAFETY CHECK =====
+if (
+  vision.category === "PRODUCT" &&
+  (
+    !vision.model ||
+    vision.model === "Unknown" ||
+    vision.model === "unknown" ||
+    vision.model.toLowerCase().includes("unknown")
+  )
+) {
+  vision.confidence = "MEDIUM";
+}
+    } catch (parseError) {
+      console.error(
+        "❌ CAMERA JSON PARSE ERROR:",
+        parseError
+      );
+
+      return res.status(500).json({
+        success: false,
+        error: "Unable to understand image analysis result.",
+      });
+    }
+
+    // ==========================================
+    // 2. QUESTION IMAGE
+    // ==========================================
+
+    if (vision.category === "QUESTION") {
+
+      console.log("❓ QUESTION DETECTED");
+
+      return res.json({
+        success: true,
+        type: "question",
+        question: vision.questionText || "",
+        answer: `
+❓ Question
+
+${vision.questionText || "Question detected in image."}
+
+✅ Answer
+
+${vision.answer || "I could not determine the answer reliably."}
+
+🎯 Confidence
+
+${vision.confidence || "MEDIUM"}
+        `.trim(),
+      });
+    }
+
+    // ==========================================
+    // 3. PRODUCT / OBJECT IMAGE
+    // ==========================================
+
+    if (vision.category === "PRODUCT") {
+
+      console.log("📦 PRODUCT DETECTED:");
+      console.log(vision.productName);
+
+      let shoppingResults = [];
+
+try {
+  if (process.env.SERPAPI_KEY) {
+    console.log("🔎 SEARCHING LIVE PRODUCT PRICES");
+
+    const brand = String(vision.brand || "").trim();
+    const productType = String(vision.productType || "").trim();
+    const productName = String(vision.productName || "").trim();
+
+    const searchQuery = [brand, productType]
+      .filter(Boolean)
+      .join(" ");
+
+    console.log("🔎 PRODUCT SEARCH QUERY:", searchQuery);
+
+    const shoppingResponse = await axios.get(
+      "https://serpapi.com/search.json",
+      {
+        params: {
+          engine: "google_shopping",
+          q: searchQuery || productName || vision.identification,
+          location: "India",
+          gl: "in",
+          hl: "en",
+          api_key: process.env.SERPAPI_KEY,
+        },
+      }
+    );
+
+    const results =
+      shoppingResponse.data?.shopping_results || [];
+
+    const brandLower = brand.toLowerCase();
+    const typeLower = productType.toLowerCase();
+
+    const negativeWords = [
+      "showpiece",
+      "show piece",
+      "figurine",
+      "decoration",
+      "decorative",
+      "ship model",
+      "toy ship",
+      "boat model",
+      "nautical",
+      "ornament",
+      "craft",
+      "home decor",
+    ];
+
+    let requiredWords = [];
+
+    if (
+      typeLower.includes("power bank") ||
+      typeLower.includes("powerbank")
+    ) {
+      requiredWords = ["power bank", "powerbank"];
+    } else if (typeLower.includes("speaker")) {
+      requiredWords = ["speaker", "bluetooth"];
+    } else if (typeLower.includes("headphone")) {
+      requiredWords = [
+        "headphone",
+        "headset",
+        "earphone",
+        "earbuds",
+      ];
+    } else if (typeLower.includes("earbud")) {
+      requiredWords = ["earbuds", "earbud", "tws"];
+    }
+
+    shoppingResults = results
+      .map((item) => ({
+        title: String(item.title || ""),
+        price: item.price || "",
+        source: String(item.source || ""),
+        link:
+          item.product_link ||
+          item.link ||
+          "",
+        thumbnail: item.thumbnail || "",
+      }))
+      .filter((item) => {
+        const text =
+          `${item.title} ${item.source}`.toLowerCase();
+
+        // Reject obviously unrelated products.
+        if (
+          negativeWords.some((word) =>
+            text.includes(word)
+          )
+        ) {
+          return false;
+        }
+
+        // If the AI detected a brand, require it.
+        if (
+          brandLower &&
+          !text.includes(brandLower)
+        ) {
+          return false;
+        }
+
+        // If the AI detected a product type,
+        // require relevant category words.
+        if (requiredWords.length > 0) {
+          const matchesType =
+            requiredWords.some((word) =>
+              text.includes(word)
+            );
+
+          if (!matchesType) {
+            return false;
+          }
+        }
+
+        return Boolean(
+          item.title ||
+          item.price ||
+          item.source
+        );
+      })
+      .slice(0, 5);
+
+    console.log(
+      "🧹 FILTERED PRODUCT RESULTS:",
+      shoppingResults
+    );
+  }
+} catch (priceError) {
+  console.error(
+    "⚠️ PRICE SEARCH FAILED:",
+    priceError.response?.data ||
+      priceError.message
+  );
+}
+
+      // ==========================================
+      // CREATE PRODUCT RESPONSE
+      // ==========================================
+
+      let priceText =
+        "Current price could not be verified.";
+
+      if (shoppingResults.length > 0) {
+
+        const prices =
+          shoppingResults
+            .filter((item) => item.price)
+            .map((item) => item.price);
+
+        if (prices.length > 0) {
+          priceText =
+            `Live prices found: ${prices.join(" • ")}`;
+        }
+      }
+
+      return res.json({
+        success: true,
+        type: "product",
+
+        product: {
+          name:
+            vision.productName ||
+            vision.identification ||
+            "Unknown product",
+
+          identification:
+            vision.identification || "",
+
+          confidence:
+            vision.confidence || "MEDIUM",
+        },
+
+        price: priceText,
+
+        shoppingResults,
+
+        answer: `
+📦 What I found
+
+${vision.productName || vision.identification || "Unknown product"}
+
+🔎 Identification
+
+${vision.identification || "The exact product could not be determined."}
+
+💰 Current Price
+
+${priceText}
+
+🎯 Identification Confidence
+
+${vision.confidence || "MEDIUM"}
+
+⚠️ Price Note
+
+Prices can change. The prices shown above come from live search results and should be checked with the seller before purchasing.
+        `.trim(),
+      });
+    }
+
+    // ==========================================
+    // 4. GENERAL IMAGE
+    // ==========================================
+
+    console.log("🖼️ GENERAL IMAGE DETECTED");
+
+    const generalResponse =
+      await openai.chat.completions.create({
+        model: "gpt-4.1",
+
+        messages: [
+          {
+            role: "system",
+
+            content: `
+You are Truvora AI's camera analysis assistant.
+
+Analyze the image professionally.
+
+Provide:
+
+📋 Overview
+👁️ What I See
+📦 Key Objects
+🎨 Colors and Lighting
+🏠 Environment
+📝 Important Observations
+🎯 Conclusion
+
+Only describe things that can reasonably be determined from the image.
+
+Do not identify a real person by name.
+
+Do not invent information.
+`
+          },
+
+          {
+            role: "user",
+
+            content: [
+              {
+                type: "text",
+                text: "Analyze this image."
+              },
+
+              {
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
+              }
+            ]
+          }
+        ]
+      });
+
+    const generalAnswer =
+      generalResponse.choices?.[0]?.message?.content ||
+      "Unable to analyze this image.";
+
+    return res.json({
+      success: true,
+      type: "general",
+      answer: generalAnswer,
     });
 
   } catch (error) {
-    console.error(error);
+
+    console.error(
+      "❌ CAMERA ANALYSIS ERROR:",
+      error
+    );
 
     res.status(500).json({
-      error: "Image analysis failed"
+      success: false,
+      error:
+        error.message ||
+        "Camera image analysis failed",
     });
   }
 });
@@ -383,13 +894,25 @@ async function extractFrame(videoPath, outputImage) {
   return new Promise((resolve, reject) => {
     ffmpeg(videoPath)
       .screenshots({
-        timestamps: ["2", "5", "8", "12", "16"],
-        filename: "frame-%i.png",
+        timestamps: ["2"],
+        filename: outputImage,
         folder: "uploads",
         size: "1280x?"
       })
-      .on("end", () => resolve())
-      .on("error", (err) => reject(err));
+      .on("end", () => {
+        console.log(
+          "✅ Frame extraction completed:",
+          `uploads/${outputImage}`
+        );
+        resolve();
+      })
+      .on("error", (err) => {
+        console.error(
+          "❌ Frame extraction failed:",
+          err
+        );
+        reject(err);
+      });
   });
 }
 async function getMediaDuration(filePath) {
@@ -590,102 +1113,555 @@ console.log("YOUTUBE ANALYSIS READY:", analysis);
     });
       }
   });
+  /* WEBSITE ANALYSIS ROUTE */
+
+app.post("/analyze-website", async (req, res) => {
+  try {
+    console.log("🌐 NEW WEBSITE ANALYSIS REQUEST");
+
+    const { url } = req.body;
+
+    console.log("WEBSITE URL RECEIVED:", url);
+
+    if (!url) {
+      return res.status(400).json({
+        success: false,
+        error: "Website URL is required",
+      });
+    }
+
+    let websiteUrl = url.trim();
+
+    // Add https:// if the user did not provide it
+    if (!/^https?:\/\//i.test(websiteUrl)) {
+      websiteUrl = "https://" + websiteUrl;
+    }
+
+    console.log("🌐 FETCHING WEBSITE:", websiteUrl);
+
+    const response = await fetch(websiteUrl);
+
+    if (!response.ok) {
+      return res.status(400).json({
+        success: false,
+        error: `Unable to access website. Status: ${response.status}`,
+      });
+    }
+
+    const html = await response.text();
+
+    console.log("🌐 WEBSITE HTML LENGTH:", html.length);
+
+    // Remove scripts, styles and HTML tags
+    const text = html
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    console.log(
+      "🌐 WEBSITE TEXT LENGTH:",
+      text.length
+    );
+
+    if (!text) {
+      return res.status(400).json({
+        success: false,
+        error: "No readable content found on this website.",
+      });
+    }
+
+    // Limit text sent to AI
+    const websiteText = text.substring(0, 30000);
+
+    console.log(
+      "🌐 TEXT SENT TO AI:",
+      websiteText.length
+    );
+
+    const analysis = await askGemini(
+      `You are Truvora AI, a professional website analysis assistant.
+
+Analyze the following website content and provide useful information.
+
+Your response must contain these sections:
+
+📋 SUMMARY
+Give a clear summary of what the website is about.
+
+🎯 PURPOSE
+Explain the main purpose of the website.
+
+📚 DETAILED EXPLANATION
+Explain the important information found on the website.
+
+📌 KEY POINTS
+List the most important points.
+
+💡 IMPORTANT INFORMATION
+Mention important services, products, features, people, organizations, or facts found on the website.
+
+📝 STUDY NOTES
+Create organized notes that are useful for understanding the website.
+
+🎯 IMPORTANT TAKEAWAYS
+Give the main conclusions from the website.
+
+Rules:
+- Base the analysis only on the website content provided.
+- Do not invent information.
+- Use simple, clear language.
+- If information is missing, say that it was not found.
+- Use headings and readable formatting.
+
+WEBSITE CONTENT START
+${websiteText}
+WEBSITE CONTENT END
+
+Now analyze the website content.
+`
+    );
+
+    console.log("🌐 WEBSITE ANALYSIS READY");
+
+    res.json({
+      success: true,
+      url: websiteUrl,
+      analysis,
+    });
+
+  } catch (error) {
+    console.error("🌐 WEBSITE ERROR:", error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message || "Unable to process website.",
+    });
+  }
+});
 /* VIDEO ANALYSIS ROUTE */
 console.log("VIDEO ROUTE LOADED");
+
 app.post(
   "/upload-video",
-
   upload.single("video"),
 
   async (req, res) => {
-
     try {
+      if (!req.file) {
+        return res.status(400).json({
+          error: "No video file uploaded",
+        });
+      }
+
+      const videoPath = req.file.path;
 
       const videoUrl =
         `http://localhost:5000/uploads/${req.file.filename}`;
-        const type = req.body.type || "video";
-const videoPath = `uploads/${req.file.filename}`;
-const frameName = "frame-1.png";
 
-await extractFrame(videoPath, frameName);
+      console.log("🎬 VIDEO RECEIVED:", videoPath);
 
-const frameUrl =
-  `http://localhost:5000/uploads/${frameName}`;
-  const frameBase64 = fs.readFileSync(
-  `uploads/${frameName}`,
-  {
-    encoding: "base64",
-  }
-);
-      // For now, return a placeholder analysis.
-      // In the next step we'll replace this with AI analysis.
+      // ==========================================
+      // 1. GET VIDEO DURATION
+      // ==========================================
 
-      const response = await openai.chat.completions.create({
-  model: "gpt-4.1",
-  messages: [
-    {
-      role: "user",
-      content: [
-        {
-          type: "text",
-          text: "Describe this video frame in detail."
-        },
-        {
-          type: "image_url",
-          image_url: {
-            url: `data:image/png;base64,${frameBase64}`
+      let duration = 0;
+
+      try {
+        duration = await getMediaDuration(videoPath);
+
+        console.log(
+          "🎬 Video Duration:",
+          duration,
+          "seconds"
+        );
+      } catch (durationError) {
+        console.log(
+          "⚠️ Could not get video duration:",
+          durationError.message
+        );
+      }
+
+      // ==========================================
+      // 2. EXTRACT VIDEO FRAME
+      // ==========================================
+
+      const frameName =
+        `video-frame-${Date.now()}.png`;
+
+      console.log(
+        "📸 Extracting frame:",
+        frameName
+      );
+
+      await extractFrame(
+        videoPath,
+        frameName
+      );
+
+      const framePath =
+        `uploads/${frameName}`;
+
+      const frameUrl =
+        `http://localhost:5000/uploads/${frameName}`;
+
+      console.log(
+        "📸 Frame created:",
+        framePath
+      );
+
+      // ==========================================
+      // 3. READ FRAME
+      // ==========================================
+
+      const frameBase64 =
+        fs.readFileSync(
+          framePath,
+          {
+            encoding: "base64",
           }
+        );
+
+      // ==========================================
+      // 4. EXTRACT AUDIO FROM VIDEO
+      // ==========================================
+
+      const audioName =
+        `video-audio-${Date.now()}.mp3`;
+
+      const audioPath =
+        `uploads/${audioName}`;
+
+      console.log(
+        "🎤 Extracting audio:",
+        audioPath
+      );
+
+      await new Promise(
+        (resolve, reject) => {
+
+          const ffmpeg =
+            spawn("ffmpeg", [
+              "-y",
+              "-i",
+              videoPath,
+              "-vn",
+              "-acodec",
+              "libmp3lame",
+              "-q:a",
+              "4",
+              audioPath,
+            ]);
+
+          ffmpeg.stdout.on(
+            "data",
+            (data) => {
+              console.log(
+                "FFmpeg:",
+                data.toString()
+              );
+            }
+          );
+
+          ffmpeg.stderr.on(
+            "data",
+            (data) => {
+              console.log(
+                "FFmpeg:",
+                data.toString()
+              );
+            }
+          );
+
+          ffmpeg.on(
+            "close",
+            (code) => {
+
+              if (code === 0) {
+                resolve();
+              } else {
+                reject(
+                  new Error(
+                    `FFmpeg exited with code ${code}`
+                  )
+                );
+              }
+
+            }
+          );
+
+          ffmpeg.on(
+            "error",
+            reject
+          );
+
         }
-      ]
-    }
-  ]
-});
+      );
 
-const summary =
-  response.choices[0].message.content;
-const analysis = summary;
+      console.log(
+        "🎤 Audio extraction completed"
+      );
 
+      // ==========================================
+      // 5. TRANSCRIBE VIDEO AUDIO
+      // ==========================================
 
-  "Review this AI-generated report before making important decisions.";
-if (
-  req.body.type &&
-  ["pdf", "docx", "xlsx", "csv", "pptx", "html", "md", "txt", "json", "xml", "rtf", "odt"].includes(req.body.type)
-) {
+      let transcript =
+        "No spoken audio detected.";
 
-  const file =
-  await generatePDF({
-    type: req.body.type,
-    summary,
-    title: "AI Analysis Report"
-  });
+      try {
 
-  return res.json({
-  videoUrl,
-  frameUrl,
-  summary,
-  type,
-  document: `http://localhost:5000${file}`,
-});
-}
+        if (
+          fs.existsSync(audioPath) &&
+          fs.statSync(audioPath).size > 1000
+        ) {
 
-res.json({
-  videoUrl,
-  frameUrl,
-  summary,
-});
+          console.log(
+            "📝 Sending video audio to Whisper..."
+          );
+
+          const transcription =
+            await openai.audio.transcriptions.create({
+              file:
+                fs.createReadStream(audioPath),
+
+              model:
+                "whisper-1",
+            });
+
+          transcript =
+            transcription.text ||
+            "No spoken audio detected.";
+
+          console.log(
+            "📝 VIDEO TRANSCRIPT:"
+          );
+
+          console.log(
+            transcript
+          );
+
+        } else {
+
+          console.log(
+            "⚠️ No usable audio found in video."
+          );
+
+        }
+
+      } catch (transcriptionError) {
+
+        console.log(
+          "⚠️ Video transcription failed:",
+          transcriptionError.message
+        );
+
+        transcript =
+          "Audio transcription was unavailable.";
+
+      }
+
+      // ==========================================
+      // 6. ANALYZE FRAME + TRANSCRIPT TOGETHER
+      // ==========================================
+
+      console.log(
+        "🤖 Sending video frame + transcript to AI..."
+      );
+
+      const response =
+        await openai.chat.completions.create({
+
+          model:
+            "gpt-4.1",
+
+          messages: [
+
+            {
+              role: "system",
+
+              content: `
+You are Truvora AI's video analysis engine.
+
+Analyze BOTH:
+1. The supplied video frame.
+2. The supplied audio transcript.
+
+Do not invent information.
+
+Return the result in exactly this structure:
+
+🎤 Transcript
+(Transcript from the video audio)
+
+🌍 Language
+(Detected language)
+
+📋 AI Summary
+(3-5 clear sentences explaining the overall content)
+
+👁️ Visual Analysis
+(Describe the important visible objects, people, actions, environment and text)
+
+📌 Key Points
+• Point 1
+• Point 2
+• Point 3
+
+😊 Sentiment
+(Positive, Negative, Neutral or Mixed)
+
+🎯 Action Items
+(If there are no action items, write "None.")
+
+If the video has no understandable speech, clearly say:
+"No spoken audio detected."
+
+Only describe what can reasonably be determined from the provided frame and transcript.
+              `,
+
+            },
+
+            {
+              role: "user",
+
+              content: [
+
+                {
+                  type: "text",
+
+                  text:
+`Analyze this video.
+
+Video duration:
+${duration} seconds
+
+Audio transcript:
+${transcript}
+
+Also analyze the supplied video frame visually.`
+                },
+
+                {
+                  type: "image_url",
+
+                  image_url: {
+
+                    url:
+                      `data:image/png;base64,${frameBase64}`
+
+                  }
+
+                }
+
+              ]
+
+            }
+
+          ]
+
+        });
+
+      const summary =
+        response.choices[0].message.content;
+
+      console.log(
+        "✅ VIDEO AI ANALYSIS COMPLETED"
+      );
+
+      // ==========================================
+      // 7. DOCUMENT GENERATION
+      // ==========================================
+
+      if (
+        req.body.type &&
+        [
+          "pdf",
+          "docx",
+          "xlsx",
+          "pptx",
+          "html",
+          "md",
+          "txt",
+          "json",
+          "xml",
+          "rtf"
+        ].includes(req.body.type)
+      ) {
+
+        const file =
+          await generatePDF({
+            type:
+              req.body.type,
+
+            summary,
+
+            title:
+              "Truvora Video Analysis Report"
+          });
+
+        return res.json({
+
+          videoUrl,
+
+          frameUrl,
+
+          summary,
+
+          type:
+            req.body.type,
+
+          document:
+            `http://localhost:5000${file}`,
+
+        });
+
+      }
+
+      // ==========================================
+      // 8. FINAL RESPONSE
+      // ==========================================
+
+      res.json({
+
+        videoUrl,
+
+        frameUrl,
+
+        duration,
+
+        transcript,
+
+        summary,
+
+      });
 
     } catch (error) {
 
-      console.log(error);
+      console.error(
+        "❌ VIDEO ANALYSIS ERROR:",
+        error
+      );
 
       res.status(500).json({
-        error: "Video upload failed"
+
+        error:
+          "Video analysis failed",
+
+        details:
+          error.message,
+
       });
 
     }
 
   }
-
 );
 
 app.post(
@@ -804,8 +1780,18 @@ let {
   web,
   agentMode,
   imageUrl,
-  language,
+  imageUrls,
+  language
 } = req.body;
+
+imageUrl =
+  imageUrl ||
+  (Array.isArray(imageUrls)
+    ? imageUrls.find(Boolean)
+    : null);
+
+console.log("🖼️ NORMALIZED IMAGE URL:", imageUrl);
+console.log("🖼️ IMAGE URL RECEIVED:", imageUrl);
 const userId = "default-user";
 const memory = getMemory(userId);
 const projectMemory = memory.projects || {};
@@ -840,7 +1826,7 @@ console.log("AGENT TASKS:", agentTasks);
 // AUTOMATIC AGENT TASK EXECUTION
 // ==========================================
 
-if (agentTasks.length > 0) {
+if (agentMode && agentTasks.length > 0) {
   console.log("🤖 AUTOMATIC AGENT MODE");
   console.log("🤖 TASKS:", agentTasks);
 
@@ -849,16 +1835,17 @@ if (agentTasks.length > 0) {
   for (const task of agentTasks) {
     try {
       const reportId = Date.now().toString();
-      const outputPath = `./uploads/${reportId}.${task}`;
+      const extension = task === "image" ? "png" : task;
+const outputPath = `./uploads/${reportId}.${extension}`;
 
       console.log("🤖 EXECUTING:", task);
 
 
 
-const generatedContent = await askTruvoraAgent(
-  message,
-  task
-);
+const generatedContent =
+  task === "image"
+    ? `Create a high-quality photorealistic image based on this request: ${message}`
+    : await askTruvoraAgent(message, task);
 
 console.log("🤖 GENERATED CONTENT:");
 console.log(generatedContent);
@@ -909,13 +1896,19 @@ console.log(generatedContent);
   agentMode: true,
   tasks: agentTasks,
   documents: successful,
+
+  images: successful
+    .filter(item => item.type === "image")
+    .map(item => item.document),
+
   reply:
     successful.length > 0
       ? `✅ ${successful.map((item) => item.type.toUpperCase()).join(", ")} created successfully.\n\n${successful.map((item) => item.summary || "").join("\n\n")}`
       : "❌ Agent could not create the requested file.",
+
   sources: [],
 });
-}
+  }
 const analysis = await analyzeQuestion(message, openai);
 
 console.log("QUESTION ANALYSIS:", analysis);
@@ -1056,9 +2049,65 @@ const imageWords = [
   "thumbnail"
 ];
 
-const wantsImage = imageWords.some((word) =>
-  lowerMessage.includes(word)
+const wantsImage =
+  !imageUrl &&
+  imageWords.some((word) =>
+    lowerMessage.includes(word)
+  );
+  const hasUploadedImage = Boolean(imageUrl);
+
+console.log("🖼️ UPLOADED IMAGE:", hasUploadedImage);
+console.log("🖼️ IMAGE URL:", imageUrl);
+let imageDataUrl = null;
+
+if (hasUploadedImage) {
+  try {
+    const imagePath = path.join(
+      process.cwd(),
+      "uploads",
+      path.basename(
+  decodeURIComponent(
+  imageUrl.startsWith("http")
+    ? new URL(imageUrl).pathname
+    : imageUrl
+)
+)
+    );
+
+    const imageBuffer = fs.readFileSync(imagePath);
+console.log("🖼️ IMAGE FILE SIZE:", imageBuffer.length);
+console.log("🖼️ IMAGE EXTENSION:", path.extname(imagePath));
+console.log(
+  "🖼️ IMAGE HEADER:",
+  imageBuffer.subarray(0, 12).toString("hex")
 );
+    const ext = path.extname(imagePath).toLowerCase();
+
+    const mimeTypes = {
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".png": "image/png",
+      ".webp": "image/webp",
+      ".gif": "image/gif",
+    };
+
+    const mimeType = mimeTypes[ext] || "image/png";
+
+    imageDataUrl =
+      `data:${mimeType};base64,${imageBuffer.toString("base64")}`;
+
+    console.log(
+      "🖼️ IMAGE CONVERTED TO BASE64:",
+      imageDataUrl.length
+    );
+
+  } catch (error) {
+    console.error(
+      "❌ IMAGE CONVERSION ERROR:",
+      error
+    );
+  }
+}
 /* DOCUMENT GENERATION */
 
 const wantsPdf =
@@ -1421,6 +2470,137 @@ console.log(userContent);
 /* IMAGE REQUEST */
 console.log("IMAGE DETECTION:", wantsImage);
 console.log("USER MESSAGE:", lowerMessage);
+/* IMAGE EDITING */
+
+const editWords = [
+  "edit",
+  "editing",
+  "modify",
+  "change",
+  "add",
+  "remove",
+  "replace",
+  "combine",
+  "merge",
+  "put me",
+  "add my photo",
+  "add my picture",
+  "with this picture",
+  "with this image",
+  "background",
+  "remove background"
+];
+
+const wantsImageEdit =
+  hasUploadedImage &&
+  editWords.some((word) =>
+    lowerMessage.includes(word)
+  );
+
+console.log("🖌️ IMAGE EDIT DETECTION:", wantsImageEdit);
+
+if (wantsImageEdit) {
+  try {
+    const imagePath = path.join(
+      process.cwd(),
+      "uploads",
+      path.basename(
+        decodeURIComponent(
+          imageUrl.startsWith("http")
+  ? new URL(imageUrl).pathname
+  : imageUrl
+        )
+      )
+    );
+
+    console.log("🖌️ EDIT IMAGE PATH:", imagePath);
+
+    const imageBuffer = fs.readFileSync(imagePath);
+
+const ext = path.extname(imagePath).toLowerCase();
+
+const mimeTypes = {
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".webp": "image/webp",
+};
+
+const mimeType = mimeTypes[ext];
+
+if (!mimeType) {
+  throw new Error(`Unsupported image format: ${ext}`);
+}
+
+console.log("🖌️ IMAGE MIME TYPE:", mimeType);
+
+const imageFile = await toFile(
+  imageBuffer,
+  path.basename(imagePath),
+  {
+    type: mimeType,
+  }
+);
+
+const editedImage = await openai.images.edit({
+  model: "gpt-image-2",
+  image: imageFile,
+  prompt: message,
+  size: "1024x1024",
+});
+
+    const base64 =
+      editedImage.data?.[0]?.b64_json;
+
+    if (!base64) {
+      throw new Error(
+        "No edited image returned by OpenAI."
+      );
+    }
+
+    const buffer = Buffer.from(
+      base64,
+      "base64"
+    );
+
+    const fileName =
+      `truvora-edited-${Date.now()}.png`;
+
+    const outputPath =
+      path.join(
+        "uploads",
+        fileName
+      );
+
+    fs.writeFileSync(
+      outputPath,
+      buffer
+    );
+
+    console.log(
+      "✅ IMAGE EDIT CREATED:",
+      outputPath
+    );
+
+    return res.json({
+      reply: "Image edited successfully.",
+      image: `/uploads/${fileName}`
+    });
+
+  } catch (error) {
+    console.error(
+      "❌ IMAGE EDIT ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      reply:
+        "I couldn't edit the image.",
+      error:
+        error.message
+    });
+  }
+}
 if (wantsImage) {
 
   const image = await openai.images.generate({
@@ -1679,7 +2859,20 @@ JSON.stringify(memory.conversations || [])
 
   {
   role: "user",
-  content: userContent,
+  content: imageDataUrl
+    ? [
+        {
+          type: "text",
+          text: userContent,
+        },
+        {
+          type: "image_url",
+          image_url: {
+            url: imageDataUrl,
+          },
+        },
+      ]
+    : userContent,
 },
 ],
   });
@@ -2120,24 +3313,7 @@ if (type === "rtf") {
   const stats = fs.statSync(outputPath);
   console.log("RTF SIZE:", stats.size, "bytes");
 }
-if (type === "odt") {
-  const odtData = await generateODT({
-    reportId,
-    title: "AI Analysis Report",
-    summary,
-    analysis: summary,
-    recommendations,
-    sources,
-  });
 
-  fs.writeFileSync(outputPath, odtData, "utf8");
-
-  console.log("ODT CREATED:", outputPath);
-  console.log("FILE EXISTS:", fs.existsSync(outputPath));
-
-  const stats = fs.statSync(outputPath);
-  console.log("ODT SIZE:", stats.size, "bytes");
-}
 return res.json({
   success: true,
   document: `/uploads/${reportId}.${type}`,

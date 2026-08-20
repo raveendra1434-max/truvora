@@ -1,3 +1,10 @@
+import OpenAI from "openai";
+import fs from "fs";
+import "dotenv/config";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 async function executeAgentTask({
   type,
   summary,
@@ -114,22 +121,25 @@ async function executeAgentTask({
       break;
     }
 
-    case "odt": {
-      const data = await generateODT({
-        reportId,
-        title: "AI Analysis Report",
-        summary,
-        analysis: summary,
-        recommendations,
-        sources,
-      });
+case "image": {
+  const image = await openai.images.generate({
+    model: "gpt-image-1",
+    prompt: summary,
+    size: "1024x1024",
+  });
 
-      const fs = await import("fs");
+  const base64 = image.data?.[0]?.b64_json;
 
-      fs.writeFileSync(outputPath, data, "utf8");
+  if (!base64) {
+    throw new Error("Image generation returned no image data");
+  }
 
-      break;
-    }
+  const buffer = Buffer.from(base64, "base64");
+
+  fs.writeFileSync(outputPath, buffer);
+
+  break;
+}
 
     default:
       throw new Error(`Unsupported agent task: ${type}`);
@@ -138,7 +148,7 @@ async function executeAgentTask({
   return {
     success: true,
     type,
-    document: `/uploads/${reportId}.${type}`,
+    document: `/uploads/${reportId}.${type === "image" ? "png" : type}`,
   };
 }
 

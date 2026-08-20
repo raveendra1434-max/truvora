@@ -83,20 +83,13 @@ function detectAgentTasks(prompt) {
     tasks.push("rtf");
   }
 
-  // ODT
-  if (
-    /\b(odt|open document)\b/.test(text) &&
-    /\b(create|make|generate|prepare|export|download|build)\b/.test(text)
-  ) {
-    tasks.push("odt");
-  }
   // Image generation
-  if (
-    /\b(create|make|generate|draw|design|render)\b/.test(text) &&
-    /\b(image|picture|photo|illustration|logo|poster|wallpaper|artwork)\b/.test(text)
-  ) {
-    tasks.push("image");
-  }
+if (
+  /\b(create|make|generate|draw|design|render|show|give|produce|build)\b/.test(text) &&
+  /\b(image|picture|photo|illustration|logo|poster|wallpaper|artwork|drawing|portrait|icon|banner|graphic)\b/.test(text)
+) {
+  tasks.push("image");
+}
   return [...new Set(tasks)];
 }
 
