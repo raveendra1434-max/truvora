@@ -303,11 +303,11 @@ setChatHistory(
           );
 
         } else {
-
-          setUser(null);
-
-          setChats([]);
-        }
+  setUser(null);
+  setLoggedIn(false);
+  setChats([]);
+  setChatHistory([]);
+}
       }
     );
 
