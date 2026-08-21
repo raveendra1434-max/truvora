@@ -224,7 +224,7 @@ const documentUploadRef = useRef(null);
 const imageUploadRef = useRef(null);
 
 const messagesEndRef = useRef(null);
-
+const audioRef = useRef(null);
 
 
   /* VOICE */
