@@ -1420,60 +1420,33 @@ document.body.removeChild(link);
   return (
     <div
       style={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        background: "#111",
+        background: "#050b1f",
         color: "#fff",
       }}
     >
-      <h1>TRUVORA LOGIN</h1>
+      <h1>TRUVORA GLOBAL AI</h1>
 
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        style={{
-          margin: "10px",
-          padding: "10px",
-          width: "250px",
-          background: "#fff",
-          color: "#000",
-        }}
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{
-          margin: "10px",
-          padding: "10px",
-          width: "250px",
-          background: "#fff",
-          color: "#000",
-        }}
-      />
+      <p style={{ marginBottom: "25px" }}>
+        Sign in to continue
+      </p>
 
       <button
-        onClick={handleLogin}
+        onClick={handleGoogleLogin}
         style={{
-          marginTop: "20px",
-          padding: "10px 30px",
+          padding: "12px 25px",
+          fontSize: "16px",
+          cursor: "pointer",
+          borderRadius: "8px",
+          border: "none",
         }}
       >
-        Login
+        🔵 Continue with Google
       </button>
-
-      {loginError && (
-        <p style={{ color: "red" }}>
-          {loginError}
-        </p>
-      )}
     </div>
   );
 }
