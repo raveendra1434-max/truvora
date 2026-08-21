@@ -1816,11 +1816,17 @@ await handleSend(
         <button
   className="new-chat"
   onClick={() => {
-    setMessages([]);
-    setInput("");
-    setPdfText("");
-    setImage(null);
-  }}
+  if (audioRef.current) {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    audioRef.current = null;
+  }
+
+  setMessages([]);
+  setInput("");
+  setPdfText("");
+  setImage(null);
+}}
 >
   <FiPlus />
   New Chat
