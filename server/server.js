@@ -3360,7 +3360,7 @@ const filename = await generateSpeech(
 );
 
   res.json({
-    audioUrl: `http://localhost:5000/uploads/${filename}`,
+    audioUrl: `https://truvora-backend.onrender.com/uploads/${filename}`,
   });
 } catch (error) {
   console.error(error);
