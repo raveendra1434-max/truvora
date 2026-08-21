@@ -54,6 +54,8 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 // pdfjsLib.GlobalWorkerOptions.workerSrc =
