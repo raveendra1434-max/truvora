@@ -362,6 +362,9 @@ const handleLogout = async () => {
   try {
     await signOut(auth);
 
+    localStorage.removeItem("truvoraLoggedIn");
+    setLoggedIn(false);
+
     setUsername("");
     setPassword("");
   } catch (error) {
