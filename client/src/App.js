@@ -373,30 +373,39 @@ const saveCurrentChat =
 
     if (!user) return;
 
-    await saveChatToCloud(
-      user.uid,
-      updatedMessages
-    );
+    const savedChatId =
+      await saveChatToCloud(
+        user.uid,
+        currentChatId,
+        updatedMessages
+      );
+
+    if (savedChatId) {
+      setCurrentChatId(savedChatId);
+    }
 
     const chats =
       await loadUserChats(
         user.uid
       );
-console.log("LOADED CHATS:");
-console.log(chats[0]);
+
+    console.log("LOADED CHATS:");
+    console.log(chats[0]);
+
     setChats(
       chats
     );
-setChatHistory(
-  chats.map(
-    (chat) => chat.messages
-  )
-);
+
+    setChatHistory(
+      chats.map(
+        (chat) => chat.messages
+      )
+    );
+
     console.log(
       "Chats Saved:",
       chats
     );
-
   };
 
 
