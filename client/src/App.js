@@ -356,11 +356,20 @@ useEffect(() => {
 
   /* LOGOUT */
 
-  const handleLogout =
-    async () => {
+const handleLogout = async () => {
+  try {
+    await signOut(auth);
 
-      await signOut(auth);
-    };
+    setLoggedIn(false);
+
+    localStorage.removeItem("truvoraLoggedIn");
+
+    setUsername("");
+    setPassword("");
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+};
 
 
 
