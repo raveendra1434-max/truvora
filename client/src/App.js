@@ -343,10 +343,13 @@ useEffect(() => {
 
       try {
 
-        await signInWithPopup(
-          auth,
-          googleProvider
-        );
+        const result = await signInWithPopup(
+  auth,
+  googleProvider
+);
+
+setLoggedIn(true);
+localStorage.setItem("truvoraLoggedIn", "true");
 
       } catch (error) {
   console.error("❌ GOOGLE LOGIN ERROR:", error);
