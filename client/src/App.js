@@ -1436,6 +1436,8 @@ document.body.removeChild(link);
           margin: "10px",
           padding: "10px",
           width: "250px",
+          background: "#fff",
+          color: "#000",
         }}
       />
 
