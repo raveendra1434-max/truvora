@@ -410,31 +410,153 @@ const saveCurrentChat =
 
 
 /* SPEAK */
+
 const speakText = async (text) => {
   try {
-    const response = await fetch("https://truvora-backend.onrender.com/tts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-  text,
-  voice: selectedVoice,
-}),
-    });
+
+    if (!text || !text.trim()) {
+      return;
+    }
+
+    /* Stop previous audio */
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+
+      if (audioRef.current.src) {
+        URL.revokeObjectURL(audioRef.current.src);
+      }
+
+      audioRef.current = null;
+    }
+
+
+    /* Generate speech */
+
+    const response = await fetch(
+      "https://truvora-backend.onrender.com/tts",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          text: text.trim(),
+          voice: selectedVoice,
+        }),
+      }
+    );
+
 
     if (!response.ok) {
-      throw new Error("TTS request failed");
+      throw new Error(
+        `TTS request failed: ${response.status}`
+      );
     }
+
 
     const data = await response.json();
 
-    const audio = new Audio(data.audioUrl);
-    audio.play();
+
+    if (!data.audioUrl) {
+      throw new Error(
+        "No audio URL returned"
+      );
+    }
+
+
+    /*
+      IMPORTANT:
+
+      Download the COMPLETE audio file first.
+
+      This prevents Render/network buffering
+      from causing cut-cut playback.
+    */
+
+    const audioResponse =
+      await fetch(data.audioUrl);
+
+
+    if (!audioResponse.ok) {
+      throw new Error(
+        "Audio file download failed"
+      );
+    }
+
+
+    const audioBlob =
+      await audioResponse.blob();
+
+
+    /*
+      Convert downloaded MP3 into
+      a local browser object URL.
+    */
+
+    const audioUrl =
+      URL.createObjectURL(audioBlob);
+
+
+    const audio =
+      new Audio(audioUrl);
+
+
+    audioRef.current = audio;
+
+
+    /*
+      Clean up memory after playback.
+    */
+
+    audio.onended = () => {
+
+      URL.revokeObjectURL(audioUrl);
+
+      if (audioRef.current === audio) {
+        audioRef.current = null;
+      }
+
+    };
+
+
+    audio.onerror = () => {
+
+      console.error(
+        "❌ AUDIO PLAYBACK ERROR"
+      );
+
+      URL.revokeObjectURL(audioUrl);
+
+      if (audioRef.current === audio) {
+        audioRef.current = null;
+      }
+
+    };
+
+
+    /*
+      Start only after the COMPLETE
+      audio file has been downloaded.
+    */
+
+    await audio.play();
+
 
   } catch (error) {
-    console.error("TTS Error:", error);
-    alert("Voice generation failed.");
+
+    console.error(
+      "❌ TTS Error:",
+      error
+    );
+
+    alert(
+      "Voice generation failed."
+    );
+
   }
 };
 
