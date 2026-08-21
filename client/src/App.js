@@ -125,9 +125,7 @@ function App() {
 const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
 const [loginError, setLoginError] = useState("");
-  const [loggedIn, setLoggedIn] = useState(
-  localStorage.getItem("truvoraLoggedIn") === "true"
-);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [messages,
     setMessages] =
     useState([]);
