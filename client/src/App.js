@@ -1940,16 +1940,11 @@ setImage(restoredImage);
           ) : (
 
             <div
-              className="logout"
-
-              onClick={
-                handleGoogleLogin
-              }
-            >
-
-              Login
-
-            </div>
+  className="logout"
+  onClick={handleLogout}
+>
+  Logout
+</div>
           )}
         </div>
 
