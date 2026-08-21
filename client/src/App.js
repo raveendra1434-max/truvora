@@ -349,9 +349,9 @@ useEffect(() => {
         );
 
       } catch (error) {
-
-        console.log(error);
-      }
+  console.error("❌ GOOGLE LOGIN ERROR:", error);
+  alert("Google login failed: " + error.message);
+}
     };
 
 
