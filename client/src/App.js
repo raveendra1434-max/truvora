@@ -283,12 +283,13 @@ useEffect(() => {
 
         if (currentUser) {
 
-          setUser(currentUser);
+  setUser(currentUser);
+  setLoggedIn(true);
 
-          const userChats =
-            await loadUserChats(
-              currentUser.uid
-            );
+  const userChats =
+    await loadUserChats(
+      currentUser.uid
+    );
 
           setChats(userChats);
 setChatHistory(
