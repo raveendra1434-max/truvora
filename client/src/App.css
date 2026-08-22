@@ -1,42 +1,43 @@
 /* =========================================================
    TRUVORA GLOBAL AI
-   APP.CSS — PART 1/4
-   Clean • Spacious • Enterprise
-   ========================================================= */
-
-
-/* =========================================================
-   ROOT
+   APP.CSS — PART 1
+   Clean enterprise UI
    ========================================================= */
 
 :root {
 
-  --truvora-primary: #1565c0;
-  --truvora-primary-dark: #0d47a1;
-  --truvora-accent: #29b6f6;
+  --truvora-primary:
+    #1565c0;
 
-  --truvora-bg: #07111f;
-  --truvora-bg-secondary: #0a1626;
+  --truvora-primary-dark:
+    #0d47a1;
 
-  --truvora-surface: #0f1d30;
-  --truvora-surface-2: #12243a;
+  --truvora-accent:
+    #29b6f6;
 
-  --truvora-text: #f8fafc;
-  --truvora-text-soft: #dbe7f5;
-  --truvora-muted: #8da1b7;
+  --truvora-bg:
+    #07111f;
+
+  --truvora-sidebar:
+    #0a1626;
+
+  --truvora-surface:
+    #0f1d30;
+
+  --truvora-surface-light:
+    #14253a;
 
   --truvora-border:
-    rgba(148, 163, 184, 0.15);
+    rgba(148, 163, 184, 0.14);
 
-  --truvora-border-blue:
-    rgba(41, 182, 246, 0.25);
+  --truvora-text:
+    #e7f0fa;
 
-  --truvora-radius: 16px;
+  --truvora-muted:
+    #71869d;
 
-  --truvora-sidebar-width: 280px;
-
-  --truvora-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.28);
+  --truvora-success:
+    #4ade80;
 
 }
 
@@ -45,10 +46,11 @@
    RESET
    ========================================================= */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+* {
+
+  box-sizing:
+    border-box;
+
 }
 
 
@@ -56,52 +58,46 @@ html,
 body,
 #root {
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  margin: 0;
-  padding: 0;
+  height:
+    100%;
+
+  margin:
+    0;
+
+  padding:
+    0;
 
 }
 
 
 html {
 
-  background:
-    var(--truvora-bg);
+  scroll-behavior:
+    smooth;
 
 }
 
 
 body {
 
-  overflow: hidden;
+  background:
+    var(--truvora-bg);
 
   color:
     var(--truvora-text);
 
-  background:
-    radial-gradient(
-      circle at 50% -15%,
-      rgba(21, 101, 192, 0.16),
-      transparent 45%
-    ),
-    var(--truvora-bg);
-
   font-family:
     Inter,
-    ui-sans-serif,
-    system-ui,
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
 
-  -webkit-font-smoothing:
-    antialiased;
-
-  text-rendering:
-    optimizeLegibility;
+  overflow:
+    hidden;
 
 }
 
@@ -111,15 +107,16 @@ input,
 textarea,
 select {
 
-  font: inherit;
+  font-family:
+    inherit;
 
 }
 
 
 button {
 
-  -webkit-tap-highlight-color:
-    transparent;
+  border:
+    0;
 
 }
 
@@ -131,7 +128,7 @@ select:focus-visible {
 
   outline:
     2px solid
-    rgba(41, 182, 246, 0.65);
+    rgba(41, 182, 246, 0.55);
 
   outline-offset:
     2px;
@@ -139,490 +136,37 @@ select:focus-visible {
 }
 
 
-img {
-
-  max-width: 100%;
-
-}
-
-
 /* =========================================================
-   APP
+   MAIN APP
    ========================================================= */
 
 .truvora-app {
 
-  width: 100%;
-  height: 100dvh;
-
-  min-height: 100vh;
-
-  display: flex;
-
-  overflow: hidden;
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(21, 101, 192, 0.07),
-      transparent 45%
-    ),
-    var(--truvora-bg);
-
-}
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-.truvora-login-screen {
-
-  width: 100%;
-  height: 100dvh;
-
-  min-height: 100vh;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 24px;
-
-  background:
-    radial-gradient(
-      circle at 50% 15%,
-      rgba(21, 101, 192, 0.20),
-      transparent 45%
-    ),
-    var(--truvora-bg);
-
-}
-
-
-.truvora-login-card {
-
-  width:
-    min(440px, 100%);
-
-  padding:
-    38px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.16);
-
-  border-radius:
-    24px;
-
-  background:
-    rgba(15, 29, 48, 0.96);
-
-  box-shadow:
-    0 30px 90px
-    rgba(0, 0, 0, 0.45);
-
-  backdrop-filter:
-    blur(20px);
-
-  -webkit-backdrop-filter:
-    blur(20px);
-
-}
-
-
-.truvora-logo {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-
-}
-
-
-.truvora-logo-symbol {
-
-  width: 48px;
-  height: 48px;
-
-  flex:
-    0 0 48px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius:
-    14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--truvora-primary),
-      var(--truvora-accent)
-    );
-
-  color:
-    #ffffff;
-
-  font-size:
-    21px;
-
-  font-weight:
-    800;
-
-  box-shadow:
-    0 10px 28px
-    rgba(21, 101, 192, 0.30);
-
-}
-
-
-.truvora-logo-text {
-
-  min-width: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-}
-
-
-.truvora-logo-text strong {
-
-  color:
-    #ffffff;
-
-  font-size:
-    20px;
-
-  line-height:
-    1.15;
-
-  letter-spacing:
-    -0.02em;
-
-}
-
-
-.truvora-logo-text span {
-
-  margin-top:
-    4px;
-
-  color:
-    var(--truvora-muted);
-
-  font-size:
-    9px;
-
-  letter-spacing:
-    0.07em;
-
-}
-
-
-.truvora-login-content {
-
-  margin-top:
-    42px;
-
-  text-align:
-    center;
-
-}
-
-
-.truvora-login-content h1 {
-
-  margin:
-    0;
-
-  color:
-    #ffffff;
-
-  font-size:
-    29px;
-
-  line-height:
-    1.2;
-
-  letter-spacing:
-    -0.03em;
-
-}
-
-
-.truvora-login-content p {
-
-  max-width:
-    370px;
-
-  margin:
-    12px auto 25px;
-
-  color:
-    var(--truvora-muted);
-
-  font-size:
-    14px;
-
-  line-height:
-    1.65;
-
-}
-
-
-.google-login-button,
-.email-login-button {
+  display:
+    flex;
 
   width:
     100%;
-
-  min-height:
-    48px;
-
-  border:
-    0;
-
-  border-radius:
-    12px;
-
-  color:
-    #ffffff;
-
-  font-weight:
-    700;
-
-  cursor:
-    pointer;
-
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    opacity 0.18s ease;
-
-}
-
-
-.google-login-button {
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--truvora-primary),
-      var(--truvora-accent)
-    );
-
-  box-shadow:
-    0 9px 26px
-    rgba(21, 101, 192, 0.28);
-
-}
-
-
-.email-login-button {
-
-  margin-top:
-    10px;
-
-  background:
-    var(--truvora-primary);
-
-}
-
-
-.google-login-button:hover,
-.email-login-button:hover {
-
-  transform:
-    translateY(-1px);
-
-  box-shadow:
-    0 12px 30px
-    rgba(21, 101, 192, 0.35);
-
-}
-
-
-.login-divider {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  margin:
-    22px 0;
-
-  color:
-    #61778e;
-
-  font-size:
-    11px;
-
-}
-
-
-.login-divider::before,
-.login-divider::after {
-
-  content:
-    "";
-
-  flex:
-    1;
-
-  height:
-    1px;
-
-  background:
-    rgba(148, 163, 184, 0.13);
-
-}
-
-
-.login-input {
-
-  width:
-    100%;
-
-  height:
-    46px;
-
-  margin-bottom:
-    10px;
-
-  padding:
-    0 13px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.15);
-
-  border-radius:
-    11px;
-
-  outline:
-    none;
-
-  background:
-    rgba(7, 17, 31, 0.72);
-
-  color:
-    #ffffff;
-
-  font-size:
-    13px;
-
-}
-
-
-.login-input::placeholder {
-
-  color:
-    #657b91;
-
-}
-
-
-.login-input:focus {
-
-  border-color:
-    rgba(41, 182, 246, 0.40);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(41, 182, 246, 0.06);
-
-}
-
-
-.login-error {
-
-  margin:
-    4px 0 10px;
-
-  color:
-    #ff8f8f;
-
-  font-size:
-    11px;
-
-  line-height:
-    1.5;
-
-}
-
-
-.signup-link-button {
-
-  width:
-    100%;
-
-  margin-top:
-    12px;
-
-  padding:
-    9px;
-
-  border:
-    0;
-
-  background:
-    transparent;
-
-  color:
-    #65caff;
-
-  font-size:
-    12px;
-
-  cursor:
-    pointer;
-
-}
-
-
-.truvora-login-footer {
-
-  margin-top:
-    28px;
-
-  color:
-    #536a82;
-
-  font-size:
-    10px;
-
-  text-align:
-    center;
-
-}
-
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.truvora-sidebar {
-
-  width:
-    var(--truvora-sidebar-width);
-
-  min-width:
-    var(--truvora-sidebar-width);
 
   height:
     100dvh;
+
+  min-height:
+    100vh;
+
+  background:
+    var(--truvora-bg);
+
+  overflow:
+    hidden;
+
+}
+
+
+.truvora-main {
+
+  position:
+    relative;
 
   display:
     flex;
@@ -630,33 +174,31 @@ img {
   flex-direction:
     column;
 
-  padding:
-    18px 14px;
+  flex:
+    1;
+
+  min-width:
+    0;
+
+  height:
+    100%;
 
   background:
-    linear-gradient(
-      180deg,
-      #091525 0%,
-      #07111f 100%
-    );
-
-  border-right:
-    1px solid
-    var(--truvora-border);
-
-  overflow:
-    hidden;
-
-  z-index:
-    100;
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(21, 101, 192, 0.10),
+      transparent 38%
+    ),
+    var(--truvora-bg);
 
 }
 
 
-.sidebar-brand {
+/* =========================================================
+   LOGO
+   ========================================================= */
 
-  min-height:
-    52px;
+.truvora-logo {
 
   display:
     flex;
@@ -665,24 +207,21 @@ img {
     center;
 
   gap:
-    11px;
+    10px;
 
-  padding:
-    3px 8px 17px;
+  min-width:
+    0;
 
 }
 
 
-.sidebar-brand-symbol {
+.truvora-logo-symbol {
 
   width:
     40px;
 
   height:
     40px;
-
-  flex:
-    0 0 40px;
 
   display:
     flex;
@@ -693,14 +232,17 @@ img {
   justify-content:
     center;
 
+  flex:
+    0 0 40px;
+
   border-radius:
     12px;
 
   background:
     linear-gradient(
-      135deg,
+      145deg,
       var(--truvora-primary),
-      var(--truvora-accent)
+      var(--truvora-primary-dark)
     );
 
   color:
@@ -712,13 +254,14 @@ img {
   font-weight:
     800;
 
+  box-shadow:
+    0 7px 22px
+    rgba(21, 101, 192, 0.22);
+
 }
 
 
-.sidebar-brand-text {
-
-  min-width:
-    0;
+.truvora-logo-text {
 
   display:
     flex;
@@ -726,16 +269,25 @@ img {
   flex-direction:
     column;
 
+  min-width:
+    0;
+
 }
 
 
-.sidebar-brand-text strong {
+.truvora-logo-text strong {
 
   color:
     #ffffff;
 
   font-size:
-    17px;
+    15px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.5px;
 
   line-height:
     1.15;
@@ -743,19 +295,82 @@ img {
 }
 
 
-.sidebar-brand-text span {
+.truvora-logo-text span {
 
   margin-top:
     3px;
 
   color:
-    var(--truvora-muted);
+    var(--truvora-accent);
 
   font-size:
-    9px;
+    8px;
+
+  font-weight:
+    700;
 
   letter-spacing:
-    0.06em;
+    1.5px;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.truvora-sidebar {
+
+  position:
+    relative;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  width:
+    270px;
+
+  min-width:
+    270px;
+
+  height:
+    100%;
+
+  padding:
+    17px 13px;
+
+  background:
+    var(--truvora-sidebar);
+
+  border-right:
+    1px solid
+    var(--truvora-border);
+
+  z-index:
+    1200;
+
+}
+
+
+.sidebar-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  min-height:
+    45px;
+
+  margin-bottom:
+    18px;
 
 }
 
@@ -765,32 +380,26 @@ img {
   display:
     none;
 
-  width:
-    36px;
-
-  height:
-    36px;
-
-  margin-left:
-    auto;
-
   align-items:
     center;
 
   justify-content:
     center;
 
-  border:
-    1px solid transparent;
+  width:
+    32px;
+
+  height:
+    32px;
 
   border-radius:
-    10px;
+    9px;
 
   background:
-    transparent;
+    rgba(255, 255, 255, 0.05);
 
   color:
-    #9eb1c7;
+    #8ea2b7;
 
   cursor:
     pointer;
@@ -801,28 +410,7 @@ img {
 }
 
 
-.sidebar-mobile-close:hover {
-
-  background:
-    rgba(255, 255, 255, 0.06);
-
-  color:
-    #ffffff;
-
-}
-
-
-/* =========================================================
-   NEW CHAT
-   ========================================================= */
-
 .new-chat-button {
-
-  width:
-    100%;
-
-  min-height:
-    46px;
 
   display:
     flex;
@@ -834,102 +422,60 @@ img {
     center;
 
   gap:
-    8px;
+    9px;
 
-  margin:
-    0 0 16px;
+  width:
+    100%;
+
+  min-height:
+    42px;
 
   padding:
-    11px 14px;
+    0 13px;
 
   border:
     1px solid
-    rgba(41, 182, 246, 0.23);
+    rgba(41, 182, 246, 0.18);
 
   border-radius:
-    12px;
+    10px;
 
   background:
-    linear-gradient(
-      135deg,
-      rgba(21, 101, 192, 0.24),
-      rgba(41, 182, 246, 0.07)
-    );
+    rgba(21, 101, 192, 0.14);
 
   color:
-    #eaf6ff;
-
-  font-size:
-    13px;
-
-  font-weight:
-    650;
+    #dceeff;
 
   cursor:
     pointer;
 
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
   transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s ease;
+    0.18s ease;
 
 }
 
 
 .new-chat-button:hover {
 
-  transform:
-    translateY(-1px);
-
   background:
-    linear-gradient(
-      135deg,
-      rgba(21, 101, 192, 0.32),
-      rgba(41, 182, 246, 0.12)
-    );
+    rgba(21, 101, 192, 0.24);
 
   border-color:
-    rgba(41, 182, 246, 0.38);
+    rgba(41, 182, 246, 0.32);
 
 }
 
 
-/* =========================================================
-   SIDEBAR SEARCH
-   ========================================================= */
-
 .sidebar-search {
 
-  height:
-    40px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  padding:
-    0 11px;
-
-  margin-bottom:
-    17px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.14);
-
-  border-radius:
-    10px;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #7289a1;
+  margin:
+    13px 0 18px;
 
 }
 
@@ -939,20 +485,27 @@ img {
   width:
     100%;
 
-  min-width:
-    0;
+  height:
+    37px;
+
+  padding:
+    0 11px;
 
   border:
-    0;
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    9px;
 
   outline:
-    0;
+    none;
 
   background:
-    transparent;
+    rgba(255, 255, 255, 0.025);
 
   color:
-    #ffffff;
+    #dce8f4;
 
   font-size:
     12px;
@@ -963,28 +516,15 @@ img {
 .sidebar-search input::placeholder {
 
   color:
-    #6d8299;
+    #61768c;
 
 }
 
 
-/* =========================================================
-   SIDEBAR CONTENT
-   ========================================================= */
+.sidebar-search input:focus {
 
-.sidebar-section {
-
-  flex:
-    1;
-
-  min-height:
-    0;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
+  border-color:
+    rgba(41, 182, 246, 0.38);
 
 }
 
@@ -992,19 +532,22 @@ img {
 .sidebar-section-title {
 
   padding:
-    0 9px 9px;
+    0 7px 8px;
 
   color:
-    #71869e;
+    #61768c;
 
   font-size:
     10px;
 
   font-weight:
-    750;
+    700;
+
+  text-transform:
+    uppercase;
 
   letter-spacing:
-    0.09em;
+    0.8px;
 
 }
 
@@ -1017,58 +560,60 @@ img {
   min-height:
     0;
 
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  gap:
-    3px;
-
   overflow-y:
     auto;
 
-  scrollbar-width:
-    thin;
+}
+
+
+.sidebar-empty {
+
+  padding:
+    16px 8px;
+
+  color:
+    #61768c;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.5;
 
 }
 
 
 .sidebar-chat-item {
 
-  width:
-    100%;
-
-  min-height:
-    42px;
-
   display:
     block;
 
-  padding:
-    10px 11px;
+  width:
+    100%;
 
-  border:
-    1px solid transparent;
+  margin:
+    2px 0;
+
+  padding:
+    9px 10px;
 
   border-radius:
-    10px;
+    8px;
 
   background:
     transparent;
 
   color:
-    #aebfd2;
+    #9aacc0;
 
-  font-size:
-    12px;
+  cursor:
+    pointer;
 
   text-align:
     left;
 
-  cursor:
-    pointer;
+  font-size:
+    11px;
 
   overflow:
     hidden;
@@ -1080,9 +625,7 @@ img {
     nowrap;
 
   transition:
-    background 0.16s ease,
-    color 0.16s ease,
-    border-color 0.16s ease;
+    0.15s ease;
 
 }
 
@@ -1092,41 +635,23 @@ img {
   background:
     rgba(255, 255, 255, 0.045);
 
-  border-color:
-    rgba(148, 163, 184, 0.10);
-
   color:
-    #ffffff;
+    #e1edf8;
 
 }
 
 
-.sidebar-empty {
+.sidebar-footer {
 
-  padding:
-    18px 9px;
-
-  color:
-    #627991;
-
-  font-size:
+  margin-top:
     12px;
 
-}
-
-
-/* =========================================================
-   SIDEBAR BOTTOM
-   ========================================================= */
-
-.sidebar-bottom {
-
   padding-top:
-    14px;
+    13px;
 
   border-top:
     1px solid
-    rgba(148, 163, 184, 0.09);
+    var(--truvora-border);
 
 }
 
@@ -1151,13 +676,10 @@ img {
 .sidebar-user-avatar {
 
   width:
-    34px;
+    32px;
 
   height:
-    34px;
-
-  flex:
-    0 0 34px;
+    32px;
 
   display:
     flex;
@@ -1168,39 +690,28 @@ img {
   justify-content:
     center;
 
-  overflow:
-    hidden;
+  flex:
+    0 0 32px;
 
   border-radius:
-    10px;
+    9px;
 
   background:
-    rgba(255, 255, 255, 0.07);
+    rgba(21, 101, 192, 0.22);
 
   color:
-    #a8bbcf;
+    #8edcff;
 
-}
+  font-size:
+    12px;
 
-
-.sidebar-user-avatar img {
-
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
+  font-weight:
+    800;
 
 }
 
 
 .sidebar-user-info {
-
-  min-width:
-    0;
 
   display:
     flex;
@@ -1208,13 +719,19 @@ img {
   flex-direction:
     column;
 
+  min-width:
+    0;
+
 }
 
 
 .sidebar-user-info strong {
 
-  max-width:
-    180px;
+  color:
+    #d9e6f3;
+
+  font-size:
+    11px;
 
   overflow:
     hidden;
@@ -1225,12 +742,6 @@ img {
   white-space:
     nowrap;
 
-  color:
-    #dce8f5;
-
-  font-size:
-    12px;
-
 }
 
 
@@ -1240,10 +751,19 @@ img {
     2px;
 
   color:
-    #6e849b;
+    #61768c;
 
   font-size:
-    10px;
+    9px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
 
 }
 
@@ -1254,29 +774,29 @@ img {
     100%;
 
   margin-top:
-    11px;
+    10px;
 
-  padding:
-    9px;
+  min-height:
+    33px;
 
   border:
     1px solid
-    rgba(148, 163, 184, 0.13);
+    var(--truvora-border);
 
   border-radius:
-    10px;
+    8px;
 
   background:
-    rgba(255, 255, 255, 0.035);
+    rgba(255, 255, 255, 0.025);
 
   color:
-    #aebfd2;
-
-  font-size:
-    12px;
+    #8297ad;
 
   cursor:
     pointer;
+
+  font-size:
+    10px;
 
 }
 
@@ -1284,40 +804,10 @@ img {
 .sidebar-logout:hover {
 
   background:
-    rgba(255, 255, 255, 0.065);
+    rgba(255, 255, 255, 0.05);
 
   color:
-    #ffffff;
-
-}
-
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.truvora-main {
-
-  flex:
-    1;
-
-  min-width:
-    0;
-
-  height:
-    100dvh;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  overflow:
-    hidden;
-
-  background:
-    transparent;
+    #dce7f2;
 
 }
 
@@ -1328,11 +818,8 @@ img {
 
 .truvora-topbar {
 
-  height:
-    66px;
-
-  min-height:
-    66px;
+  position:
+    relative;
 
   display:
     flex;
@@ -1343,30 +830,40 @@ img {
   justify-content:
     space-between;
 
-  padding:
-    0 28px;
+  width:
+    100%;
 
-  background:
-    rgba(7, 17, 31, 0.84);
+  height:
+    62px;
+
+  min-height:
+    62px;
+
+  padding:
+    0 20px;
 
   border-bottom:
     1px solid
     var(--truvora-border);
 
+  background:
+    rgba(7, 17, 31, 0.88);
+
   backdrop-filter:
-    blur(18px);
+    blur(16px);
 
   -webkit-backdrop-filter:
-    blur(18px);
+    blur(16px);
 
   z-index:
-    50;
+    500;
 
 }
 
 
 .topbar-left,
-.topbar-right {
+.topbar-right,
+.topbar-center {
 
   display:
     flex;
@@ -1377,96 +874,16 @@ img {
 }
 
 
-.topbar-left {
+.topbar-center {
 
-  gap:
-    12px;
+  position:
+    absolute;
 
-}
+  left:
+    50%;
 
-
-.topbar-right {
-
-  gap:
-    13px;
-
-}
-
-
-.mobile-menu-button {
-
-  display:
-    none;
-
-  width:
-    38px;
-
-  height:
-    38px;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.14);
-
-  border-radius:
-    10px;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #dbe7f5;
-
-  cursor:
-    pointer;
-
-}
-
-
-.mobile-brand {
-
-  display:
-    none;
-
-  flex-direction:
-    column;
-
-}
-
-
-.mobile-brand strong {
-
-  color:
-    #ffffff;
-
-  font-size:
-    15px;
-
-  line-height:
-    1.1;
-
-}
-
-
-.mobile-brand span {
-
-  margin-top:
-    2px;
-
-  color:
-    #70869d;
-
-  font-size:
-    8px;
-
-  letter-spacing:
-    0.05em;
+  transform:
+    translateX(-50%);
 
 }
 
@@ -1474,10 +891,13 @@ img {
 .topbar-slogan {
 
   color:
-    #71869e;
+    #667d94;
 
   font-size:
     10px;
+
+  letter-spacing:
+    0.7px;
 
 }
 
@@ -1499,31 +919,33 @@ img {
   justify-content:
     center;
 
-  overflow:
-    hidden;
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.15);
 
   border-radius:
-    10px;
+    50%;
 
   background:
-    rgba(255, 255, 255, 0.06);
+    rgba(21, 101, 192, 0.15);
 
   color:
-    #9eb1c7;
+    #8bdcff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
 
 }
 
 
-.topbar-avatar img {
+.mobile-menu-button,
+.mobile-brand {
 
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
+  display:
+    none;
 
 }
 
@@ -1547,241 +969,30 @@ img {
     hidden;
 
   padding:
-    38px
-    clamp(28px, 7vw, 110px)
-    34px;
+    35px 7vw 30px;
 
   scroll-behavior:
     smooth;
-
-  background:
-    radial-gradient(
-      circle at 50% 15%,
-      rgba(21, 101, 192, 0.055),
-      transparent 48%
-    );
-
-  scrollbar-width:
-    thin;
-
-}
-
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
-.truvora-empty-state {
-
-  width:
-    100%;
-
-  min-height:
-    100%;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    40px 24px;
-
-  text-align:
-    center;
-
-}
-
-
-.empty-logo {
-
-  margin-bottom:
-    20px;
-
-}
-
-
-.empty-logo-symbol {
-
-  width:
-    62px;
-
-  height:
-    62px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border-radius:
-    18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--truvora-primary),
-      var(--truvora-accent)
-    );
-
-  color:
-    #ffffff;
-
-  font-size:
-    27px;
-
-  font-weight:
-    800;
-
-  box-shadow:
-    0 14px 35px
-    rgba(21, 101, 192, 0.30);
-
-}
-
-
-.truvora-empty-state h1 {
-
-  margin:
-    0;
-
-  color:
-    #ffffff;
-
-  font-size:
-    clamp(26px, 3vw, 35px);
-
-  line-height:
-    1.2;
-
-  letter-spacing:
-    -0.035em;
-
-}
-
-
-.truvora-empty-state p {
-
-  max-width:
-    650px;
-
-  margin:
-    13px 0 26px;
-
-  color:
-    #8298af;
-
-  font-size:
-    14px;
-
-  line-height:
-    1.7;
-
-}
-
-
-.empty-suggestions {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  justify-content:
-    center;
-
-  gap:
-    9px;
-
-  max-width:
-    850px;
-
-}
-
-
-.empty-suggestions button {
-
-  padding:
-    11px 15px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.14);
-
-  border-radius:
-    11px;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #b8c9da;
-
-  font-size:
-    12px;
-
-  cursor:
-    pointer;
-
-  transition:
-    background 0.16s ease,
-    border-color 0.16s ease,
-    color 0.16s ease;
-
-}
-
-
-.empty-suggestions button:hover {
-
-  background:
-    rgba(21, 101, 192, 0.14);
-
-  border-color:
-    rgba(41, 182, 246, 0.22);
-
-  color:
-    #ffffff;
-
-}
-
-
-/* =========================================================
-   MESSAGE BASE
-   ========================================================= */
-
-.message-list {
-
-  width:
-    100%;
 
 }
 
 
 .truvora-message {
 
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  gap:
+    10px;
+
   width:
     100%;
 
   max-width:
-    1100px;
-
-  display:
-    flex;
-
-  gap:
-    12px;
+    1050px;
 
   margin:
     0 auto 28px;
@@ -1800,13 +1011,10 @@ img {
 .message-avatar {
 
   width:
-    36px;
+    32px;
 
   height:
-    36px;
-
-  flex:
-    0 0 36px;
+    32px;
 
   display:
     flex;
@@ -1817,44 +1025,38 @@ img {
   justify-content:
     center;
 
-  margin-top:
-    3px;
-
-  overflow:
-    hidden;
+  flex:
+    0 0 32px;
 
   border-radius:
-    11px;
+    9px;
 
   background:
     linear-gradient(
-      135deg,
+      145deg,
       var(--truvora-primary),
-      var(--truvora-accent)
+      var(--truvora-primary-dark)
     );
 
   color:
     #ffffff;
 
   font-size:
-    14px;
+    11px;
 
   font-weight:
-    750;
+    800;
 
 }
 
 
-.message-avatar img {
+.user-avatar {
 
-  width:
-    100%;
+  background:
+    rgba(255, 255, 255, 0.08);
 
-  height:
-    100%;
-
-  object-fit:
-    cover;
+  color:
+    #a7b8c9;
 
 }
 
@@ -1865,83 +1067,60 @@ img {
     0;
 
   max-width:
-    min(900px, 92%);
+    calc(100% - 43px);
 
 }
 
 
-.truvora-user-message .message-body {
+.truvora-user-message
+.message-body {
 
   max-width:
-    min(780px, 90%);
+    82%;
 
 }
 
 
 .message-text {
 
-  padding:
-    16px 18px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.14);
-
-  border-radius:
-    16px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(15, 29, 48, 0.97),
-      rgba(13, 27, 45, 0.97)
-    );
-
   color:
-    var(--truvora-text-soft);
+    #d7e2ed;
 
   font-size:
-    15px;
+    14px;
 
   line-height:
-    1.72;
+    1.75;
 
   overflow-wrap:
     anywhere;
 
-  box-shadow:
-    0 8px 28px
-    rgba(0, 0, 0, 0.14);
-
 }
 
 
-.truvora-user-message .message-text {
+.truvora-user-message
+.message-text {
+
+  padding:
+    11px 14px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.10);
+
+  border-radius:
+    13px;
 
   background:
-    linear-gradient(
-      135deg,
-      #123f72,
-      #0e3158
-    );
-
-  border-color:
-    rgba(41, 182, 246, 0.18);
-
-  color:
-    #f4f9ff;
+    rgba(255, 255, 255, 0.045);
 
 }
 
-
-/* =========================================================
-   MESSAGE MARKDOWN
-   ========================================================= */
 
 .message-text p {
 
   margin:
-    0 0 11px;
+    0 0 12px;
 
 }
 
@@ -1956,38 +1135,13 @@ img {
 
 .message-text h1,
 .message-text h2,
-.message-text h3,
-.message-text h4 {
+.message-text h3 {
+
+  margin:
+    18px 0 9px;
 
   color:
     #ffffff;
-
-  line-height:
-    1.3;
-
-}
-
-
-.message-text h1 {
-
-  font-size:
-    25px;
-
-}
-
-
-.message-text h2 {
-
-  font-size:
-    21px;
-
-}
-
-
-.message-text h3 {
-
-  font-size:
-    18px;
 
 }
 
@@ -1996,18 +1150,15 @@ img {
 .message-text ol {
 
   padding-left:
-    23px;
-
-  margin:
-    9px 0 12px;
+    22px;
 
 }
 
 
 .message-text li {
 
-  margin-bottom:
-    5px;
+  margin:
+    5px 0;
 
 }
 
@@ -2015,42 +1166,27 @@ img {
 .message-text a {
 
   color:
-    #62ceff;
-
-  text-decoration:
-    none;
+    #67d1ff;
 
 }
 
 
-.message-text a:hover {
-
-  text-decoration:
-    underline;
-
-}
-
-
-.message-text blockquote {
-
-  margin:
-    14px 0;
+.message-text code {
 
   padding:
-    10px 14px;
-
-  border-left:
-    3px solid
-    var(--truvora-accent);
+    2px 5px;
 
   border-radius:
-    0 9px 9px 0;
+    5px;
 
   background:
-    rgba(41, 182, 246, 0.045);
+    rgba(255, 255, 255, 0.07);
 
   color:
-    #a9bdd0;
+    #9edfff;
+
+  font-size:
+    0.9em;
 
 }
 
@@ -2060,11 +1196,8 @@ img {
   max-width:
     100%;
 
-  margin:
-    13px 0;
-
   padding:
-    14px;
+    13px;
 
   overflow-x:
     auto;
@@ -2074,83 +1207,24 @@ img {
     rgba(148, 163, 184, 0.10);
 
   border-radius:
-    11px;
+    9px;
 
   background:
-    #06101d;
-
-  color:
-    #dbe7f5;
+    #08121f;
 
 }
 
 
-.message-text code {
-
-  font-family:
-    "SFMono-Regular",
-    Consolas,
-    "Liberation Mono",
-    monospace;
-
-}
-
-
-.message-text table {
-
-  width:
-    100%;
-
-  margin:
-    14px 0;
-
-  border-collapse:
-    collapse;
-
-  font-size:
-    13px;
-
-}
-
-
-.message-text th,
-.message-text td {
+.message-text pre code {
 
   padding:
-    9px 10px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.14);
-
-  text-align:
-    left;
-
-}
-
-
-.message-text th {
+    0;
 
   background:
-    rgba(21, 101, 192, 0.16);
-
-  color:
-    #dbe7f5;
+    transparent;
 
 }
 
-
-.message-text td {
-
-  color:
-    #b9c9da;
-
-}
-
-
-/* =========================================================
-   PART 1/4 ENDS
-   ========================================================= */
 
 /* =========================================================
    MESSAGE ACTIONS
@@ -2165,24 +1239,24 @@ img {
     center;
 
   gap:
-    5px;
+    4px;
 
-  margin:
-    7px 3px 0;
+  margin-top:
+    8px;
 
 }
 
 
 .message-action-btn {
 
-  width:
-    31px;
+  min-width:
+    29px;
 
   height:
-    31px;
+    29px;
 
   display:
-    flex;
+    inline-flex;
 
   align-items:
     center;
@@ -2190,54 +1264,126 @@ img {
   justify-content:
     center;
 
+  padding:
+    0 7px;
+
   border:
     1px solid
     transparent;
 
   border-radius:
-    8px;
+    7px;
 
   background:
     transparent;
 
   color:
-    #71869e;
+    #61788f;
 
   cursor:
     pointer;
 
   font-size:
-    13px;
+    10px;
 
   transition:
-    background 0.16s ease,
-    color 0.16s ease,
-    border-color 0.16s ease;
+    0.15s ease;
 
 }
 
 
 .message-action-btn:hover {
 
-  background:
-    rgba(255, 255, 255, 0.05);
-
   border-color:
-    rgba(148, 163, 184, 0.12);
+    var(--truvora-border);
+
+  background:
+    rgba(255, 255, 255, 0.04);
 
   color:
-    #dbe7f5;
+    #a9bfd2;
 
 }
 
 
-.user-avatar {
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.message-image-container {
+
+  margin-top:
+    13px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    12px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+}
+
+
+.message-image {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  max-width:
+    650px;
+
+  height:
+    auto;
+
+}
+
+
+/* =========================================================
+   GENERATED DOCUMENT
+   ========================================================= */
+
+.generated-document {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  margin-top:
+    12px;
+
+  padding:
+    9px 12px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.15);
+
+  border-radius:
+    8px;
 
   background:
-    rgba(255, 255, 255, 0.08);
+    rgba(21, 101, 192, 0.10);
 
   color:
-    #a9bfd3;
+    #74d4ff;
+
+  text-decoration:
+    none;
+
+  font-size:
+    11px;
 
 }
 
@@ -2248,28 +1394,25 @@ img {
 
 .truvora-thinking {
 
-  max-width:
-    1100px;
-
   display:
     flex;
 
   align-items:
-    flex-start;
+    center;
 
   gap:
-    12px;
+    10px;
+
+  max-width:
+    1050px;
 
   margin:
-    0 auto 26px;
+    0 auto;
 
 }
 
 
 .thinking-content {
-
-  min-height:
-    36px;
 
   display:
     flex;
@@ -2281,10 +1424,10 @@ img {
     8px;
 
   color:
-    #7e95ac;
+    #71869d;
 
   font-size:
-    13px;
+    11px;
 
 }
 
@@ -2295,7 +1438,7 @@ img {
     flex;
 
   gap:
-    4px;
+    3px;
 
 }
 
@@ -2303,19 +1446,20 @@ img {
 .thinking-dots i {
 
   width:
-    5px;
+    4px;
 
   height:
-    5px;
+    4px;
 
   border-radius:
     50%;
 
   background:
-    #5c7187;
+    var(--truvora-accent);
 
   animation:
-    thinkingPulse 1.1s infinite ease-in-out;
+    thinkingPulse 1.2s
+    infinite ease-in-out;
 
 }
 
@@ -2331,7 +1475,7 @@ img {
 .thinking-dots i:nth-child(3) {
 
   animation-delay:
-    0.30s;
+    0.3s;
 
 }
 
@@ -2356,7 +1500,7 @@ img {
       1;
 
     transform:
-      translateY(-3px);
+      translateY(-2px);
 
   }
 
@@ -2364,132 +1508,42 @@ img {
 
 
 /* =========================================================
-   SOURCES
+   EMPTY STATE
    ========================================================= */
 
-.truvora-sources {
+.truvora-empty-state {
 
-  margin-top:
-    17px;
-
-  padding-top:
-    14px;
-
-  border-top:
-    1px solid
-    rgba(148, 163, 184, 0.10);
-
-}
-
-
-.sources-title {
+  min-height:
+    72%;
 
   display:
     flex;
+
+  flex-direction:
+    column;
 
   align-items:
     center;
 
-  gap:
-    7px;
-
-  margin-bottom:
-    9px;
-
-  color:
-    #a8bbcf;
-
-  font-size:
-    11px;
-
-  font-weight:
-    700;
-
-}
-
-
-.sources-list {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    7px;
-
-}
-
-
-.source-item {
-
-  min-width:
-    170px;
-
-  max-width:
-    300px;
-
-  display:
-    flex;
-
-  align-items:
+  justify-content:
     center;
-
-  gap:
-    8px;
 
   padding:
-    8px 10px;
+    35px 15px;
 
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.11);
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    inherit;
-
-  text-decoration:
-    none;
-
-  transition:
-    background 0.16s ease,
-    border-color 0.16s ease,
-    transform 0.16s ease;
+  text-align:
+    center;
 
 }
 
 
-.source-item:hover {
-
-  transform:
-    translateY(-1px);
-
-  background:
-    rgba(21, 101, 192, 0.10);
-
-  border-color:
-    rgba(41, 182, 246, 0.20);
-
-}
-
-
-.source-number {
+.empty-logo-symbol {
 
   width:
-    22px;
+    58px;
 
   height:
-    22px;
-
-  flex:
-    0 0 22px;
+    58px;
 
   display:
     flex;
@@ -2501,90 +1555,55 @@ img {
     center;
 
   border-radius:
-    7px;
+    16px;
 
   background:
-    rgba(21, 101, 192, 0.18);
+    linear-gradient(
+      145deg,
+      var(--truvora-primary),
+      var(--truvora-primary-dark)
+    );
 
   color:
-    #63c9ff;
+    #ffffff;
 
   font-size:
-    10px;
+    25px;
 
   font-weight:
     800;
 
-}
-
-
-.source-content {
-
-  min-width:
-    0;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  overflow:
-    hidden;
+  box-shadow:
+    0 14px 35px
+    rgba(21, 101, 192, 0.22);
 
 }
 
 
-.source-content strong {
+.truvora-empty-state h1 {
 
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
+  margin:
+    18px 0 7px;
 
   color:
-    #c8d7e6;
+    #f1f7fd;
 
   font-size:
-    11px;
+    28px;
+
+  font-weight:
+    700;
 
 }
 
 
-.source-content small {
+.truvora-empty-state p {
 
-  margin-top:
-    2px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
+  margin:
+    0 0 22px;
 
   color:
-    #647a91;
-
-  font-size:
-    9px;
-
-}
-
-
-.source-arrow {
-
-  margin-left:
-    auto;
-
-  color:
-    #668096;
+    #6f849a;
 
   font-size:
     12px;
@@ -2592,95 +1611,66 @@ img {
 }
 
 
-/* =========================================================
-   GENERATED IMAGE
-   ========================================================= */
-
-.message-image-container {
-
-  margin-top:
-    14px;
-
-}
-
-
-.message-image {
+.empty-suggestions {
 
   display:
-    block;
+    grid;
 
-  width:
-    auto;
-
-  max-width:
-    100%;
-
-  max-height:
-    620px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.14);
-
-  border-radius:
-    14px;
-
-  object-fit:
-    contain;
-
-  background:
-    #06101d;
-
-}
-
-
-/* =========================================================
-   GENERATED DOCUMENT
-   ========================================================= */
-
-.generated-document {
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
+  grid-template-columns:
+    repeat(2, minmax(130px, 1fr));
 
   gap:
     8px;
 
-  margin-top:
-    14px;
-
-  padding:
-    10px 13px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.18);
-
-  border-radius:
-    10px;
-
-  background:
-    rgba(21, 101, 192, 0.09);
-
-  color:
-    #65cbff;
-
-  font-size:
-    12px;
-
-  text-decoration:
-    none;
+  width:
+    min(500px, 100%);
 
 }
 
 
-.generated-document:hover {
+.empty-suggestions button {
+
+  min-height:
+    40px;
+
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    9px;
 
   background:
-    rgba(21, 101, 192, 0.16);
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #8ea2b7;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.empty-suggestions button:hover {
+
+  border-color:
+    rgba(41, 182, 246, 0.22);
+
+  background:
+    rgba(21, 101, 192, 0.08);
+
+  color:
+    #cce8f8;
 
 }
 
@@ -2695,14 +1685,7 @@ img {
     100%;
 
   padding:
-    0 clamp(20px, 6vw, 100px) 18px;
-
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(7, 17, 31, 0.94) 25%
-    );
+    0 7vw 13px;
 
 }
 
@@ -2716,7 +1699,7 @@ img {
     100%;
 
   max-width:
-    1100px;
+    1050px;
 
   margin:
     0 auto;
@@ -2726,23 +1709,44 @@ img {
 
   border:
     1px solid
-    rgba(148, 163, 184, 0.17);
+    rgba(148, 163, 184, 0.15);
 
   border-radius:
-    17px;
+    15px;
 
   background:
-    rgba(15, 29, 48, 0.96);
+    rgba(15, 29, 48, 0.94);
 
   box-shadow:
-    0 14px 50px
-    rgba(0, 0, 0, 0.28);
+    0 15px 45px
+    rgba(0, 0, 0, 0.18);
 
-  backdrop-filter:
-    blur(18px);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 
-  -webkit-backdrop-filter:
-    blur(18px);
+}
+
+
+.truvora-composer:focus-within {
+
+  border-color:
+    rgba(41, 182, 246, 0.28);
+
+  box-shadow:
+    0 18px 55px
+    rgba(0, 0, 0, 0.24);
+
+}
+
+
+.composer-drag-active {
+
+  border-color:
+    var(--truvora-accent);
+
+  background:
+    rgba(21, 101, 192, 0.12);
 
 }
 
@@ -2752,9 +1756,6 @@ img {
    ========================================================= */
 
 .composer-toolbar {
-
-  min-height:
-    42px;
 
   display:
     flex;
@@ -2769,7 +1770,7 @@ img {
     10px;
 
   padding:
-    0 2px 8px;
+    0 2px 9px;
 
 }
 
@@ -2784,32 +1785,26 @@ img {
     center;
 
   gap:
-    6px;
+    5px;
+
+  min-width:
+    0;
 
 }
 
 
 .composer-toolbar-left {
 
-  min-width:
-    0;
-
-  flex:
-    1;
-
   overflow-x:
     auto;
-
-  scrollbar-width:
-    none;
 
 }
 
 
 .composer-toolbar-left::-webkit-scrollbar {
 
-  display:
-    none;
+  height:
+    0;
 
 }
 
@@ -2823,104 +1818,14 @@ img {
 
 
 /* =========================================================
-   COMPOSER ICON BUTTON
+   COMPOSER BUTTONS
    ========================================================= */
 
-.composer-icon-button {
-
-  position:
-    relative;
-
-  width:
-    34px;
-
-  height:
-    34px;
-
-  flex:
-    0 0 34px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.11);
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #91a7bd;
-
-  cursor:
-    pointer;
-
-  font-size:
-    13px;
-
-  transition:
-    background 0.16s ease,
-    border-color 0.16s ease,
-    color 0.16s ease;
-
-}
-
-
-.composer-icon-button:hover {
-
-  background:
-    rgba(21, 101, 192, 0.12);
-
-  border-color:
-    rgba(41, 182, 246, 0.20);
-
-  color:
-    #dcecff;
-
-}
-
-
-.composer-icon-button input {
-
-  position:
-    absolute;
-
-  width:
-    1px;
-
-  height:
-    1px;
-
-  opacity:
-    0;
-
-  pointer-events:
-    none;
-
-}
-
-
-/* =========================================================
-   MODE BUTTONS
-   ========================================================= */
-
+.composer-icon-button,
 .composer-mode-button {
 
   height:
     34px;
-
-  flex:
-    0 0 auto;
 
   display:
     inline-flex;
@@ -2932,170 +1837,85 @@ img {
     center;
 
   gap:
-    6px;
-
-  padding:
-    0 10px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.11);
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #91a7bd;
-
-  font-size:
-    11px;
-
-  font-weight:
-    650;
-
-  white-space:
-    nowrap;
-
-  cursor:
-    pointer;
-
-  transition:
-    background 0.16s ease,
-    border-color 0.16s ease,
-    color 0.16s ease;
-
-}
-
-
-.composer-mode-button:hover {
-
-  background:
-    rgba(21, 101, 192, 0.12);
-
-  border-color:
-    rgba(41, 182, 246, 0.20);
-
-  color:
-    #dcecff;
-
-}
-
-
-.composer-mode-button.mode-active {
-
-  background:
-    rgba(21, 101, 192, 0.20);
-
-  border-color:
-    rgba(41, 182, 246, 0.32);
-
-  color:
-    #6bd0ff;
-
-  box-shadow:
-    0 0 0 1px
-    rgba(41, 182, 246, 0.04);
-
-}
-
-
-/* =========================================================
-   LANGUAGE SELECTOR
-   ========================================================= */
-
-.language-selector {
+    5px;
 
   flex:
     0 0 auto;
 
-}
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.10);
 
+  border-radius:
+    8px;
 
-.truvora-select__control {
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #7f95aa;
 
   cursor:
-    pointer !important;
+    pointer;
+
+  font-size:
+    11px;
+
+  transition:
+    0.15s ease;
 
 }
 
 
-.truvora-select__menu {
+.composer-icon-button {
 
-  overflow:
-    hidden !important;
+  width:
+    34px;
 
 }
 
 
-.truvora-select__menu-list {
+.composer-mode-button {
 
-  max-height:
-    260px !important;
+  padding:
+    0 9px;
+
+}
+
+
+.composer-icon-button:hover,
+.composer-mode-button:hover {
+
+  border-color:
+    rgba(41, 182, 246, 0.20);
+
+  background:
+    rgba(21, 101, 192, 0.09);
+
+  color:
+    #c4d9e9;
+
+}
+
+
+.composer-mode-button.mode-active,
+.composer-icon-button.mode-active {
+
+  border-color:
+    rgba(41, 182, 246, 0.32);
+
+  background:
+    rgba(21, 101, 192, 0.16);
+
+  color:
+    #7bd7ff;
 
 }
 
 
 /* =========================================================
-   VOICE SELECTOR
+   PART 1 END
    ========================================================= */
-
-.voice-selector {
-
-  height:
-    36px;
-
-  width:
-    112px;
-
-  padding:
-    0 9px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.13);
-
-  border-radius:
-    10px;
-
-  outline:
-    none;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #c9d8e7;
-
-  font-size:
-    11px;
-
-  cursor:
-    pointer;
-
-}
-
-
-.voice-selector:focus {
-
-  border-color:
-    rgba(41, 182, 246, 0.35);
-
-}
-
-
-.voice-selector option {
-
-  background:
-    #0f1d30;
-
-  color:
-    #ffffff;
-
-}
-
 
 /* =========================================================
    ATTACHMENT STATUS
@@ -3106,22 +1926,28 @@ img {
   display:
     flex;
 
-  flex-wrap:
-    wrap;
+  align-items:
+    center;
 
   gap:
     6px;
 
+  width:
+    100%;
+
+  margin:
+    0 0 8px;
+
   padding:
-    2px 3px 9px;
+    7px 8px;
+
+  overflow-x:
+    auto;
 
 }
 
 
 .composer-attachment-status span {
-
-  max-width:
-    260px;
 
   display:
     inline-flex;
@@ -3130,26 +1956,32 @@ img {
     center;
 
   gap:
-    6px;
+    5px;
+
+  flex:
+    0 0 auto;
+
+  max-width:
+    230px;
 
   padding:
-    6px 9px;
+    6px 8px;
 
   border:
     1px solid
-    rgba(41, 182, 246, 0.16);
+    rgba(41, 182, 246, 0.14);
 
   border-radius:
-    8px;
+    7px;
 
   background:
     rgba(21, 101, 192, 0.08);
 
   color:
-    #9fc3df;
+    #8db7d1;
 
   font-size:
-    10px;
+    9px;
 
   overflow:
     hidden;
@@ -3166,10 +1998,10 @@ img {
 .composer-attachment-status button {
 
   width:
-    18px;
+    25px;
 
   height:
-    18px;
+    25px;
 
   display:
     inline-flex;
@@ -3180,20 +2012,20 @@ img {
   justify-content:
     center;
 
-  padding:
-    0;
+  flex:
+    0 0 25px;
 
   border:
     0;
 
   border-radius:
-    50%;
+    7px;
 
   background:
-    rgba(255, 255, 255, 0.08);
+    rgba(255, 255, 255, 0.05);
 
   color:
-    #9bb0c4;
+    #8298ad;
 
   cursor:
     pointer;
@@ -3202,7 +2034,84 @@ img {
 
 
 /* =========================================================
-   INPUT CONTAINER
+   MODE / ANALYSIS STATUS
+   ========================================================= */
+
+.composer-analysis-preview {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  min-height:
+    26px;
+
+  margin:
+    0 2px 8px;
+
+  padding:
+    5px 8px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.08);
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  overflow:
+    hidden;
+
+}
+
+
+.composer-analysis-preview strong {
+
+  flex:
+    0 0 auto;
+
+  color:
+    #6bcdf5;
+
+  font-size:
+    9px;
+
+}
+
+
+.composer-analysis-preview span {
+
+  min-width:
+    0;
+
+  color:
+    #61778d;
+
+  font-size:
+    9px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+/* =========================================================
+   INPUT
    ========================================================= */
 
 .composer-input-container {
@@ -3210,19 +2119,16 @@ img {
   position:
     relative;
 
-  display:
-    flex;
-
-  align-items:
-    flex-end;
-
-  gap:
-    8px;
+  width:
+    100%;
 
 }
 
 
 .truvora-input {
+
+  display:
+    block;
 
   width:
     100%;
@@ -3231,29 +2137,28 @@ img {
     62px;
 
   max-height:
-    220px;
-
-  resize:
-    vertical;
+    190px;
 
   padding:
-    15px 58px 15px 15px;
+    13px 55px 13px 13px;
 
   border:
-    1px solid
-    rgba(148, 163, 184, 0.10);
-
-  border-radius:
-    12px;
+    0;
 
   outline:
     none;
 
+  resize:
+    none;
+
+  border-radius:
+    10px;
+
   background:
-    rgba(7, 17, 31, 0.66);
+    rgba(255, 255, 255, 0.025);
 
   color:
-    #f4f8fc;
+    #e1ebf5;
 
   font-size:
     14px;
@@ -3267,19 +2172,18 @@ img {
 .truvora-input::placeholder {
 
   color:
-    #647b92;
+    #61768c;
 
 }
 
 
-.truvora-input:focus {
+.truvora-input:disabled {
 
-  border-color:
-    rgba(41, 182, 246, 0.23);
+  opacity:
+    0.65;
 
-  box-shadow:
-    0 0 0 3px
-    rgba(41, 182, 246, 0.035);
+  cursor:
+    not-allowed;
 
 }
 
@@ -3294,16 +2198,16 @@ img {
     absolute;
 
   right:
-    9px;
+    8px;
 
   bottom:
-    9px;
+    8px;
 
   width:
-    40px;
+    39px;
 
   height:
-    40px;
+    39px;
 
   display:
     flex;
@@ -3318,14 +2222,10 @@ img {
     0;
 
   border-radius:
-    11px;
+    10px;
 
   background:
-    linear-gradient(
-      135deg,
-      var(--truvora-primary),
-      var(--truvora-accent)
-    );
+    var(--truvora-primary);
 
   color:
     #ffffff;
@@ -3333,18 +2233,23 @@ img {
   cursor:
     pointer;
 
+  font-size:
+    15px;
+
   box-shadow:
-    0 8px 20px
-    rgba(21, 101, 192, 0.25);
+    0 5px 16px
+    rgba(21, 101, 192, 0.22);
 
   transition:
-    transform 0.16s ease,
-    opacity 0.16s ease;
+    0.15s ease;
 
 }
 
 
 .composer-send-button:hover:not(:disabled) {
+
+  background:
+    #1976d2;
 
   transform:
     translateY(-1px);
@@ -3354,14 +2259,17 @@ img {
 
 .composer-send-button:disabled {
 
-  opacity:
-    0.28;
+  background:
+    rgba(255, 255, 255, 0.07);
 
-  cursor:
-    not-allowed;
+  color:
+    #53697e;
 
   box-shadow:
     none;
+
+  cursor:
+    not-allowed;
 
 }
 
@@ -3369,63 +2277,15 @@ img {
 .composer-send-button.stop-button {
 
   background:
-    #26394d;
+    #7f2930;
 
 }
 
 
-/* =========================================================
-   ANALYSIS PREVIEW
-   ========================================================= */
-
-.composer-analysis-preview {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    9px;
-
-  margin:
-    8px 3px 0;
-
-  padding:
-    8px 10px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.13);
-
-  border-radius:
-    9px;
+.composer-send-button.stop-button:hover {
 
   background:
-    rgba(21, 101, 192, 0.06);
-
-}
-
-
-.composer-analysis-preview strong {
-
-  color:
-    #83d6ff;
-
-  font-size:
-    10px;
-
-}
-
-
-.composer-analysis-preview span {
-
-  color:
-    #6f849a;
-
-  font-size:
-    10px;
+    #9b3139;
 
 }
 
@@ -3437,19 +2297,16 @@ img {
 .composer-disclaimer {
 
   padding:
-    7px 3px 1px;
+    7px 3px 0;
 
   color:
-    #526a82;
-
-  font-size:
-    9px;
-
-  line-height:
-    1.4;
+    #4f6478;
 
   text-align:
     center;
+
+  font-size:
+    8px;
 
 }
 
@@ -3467,36 +2324,36 @@ img {
     10px;
 
   bottom:
-    calc(100% + 9px);
-
-  z-index:
-    500;
+    calc(100% - 4px);
 
   width:
-    250px;
+    255px;
+
+  max-height:
+    480px;
+
+  overflow-y:
+    auto;
 
   padding:
     8px;
 
   border:
     1px solid
-    rgba(148, 163, 184, 0.17);
+    rgba(148, 163, 184, 0.15);
 
   border-radius:
-    14px;
+    12px;
 
   background:
-    rgba(15, 29, 48, 0.98);
+    #0e1c2d;
 
   box-shadow:
     0 20px 55px
     rgba(0, 0, 0, 0.38);
 
-  backdrop-filter:
-    blur(20px);
-
-  -webkit-backdrop-filter:
-    blur(20px);
+  z-index:
+    2100;
 
 }
 
@@ -3513,13 +2370,22 @@ img {
     space-between;
 
   padding:
-    8px 9px 10px;
+    5px 6px 8px;
+
+  border-bottom:
+    1px solid
+    rgba(148, 163, 184, 0.09);
+
+}
+
+
+.analyze-menu-header strong {
 
   color:
-    #e8f2fb;
+    #dce9f5;
 
   font-size:
-    12px;
+    11px;
 
 }
 
@@ -3551,7 +2417,7 @@ img {
     transparent;
 
   color:
-    #7890a7;
+    #71869c;
 
   cursor:
     pointer;
@@ -3562,24 +2428,7 @@ img {
 }
 
 
-.analyze-menu-header button:hover {
-
-  background:
-    rgba(255, 255, 255, 0.06);
-
-  color:
-    #ffffff;
-
-}
-
-
 .analyze-menu > button {
-
-  width:
-    100%;
-
-  min-height:
-    42px;
 
   display:
     flex;
@@ -3588,35 +2437,40 @@ img {
     center;
 
   gap:
-    11px;
+    10px;
+
+  width:
+    100%;
+
+  min-height:
+    40px;
+
+  margin-top:
+    3px;
 
   padding:
-    8px 10px;
+    0 9px;
 
   border:
-    1px solid transparent;
+    0;
 
   border-radius:
-    9px;
+    8px;
 
   background:
     transparent;
 
   color:
-    #b5c7d8;
-
-  font-size:
-    12px;
-
-  text-align:
-    left;
+    #9bb0c3;
 
   cursor:
     pointer;
 
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
+  text-align:
+    left;
+
+  font-size:
+    11px;
 
 }
 
@@ -3627,7 +2481,7 @@ img {
     rgba(21, 101, 192, 0.13);
 
   color:
-    #ffffff;
+    #d9ebf8;
 
 }
 
@@ -3635,13 +2489,402 @@ img {
 .analyze-menu > button span:first-child {
 
   width:
-    24px;
+    25px;
 
   text-align:
     center;
 
   font-size:
-    15px;
+    14px;
+
+}
+
+
+/* =========================================================
+   LANGUAGE SELECTOR
+   ========================================================= */
+
+.language-selector {
+
+  width:
+    135px;
+
+  min-width:
+    0;
+
+}
+
+
+.truvora-select__control {
+
+  min-height:
+    34px !important;
+
+  height:
+    34px !important;
+
+  border-radius:
+    8px !important;
+
+}
+
+
+.truvora-select__menu {
+
+  border:
+    1px solid
+    var(--truvora-border) !important;
+
+  background:
+    #0f1d30 !important;
+
+}
+
+
+.truvora-select__menu-list {
+
+  background:
+    #0f1d30 !important;
+
+}
+
+
+.truvora-select__option {
+
+  background:
+    #0f1d30 !important;
+
+  color:
+    #c6d6e5 !important;
+
+  font-size:
+    11px !important;
+
+}
+
+
+.truvora-select__option--is-focused {
+
+  background:
+    rgba(21, 101, 192, 0.18) !important;
+
+}
+
+
+.truvora-select__option--is-selected {
+
+  background:
+    rgba(21, 101, 192, 0.30) !important;
+
+  color:
+    #ffffff !important;
+
+}
+
+
+.truvora-select__single-value {
+
+  color:
+    #c6d6e5 !important;
+
+}
+
+
+.truvora-select__placeholder {
+
+  color:
+    #61768c !important;
+
+}
+
+
+.truvora-select__indicator-separator {
+
+  display:
+    none;
+
+}
+
+
+/* =========================================================
+   VOICE SELECTOR
+   ========================================================= */
+
+.voice-selector {
+
+  height:
+    34px;
+
+  width:
+    96px;
+
+  padding:
+    0 7px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.11);
+
+  border-radius:
+    8px;
+
+  outline:
+    none;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #9ab0c3;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+}
+
+
+.voice-selector:focus {
+
+  border-color:
+    rgba(41, 182, 246, 0.30);
+
+}
+
+
+.voice-selector option {
+
+  background:
+    #0f1d30;
+
+  color:
+    #dce9f5;
+
+}
+
+
+/* =========================================================
+   SOURCES
+   ========================================================= */
+
+.truvora-sources {
+
+  margin-top:
+    12px;
+
+  padding-top:
+    10px;
+
+  border-top:
+    1px solid
+    rgba(148, 163, 184, 0.08);
+
+}
+
+
+.sources-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+  margin-bottom:
+    7px;
+
+  color:
+    #71879c;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+.sources-list {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    6px;
+
+}
+
+
+.source-item {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  min-width:
+    180px;
+
+  max-width:
+    300px;
+
+  padding:
+    7px 8px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.09);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  color:
+    inherit;
+
+  text-decoration:
+    none;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.source-item:hover {
+
+  border-color:
+    rgba(41, 182, 246, 0.22);
+
+  background:
+    rgba(21, 101, 192, 0.07);
+
+}
+
+
+.source-number {
+
+  width:
+    21px;
+
+  height:
+    21px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 21px;
+
+  border-radius:
+    6px;
+
+  background:
+    rgba(21, 101, 192, 0.15);
+
+  color:
+    #73cdf3;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+}
+
+
+.source-content {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  min-width:
+    0;
+
+  flex:
+    1;
+
+}
+
+
+.source-content strong {
+
+  overflow:
+    hidden;
+
+  color:
+    #a9bed1;
+
+  font-size:
+    10px;
+
+  font-weight:
+    600;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.source-content small {
+
+  margin-top:
+    2px;
+
+  overflow:
+    hidden;
+
+  color:
+    #526a80;
+
+  font-size:
+    8px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.source-arrow {
+
+  color:
+    #60778c;
+
+  font-size:
+    11px;
 
 }
 
@@ -3659,7 +2902,7 @@ img {
     0;
 
   z-index:
-    3000;
+    2700;
 
   display:
     flex;
@@ -3674,10 +2917,10 @@ img {
     20px;
 
   background:
-    rgba(0, 0, 0, 0.72);
+    rgba(0, 0, 0, 0.65);
 
   backdrop-filter:
-    blur(7px);
+    blur(6px);
 
 }
 
@@ -3685,24 +2928,24 @@ img {
 .camera-modal {
 
   width:
-    min(700px, 100%);
+    min(650px, 100%);
 
   padding:
-    14px;
+    12px;
 
   border:
     1px solid
     rgba(148, 163, 184, 0.16);
 
   border-radius:
-    18px;
+    16px;
 
   background:
     #0f1d30;
 
   box-shadow:
     0 30px 80px
-    rgba(0, 0, 0, 0.48);
+    rgba(0, 0, 0, 0.45);
 
 }
 
@@ -3719,7 +2962,7 @@ img {
     space-between;
 
   padding:
-    3px 4px 12px;
+    2px 4px 10px;
 
 }
 
@@ -3727,10 +2970,10 @@ img {
 .camera-header strong {
 
   color:
-    #ffffff;
+    #e2edf7;
 
   font-size:
-    14px;
+    12px;
 
 }
 
@@ -3738,33 +2981,36 @@ img {
 .camera-header button {
 
   width:
-    32px;
+    30px;
 
   height:
-    32px;
+    30px;
 
   border:
     0;
 
   border-radius:
-    9px;
+    8px;
 
   background:
-    rgba(255, 255, 255, 0.06);
+    rgba(255, 255, 255, 0.05);
 
   color:
-    #a5b8cb;
+    #8096aa;
 
   cursor:
     pointer;
 
   font-size:
-    19px;
+    18px;
 
 }
 
 
 .camera-video {
+
+  display:
+    block;
 
   width:
     100%;
@@ -3772,17 +3018,14 @@ img {
   max-height:
     65vh;
 
-  display:
-    block;
-
-  border-radius:
-    12px;
-
-  background:
-    #020812;
-
   object-fit:
     cover;
+
+  border-radius:
+    11px;
+
+  background:
+    #02070d;
 
 }
 
@@ -3798,219 +3041,29 @@ img {
   gap:
     8px;
 
-  padding:
-    12px 2px 2px;
+  padding-top:
+    10px;
 
 }
 
 
-.camera-capture-button,
-.camera-cancel-button {
+.camera-cancel-button,
+.camera-capture-button {
 
   min-height:
     38px;
 
   padding:
-    0 15px;
-
-  border-radius:
-    9px;
-
-  cursor:
-    pointer;
-
-  font-size:
-    12px;
-
-  font-weight:
-    650;
-
-}
-
-
-.camera-capture-button {
-
-  border:
-    0;
-
-  background:
-    var(--truvora-primary);
-
-  color:
-    #ffffff;
-
-}
-
-
-.camera-cancel-button {
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.15);
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  color:
-    #aebfd0;
-
-}
-
-
-/* =========================================================
-   PART 2/4 ENDS
-   ========================================================= */
-
-/* =========================================================
-   PERSONAL VOICE
-   ========================================================= */
-
-.personal-voice-panel {
-
-  position:
-    fixed;
-
-  right:
-    24px;
-
-  bottom:
-    24px;
-
-  z-index:
-    2500;
-
-  width:
-    min(360px, calc(100vw - 32px));
-
-  padding:
-    18px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.16);
-
-  border-radius:
-    16px;
-
-  background:
-    rgba(15, 29, 48, 0.98);
-
-  box-shadow:
-    0 24px 65px
-    rgba(0, 0, 0, 0.40);
-
-  backdrop-filter:
-    blur(20px);
-
-  -webkit-backdrop-filter:
-    blur(20px);
-
-}
-
-
-.personal-voice-header {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  margin-bottom:
-    10px;
-
-}
-
-
-.personal-voice-header strong {
-
-  color:
-    #ffffff;
-
-  font-size:
-    14px;
-
-}
-
-
-.personal-voice-header button {
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    0;
+    0 14px;
 
   border-radius:
     8px;
 
-  background:
-    rgba(255, 255, 255, 0.05);
-
-  color:
-    #93a8bd;
-
   cursor:
     pointer;
 
   font-size:
-    18px;
-
-}
-
-
-.personal-voice-panel p {
-
-  margin:
-    0 0 15px;
-
-  color:
-    #7f96ad;
-
-  font-size:
-    12px;
-
-  line-height:
-    1.6;
-
-}
-
-
-.personal-voice-record,
-.personal-voice-stop {
-
-  width:
-    100%;
-
-  min-height:
-    42px;
-
-  border:
-    0;
-
-  border-radius:
     10px;
-
-  cursor:
-    pointer;
-
-  font-size:
-    12px;
 
   font-weight:
     700;
@@ -4018,7 +3071,22 @@ img {
 }
 
 
-.personal-voice-record {
+.camera-cancel-button {
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #8499ad;
+
+}
+
+
+.camera-capture-button {
 
   background:
     var(--truvora-primary);
@@ -4029,10 +3097,190 @@ img {
 }
 
 
-.personal-voice-stop {
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.truvora-login-screen {
+
+  width:
+    100%;
+
+  min-height:
+    100dvh;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
 
   background:
-    #7f2930;
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(21, 101, 192, 0.15),
+      transparent 42%
+    ),
+    var(--truvora-bg);
+
+}
+
+
+.truvora-login-card {
+
+  width:
+    min(430px, 100%);
+
+  padding:
+    32px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    20px;
+
+  background:
+    rgba(15, 29, 48, 0.94);
+
+  box-shadow:
+    0 30px 90px
+    rgba(0, 0, 0, 0.34);
+
+  text-align:
+    center;
+
+}
+
+
+.truvora-login-card > h1 {
+
+  margin:
+    16px 0 4px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    24px;
+
+}
+
+
+.truvora-login-card > p {
+
+  margin:
+    0 0 24px;
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.truvora-login-card > span {
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.truvora-login-content {
+
+  margin-top:
+    25px;
+
+}
+
+
+.truvora-login-content h1 {
+
+  margin:
+    0 0 7px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    24px;
+
+}
+
+
+.truvora-login-content p {
+
+  margin:
+    0 0 22px;
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.google-login-button,
+.login-submit-button {
+
+  width:
+    100%;
+
+  min-height:
+    42px;
+
+  border-radius:
+    9px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+}
+
+
+.google-login-button {
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color:
+    #d9e5f0;
+
+}
+
+
+.login-submit-button {
+
+  margin-top:
+    10px;
+
+  background:
+    var(--truvora-primary);
 
   color:
     #ffffff;
@@ -4040,32 +3288,137 @@ img {
 }
 
 
-.personal-voice-success {
+.auth-divider {
 
-  margin-top:
-    11px;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  margin:
+    18px 0;
+
+  color:
+    #52677c;
+
+  font-size:
+    9px;
+
+}
+
+
+.auth-divider::before,
+.auth-divider::after {
+
+  content:
+    "";
+
+  flex:
+    1;
+
+  height:
+    1px;
+
+  background:
+    var(--truvora-border);
+
+}
+
+
+.login-input {
+
+  width:
+    100%;
+
+  height:
+    42px;
+
+  margin-bottom:
+    9px;
 
   padding:
-    9px 10px;
+    0 12px;
 
   border:
     1px solid
-    rgba(74, 222, 128, 0.16);
+    var(--truvora-border);
 
   border-radius:
     9px;
 
+  outline:
+    none;
+
   background:
-    rgba(74, 222, 128, 0.06);
+    rgba(255, 255, 255, 0.025);
 
   color:
-    #86e4a3;
+    #dce8f3;
 
   font-size:
-    11px;
+    12px;
 
 }
 
+
+.login-input:focus {
+
+  border-color:
+    rgba(41, 182, 246, 0.35);
+
+}
+
+
+.auth-error {
+
+  margin:
+    7px 0;
+
+  color:
+    #ff8c8c;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.auth-switch-button {
+
+  margin-top:
+    15px;
+
+  padding:
+    5px;
+
+  border:
+    0;
+
+  background:
+    transparent;
+
+  color:
+    #65cdf7;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+}
+
+
+/* =========================================================
+   PART 2 END
+   ========================================================= */
 
 /* =========================================================
    CITATION PREVIEW
@@ -4095,10 +3448,10 @@ img {
     20px;
 
   background:
-    rgba(0, 0, 0, 0.62);
+    rgba(0, 0, 0, 0.58);
 
   backdrop-filter:
-    blur(6px);
+    blur(5px);
 
 }
 
@@ -4106,20 +3459,20 @@ img {
 .citation-preview {
 
   width:
-    min(460px, 100%);
+    min(500px, 100%);
 
   border:
     1px solid
-    rgba(148, 163, 184, 0.17);
+    var(--truvora-border);
 
   border-radius:
-    16px;
+    14px;
 
   background:
     #0f1d30;
 
   box-shadow:
-    0 30px 80px
+    0 25px 70px
     rgba(0, 0, 0, 0.42);
 
   overflow:
@@ -4140,11 +3493,11 @@ img {
     space-between;
 
   padding:
-    14px 16px;
+    13px 15px;
 
   border-bottom:
     1px solid
-    rgba(148, 163, 184, 0.10);
+    var(--truvora-border);
 
 }
 
@@ -4152,10 +3505,10 @@ img {
 .citation-preview-header strong {
 
   color:
-    #ffffff;
+    #dce9f5;
 
   font-size:
-    13px;
+    12px;
 
 }
 
@@ -4163,28 +3516,28 @@ img {
 .citation-preview-header button {
 
   width:
-    30px;
+    29px;
 
   height:
-    30px;
+    29px;
 
   border:
     0;
 
   border-radius:
-    8px;
+    7px;
 
   background:
-    rgba(255, 255, 255, 0.05);
+    rgba(255, 255, 255, 0.045);
 
   color:
-    #8ea3b8;
+    #8297aa;
 
   cursor:
     pointer;
 
   font-size:
-    18px;
+    17px;
 
 }
 
@@ -4199,11 +3552,17 @@ img {
 
 .citation-preview-body strong {
 
+  display:
+    block;
+
   color:
-    #dbe7f5;
+    #dbe8f3;
 
   font-size:
-    14px;
+    12px;
+
+  line-height:
+    1.5;
 
 }
 
@@ -4211,13 +3570,16 @@ img {
 .citation-preview-body p {
 
   margin:
-    8px 0 14px;
+    9px 0 14px;
 
   color:
-    #71879d;
+    #71869d;
 
   font-size:
-    11px;
+    10px;
+
+  line-height:
+    1.5;
 
   overflow-wrap:
     anywhere;
@@ -4227,32 +3589,31 @@ img {
 
 .citation-preview-body a {
 
-  display:
-    inline-flex;
-
-  padding:
-    8px 11px;
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(21, 101, 192, 0.14);
-
   color:
-    #65ccff;
-
-  font-size:
-    11px;
+    #6dd2fa;
 
   text-decoration:
     none;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+.citation-preview-body a:hover {
+
+  text-decoration:
+    underline;
 
 }
 
 
 /* =========================================================
-   GENERATION OVERLAY
+   FILE GENERATION OVERLAY
    ========================================================= */
 
 .truvora-generation-overlay {
@@ -4279,10 +3640,10 @@ img {
     20px;
 
   background:
-    rgba(0, 0, 0, 0.56);
+    rgba(0, 0, 0, 0.48);
 
   backdrop-filter:
-    blur(5px);
+    blur(4px);
 
 }
 
@@ -4290,7 +3651,7 @@ img {
 .truvora-generation-card {
 
   width:
-    min(340px, 100%);
+    min(360px, 100%);
 
   display:
     flex;
@@ -4302,20 +3663,20 @@ img {
     center;
 
   padding:
-    28px;
+    25px;
 
   border:
     1px solid
-    rgba(148, 163, 184, 0.15);
+    rgba(41, 182, 246, 0.14);
 
   border-radius:
-    18px;
+    15px;
 
   background:
     #0f1d30;
 
   box-shadow:
-    0 30px 80px
+    0 25px 75px
     rgba(0, 0, 0, 0.42);
 
   text-align:
@@ -4327,13 +3688,13 @@ img {
 .truvora-generation-card strong {
 
   margin-top:
-    14px;
+    13px;
 
   color:
-    #ffffff;
+    #e5f0fa;
 
   font-size:
-    14px;
+    12px;
 
 }
 
@@ -4341,13 +3702,13 @@ img {
 .truvora-generation-card span {
 
   margin-top:
-    7px;
+    6px;
 
   color:
-    #738aa1;
+    #6f849a;
 
   font-size:
-    11px;
+    10px;
 
   line-height:
     1.5;
@@ -4358,14 +3719,14 @@ img {
 .generation-spinner {
 
   width:
-    34px;
+    30px;
 
   height:
-    34px;
+    30px;
 
   border:
     3px solid
-    rgba(148, 163, 184, 0.15);
+    rgba(255, 255, 255, 0.08);
 
   border-top-color:
     var(--truvora-accent);
@@ -4374,7 +3735,8 @@ img {
     50%;
 
   animation:
-    truvoraSpin 0.85s linear infinite;
+    truvoraSpin 0.8s
+    linear infinite;
 
 }
 
@@ -4392,7 +3754,54 @@ img {
 
 
 /* =========================================================
-   MOBILE SIDEBAR BACKDROP
+   SCROLLBARS
+   ========================================================= */
+
+.truvora-chat-area::-webkit-scrollbar,
+.sidebar-chat-list::-webkit-scrollbar,
+.analyze-menu::-webkit-scrollbar {
+
+  width:
+    6px;
+
+}
+
+
+.truvora-chat-area::-webkit-scrollbar-track,
+.sidebar-chat-list::-webkit-scrollbar-track,
+.analyze-menu::-webkit-scrollbar-track {
+
+  background:
+    transparent;
+
+}
+
+
+.truvora-chat-area::-webkit-scrollbar-thumb,
+.sidebar-chat-list::-webkit-scrollbar-thumb,
+.analyze-menu::-webkit-scrollbar-thumb {
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(148, 163, 184, 0.13);
+
+}
+
+
+.truvora-chat-area::-webkit-scrollbar-thumb:hover,
+.sidebar-chat-list::-webkit-scrollbar-thumb:hover,
+.analyze-menu::-webkit-scrollbar-thumb:hover {
+
+  background:
+    rgba(148, 163, 184, 0.22);
+
+}
+
+
+/* =========================================================
+   MOBILE BACKDROP
    ========================================================= */
 
 .mobile-sidebar-backdrop {
@@ -4407,33 +3816,34 @@ img {
    TABLET
    ========================================================= */
 
-@media (max-width: 1100px) {
+@media (
+  max-width: 1050px
+) {
 
-  .truvora-chat-area {
-
-    padding:
-      30px 35px 28px;
-
-  }
-
-
+  .truvora-chat-area,
   .truvora-composer-area {
 
-    padding:
-      0 35px 15px;
+    padding-left:
+      4vw;
+
+    padding-right:
+      4vw;
 
   }
 
 
-  .truvora-topbar {
+  .composer-mode-button {
 
-    padding:
-      0 22px;
+    padding-left:
+      7px;
+
+    padding-right:
+      7px;
 
   }
 
 
-  .topbar-slogan {
+  .composer-mode-button span {
 
     display:
       none;
@@ -4441,18 +3851,10 @@ img {
   }
 
 
-  .composer-toolbar-left {
+  .language-selector {
 
-    gap:
-      5px;
-
-  }
-
-
-  .composer-mode-button {
-
-    padding:
-      0 8px;
+    width:
+      115px;
 
   }
 
@@ -4460,43 +3862,66 @@ img {
 
 
 /* =========================================================
-   MOBILE / TABLET SIDEBAR
+   MOBILE
    ========================================================= */
 
-@media (max-width: 900px) {
+@media (
+  max-width: 760px
+) {
+
+  body {
+
+    overflow:
+      hidden;
+
+  }
+
+
+  .truvora-app {
+
+    min-height:
+      100dvh;
+
+    height:
+      100dvh;
+
+  }
+
+
+  /* ---------------------------------------------
+     SIDEBAR
+  --------------------------------------------- */
 
   .truvora-sidebar {
 
     position:
       fixed;
 
-    top:
-      0;
-
     left:
       0;
 
-    bottom:
+    top:
       0;
 
     width:
-      min(300px, 88vw);
+      min(290px, 86vw);
 
     min-width:
-      0;
+      min(290px, 86vw);
+
+    height:
+      100dvh;
 
     transform:
       translateX(-105%);
 
     transition:
-      transform 0.22s ease;
+      transform 0.22s
+      ease;
 
     box-shadow:
-      18px 0 55px
-      rgba(0, 0, 0, 0.35);
-
-    z-index:
-      1200;
+      20px 0 60px
+      rgba(0, 0, 0, 0.30);
 
   }
 
@@ -4520,7 +3945,7 @@ img {
   .sidebar-mobile-close {
 
     display:
-      flex;
+      inline-flex;
 
   }
 
@@ -4540,7 +3965,7 @@ img {
       1100;
 
     background:
-      rgba(0, 0, 0, 0.54);
+      rgba(0, 0, 0, 0.48);
 
     backdrop-filter:
       blur(2px);
@@ -4548,10 +3973,62 @@ img {
   }
 
 
+  /* ---------------------------------------------
+     TOP BAR
+  --------------------------------------------- */
+
+  .truvora-topbar {
+
+    height:
+      57px;
+
+    min-height:
+      57px;
+
+    padding:
+      0 11px;
+
+  }
+
+
   .mobile-menu-button {
+
+    width:
+      37px;
+
+    height:
+      37px;
 
     display:
       flex;
+
+    align-items:
+      center;
+
+    justify-content:
+      center;
+
+    margin-right:
+      8px;
+
+    border:
+      1px solid
+      rgba(148, 163, 184, 0.10);
+
+    border-radius:
+      9px;
+
+    background:
+      rgba(255, 255, 255, 0.025);
+
+    color:
+      #a0b4c7;
+
+    cursor:
+      pointer;
+
+    font-size:
+      17px;
 
   }
 
@@ -4561,158 +4038,87 @@ img {
     display:
       flex;
 
+    align-items:
+      center;
+
+    gap:
+      7px;
+
   }
 
 
-  .truvora-topbar {
+  .mobile-brand .truvora-logo-symbol {
+
+    width:
+      31px;
 
     height:
-      58px;
+      31px;
 
-    min-height:
-      58px;
+    flex-basis:
+      31px;
 
-    padding:
-      0 15px;
-
-  }
-
-
-  .truvora-chat-area {
-
-    padding:
-      24px 18px 24px;
-
-  }
-
-
-  .truvora-composer-area {
-
-    padding:
-      0 15px 12px;
-
-  }
-
-
-  .truvora-message {
-
-    margin-bottom:
-      22px;
-
-  }
-
-
-  .message-body {
-
-    max-width:
-      calc(100% - 48px);
-
-  }
-
-
-  .truvora-user-message .message-body {
-
-    max-width:
-      88%;
-
-  }
-
-
-  .message-text {
+    border-radius:
+      9px;
 
     font-size:
       14px;
 
-    line-height:
-      1.65;
-
   }
 
 
-  .composer-toolbar {
-
-    align-items:
-      flex-start;
-
-  }
-
-
-  .composer-toolbar-left {
-
-    overflow-x:
-      auto;
-
-  }
-
-
-  .composer-toolbar-right {
+  .mobile-brand > div:last-child {
 
     display:
       flex;
 
-  }
-
-
-  .language-selector .truvora-select__control {
-
-    width:
-      132px !important;
+    flex-direction:
+      column;
 
   }
 
 
-  .voice-selector {
+  .mobile-brand strong {
 
-    width:
-      105px;
+    color:
+      #ffffff;
 
-  }
+    font-size:
+      12px;
 
+    line-height:
+      1;
 
-  .analyze-menu {
-
-    left:
-      0;
-
-  }
-
-}
-
-
-/* =========================================================
-   PHONE
-   ========================================================= */
-
-@media (max-width: 640px) {
-
-  body {
-
-    overflow:
-      hidden;
+    letter-spacing:
+      0.4px;
 
   }
 
 
-  .truvora-app {
+  .mobile-brand span {
 
-    min-height:
-      100dvh;
+    margin-top:
+      2px;
+
+    color:
+      var(--truvora-accent);
+
+    font-size:
+      6px;
+
+    font-weight:
+      700;
+
+    letter-spacing:
+      1.2px;
 
   }
 
 
-  .truvora-topbar {
+  .topbar-center {
 
-    padding:
-      0 11px;
-
-  }
-
-
-  .topbar-right {
-
-    gap:
-      7px;
+    display:
+      none;
 
   }
 
@@ -4725,104 +4131,20 @@ img {
     height:
       31px;
 
-  }
-
-
-  .mobile-menu-button {
-
-    width:
-      36px;
-
-    height:
-      36px;
-
-  }
-
-
-  .mobile-brand strong {
-
     font-size:
-      14px;
+      10px;
 
   }
 
+
+  /* ---------------------------------------------
+     CHAT
+  --------------------------------------------- */
 
   .truvora-chat-area {
 
     padding:
-      18px 11px 18px;
-
-  }
-
-
-  .truvora-empty-state {
-
-    padding:
-      30px 8px;
-
-  }
-
-
-  .empty-logo-symbol {
-
-    width:
-      52px;
-
-    height:
-      52px;
-
-    border-radius:
-      15px;
-
-    font-size:
-      23px;
-
-  }
-
-
-  .truvora-empty-state h1 {
-
-    font-size:
-      24px;
-
-  }
-
-
-  .truvora-empty-state p {
-
-    max-width:
-      360px;
-
-    font-size:
-      12px;
-
-  }
-
-
-  .empty-suggestions {
-
-    width:
-      100%;
-
-    display:
-      grid;
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-
-  .empty-suggestions button {
-
-    min-height:
-      42px;
-
-    padding:
-      8px;
-
-    font-size:
-      10px;
+      18px 10px 20px;
 
   }
 
@@ -4833,7 +4155,7 @@ img {
       7px;
 
     margin-bottom:
-      18px;
+      22px;
 
   }
 
@@ -4841,19 +4163,19 @@ img {
   .message-avatar {
 
     width:
-      30px;
+      28px;
 
     height:
-      30px;
+      28px;
 
-    flex:
-      0 0 30px;
+    flex-basis:
+      28px;
 
     border-radius:
-      9px;
+      8px;
 
     font-size:
-      11px;
+      10px;
 
   }
 
@@ -4861,12 +4183,13 @@ img {
   .message-body {
 
     max-width:
-      calc(100% - 37px);
+      calc(100% - 35px);
 
   }
 
 
-  .truvora-user-message .message-body {
+  .truvora-user-message
+  .message-body {
 
     max-width:
       88%;
@@ -4876,41 +4199,94 @@ img {
 
   .message-text {
 
-    padding:
-      12px 13px;
-
-    border-radius:
-      13px;
-
     font-size:
       13px;
 
-  }
-
-
-  .message-actions {
-
-    gap:
-      2px;
+    line-height:
+      1.65;
 
   }
 
 
-  .message-action-btn {
+  .truvora-user-message
+  .message-text {
+
+    padding:
+      9px 11px;
+
+  }
+
+
+  /* ---------------------------------------------
+     EMPTY STATE
+  --------------------------------------------- */
+
+  .truvora-empty-state {
+
+    min-height:
+      70%;
+
+    padding:
+      20px 8px;
+
+  }
+
+
+  .empty-logo-symbol {
 
     width:
-      29px;
+      50px;
 
     height:
-      29px;
+      50px;
+
+    border-radius:
+      14px;
+
+    font-size:
+      22px;
 
   }
 
+
+  .truvora-empty-state h1 {
+
+    margin-top:
+      15px;
+
+    font-size:
+      22px;
+
+  }
+
+
+  .truvora-empty-state p {
+
+    font-size:
+      10px;
+
+  }
+
+
+  .empty-suggestions {
+
+    width:
+      min(400px, 100%);
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+  }
+
+
+  /* ---------------------------------------------
+     COMPOSER
+  --------------------------------------------- */
 
   .truvora-composer-area {
 
     padding:
-      0 9px 9px;
+      0 7px 8px;
 
   }
 
@@ -4921,21 +4297,18 @@ img {
       7px;
 
     border-radius:
-      14px;
+      13px;
 
   }
 
 
   .composer-toolbar {
 
-    min-height:
-      38px;
+    gap:
+      6px;
 
     padding:
-      0 0 7px;
-
-    gap:
-      7px;
+      0 1px 7px;
 
   }
 
@@ -4945,8 +4318,8 @@ img {
     flex:
       1;
 
-    gap:
-      4px;
+    min-width:
+      0;
 
   }
 
@@ -4954,7 +4327,7 @@ img {
   .composer-toolbar-right {
 
     gap:
-      4px;
+      3px;
 
   }
 
@@ -4967,31 +4340,19 @@ img {
     height:
       31px;
 
-    flex:
-      0 0 31px;
-
-    border-radius:
-      8px;
-
-    font-size:
-      12px;
-
   }
 
 
   .composer-mode-button {
 
+    width:
+      31px;
+
     height:
       31px;
 
     padding:
-      0 7px;
-
-    border-radius:
-      8px;
-
-    font-size:
-      10px;
+      0;
 
   }
 
@@ -5004,18 +4365,10 @@ img {
   }
 
 
-  .composer-mode-button::after {
-
-    display:
-      none;
-
-  }
-
-
   .language-selector {
 
-    display:
-      none;
+    width:
+      95px;
 
   }
 
@@ -5023,27 +4376,34 @@ img {
   .voice-selector {
 
     width:
-      92px;
+      72px;
 
     height:
       31px;
 
+  }
+
+
+  .composer-attachment-status {
+
     padding:
-      0 6px;
-
-    border-radius:
-      8px;
-
-    font-size:
-      10px;
+      5px 3px;
 
   }
 
 
-  .composer-input-container {
+  .composer-attachment-status span {
 
-    gap:
-      5px;
+    max-width:
+      180px;
+
+  }
+
+
+  .composer-analysis-preview {
+
+    margin-bottom:
+      6px;
 
   }
 
@@ -5051,16 +4411,13 @@ img {
   .truvora-input {
 
     min-height:
-      54px;
+      56px;
 
     max-height:
-      170px;
+      150px;
 
     padding:
-      12px 51px 12px 12px;
-
-    border-radius:
-      10px;
+      11px 50px 11px 10px;
 
     font-size:
       13px;
@@ -5071,66 +4428,71 @@ img {
   .composer-send-button {
 
     right:
-      7px;
+      6px;
 
     bottom:
-      7px;
+      6px;
 
     width:
-      36px;
+      37px;
 
     height:
-      36px;
-
-    border-radius:
-      10px;
+      37px;
 
   }
 
 
   .composer-disclaimer {
 
-    font-size:
-      8px;
-
     padding-top:
-      6px;
+      5px;
+
+    font-size:
+      7px;
 
   }
 
+
+  /* ---------------------------------------------
+     ANALYZE MENU
+  --------------------------------------------- */
 
   .analyze-menu {
 
     left:
-      0;
+      7px;
 
     right:
-      0;
+      7px;
 
     bottom:
-      calc(100% + 8px);
+      calc(100% - 2px);
 
     width:
-      min(250px, 80vw);
+      auto;
+
+    max-height:
+      55vh;
 
   }
 
 
-  .source-item {
+  .analyze-menu > button {
 
-    min-width:
-      0;
-
-    width:
-      100%;
-
-    max-width:
-      100%;
+    min-height:
+      42px;
 
   }
 
+
+  /* ---------------------------------------------
+     SOURCES
+  --------------------------------------------- */
 
   .sources-list {
+
+    display:
+      flex;
 
     flex-direction:
       column;
@@ -5138,19 +4500,23 @@ img {
   }
 
 
-  .personal-voice-panel {
-
-    right:
-      12px;
-
-    bottom:
-      12px;
+  .source-item {
 
     width:
-      calc(100vw - 24px);
+      100%;
+
+    max-width:
+      none;
+
+    min-width:
+      0;
 
   }
 
+
+  /* ---------------------------------------------
+     CAMERA
+  --------------------------------------------- */
 
   .camera-overlay {
 
@@ -5162,11 +4528,11 @@ img {
 
   .camera-modal {
 
-    padding:
-      9px;
+    width:
+      100%;
 
     border-radius:
-      14px;
+      13px;
 
   }
 
@@ -5174,12 +4540,33 @@ img {
   .camera-video {
 
     max-height:
-      62vh;
+      55vh;
 
   }
 
 
-  .citation-preview-overlay {
+  .camera-actions {
+
+    flex-direction:
+      column-reverse;
+
+  }
+
+
+  .camera-cancel-button,
+  .camera-capture-button {
+
+    width:
+      100%;
+
+  }
+
+
+  /* ---------------------------------------------
+     LOGIN
+  --------------------------------------------- */
+
+  .truvora-login-screen {
 
     padding:
       12px;
@@ -5187,10 +4574,59 @@ img {
   }
 
 
+  .truvora-login-card {
+
+    padding:
+      24px 17px;
+
+    border-radius:
+      16px;
+
+  }
+
+
+  /* ---------------------------------------------
+     CITATION
+  --------------------------------------------- */
+
+  .citation-preview-overlay {
+
+    align-items:
+      flex-end;
+
+    padding:
+      8px;
+
+  }
+
+
   .citation-preview {
+
+    width:
+      100%;
 
     border-radius:
       14px;
+
+  }
+
+
+  /* ---------------------------------------------
+     GENERATION
+  --------------------------------------------- */
+
+  .truvora-generation-overlay {
+
+    padding:
+      12px;
+
+  }
+
+
+  .truvora-generation-card {
+
+    width:
+      100%;
 
   }
 
@@ -5201,39 +4637,66 @@ img {
    SMALL PHONES
    ========================================================= */
 
-@media (max-width: 420px) {
+@media (
+  max-width: 420px
+) {
 
-  .truvora-topbar {
+  .mobile-brand strong {
 
-    height:
-      55px;
-
-    min-height:
-      55px;
+    font-size:
+      11px;
 
   }
 
 
   .mobile-brand span {
 
-    display:
-      none;
+    font-size:
+      5px;
+
+  }
+
+
+  .topbar-avatar {
+
+    width:
+      29px;
+
+    height:
+      29px;
 
   }
 
 
   .truvora-chat-area {
 
-    padding:
-      15px 8px 15px;
+    padding-left:
+      7px;
+
+    padding-right:
+      7px;
 
   }
 
 
-  .truvora-composer-area {
+  .truvora-empty-state h1 {
+
+    font-size:
+      20px;
+
+  }
+
+
+  .empty-suggestions button {
+
+    min-height:
+      38px;
 
     padding:
-      0 6px 7px;
+      6px 8px;
+
+    font-size:
+      9px;
 
   }
 
@@ -5246,27 +4709,18 @@ img {
   }
 
 
-  .composer-icon-button {
+  .composer-toolbar-right {
 
-    width:
-      29px;
-
-    height:
-      29px;
-
-    flex-basis:
-      29px;
+    gap:
+      2px;
 
   }
 
 
-  .composer-mode-button {
+  .language-selector {
 
     width:
-      31px;
-
-    padding:
-      0;
+      82px;
 
   }
 
@@ -5274,306 +4728,27 @@ img {
   .voice-selector {
 
     width:
-      84px;
+      63px;
 
   }
 
 
-  .truvora-input {
-
-    min-height:
-      50px;
-
-  }
-
-
-  .empty-suggestions {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .empty-suggestions button {
-
-    width:
-      100%;
-
-  }
-
-
-  .truvora-empty-state h1 {
-
-    font-size:
-      21px;
-
-  }
-
-
-  .truvora-empty-state p {
-
-    font-size:
-      11px;
-
-  }
-
-}
-
-
-/* =========================================================
-   VERY SMALL PHONES
-   ========================================================= */
-
-@media (max-width: 360px) {
-
-  .mobile-menu-button {
-
-    width:
-      34px;
-
-    height:
-      34px;
-
-  }
-
-
-  .mobile-brand strong {
-
-    font-size:
-      13px;
-
-  }
-
-
-  .voice-selector {
-
-    width:
-      76px;
-
-    font-size:
-      9px;
-
-  }
-
-
-  .composer-icon-button {
-
-    width:
-      27px;
-
-    height:
-      27px;
-
-    flex-basis:
-      27px;
-
-  }
-
-
+  .composer-icon-button,
   .composer-mode-button {
 
     width:
-      28px;
+      29px;
+
+    height:
+      29px;
 
   }
 
 
   .composer-input-container {
 
-    gap:
-      3px;
-
-  }
-
-}
-
-
-/* =========================================================
-   SCROLLBARS
-   ========================================================= */
-
-::-webkit-scrollbar {
-
-  width:
-    7px;
-
-  height:
-    7px;
-
-}
-
-
-::-webkit-scrollbar-track {
-
-  background:
-    transparent;
-
-}
-
-
-::-webkit-scrollbar-thumb {
-
-  border-radius:
-    99px;
-
-  background:
-    rgba(148, 163, 184, 0.17);
-
-}
-
-
-::-webkit-scrollbar-thumb:hover {
-
-  background:
-    rgba(148, 163, 184, 0.28);
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITY / REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-
-    scroll-behavior:
-      auto !important;
-
-    animation-duration:
-      0.01ms !important;
-
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      0.01ms !important;
-
-  }
-
-}
-
-
-/* =========================================================
-   PART 3/4 ENDS
-   ========================================================= */
-
-/* =========================================================
-   TRUVORA GLOBAL AI
-   APP.CSS — PART 4/4
-   Final responsive polish
-   ========================================================= */
-
-
-/* =========================================================
-   DESKTOP SPACING POLISH
-   ========================================================= */
-
-@media (min-width: 1200px) {
-
-  .truvora-chat-area {
-
-    padding-left:
-      clamp(55px, 9vw, 150px);
-
-    padding-right:
-      clamp(55px, 9vw, 150px);
-
-  }
-
-
-  .truvora-composer-area {
-
-    padding-left:
-      clamp(55px, 9vw, 150px);
-
-    padding-right:
-      clamp(55px, 9vw, 150px);
-
-  }
-
-
-  .truvora-message {
-
-    max-width:
-      1150px;
-
-  }
-
-
-  .truvora-composer {
-
-    max-width:
-      1150px;
-
-  }
-
-}
-
-
-/* =========================================================
-   WIDE DESKTOP
-   ========================================================= */
-
-@media (min-width: 1600px) {
-
-  .truvora-sidebar {
-
-    width:
-      295px;
-
-    min-width:
-      295px;
-
-  }
-
-
-  .truvora-chat-area {
-
-    padding-left:
-      clamp(90px, 11vw, 210px);
-
-    padding-right:
-      clamp(90px, 11vw, 210px);
-
-  }
-
-
-  .truvora-composer-area {
-
-    padding-left:
-      clamp(90px, 11vw, 210px);
-
-    padding-right:
-      clamp(90px, 11vw, 210px);
-
-  }
-
-}
-
-
-/* =========================================================
-   DESKTOP HOVER POLISH
-   ========================================================= */
-
-@media (hover: hover) {
-
-  .composer-icon-button,
-  .composer-mode-button,
-  .message-action-btn,
-  .sidebar-chat-item,
-  .empty-suggestions button,
-  .source-item {
-
-    -webkit-user-select:
-      none;
-
-    user-select:
-      none;
+    margin-top:
+      1px;
 
   }
 
@@ -5584,253 +4759,27 @@ img {
    TOUCH DEVICES
    ========================================================= */
 
-@media (hover: none) {
+@media (
+  hover: none
+) {
 
-  .composer-icon-button:hover,
-  .composer-mode-button:hover,
-  .message-action-btn:hover,
-  .sidebar-chat-item:hover,
-  .empty-suggestions button:hover,
-  .source-item:hover {
+  .composer-icon-button,
+  .composer-mode-button,
+  .message-action-btn,
+  .sidebar-chat-item,
+  .empty-suggestions button {
+
+    -webkit-tap-highlight-color:
+      transparent;
+
+  }
+
+
+  .composer-icon-button:active,
+  .composer-mode-button:active {
 
     transform:
-      none;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE TOOLBAR — KEEP IMPORTANT CONTROLS ACCESSIBLE
-   ========================================================= */
-
-@media (max-width: 640px) {
-
-  .composer-toolbar {
-
-    overflow:
-      visible;
-
-  }
-
-
-  .composer-toolbar-left {
-
-    min-width:
-      0;
-
-    overflow-x:
-      auto;
-
-    padding-bottom:
-      1px;
-
-  }
-
-
-  /*
-   * Analyze / Web / Agent remain accessible.
-   * Their text labels become icons on small screens
-   * to prevent the composer from becoming crowded.
-   */
-
-  .composer-mode-button {
-
-    flex:
-      0 0 31px;
-
-  }
-
-
-  /*
-   * Keep the voice selector visible on mobile.
-   */
-
-  .composer-toolbar-right {
-
-    flex:
-      0 0 auto;
-
-  }
-
-
-  /*
-   * Language selector is moved into a compact
-   * accessible width rather than removing it.
-   */
-
-  .language-selector {
-
-    display:
-      block;
-
-  }
-
-
-  .language-selector .truvora-select__control {
-
-    width:
-      105px !important;
-
-    min-height:
-      31px !important;
-
-    height:
-      31px !important;
-
-    border-radius:
-      8px !important;
-
-  }
-
-
-  .language-selector
-  .truvora-select__single-value {
-
-    font-size:
-      9px !important;
-
-  }
-
-
-  .language-selector
-  .truvora-select__placeholder {
-
-    font-size:
-      9px !important;
-
-  }
-
-
-  .language-selector
-  .truvora-select__indicator {
-
-    padding:
-      3px !important;
-
-  }
-
-
-  .language-selector
-  .truvora-select__value-container {
-
-    padding:
-      0 5px !important;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE LANGUAGE + VOICE LAYOUT
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .composer-toolbar {
-
-    flex-wrap:
-      wrap;
-
-  }
-
-
-  .composer-toolbar-left {
-
-    width:
-      100%;
-
-    flex:
-      1 1 100%;
-
-    order:
-      1;
-
-  }
-
-
-  .composer-toolbar-right {
-
-    width:
-      100%;
-
-    flex:
-      1 1 100%;
-
-    justify-content:
-      flex-end;
-
-    order:
-      2;
-
-    padding-top:
-      1px;
-
-  }
-
-
-  .language-selector .truvora-select__control {
-
-    width:
-      125px !important;
-
-  }
-
-
-  .voice-selector {
-
-    width:
-      100px;
-
-  }
-
-}
-
-
-/* =========================================================
-   VERY SMALL MOBILE TOOLBAR
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-  .composer-toolbar-left {
-
-    width:
-      100%;
-
-  }
-
-
-  .composer-toolbar-right {
-
-    justify-content:
-      space-between;
-
-  }
-
-
-  .language-selector {
-
-    flex:
-      1;
-
-  }
-
-
-  .language-selector .truvora-select__control {
-
-    width:
-      100% !important;
-
-  }
-
-
-  .voice-selector {
-
-    width:
-      96px;
+      scale(0.96);
 
   }
 
@@ -5850,44 +4799,43 @@ img {
 
     padding-bottom:
       calc(
-        9px +
-        env(safe-area-inset-bottom)
+        8px +
+        env(
+          safe-area-inset-bottom
+        )
       );
 
   }
 
-}
 
+  @media (
+    max-width: 760px
+  ) {
 
-/* =========================================================
-   PREVENT MOBILE INPUT ZOOM
-   ========================================================= */
+    .truvora-topbar {
 
-@media (max-width: 640px) {
+      padding-top:
+        env(
+          safe-area-inset-top
+        );
 
-  .truvora-input,
-  .login-input,
-  .sidebar-search input,
-  .voice-selector {
+      height:
+        calc(
+          57px +
+          env(
+            safe-area-inset-top
+          )
+        );
 
-    font-size:
-      16px;
+      min-height:
+        calc(
+          57px +
+          env(
+            safe-area-inset-top
+          )
+        );
 
-  }
-
-
-  .truvora-input {
-
-    font-size:
-      16px;
-
-  }
-
-
-  .sidebar-search input {
-
-    font-size:
-      16px;
+    }
 
   }
 
@@ -5895,539 +4843,30 @@ img {
 
 
 /* =========================================================
-   MOBILE EMPTY STATE
+   ACCESSIBILITY
    ========================================================= */
 
-@media (max-width: 520px) {
+@media (
+  prefers-reduced-motion: reduce
+) {
 
-  .truvora-empty-state {
+  *,
+  *::before,
+  *::after {
 
-    justify-content:
-      center;
+    scroll-behavior:
+      auto !important;
 
-    min-height:
-      70%;
+    animation-duration:
+      0.01ms !important;
 
-  }
+    animation-iteration-count:
+      1 !important;
 
-
-  .empty-logo {
-
-    margin-bottom:
-      14px;
-
-  }
-
-
-  .empty-logo-symbol {
-
-    width:
-      48px;
-
-    height:
-      48px;
-
-    border-radius:
-      14px;
-
-    font-size:
-      21px;
+    transition-duration:
+      0.01ms !important;
 
   }
-
-
-  .truvora-empty-state h1 {
-
-    margin:
-      0;
-
-    font-size:
-      22px;
-
-  }
-
-
-  .truvora-empty-state p {
-
-    margin:
-      10px auto 19px;
-
-    line-height:
-      1.55;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE MESSAGE WIDTH
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .truvora-message {
-
-    align-items:
-      flex-start;
-
-  }
-
-
-  .truvora-user-message {
-
-    justify-content:
-      flex-end;
-
-  }
-
-
-  .message-body {
-
-    max-width:
-      calc(100% - 39px);
-
-  }
-
-
-  .truvora-user-message .message-body {
-
-    max-width:
-      88%;
-
-  }
-
-
-  .message-text {
-
-    overflow-wrap:
-      anywhere;
-
-    word-break:
-      break-word;
-
-  }
-
-
-  .message-text pre {
-
-    max-width:
-      100%;
-
-    overflow-x:
-      auto;
-
-  }
-
-
-  .message-text table {
-
-    display:
-      block;
-
-    overflow-x:
-      auto;
-
-    white-space:
-      nowrap;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE SOURCE CARDS
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .truvora-sources {
-
-    margin-top:
-      13px;
-
-    padding-top:
-      11px;
-
-  }
-
-
-  .sources-title {
-
-    font-size:
-      10px;
-
-  }
-
-
-  .source-item {
-
-    padding:
-      8px;
-
-  }
-
-
-  .source-number {
-
-    width:
-      20px;
-
-    height:
-      20px;
-
-    flex-basis:
-      20px;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE ANALYZE MENU
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .analyze-menu {
-
-    max-height:
-      min(70vh, 460px);
-
-    overflow-y:
-      auto;
-
-  }
-
-
-  .analyze-menu > button {
-
-    min-height:
-      44px;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE LOGIN
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .truvora-login-screen {
-
-    padding:
-      14px;
-
-    align-items:
-      center;
-
-  }
-
-
-  .truvora-login-card {
-
-    padding:
-      25px 18px;
-
-    border-radius:
-      19px;
-
-  }
-
-
-  .truvora-login-content {
-
-    margin-top:
-      30px;
-
-  }
-
-
-  .truvora-login-content h1 {
-
-    font-size:
-      25px;
-
-  }
-
-
-  .truvora-logo-symbol {
-
-    width:
-      42px;
-
-    height:
-      42px;
-
-    flex-basis:
-      42px;
-
-  }
-
-
-  .truvora-logo-text strong {
-
-    font-size:
-      18px;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE CAMERA
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .camera-actions {
-
-    display:
-      grid;
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-
-  .camera-capture-button,
-  .camera-cancel-button {
-
-    width:
-      100%;
-
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE PERSONAL VOICE
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-  .personal-voice-panel {
-
-    max-height:
-      calc(100dvh - 24px);
-
-    overflow-y:
-      auto;
-
-  }
-
-}
-
-
-/* =========================================================
-   DESKTOP COMPOSER — MORE BREATHING ROOM
-   ========================================================= */
-
-@media (min-width: 901px) {
-
-  .truvora-composer {
-
-    padding:
-      12px;
-
-  }
-
-
-  .composer-toolbar {
-
-    padding:
-      0 3px 10px;
-
-  }
-
-
-  .truvora-input {
-
-    min-height:
-      68px;
-
-  }
-
-
-  .composer-disclaimer {
-
-    padding-top:
-      8px;
-
-  }
-
-}
-
-
-/* =========================================================
-   SIDEBAR DESKTOP LOCK
-   ========================================================= */
-
-@media (min-width: 901px) {
-
-  .truvora-sidebar {
-
-    position:
-      relative;
-
-    left:
-      auto;
-
-    top:
-      auto;
-
-    bottom:
-      auto;
-
-    transform:
-      none !important;
-
-    box-shadow:
-      none;
-
-  }
-
-
-  .mobile-sidebar-backdrop {
-
-    display:
-      none !important;
-
-  }
-
-}
-
-
-/* =========================================================
-   FINAL MOBILE SIDEBAR
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-  .truvora-main {
-
-    width:
-      100%;
-
-    min-width:
-      0;
-
-  }
-
-
-  .truvora-sidebar.sidebar-visible {
-
-    visibility:
-      visible;
-
-    opacity:
-      1;
-
-  }
-
-
-  .truvora-sidebar.sidebar-hidden {
-
-    visibility:
-      hidden;
-
-    opacity:
-      0;
-
-  }
-
-}
-
-
-/* =========================================================
-   NO HORIZONTAL OVERFLOW
-   ========================================================= */
-
-.truvora-main,
-.truvora-chat-area,
-.truvora-composer-area {
-
-  max-width:
-    100vw;
-
-}
-
-
-.message-text img,
-.message-text video,
-.message-text iframe {
-
-  max-width:
-    100%;
-
-}
-
-
-/* =========================================================
-   FINAL BUTTON CONSISTENCY
-   ========================================================= */
-
-button {
-
-  font-family:
-    inherit;
-
-}
-
-
-button:disabled {
-
-  cursor:
-    not-allowed;
-
-}
-
-
-/* =========================================================
-   FINAL SELECTION
-   ========================================================= */
-
-::selection {
-
-  background:
-    rgba(41, 182, 246, 0.24);
-
-  color:
-    #ffffff;
-
-}
-
-
-/* =========================================================
-   FINAL SAFETY
-   ========================================================= */
-
-textarea {
-
-  -webkit-appearance:
-    none;
-
-  appearance:
-    none;
-
-}
-
-
-select {
-
-  -webkit-appearance:
-    auto;
-
-  appearance:
-    auto;
 
 }
 
