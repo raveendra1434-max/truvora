@@ -35,6 +35,15 @@ import ReactMarkdown from "react-markdown";
 
 import remarkGfm from "remark-gfm";
 
+// Truvora backend configuration
+const API_BASE = (
+  process.env.REACT_APP_API_BASE_URL ||
+  "https://truvora-backend.onrender.com"
+).replace(/\/$/, "");
+
+const apiUrl = (path) =>
+  `${API_BASE}${path}`;
+
 import { useDropzone }
 from "react-dropzone";
 
@@ -62,14 +71,17 @@ import {
 
 
 function saveChat(chat) {
+
   localStorage.setItem(
     `truvora-chat-${Date.now()}`,
     JSON.stringify(chat)
   );
+
 }
 
 
 function App() {
+
 
   /* =====================================================
      CITATIONS
@@ -77,17 +89,24 @@ function App() {
 
   const citationRefs = (sources = []) =>
     sources.map((source, index) => ({
+
       ...source,
-      citationNumber: index + 1,
+
+      citationNumber:
+        index + 1,
+
       sourceUrl:
         source.url ||
         source.videoUrl ||
         source.youtubeUrl ||
         "#",
+
     }));
+
 
   const [activeCitation, setActiveCitation] =
     useState(null);
+
 
   const [citationPreviewOpen, setCitationPreviewOpen] =
     useState(false);
@@ -104,506 +123,68 @@ function App() {
         window.location.search
       );
 
+
     const youtubeUrl =
       params.get("youtube");
+
 
     if (youtubeUrl) {
 
       const url =
-        decodeURIComponent(youtubeUrl);
+        decodeURIComponent(
+          youtubeUrl
+        );
+
 
       handleYouTube(url);
 
-      window.history.replaceState(
-        {},
-        "",
-        "/"
-      );
     }
 
   }, []);
 
 
   /* =====================================================
-     BASIC STATE
+     AUTH
   ===================================================== */
 
-  const [input, setInput] =
-    useState("");
-
-  const [selectedVoice,
-    setSelectedVoice] =
-    useState("alloy");
-
-  const [personalVoice,
-    setPersonalVoice] =
-    useState(null);
-
-  const [showPersonalVoice,
-    setShowPersonalVoice] =
-    useState(false);
+  const [user, setUser] =
+    useState(auth.currentUser);
 
 
-  /* =====================================================
-     VOICE OPTIONS
-  ===================================================== */
-
-  const voiceOptions = [
-
-    {
-      id: "alloy",
-      name: "Alloy"
-    },
-
-    {
-      id: "ash",
-      name: "Ash"
-    },
-
-    {
-      id: "ballad",
-      name: "Ballad"
-    },
-
-    {
-      id: "coral",
-      name: "Coral"
-    },
-
-    {
-      id: "echo",
-      name: "Echo"
-    },
-
-    {
-      id: "fable",
-      name: "Fable"
-    },
-
-    {
-      id: "nova",
-      name: "Nova"
-    },
-
-    {
-      id: "onyx",
-      name: "Onyx"
-    },
-
-    {
-      id: "sage",
-      name: "Sage"
-    },
-
-    {
-      id: "shimmer",
-      name: "Shimmer"
-    },
-
-    {
-      id: "verse",
-      name: "Verse"
-    },
-
-    {
-      id: "marin",
-      name: "Marin"
-    },
-
-    {
-      id: "cedar",
-      name: "Cedar"
-    },
-
-    {
-      id: "personal",
-      name: "🎤 Add Personal Voice"
-    },
-
-  ];
+  const [authLoading, setAuthLoading] =
+    useState(true);
 
 
-  /* =====================================================
-     LOGIN
-  ===================================================== */
-
-  const [username,
-    setUsername] =
-    useState("");
-
-  const [password,
-    setPassword] =
-    useState("");
-
-  const [loginError,
-    setLoginError] =
-    useState("");
-
-  const [loggedIn,
-    setLoggedIn] =
-    useState(false);
+  const [authMode, setAuthMode] =
+    useState("login");
 
 
-  /* =====================================================
-     CHAT
-  ===================================================== */
-
-  const [messages,
-    setMessages] =
-    useState([]);
-
-  const [loading,
-    setLoading] =
-    useState(false);
-
-  const [streaming,
-    setStreaming] =
-    useState(false);
-
-  const [stopRequested,
-    setStopRequested] =
-    useState(false);
-
-
-  /* =====================================================
-     WEB + AGENT
-  ===================================================== */
-
-  const [webEnabled,
-    setWebEnabled] =
-    useState(false);
-
-  const [agentMode,
-    setAgentMode] =
-    useState(false);
-
-
-  /* =====================================================
-     LANGUAGE
-  ===================================================== */
-
-  const [selectedLanguage,
-    setSelectedLanguage] =
-    useState("en");
-
-
-  /* =====================================================
-     ANALYZE
-  ===================================================== */
-
-  const [showAnalyzeMenu,
-    setShowAnalyzeMenu] =
-    useState(false);
-
-
-  /* =====================================================
-     SIDEBAR
-  ===================================================== */
-
-  const [sidebarOpen,
-    setSidebarOpen] =
-    useState(false);
-
-
-  /* =====================================================
-     CHAT HISTORY
-  ===================================================== */
-
-  const [chatHistory,
-    setChatHistory] =
-    useState([]);
-
-
-  /* =====================================================
-     SEARCH
-  ===================================================== */
-
-  const [searchQuery,
-    setSearchQuery] =
+  const [email, setEmail] =
     useState("");
 
 
-  /* =====================================================
-     FILES
-  ===================================================== */
-
-  const [uploadedFile,
-    setUploadedFile] =
-    useState(null);
-
-  const [imagePreview,
-    setImagePreview] =
-    useState(null);
-
-  const [documentContext,
-    setDocumentContext] =
+  const [password, setPassword] =
     useState("");
 
 
-  /* =====================================================
-     AUDIO / VIDEO
-  ===================================================== */
+  const [authError, setAuthError] =
+    useState("");
 
-  const [audioFile,
-    setAudioFile] =
-    useState(null);
-
-  const [videoFile,
-    setVideoFile] =
-    useState(null);
-
-
-  /* =====================================================
-     TTS
-  ===================================================== */
-
-  const [speaking,
-    setSpeaking] =
-    useState(false);
-
-
-  /* =====================================================
-     REFS
-  ===================================================== */
-
-  const messagesEndRef =
-    useRef(null);
-
-  const inputRef =
-    useRef(null);
-
-  const fileInputRef =
-    useRef(null);
-
-  const imageInputRef =
-    useRef(null);
-
-  const audioInputRef =
-    useRef(null);
-
-  const videoInputRef =
-    useRef(null);
-
-
-  /* =====================================================
-     SPEECH RECOGNITION
-  ===================================================== */
-
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-  } =
-    useSpeechRecognition();
-
-
-  /* =====================================================
-     LANGUAGE OPTIONS
-  ===================================================== */
-
-  const languageOptions =
-    Object.entries(
-      languageGroups || {}
-    ).flatMap(
-      ([group, languages]) =>
-        (languages || []).map(
-          (language) => ({
-            value:
-              language.code ||
-              language.value ||
-              language.id,
-
-            label:
-              language.name ||
-              language.label ||
-              language.code,
-
-            group,
-          })
-        )
-    );
-
-
-  /* =====================================================
-     AUTO LANGUAGE FROM INPUT
-  ===================================================== */
-
-  const detectLanguage =
-    (text = "") => {
-
-      if (!text.trim()) {
-        return "en";
-      }
-
-      const value =
-        text.toLowerCase();
-
-      if (
-        /[\u0C00-\u0C7F]/.test(
-          value
-        )
-      ) {
-        return "te";
-      }
-
-      if (
-        /[\u0C80-\u0CFF]/.test(
-          value
-        )
-      ) {
-        return "kn";
-      }
-
-      if (
-        /[\u0900-\u097F]/.test(
-          value
-        )
-      ) {
-        return "hi";
-      }
-
-      if (
-        /[\u0B80-\u0BFF]/.test(
-          value
-        )
-      ) {
-        return "ta";
-      }
-
-      if (
-        /[\u0D00-\u0D7F]/.test(
-          value
-        )
-      ) {
-        return "ml";
-      }
-
-      return selectedLanguage ||
-        "en";
-    };
-
-
-  /* =====================================================
-     VOICE MAP
-  ===================================================== */
-
-  const voiceMap = {
-    en: "en-US",
-    hi: "hi-IN",
-    te: "te-IN",
-    kn: "kn-IN",
-    ta: "ta-IN",
-    ml: "ml-IN",
-    mr: "mr-IN",
-    gu: "gu-IN",
-    bn: "bn-IN",
-    pa: "pa-IN",
-    ur: "ur-PK",
-    ar: "ar-SA",
-    zh: "zh-CN",
-    ja: "ja-JP",
-    ko: "ko-KR",
-    fr: "fr-FR",
-    de: "de-DE",
-    es: "es-ES",
-    it: "it-IT",
-    pt: "pt-PT",
-    ru: "ru-RU",
-  };
-
-
-  /* =====================================================
-     AUTO SCROLL
-  ===================================================== */
-
-  useEffect(() => {
-
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-
-  }, [
-    messages,
-    loading,
-    streaming,
-  ]);
-
-
-  /* =====================================================
-     SPEECH → INPUT
-  ===================================================== */
-
-  useEffect(() => {
-
-    if (
-      transcript &&
-      transcript.trim()
-    ) {
-
-      setInput(
-        transcript
-      );
-
-    }
-
-  }, [transcript]);
-
-
-  /* =====================================================
-     FIREBASE AUTH
-  ===================================================== */
 
   useEffect(() => {
 
     const unsubscribe =
       onAuthStateChanged(
         auth,
-        async (currentUser) => {
+        (currentUser) => {
 
-          if (currentUser) {
+          setUser(currentUser);
 
-            setLoggedIn(true);
-
-            setUsername(
-              currentUser.email ||
-              currentUser.displayName ||
-              ""
-            );
-
-            try {
-
-              const chats =
-                await loadUserChats(
-                  currentUser.uid
-                );
-
-              setChatHistory(
-                Array.isArray(chats)
-                  ? chats
-                  : []
-              );
-
-            } catch (error) {
-
-              console.error(
-                "Chat history loading error:",
-                error
-              );
-
-            }
-
-          } else {
-
-            setLoggedIn(false);
-
-            setUsername("");
-
-            setChatHistory([]);
-
-          }
+          setAuthLoading(false);
 
         }
       );
+
 
     return () =>
       unsubscribe();
@@ -612,710 +193,170 @@ function App() {
 
 
   /* =====================================================
-     GOOGLE LOGIN
+     SIDEBAR
   ===================================================== */
 
-  const handleGoogleLogin =
-    async () => {
+  const [sidebarOpen, setSidebarOpen] =
+    useState(false);
 
-      try {
 
-        const result =
-          await signInWithPopup(
-            auth,
-            googleProvider
-          );
+  const toggleSidebar = () => {
 
-        setLoggedIn(true);
+    setSidebarOpen(
+      (previous) =>
+        !previous
+    );
 
-        setUsername(
-          result.user.email ||
-          result.user.displayName ||
-          ""
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Google login error:",
-          error
-        );
-
-        setLoginError(
-          error.message ||
-          "Google login failed."
-        );
-
-      }
-
-    };
+  };
 
 
   /* =====================================================
-     EMAIL LOGIN
+     CHAT
   ===================================================== */
 
-  const handleEmailLogin =
-    async () => {
-
-      setLoginError("");
-
-      if (
-        !username.trim() ||
-        !password
-      ) {
-
-        setLoginError(
-          "Enter email and password."
-        );
-
-        return;
-
-      }
-
-      try {
-
-        const result =
-          await signInWithEmailAndPassword(
-            auth,
-            username.trim(),
-            password
-          );
-
-        setLoggedIn(true);
-
-        setUsername(
-          result.user.email ||
-          ""
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Email login error:",
-          error
-        );
-
-        setLoginError(
-          error.message ||
-          "Login failed."
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     CREATE ACCOUNT
-  ===================================================== */
-
-  const handleCreateAccount =
-    async () => {
-
-      setLoginError("");
-
-      if (
-        !username.trim() ||
-        !password
-      ) {
-
-        setLoginError(
-          "Enter email and password."
-        );
-
-        return;
-
-      }
-
-      try {
-
-        const result =
-          await createUserWithEmailAndPassword(
-            auth,
-            username.trim(),
-            password
-          );
-
-        setLoggedIn(true);
-
-        setUsername(
-          result.user.email ||
-          ""
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Create account error:",
-          error
-        );
-
-        setLoginError(
-          error.message ||
-          "Account creation failed."
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     LOGOUT
-  ===================================================== */
-
-  const handleLogout =
-    async () => {
-
-      try {
-
-        await signOut(auth);
-
-        setLoggedIn(false);
-
-        setMessages([]);
-
-        setInput("");
-
-        setSidebarOpen(false);
-
-      } catch (error) {
-
-        console.error(
-          "Logout error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     SAVE CLOUD CHAT
-  ===================================================== */
-
-  const saveCloudChat =
-    async (chatMessages) => {
-
-      try {
-
-        if (
-          auth.currentUser
-        ) {
-
-          await saveChatToCloud(
-            auth.currentUser.uid,
-            chatMessages
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Cloud chat save error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     LANGUAGE CODE
-  ===================================================== */
-
-  const getLanguageCode =
-    () => {
-
-      return (
-        selectedLanguage ||
-        "en"
-      );
-
-    };
-
-
-  /* =====================================================
-     READ ALOUD
-  ===================================================== */
-
-  const speakText =
-    (text) => {
-
-      if (
-        !text ||
-        !text.trim()
-      ) {
-
-        return;
-
-      }
-
-      try {
-
-        window.speechSynthesis.cancel();
-
-        const utterance =
-          new SpeechSynthesisUtterance(
-            text
-          );
-
-        utterance.lang =
-          voiceMap[
-            getLanguageCode()
-          ] ||
-          "en-US";
-
-        utterance.rate =
-          1;
-
-        utterance.pitch =
-          1;
-
-        utterance.onstart =
-          () => {
-
-            setSpeaking(true);
-
-          };
-
-        utterance.onend =
-          () => {
-
-            setSpeaking(false);
-
-          };
-
-        utterance.onerror =
-          () => {
-
-            setSpeaking(false);
-
-          };
-
-        window.speechSynthesis.speak(
-          utterance
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Speech error:",
-          error
-        );
-
-        setSpeaking(false);
-
-      }
-
-    };
-
-
-  /* =====================================================
-     STOP SPEAKING
-  ===================================================== */
-
-  const stopSpeaking =
-    () => {
-
-      try {
-
-        window.speechSynthesis.cancel();
-
-      } catch (error) {
-
-        console.error(
-          "Speech stop error:",
-          error
-        );
-
-      }
-
-      setSpeaking(false);
-
-    };
-
-
-  /* =====================================================
-     START VOICE INPUT
-  ===================================================== */
-
-  const startVoiceInput =
-    () => {
-
-      try {
-
-        resetTranscript();
-
-        SpeechRecognition.startListening({
-          continuous: false,
-          interimResults: true,
-          language:
-            voiceMap[
-              getLanguageCode()
-            ] ||
-            "en-US",
-        });
-
-      } catch (error) {
-
-        console.error(
-          "Voice input error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     STOP VOICE INPUT
-  ===================================================== */
-
-  const stopVoiceInput =
-    () => {
-
-      try {
-
-        SpeechRecognition.stopListening();
-
-      } catch (error) {
-
-        console.error(
-          "Voice stop error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     OPEN FILE PICKER
-  ===================================================== */
-
-  const openFilePicker =
-    () => {
-
-      fileInputRef.current?.click();
-
-    };
-
-
-  /* =====================================================
-     OPEN IMAGE PICKER
-  ===================================================== */
-
-  const openImagePicker =
-    () => {
-
-      imageInputRef.current?.click();
-
-    };
-
-
-  /* =====================================================
-     OPEN AUDIO PICKER
-  ===================================================== */
-
-  const openAudioPicker =
-    () => {
-
-      audioInputRef.current?.click();
-
-    };
-
-
-  /* =====================================================
-     OPEN VIDEO PICKER
-  ===================================================== */
-
-  const openVideoPicker =
-    () => {
-
-      videoInputRef.current?.click();
-
-    };
-
-
-  /* =====================================================
-     IMAGE UPLOAD
-  ===================================================== */
-
-  const handleImageUpload =
-    async (event) => {
-
-      const file =
-        event.target.files?.[0];
-
-      if (!file) {
-        return;
-      }
-
-      setUploadedFile(file);
-
-      try {
-
-        const preview =
-          URL.createObjectURL(file);
-
-        setImagePreview(preview);
-
-        const formData =
-          new FormData();
-
-        formData.append(
-          "image",
-          file
-        );
-
-        const response =
-          await fetch(
-            "https://truvora-backend.onrender.com/upload-image",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-
-        if (!response.ok) {
-
-          throw new Error(
-            `Image upload failed: ${response.status}`
-          );
-
-        }
-
-        const data =
-          await response.json();
-
-        if (
-          data.imageUrl
-        ) {
-
-          setImagePreview(
-            data.imageUrl
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Image upload error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     PDF / DOCUMENT UPLOAD
-  ===================================================== */
-
-  const handleDocumentUpload =
-    async (event) => {
-
-      const file =
-        event.target.files?.[0];
-
-      if (!file) {
-        return;
-      }
-
-      setUploadedFile(file);
-
-      try {
-
-        const formData =
-          new FormData();
-
-        formData.append(
-          "file",
-          file
-        );
-
-        const response =
-          await fetch(
-            "https://truvora-backend.onrender.com/analyze-document",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-
-        if (!response.ok) {
-
-          throw new Error(
-            `Document upload failed: ${response.status}`
-          );
-
-        }
-
-        const data =
-          await response.json();
-
-        setDocumentContext(
-          data.text ||
-          data.analysis ||
-          data.content ||
-          ""
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Document upload error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     DROPZONE
-  ===================================================== */
-
-  const {
-    getRootProps,
-    getInputProps,
-  } = useDropzone({
-
-    multiple: false,
-
-    onDrop: async (
-      acceptedFiles
-    ) => {
-
-      const file =
-        acceptedFiles?.[0];
-
-      if (!file) {
-        return;
-      }
-
-      if (
-        file.type.startsWith(
-          "image/"
-        )
-      ) {
-
-        const fakeEvent = {
-          target: {
-            files: [file],
-          },
-        };
-
-        await handleImageUpload(
-          fakeEvent
-        );
-
-        return;
-
-      }
-
-      const fakeEvent = {
-        target: {
-          files: [file],
-        },
-      };
-
-      await handleDocumentUpload(
-        fakeEvent
-      );
-
-    },
-
-  });
-
-
-  /* =====================================================
-     PART 1 ENDS
-  ===================================================== */
-
-/* =====================================================
-   CHAT HISTORY + UI STATE
-===================================================== */
-
-  const [chats,
-    setChats] =
+  const [messages, setMessages] =
     useState([]);
 
-  const [showSearch,
-    setShowSearch] =
-    useState(false);
 
-  const [searchChats,
-    setSearchChats] =
+  const [input, setInput] =
     useState("");
 
-  const [showProfileMenu,
-    setShowProfileMenu] =
-    useState(false);
 
-  const [showLogin,
-    setShowLogin] =
-    useState(false);
-
-  const [showSignup,
-    setShowSignup] =
+  const [loading, setLoading] =
     useState(false);
 
 
-  /* =====================================================
-     VIDEO / AUDIO PROCESSING
-===================================================== */
-
-  const [videoAnalysis,
-    setVideoAnalysis] =
+  const [searchChats, setSearchChats] =
     useState("");
 
-  const [audioAnalysis,
-    setAudioAnalysis] =
-    useState("");
 
-  const [analysisLoading,
-    setAnalysisLoading] =
+  const [chats, setChats] =
+    useState([]);
+
+
+  const [streaming, setStreaming] =
     useState(false);
 
 
-  /* =====================================================
-     DOCUMENT GENERATION
-===================================================== */
-
-  const [generatedFile,
-    setGeneratedFile] =
+  const [abortController, setAbortController] =
     useState(null);
 
-  const [generatingFile,
-    setGeneratingFile] =
+
+  const messagesEndRef =
+    useRef(null);
+
+
+  const inputRef =
+    useRef(null);
+
+
+  /* =====================================================
+     WEB + AGENT
+  ===================================================== */
+
+  const [webEnabled, setWebEnabled] =
     useState(false);
 
-  const [showFileMenu,
-    setShowFileMenu] =
+
+  const [agentMode, setAgentMode] =
+    useState(false);
+
+
+  const [automaticWeb, setAutomaticWeb] =
+    useState(true);
+
+
+  const [automaticAgent, setAutomaticAgent] =
+    useState(true);
+
+
+  /* =====================================================
+     LANGUAGE
+  ===================================================== */
+
+  const [selectedLanguage, setSelectedLanguage] =
+    useState("auto");
+
+
+  /* =====================================================
+     VOICE
+  ===================================================== */
+
+  const [selectedVoice, setSelectedVoice] =
+    useState("alloy");
+
+
+  const [speaking, setSpeaking] =
+    useState(false);
+
+
+  /* =====================================================
+     FILES
+  ===================================================== */
+
+  const [uploadedFile, setUploadedFile] =
+    useState(null);
+
+
+  const [documentContext, setDocumentContext] =
+    useState("");
+
+
+  const [imagePreview, setImagePreview] =
+    useState(null);
+
+
+  const [audioFile, setAudioFile] =
+    useState(null);
+
+
+  const [videoFile, setVideoFile] =
+    useState(null);
+
+
+  const [audioAnalysis, setAudioAnalysis] =
+    useState("");
+
+
+  const [videoAnalysis, setVideoAnalysis] =
+    useState("");
+
+
+  const fileInputRef =
+    useRef(null);
+
+
+  const imageInputRef =
+    useRef(null);
+
+
+  const audioInputRef =
+    useRef(null);
+
+
+  const videoInputRef =
+    useRef(null);
+
+
+  /* =====================================================
+     ANALYZE
+  ===================================================== */
+
+  const [showAnalyzeMenu, setShowAnalyzeMenu] =
     useState(false);
 
 
   /* =====================================================
      CAMERA
-===================================================== */
+  ===================================================== */
 
-  const [cameraOpen,
-    setCameraOpen] =
+  const [showCamera, setShowCamera] =
     useState(false);
+
 
   const videoRef =
     useRef(null);
+
 
   const cameraStreamRef =
     useRef(null);
@@ -1323,344 +364,461 @@ function App() {
 
   /* =====================================================
      PERSONAL VOICE
-===================================================== */
+  ===================================================== */
 
-  const [recordingVoice,
-    setRecordingVoice] =
+  const [showPersonalVoice, setShowPersonalVoice] =
     useState(false);
 
-  const [voiceRecorder,
-    setVoiceRecorder] =
-    useState(null);
 
-  const voiceChunksRef =
-    useRef([]);
+  /* =====================================================
+     FILE GENERATION
+  ===================================================== */
+
+  const [generatingFile, setGeneratingFile] =
+    useState(false);
 
 
   /* =====================================================
-     AUTOMATIC WEB / AGENT DETECTION
-===================================================== */
+     SPEECH RECOGNITION
+  ===================================================== */
 
-  const shouldUseWebAutomatically =
-    (text = "") => {
-
-      const value =
-        text
-          .toLowerCase()
-          .trim();
-
-      if (!value) {
-        return false;
-      }
-
-      const webTriggers = [
-
-        "latest",
-        "current",
-        "currently",
-        "today",
-        "tonight",
-        "tomorrow",
-        "yesterday",
-        "recent",
-        "breaking",
-        "news",
-
-        "weather",
-        "price",
-        "prices",
-        "stock",
-        "stocks",
-        "bitcoin",
-        "crypto",
-
-        "score",
-        "scores",
-        "live",
-
-        "schedule",
-        "standings",
-
-        "president",
-        "prime minister",
-        "ceo",
-
-        "release date",
-        "latest version",
-
-        "search the web",
-        "search online",
-        "look online",
-        "find online",
-
-      ];
-
-      return webTriggers.some(
-        (trigger) =>
-          value.includes(trigger)
-      );
-
-    };
-
-
-  const shouldUseAgentAutomatically =
-    (text = "") => {
-
-      const value =
-        text
-          .toLowerCase()
-          .trim();
-
-      if (!value) {
-        return false;
-      }
-
-      const agentTriggers = [
-
-        "step by step",
-        "do everything",
-        "handle everything",
-        "research and",
-        "find and",
-        "compare and",
-        "analyze and",
-        "create and",
-        "generate and",
-        "prepare and",
-        "build and",
-        "organize and",
-        "plan and",
-        "automate",
-        "complete this task",
-
-      ];
-
-      return agentTriggers.some(
-        (trigger) =>
-          value.includes(trigger)
-      );
-
-    };
+  const {
+    listening,
+    transcript,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } =
+    useSpeechRecognition();
 
 
   /* =====================================================
-     NEW CHAT
-===================================================== */
+     DROPZONE
+  ===================================================== */
 
-  const handleNewChat =
-    () => {
+  const onDrop = async (acceptedFiles) => {
 
-      stopSpeaking();
+    if (!acceptedFiles?.length) {
+      return;
+    }
 
-      setMessages([]);
 
-      setInput("");
+    const file =
+      acceptedFiles[0];
 
-      setUploadedFile(null);
 
-      setImagePreview(null);
+    setUploadedFile(file);
 
-      setDocumentContext("");
 
-      setAudioFile(null);
+    if (
+      file.type.startsWith("image/")
+    ) {
 
-      setVideoFile(null);
+      await handleImageUpload({
+        target: {
+          files: [file],
+        },
+      });
 
-      setVideoAnalysis("");
+      return;
 
-      setAudioAnalysis("");
+    }
 
-      setGeneratedFile(null);
 
-      setShowAnalyzeMenu(false);
+    await handleDocumentUpload({
+      target: {
+        files: [file],
+      },
+    });
 
-      setShowFileMenu(false);
+  };
 
-      setSidebarOpen(false);
 
-      setStopRequested(false);
-
-      setStreaming(false);
-
-    };
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+  } =
+    useDropzone({
+      onDrop,
+      multiple: false,
+    });
 
 
   /* =====================================================
-     OPEN EXISTING CHAT
-===================================================== */
+     LANGUAGE GROUP NORMALIZATION
+  ===================================================== */
 
-  const openChat =
-    (chat) => {
+  const languageOptions = (() => {
 
-      if (!chat) {
-        return;
-      }
-
-      let chatMessages = [];
+    try {
 
       if (
-        Array.isArray(chat)
-      ) {
-
-        chatMessages =
-          chat;
-
-      } else if (
         Array.isArray(
-          chat.messages
+          languageGroups
         )
       ) {
 
-        chatMessages =
-          chat.messages;
+        return languageGroups.flatMap(
+          (group) => {
 
-      }
-
-      setMessages(
-        chatMessages
-      );
-
-      setInput("");
-
-      setDocumentContext("");
-
-      setUploadedFile(null);
-
-      setImagePreview(null);
-
-      setAudioFile(null);
-
-      setVideoFile(null);
-
-      setSidebarOpen(false);
-
-    };
+            const options =
+              Array.isArray(
+                group?.options
+              )
+                ? group.options
+                : [];
 
 
-  /* =====================================================
-     LOAD CLOUD CHATS
-===================================================== */
+            return options.map(
+              (language) => ({
 
-  const refreshChats =
-    async () => {
+                value:
+                  language?.value ||
+                  language?.code ||
+                  language?.id ||
+                  "",
 
-      if (
-        !auth.currentUser
-      ) {
+                label:
+                  language?.label ||
+                  language?.name ||
+                  language?.code ||
+                  language?.value ||
+                  "Language",
 
-        return;
+                group:
+                  group?.label ||
+                  group?.name ||
+                  "Languages",
 
-      }
+              })
+            );
 
-      try {
-
-        const result =
-          await loadUserChats(
-            auth.currentUser.uid
-          );
-
-        if (
-          Array.isArray(result)
-        ) {
-
-          setChatHistory(
-            result
-          );
-
-          setChats(
-            result
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Unable to load chats:",
-          error
+          }
         );
 
       }
 
+
+      if (
+        languageGroups &&
+        typeof languageGroups ===
+          "object"
+      ) {
+
+        return Object.entries(
+          languageGroups
+        ).flatMap(
+          ([group, languages]) => {
+
+            if (
+              !Array.isArray(
+                languages
+              )
+            ) {
+
+              return [];
+
+            }
+
+
+            return languages.map(
+              (language) => ({
+
+                value:
+                  language?.value ||
+                  language?.code ||
+                  language?.id ||
+                  "",
+
+                label:
+                  language?.label ||
+                  language?.name ||
+                  language?.code ||
+                  language?.value ||
+                  "Language",
+
+                group,
+
+              })
+            );
+
+          }
+        );
+
+      }
+
+
+      return [];
+
+    } catch (error) {
+
+      console.error(
+        "Truvora language options error:",
+        error
+      );
+
+
+      return [];
+
+    }
+
+  })();
+
+
+  const selectedLanguageOption =
+    languageOptions.find(
+      (option) =>
+        option.value ===
+        selectedLanguage
+    ) ||
+    languageOptions[0] ||
+    null;
+
+
+  /* =====================================================
+     LANGUAGE DETECTION
+  ===================================================== */
+
+  const detectLanguage = (
+    text = ""
+  ) => {
+
+    if (!text.trim()) {
+      return "auto";
+    }
+
+
+    if (
+      /[\u0C00-\u0C7F]/.test(
+        text
+      )
+    ) {
+
+      return "te";
+
+    }
+
+
+    if (
+      /[\u0C80-\u0CFF]/.test(
+        text
+      )
+    ) {
+
+      return "kn";
+
+    }
+
+
+    if (
+      /[\u0900-\u097F]/.test(
+        text
+      )
+    ) {
+
+      return "hi";
+
+    }
+
+
+    if (
+      /[\u0B80-\u0BFF]/.test(
+        text
+      )
+    ) {
+
+      return "ta";
+
+    }
+
+
+    if (
+      /[\u0D00-\u0D7F]/.test(
+        text
+      )
+    ) {
+
+      return "ml";
+
+    }
+
+
+    if (
+      /[\u0980-\u09FF]/.test(
+        text
+      )
+    ) {
+
+      return "bn";
+
+    }
+
+
+    if (
+      /[\u0A80-\u0AFF]/.test(
+        text
+      )
+    ) {
+
+      return "gu";
+
+    }
+
+
+    if (
+      /[\u0A00-\u0A7F]/.test(
+        text
+      )
+    ) {
+
+      return "pa";
+
+    }
+
+
+    if (
+      /[\u0600-\u06FF]/.test(
+        text
+      )
+    ) {
+
+      return "ur";
+
+    }
+
+
+    return "en";
+
+  };
+
+
+  const handleLanguageChange =
+    (option) => {
+
+      setSelectedLanguage(
+        option?.value ||
+        "auto"
+      );
+
     };
 
 
   /* =====================================================
-     KEEP CHAT HISTORY IN SYNC
-===================================================== */
+     VOICES
+  ===================================================== */
 
-  useEffect(() => {
+  const voiceOptions = [
 
-    if (
-      Array.isArray(
-        chatHistory
-      )
-    ) {
+    {
+      id: "alloy",
+      name: "Alloy",
+    },
 
-      setChats(
-        chatHistory
+    {
+      id: "nova",
+      name: "Nova",
+    },
+
+    {
+      id: "shimmer",
+      name: "Shimmer",
+    },
+
+    {
+      id: "echo",
+      name: "Echo",
+    },
+
+    {
+      id: "fable",
+      name: "Fable",
+    },
+
+    {
+      id: "onyx",
+      name: "Onyx",
+    },
+
+  ];
+
+
+  const handleVoiceChange =
+    (event) => {
+
+      setSelectedVoice(
+        event.target.value
       );
 
-    }
-
-  }, [
-    chatHistory
-  ]);
+    };
 
 
   /* =====================================================
-     SAVE CURRENT CHAT
-===================================================== */
+     MESSAGE SCROLL
+  ===================================================== */
 
-  const saveCurrentChat =
-    async (
-      updatedMessages
-    ) => {
+  useEffect(() => {
 
-      if (
-        !Array.isArray(
-          updatedMessages
-        )
-      ) {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
 
-        return;
+  }, [messages, loading]);
 
-      }
 
-      saveChat(
-        updatedMessages
-      );
+  /* =====================================================
+     LOAD USER CHATS
+  ===================================================== */
 
-      if (
-        auth.currentUser
-      ) {
+  useEffect(() => {
+
+    if (!user) {
+
+      setChats([]);
+
+      return;
+
+    }
+
+
+    const loadChats =
+      async () => {
 
         try {
 
-          await saveChatToCloud(
-            auth.currentUser.uid,
-            updatedMessages
-          );
+          const result =
+            await loadUserChats(
+              user.uid
+            );
 
-          await refreshChats();
+
+          if (
+            Array.isArray(result)
+          ) {
+
+            setChats(result);
+
+          }
 
         } catch (error) {
 
           console.error(
-            "Save chat error:",
+            "Failed to load chats:",
             error
           );
 
         }
 
-      }
+      };
 
-    };
+
+    loadChats();
+
+  }, [user]);
 
 
   /* =====================================================
-     SEARCH CHAT HISTORY
-===================================================== */
+     FILTER CHATS
+  ===================================================== */
 
   const filteredChats =
     chats.filter(
@@ -1674,25 +832,12 @@ function App() {
 
         }
 
-        const messagesInChat =
-          Array.isArray(chat)
-            ? chat
-            : Array.isArray(
-                chat?.messages
-              )
-            ? chat.messages
-            : [];
 
         const text =
-          messagesInChat
-            .map(
-              (message) =>
-                message?.text ||
-                message?.content ||
-                ""
-            )
-            .join(" ")
-            .toLowerCase();
+          JSON.stringify(
+            chat
+          ).toLowerCase();
+
 
         return text.includes(
           searchChats
@@ -1704,28 +849,134 @@ function App() {
 
 
   /* =====================================================
-     COPY MESSAGE
-===================================================== */
+     PART 1 END
+  ===================================================== */
 
-  const copyMessage =
-    async (
-      text
-    ) => {
+  /* =====================================================
+     AUTHENTICATION
+  ===================================================== */
 
-      if (!text) {
-        return;
-      }
+  const handleGoogleLogin =
+    async () => {
 
       try {
 
-        await navigator.clipboard.writeText(
-          text
+        setAuthError("");
+
+        await signInWithPopup(
+          auth,
+          googleProvider
         );
 
       } catch (error) {
 
         console.error(
-          "Copy failed:",
+          "Google login failed:",
+          error
+        );
+
+        setAuthError(
+          error?.message ||
+          "Google sign-in failed."
+        );
+
+      }
+
+    };
+
+
+  const handleEmailAuth =
+    async (event) => {
+
+      event.preventDefault();
+
+      setAuthError("");
+
+
+      if (!email.trim()) {
+
+        setAuthError(
+          "Please enter your email."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !password ||
+        password.length < 6
+      ) {
+
+        setAuthError(
+          "Password must contain at least 6 characters."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        if (
+          authMode === "signup"
+        ) {
+
+          await createUserWithEmailAndPassword(
+            auth,
+            email.trim(),
+            password
+          );
+
+        } else {
+
+          await signInWithEmailAndPassword(
+            auth,
+            email.trim(),
+            password
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Authentication failed:",
+          error
+        );
+
+
+        setAuthError(
+          error?.message ||
+          "Authentication failed."
+        );
+
+      }
+
+    };
+
+
+  const handleLogout =
+    async () => {
+
+      try {
+
+        await signOut(auth);
+
+        setMessages([]);
+
+        setChats([]);
+
+        setSidebarOpen(
+          false
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Logout failed:",
           error
         );
 
@@ -1735,69 +986,830 @@ function App() {
 
 
   /* =====================================================
-     CLEAR INPUT ATTACHMENTS
-===================================================== */
+     NEW CHAT
+  ===================================================== */
 
-  const clearAttachments =
+  const handleNewChat =
     () => {
+
+      setMessages([]);
+
+      setInput("");
 
       setUploadedFile(null);
 
-      setImagePreview(null);
-
       setDocumentContext("");
+
+      setImagePreview(null);
 
       setAudioFile(null);
 
       setVideoFile(null);
 
+      setAudioAnalysis("");
+
       setVideoAnalysis("");
 
-      setAudioAnalysis("");
+      setSidebarOpen(
+        false
+      );
+
+      setShowAnalyzeMenu(
+        false
+      );
+
+      inputRef.current?.focus();
 
     };
 
 
   /* =====================================================
-     HANDLE AUDIO FILE
-===================================================== */
+     OPEN SAVED CHAT
+  ===================================================== */
 
-  const handleAudioUpload =
-    async (
-      event
-    ) => {
-
-      const file =
-        event.target.files?.[0];
-
-      if (!file) {
-        return;
-      }
-
-      setAudioFile(file);
-
-      setAnalysisLoading(true);
+  const openChat =
+    (chat) => {
 
       try {
 
+        const chatMessages =
+          Array.isArray(chat)
+            ? chat
+            : Array.isArray(
+                chat?.messages
+              )
+            ? chat.messages
+            : [];
+
+
+        setMessages(
+          chatMessages
+        );
+
+
+        setSidebarOpen(
+          false
+        );
+
+        setTimeout(() => {
+
+          inputRef.current?.focus();
+
+        }, 100);
+
+      } catch (error) {
+
+        console.error(
+          "Unable to open chat:",
+          error
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     INPUT
+  ===================================================== */
+
+  const handleInputChange =
+    (event) => {
+
+      setInput(
+        event.target.value
+      );
+
+    };
+
+
+  const handleInputKeyDown =
+    (event) => {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        handleSend();
+
+      }
+
+    };
+
+
+  /* =====================================================
+     STOP GENERATION
+  ===================================================== */
+
+  const handleStopGeneration =
+    () => {
+
+      try {
+
+        abortController?.abort();
+
+      } catch (error) {
+
+        console.error(
+          "Abort error:",
+          error
+        );
+
+      }
+
+
+      setLoading(false);
+
+      setStreaming(false);
+
+      setAbortController(
+        null
+      );
+
+    };
+
+
+  /* =====================================================
+     SEND MESSAGE
+  ===================================================== */
+
+  const handleSend =
+    async () => {
+
+      if (
+        loading
+      ) {
+
+        return;
+
+      }
+
+
+      const text =
+        input.trim();
+
+
+      const hasAttachment =
+        Boolean(
+          documentContext ||
+          imagePreview ||
+          audioAnalysis ||
+          videoAnalysis ||
+          uploadedFile
+        );
+
+
+      if (
+        !text &&
+        !hasAttachment
+      ) {
+
+        return;
+
+      }
+
+
+      const detectedLanguage =
+        selectedLanguage === "auto"
+          ? detectLanguage(text)
+          : selectedLanguage;
+
+
+      const userMessage = {
+
+        role:
+          "user",
+
+        text:
+          text ||
+          "Please analyze the uploaded file.",
+
+        language:
+          detectedLanguage,
+
+        timestamp:
+          Date.now(),
+
+      };
+
+
+      const nextMessages =
+        [
+          ...messages,
+          userMessage,
+        ];
+
+
+      setMessages(
+        nextMessages
+      );
+
+      setInput("");
+
+      setLoading(true);
+
+      setStreaming(true);
+
+
+      const controller =
+        new AbortController();
+
+
+      setAbortController(
+        controller
+      );
+
+
+      try {
+
+        /*
+         * Web and Agent are sent to the backend.
+         *
+         * Automatic mode is enabled by default,
+         * so the server can decide whether a web
+         * search or agent task is actually required.
+         */
+
+        const response =
+          await fetch(
+            `${API_BASE}/ask`,
+            {
+
+              method:
+                "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              signal:
+                controller.signal,
+
+              body:
+                JSON.stringify({
+
+                  message:
+                    text,
+
+                  history:
+                    nextMessages
+                      .slice(-10)
+                      .map(
+                        (message) => ({
+
+                          role:
+                            message.role,
+
+                          content:
+                            message.text ||
+                            message.content ||
+                            "",
+
+                        })
+                      ),
+
+                  web:
+                    webEnabled,
+
+                  agentMode:
+                    agentMode,
+
+                  automaticWeb:
+                    automaticWeb,
+
+                  automaticAgent:
+                    automaticAgent,
+
+                  imageUrl:
+                    imagePreview || null,
+
+                  imageUrls:
+                    imagePreview
+                      ? [
+                          imagePreview,
+                        ]
+                      : [],
+
+                  language:
+                    detectedLanguage,
+
+                  documentContext:
+                    documentContext ||
+                    "",
+
+                  audioAnalysis:
+                    audioAnalysis ||
+                    "",
+
+                  videoAnalysis:
+                    videoAnalysis ||
+                    "",
+
+                }),
+
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          const errorText =
+            await response.text();
+
+          throw new Error(
+            errorText ||
+            `Request failed with status ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        const answer =
+          data.answer ||
+          data.response ||
+          data.message ||
+          data.analysis ||
+          data.text ||
+          "I couldn't generate an answer.";
+
+
+        const sources =
+          citationRefs(
+            data.sources ||
+            data.webResults ||
+            data.citations ||
+            []
+          );
+
+
+        const assistantMessage = {
+
+          role:
+            "assistant",
+
+          text:
+            answer,
+
+          content:
+            answer,
+
+          sources,
+
+          webResults:
+            data.webResults ||
+            [],
+
+          citations:
+            data.citations ||
+            [],
+
+          imageUrl:
+            data.imageUrl ||
+            null,
+
+          document:
+            data.document ||
+            null,
+
+          documentUrl:
+            data.documentUrl ||
+            null,
+
+          type:
+            data.type ||
+            null,
+
+          timestamp:
+            Date.now(),
+
+        };
+
+
+        setMessages(
+          (previous) => [
+            ...previous,
+            assistantMessage,
+          ]
+        );
+
+
+        /*
+         * Keep the automatic mode information
+         * available for the UI without forcing
+         * the user to press Web or Agent manually.
+         */
+
+        if (
+          data.webUsed === true
+        ) {
+
+          setAutomaticWeb(
+            true
+          );
+
+        }
+
+
+        if (
+          data.agentUsed === true
+        ) {
+
+          setAutomaticAgent(
+            true
+          );
+
+        }
+
+
+        /*
+         * Save the conversation locally.
+         */
+
+        const finalMessages = [
+          ...nextMessages,
+          assistantMessage,
+        ];
+
+
+        saveChat(
+          finalMessages
+        );
+
+
+        /*
+         * Save to Firebase when authenticated.
+         */
+
+        if (user) {
+
+          try {
+
+            await saveChatToCloud(
+              user.uid,
+              finalMessages
+            );
+
+          } catch (firebaseError) {
+
+            console.error(
+              "Firebase chat save failed:",
+              firebaseError
+            );
+
+          }
+
+        }
+
+      } catch (error) {
+
+        if (
+          error?.name ===
+          "AbortError"
+        ) {
+
+          return;
+
+        }
+
+
+        console.error(
+          "Truvora request failed:",
+          error
+        );
+
+
+        const errorMessage = {
+
+          role:
+            "assistant",
+
+          text:
+            `I couldn't complete that request. ${
+              error?.message ||
+              "Please try again."
+            }`,
+
+          content:
+            `I couldn't complete that request. ${
+              error?.message ||
+              "Please try again."
+            }`,
+
+          error:
+            true,
+
+          timestamp:
+            Date.now(),
+
+        };
+
+
+        setMessages(
+          (previous) => [
+            ...previous,
+            errorMessage,
+          ]
+        );
+
+      } finally {
+
+        setLoading(false);
+
+        setStreaming(false);
+
+        setAbortController(
+          null
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     IMAGE UPLOAD
+  ===================================================== */
+
+  const handleImageUpload =
+    async (event) => {
+
+      const file =
+        event?.target?.files?.[0];
+
+
+      if (!file) {
+
+        return;
+
+      }
+
+
+      try {
+
+        setUploadedFile(
+          file
+        );
+
+
         const formData =
           new FormData();
+
+
+        formData.append(
+          "image",
+          file
+        );
+
+
+        const response =
+          await fetch(
+            `${API_BASE}/upload-image`,
+            {
+
+              method:
+                "POST",
+
+              body:
+                formData,
+
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          throw new Error(
+            `Image upload failed: ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        const imageUrl =
+          data.imageUrl ||
+          data.url;
+
+
+        if (!imageUrl) {
+
+          throw new Error(
+            "Server did not return an image URL."
+          );
+
+        }
+
+
+        setImagePreview(
+          imageUrl
+        );
+
+
+        setDocumentContext(
+          ""
+        );
+
+
+        setAudioAnalysis(
+          ""
+        );
+
+
+        setVideoAnalysis(
+          ""
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Image upload failed:",
+          error
+        );
+
+
+        setImagePreview(
+          null
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     DOCUMENT UPLOAD
+  ===================================================== */
+
+  const handleDocumentUpload =
+    async (event) => {
+
+      const file =
+        event?.target?.files?.[0];
+
+
+      if (!file) {
+
+        return;
+
+      }
+
+
+      try {
+
+        setUploadedFile(
+          file
+        );
+
+
+        const formData =
+          new FormData();
+
+
+        formData.append(
+          "document",
+          file
+        );
+
+
+        const response =
+          await fetch(
+            `${API_BASE}/analyze-document`,
+            {
+
+              method:
+                "POST",
+
+              body:
+                formData,
+
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          throw new Error(
+            `Document analysis failed: ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        const context =
+          data.text ||
+          data.content ||
+          data.documentContext ||
+          data.analysis ||
+          "";
+
+
+        setDocumentContext(
+          context
+        );
+
+
+        setImagePreview(
+          null
+        );
+
+
+        setAudioAnalysis(
+          ""
+        );
+
+
+        setVideoAnalysis(
+          ""
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Document upload failed:",
+          error
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     AUDIO UPLOAD
+  ===================================================== */
+
+  const handleAudioUpload =
+    async (event) => {
+
+      const file =
+        event?.target?.files?.[0];
+
+
+      if (!file) {
+
+        return;
+
+      }
+
+
+      try {
+
+        setAudioFile(
+          file
+        );
+
+
+        const formData =
+          new FormData();
+
 
         formData.append(
           "audio",
           file
         );
 
+
         const response =
           await fetch(
-            "https://truvora-backend.onrender.com/upload-audio",
+            `${API_BASE}/upload-audio`,
             {
-              method: "POST",
-              body: formData,
+
+              method:
+                "POST",
+
+              body:
+                formData,
+
             }
           );
 
-        if (!response.ok) {
+
+        if (
+          !response.ok
+        ) {
 
           throw new Error(
             `Audio upload failed: ${response.status}`
@@ -1805,34 +1817,42 @@ function App() {
 
         }
 
+
         const data =
           await response.json();
 
-        const result =
+
+        const analysis =
           data.analysis ||
           data.summary ||
-          data.text ||
+          data.transcript ||
           "";
 
+
         setAudioAnalysis(
-          result
+          analysis
+        );
+
+
+        setVideoAnalysis(
+          ""
+        );
+
+
+        setDocumentContext(
+          ""
+        );
+
+
+        setImagePreview(
+          null
         );
 
       } catch (error) {
 
         console.error(
-          "Audio processing error:",
+          "Audio upload failed:",
           error
-        );
-
-        setAudioAnalysis(
-          "Audio analysis could not be completed."
-        );
-
-      } finally {
-
-        setAnalysisLoading(
-          false
         );
 
       }
@@ -1841,45 +1861,58 @@ function App() {
 
 
   /* =====================================================
-     HANDLE VIDEO FILE
-===================================================== */
+     VIDEO UPLOAD
+  ===================================================== */
 
   const handleVideoUpload =
-    async (
-      event
-    ) => {
+    async (event) => {
 
       const file =
-        event.target.files?.[0];
+        event?.target?.files?.[0];
+
 
       if (!file) {
+
         return;
+
       }
 
-      setVideoFile(file);
-
-      setAnalysisLoading(true);
 
       try {
 
+        setVideoFile(
+          file
+        );
+
+
         const formData =
           new FormData();
+
 
         formData.append(
           "video",
           file
         );
 
+
         const response =
           await fetch(
-            "https://truvora-backend.onrender.com/upload-video",
+            `${API_BASE}/upload-video`,
             {
-              method: "POST",
-              body: formData,
+
+              method:
+                "POST",
+
+              body:
+                formData,
+
             }
           );
 
-        if (!response.ok) {
+
+        if (
+          !response.ok
+        ) {
 
           throw new Error(
             `Video upload failed: ${response.status}`
@@ -1887,34 +1920,42 @@ function App() {
 
         }
 
+
         const data =
           await response.json();
 
-        const result =
-          data.analysis ||
+
+        const analysis =
           data.summary ||
-          data.text ||
+          data.analysis ||
+          data.transcript ||
           "";
 
+
         setVideoAnalysis(
-          result
+          analysis
+        );
+
+
+        setAudioAnalysis(
+          ""
+        );
+
+
+        setDocumentContext(
+          ""
+        );
+
+
+        setImagePreview(
+          null
         );
 
       } catch (error) {
 
         console.error(
-          "Video processing error:",
+          "Video upload failed:",
           error
-        );
-
-        setVideoAnalysis(
-          "Video analysis could not be completed."
-        );
-
-      } finally {
-
-        setAnalysisLoading(
-          false
         );
 
       }
@@ -1923,7 +1964,89 @@ function App() {
 
 
   /* =====================================================
-     CAMERA START
+     CLEAR ATTACHMENTS
+  ===================================================== */
+
+  const clearAttachments =
+    () => {
+
+      setUploadedFile(
+        null
+      );
+
+      setDocumentContext(
+        ""
+      );
+
+      setImagePreview(
+        null
+      );
+
+      setAudioFile(
+        null
+      );
+
+      setVideoFile(
+        null
+      );
+
+      setAudioAnalysis(
+        ""
+      );
+
+      setVideoAnalysis(
+        "" 
+      );
+
+
+      if (
+        fileInputRef.current
+      ) {
+
+        fileInputRef.current.value =
+          "";
+
+      }
+
+
+      if (
+        imageInputRef.current
+      ) {
+
+        imageInputRef.current.value =
+          "";
+
+      }
+
+
+      if (
+        audioInputRef.current
+      ) {
+
+        audioInputRef.current.value =
+          "";
+
+      }
+
+
+      if (
+        videoInputRef.current
+      ) {
+
+        videoInputRef.current.value =
+          "";
+
+      }
+
+    };
+
+
+  /* =====================================================
+     PART 2 END
+  ===================================================== */
+
+/* =====================================================
+   CAMERA
 ===================================================== */
 
   const startCamera =
@@ -1931,51 +2054,47 @@ function App() {
 
       try {
 
+        setShowCamera(
+          true
+        );
+
+
         const stream =
-          await navigator.mediaDevices.getUserMedia(
-            {
-              video: true,
-              audio: false,
-            }
-          );
+          await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+          });
+
 
         cameraStreamRef.current =
           stream;
 
-        setCameraOpen(true);
 
-        setTimeout(() => {
+        if (
+          videoRef.current
+        ) {
 
-          if (
-            videoRef.current
-          ) {
+          videoRef.current.srcObject =
+            stream;
 
-            videoRef.current.srcObject =
-              stream;
-
-          }
-
-        }, 100);
+        }
 
       } catch (error) {
 
         console.error(
-          "Camera error:",
+          "Camera access failed:",
           error
         );
 
-        alert(
-          "Camera permission is required."
+
+        setShowCamera(
+          false
         );
 
       }
 
     };
 
-
-  /* =====================================================
-     CAMERA STOP
-===================================================== */
 
   const stopCamera =
     () => {
@@ -1996,398 +2115,108 @@ function App() {
 
       }
 
-      if (
-        videoRef.current
-      ) {
 
-        videoRef.current.srcObject =
-          null;
-
-      }
-
-      setCameraOpen(false);
+      setShowCamera(
+        false
+      );
 
     };
 
-
-  /* =====================================================
-     CAMERA CAPTURE
-===================================================== */
 
   const captureCameraImage =
     async () => {
 
-      if (
-        !videoRef.current
-      ) {
-
-        return;
-
-      }
-
-      const video =
-        videoRef.current;
-
-      const canvas =
-        document.createElement(
-          "canvas"
-        );
-
-      canvas.width =
-        video.videoWidth ||
-        1280;
-
-      canvas.height =
-        video.videoHeight ||
-        720;
-
-      const context =
-        canvas.getContext(
-          "2d"
-        );
-
-      if (!context) {
-        return;
-      }
-
-      context.drawImage(
-        video,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-      canvas.toBlob(
-        async (
-          blob
-        ) => {
-
-          if (!blob) {
-            return;
-          }
-
-          const file =
-            new File(
-              [blob],
-              "truvora-camera.jpg",
-              {
-                type:
-                  "image/jpeg",
-              }
-            );
-
-          const fakeEvent = {
-            target: {
-              files: [file],
-            },
-          };
-
-          await handleImageUpload(
-            fakeEvent
-          );
-
-          stopCamera();
-
-        },
-        "image/jpeg",
-        0.92
-      );
-
-    };
-
-
-  /* =====================================================
-     PERSONAL VOICE RECORDING
-===================================================== */
-
-  const startPersonalVoiceRecording =
-    async () => {
-
       try {
 
-        const stream =
-          await navigator.mediaDevices.getUserMedia(
-            {
-              audio: true,
-            }
+        if (
+          !videoRef.current
+        ) {
+
+          return;
+
+        }
+
+
+        const video =
+          videoRef.current;
+
+
+        const canvas =
+          document.createElement(
+            "canvas"
           );
 
-        const recorder =
-          new MediaRecorder(
-            stream
+
+        canvas.width =
+          video.videoWidth ||
+          1280;
+
+
+        canvas.height =
+          video.videoHeight ||
+          720;
+
+
+        const context =
+          canvas.getContext(
+            "2d"
           );
 
-        voiceChunksRef.current =
-          [];
 
-        recorder.ondataavailable =
-          (event) => {
-
-            if (
-              event.data.size > 0
-            ) {
-
-              voiceChunksRef.current.push(
-                event.data
-              );
-
-            }
-
-          };
-
-        recorder.onstop =
-          async () => {
-
-            const blob =
-              new Blob(
-                voiceChunksRef.current,
-                {
-                  type:
-                    "audio/webm",
-                }
-              );
-
-            const file =
-              new File(
-                [blob],
-                "truvora-personal-voice.webm",
-                {
-                  type:
-                    "audio/webm",
-                }
-              );
-
-            setPersonalVoice(
-              file
-            );
-
-            stream
-              .getTracks()
-              .forEach(
-                (track) =>
-                  track.stop()
-              );
-
-          };
-
-        recorder.start();
-
-        setVoiceRecorder(
-          recorder
+        context.drawImage(
+          video,
+          0,
+          0,
+          canvas.width,
+          canvas.height
         );
 
-        setRecordingVoice(
-          true
-        );
 
-      } catch (error) {
-
-        console.error(
-          "Personal voice error:",
-          error
-        );
-
-        alert(
-          "Microphone permission is required."
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     STOP PERSONAL VOICE RECORDING
-===================================================== */
-
-  const stopPersonalVoiceRecording =
-    () => {
-
-      if (
-        voiceRecorder
-      ) {
-
-        voiceRecorder.stop();
-
-      }
-
-      setVoiceRecorder(
-        null
-      );
-
-      setRecordingVoice(
-        false
-      );
-
-    };
-
-
-  /* =====================================================
-     VOICE SELECTOR
-===================================================== */
-
-  const handleVoiceChange =
-    (
-      event
-    ) => {
-
-      const value =
-        event.target.value;
-
-      setSelectedVoice(
-        value
-      );
-
-      if (
-        value === "personal"
-      ) {
-
-        setShowPersonalVoice(
-          true
-        );
-
-      } else {
-
-        setShowPersonalVoice(
-          false
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     PART 2 ENDS
-===================================================== */
-
-/* =====================================================
-   WEBSITE ANALYSIS
-===================================================== */
-
-  const handleWebsiteAnalysis =
-    async () => {
-
-      const url =
-        window.prompt(
-          "Enter the website URL:"
-        );
-
-      if (!url) {
-        return;
-      }
-
-      setShowAnalyzeMenu(false);
-
-      setAnalysisLoading(true);
-
-      try {
-
-        const response =
-          await fetch(
-            "https://truvora-backend.onrender.com/analyze-website",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
-              body: JSON.stringify({
-                url,
-              }),
-            }
+        const blob =
+          await new Promise(
+            (resolve) =>
+              canvas.toBlob(
+                resolve,
+                "image/jpeg",
+                0.92
+              )
           );
 
-        if (!response.ok) {
+
+        if (!blob) {
 
           throw new Error(
-            `Website analysis failed: ${response.status}`
+            "Unable to capture camera image."
           );
 
         }
 
-        const data =
-          await response.json();
 
-        const result =
-          data.analysis ||
-          data.summary ||
-          data.text ||
-          data.content ||
-          "";
-
-        if (result) {
-
-          const websiteMessage = {
-            role: "assistant",
-            text: result,
-            sources:
-              Array.isArray(
-                data.sources
-              )
-                ? data.sources
-                : [],
-          };
-
-          const updatedMessages = [
-            ...messages,
+        const file =
+          new File(
+            [blob],
+            `truvora-camera-${Date.now()}.jpg`,
             {
-              role: "user",
-              text:
-                `Analyze this website: ${url}`,
-            },
-            websiteMessage,
-          ];
-
-          setMessages(
-            updatedMessages
+              type:
+                "image/jpeg",
+            }
           );
 
-          await saveCurrentChat(
-            updatedMessages
-          );
 
-        }
+        await handleImageUpload({
+          target: {
+            files: [file],
+          },
+        });
+
+
+        stopCamera();
 
       } catch (error) {
 
         console.error(
-          "Website analysis error:",
+          "Camera capture failed:",
           error
-        );
-
-        const errorMessage = {
-          role: "assistant",
-          text:
-            "I couldn't analyze that website right now. Please check the URL and try again.",
-          sources: [],
-        };
-
-        const updatedMessages = [
-          ...messages,
-          {
-            role: "user",
-            text:
-              `Analyze this website: ${url}`,
-          },
-          errorMessage,
-        ];
-
-        setMessages(
-          updatedMessages
-        );
-
-        await saveCurrentChat(
-          updatedMessages
-        );
-
-      } finally {
-
-        setAnalysisLoading(
-          false
         );
 
       }
@@ -2396,329 +2225,29 @@ function App() {
 
 
   /* =====================================================
-     YOUTUBE ANALYSIS
-===================================================== */
+     YOUTUBE
+  ===================================================== */
 
   const handleYouTube =
-    async (
-      youtubeUrl
-    ) => {
+    async (url) => {
 
-      if (!youtubeUrl) {
-        return;
-      }
-
-      setShowAnalyzeMenu(false);
-
-      setAnalysisLoading(true);
-
-      try {
-
-        const response =
-          await fetch(
-            "https://truvora-backend.onrender.com/analyze-youtube",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
-              body: JSON.stringify({
-                url:
-                  youtubeUrl,
-              }),
-            }
-          );
-
-        if (!response.ok) {
-
-          throw new Error(
-            `YouTube analysis failed: ${response.status}`
-          );
-
-        }
-
-        const data =
-          await response.json();
-
-        const result =
-          data.analysis ||
-          data.summary ||
-          data.transcript ||
-          data.text ||
-          "";
-
-        const sources =
-          Array.isArray(
-            data.sources
-          )
-            ? data.sources
-            : [
-                {
-                  title:
-                    "YouTube",
-                  url:
-                    youtubeUrl,
-                },
-              ];
-
-        const updatedMessages = [
-          ...messages,
-
-          {
-            role: "user",
-            text:
-              `Analyze this YouTube video:\n${youtubeUrl}`,
-          },
-
-          {
-            role: "assistant",
-            text:
-              result ||
-              "I couldn't extract enough information from this YouTube video.",
-
-            sources,
-          },
-
-        ];
-
-        setMessages(
-          updatedMessages
-        );
-
-        await saveCurrentChat(
-          updatedMessages
-        );
-
-      } catch (error) {
-
-        console.error(
-          "YouTube analysis error:",
-          error
-        );
-
-        const updatedMessages = [
-          ...messages,
-
-          {
-            role: "user",
-            text:
-              `Analyze this YouTube video:\n${youtubeUrl}`,
-          },
-
-          {
-            role: "assistant",
-            text:
-              "I couldn't analyze that YouTube video right now.",
-            sources: [],
-          },
-
-        ];
-
-        setMessages(
-          updatedMessages
-        );
-
-        await saveCurrentChat(
-          updatedMessages
-        );
-
-      } finally {
-
-        setAnalysisLoading(
-          false
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     DOCUMENT ANALYSIS
-===================================================== */
-
-  const analyzeUploadedDocument =
-    async () => {
-
-      if (!uploadedFile) {
-        return;
-      }
-
-      setShowAnalyzeMenu(false);
-
-      await handleDocumentUpload({
-        target: {
-          files: [
-            uploadedFile,
-          ],
-        },
-      });
-
-    };
-
-
-  /* =====================================================
-     IMAGE ANALYSIS
-===================================================== */
-
-  const analyzeUploadedImage =
-    async () => {
-
-      if (!uploadedFile) {
-        openImagePicker();
-        return;
-      }
-
-      setShowAnalyzeMenu(false);
-
-      await handleImageUpload({
-        target: {
-          files: [
-            uploadedFile,
-          ],
-        },
-      });
-
-    };
-
-
-  /* =====================================================
-     OPEN ANALYZER
-===================================================== */
-
-  const openAnalyzer =
-    () => {
-
-      setShowAnalyzeMenu(
-        (previous) =>
-          !previous
-      );
-
-      setShowFileMenu(
-        false
-      );
-
-    };
-
-
-  /* =====================================================
-     SEND MESSAGE
-===================================================== */
-
-  const handleSend =
-    async () => {
-
-      const trimmedInput =
-        input.trim();
-
-      if (
-        !trimmedInput &&
-        !documentContext &&
-        !imagePreview &&
-        !audioAnalysis &&
-        !videoAnalysis
-      ) {
+      if (!url) {
 
         return;
 
       }
 
-
-      if (loading) {
-        return;
-      }
-
-
-      setStopRequested(
-        false
-      );
-
-      setStreaming(
-        true
-      );
 
       setLoading(
         true
       );
 
 
-      const automaticWeb =
-        shouldUseWebAutomatically(
-          trimmedInput
-        );
-
-      const automaticAgent =
-        shouldUseAgentAutomatically(
-          trimmedInput
-        );
-
-
-      /*
-       * Manual switches remain available.
-       * Automatic detection can also activate
-       * the corresponding backend capability.
-       */
-
-      const finalWeb =
-        webEnabled ||
-        automaticWeb;
-
-      const finalAgent =
-        agentMode ||
-        automaticAgent;
-
-
-      const detectedLanguage =
-        detectLanguage(
-          trimmedInput
-        );
-
-
-      const userMessage = {
-
-        role:
-          "user",
-
-        text:
-          trimmedInput ||
-          (
-            documentContext
-              ? "Analyze the uploaded document."
-              : imagePreview
-              ? "Analyze the uploaded image."
-              : audioAnalysis
-              ? "Analyze the uploaded audio."
-              : videoAnalysis
-              ? "Analyze the uploaded video."
-              : "Analyze the uploaded content."
-          ),
-
-      };
-
-
-      const previousMessages =
-        [
-          ...messages,
-          userMessage,
-        ];
-
-
-      setMessages(
-        previousMessages
-      );
-
-
-      setInput("");
-
-
       try {
 
         const response =
           await fetch(
-            "https://truvora-backend.onrender.com/ask",
+            `${API_BASE}/analyze-youtube`,
             {
 
               method:
@@ -2731,280 +2260,113 @@ function App() {
 
               body:
                 JSON.stringify({
-
-                  message:
-                    trimmedInput ||
-                    userMessage.text,
-
-                  history:
-                    previousMessages
-                      .slice(-10),
-
-                  web:
-                    finalWeb,
-
-                  agentMode:
-                    finalAgent,
-
-                  automaticWeb:
-                    automaticWeb,
-
-                  automaticAgent:
-                    automaticAgent,
-
+                  url,
                   language:
-                    detectedLanguage,
-
-                  selectedLanguage:
-                    detectedLanguage,
-
-                  voice:
-                    selectedVoice,
-
-                  imageUrl:
-                    imagePreview,
-
-                  documentContext:
-                    documentContext,
-
-                  audioAnalysis:
-                    audioAnalysis,
-
-                  videoAnalysis:
-                    videoAnalysis,
-
+                    selectedLanguage,
                 }),
 
             }
           );
 
 
-        if (!response.ok) {
+        if (
+          !response.ok
+        ) {
 
           throw new Error(
-            `Truvora server returned ${response.status}`
+            `YouTube analysis failed: ${response.status}`
           );
 
         }
 
 
-        const contentType =
-          response.headers.get(
-            "content-type"
-          ) || "";
-
-
-        /*
-         * Normal JSON response.
-         */
-
-        let data;
-
-
-        if (
-          contentType.includes(
-            "application/json"
-          )
-        ) {
-
-          data =
-            await response.json();
-
-        } else {
-
-          const rawText =
-            await response.text();
-
-          data = {
-            reply:
-              rawText,
-          };
-
-        }
+        const data =
+          await response.json();
 
 
         const answer =
-          data.reply ||
-          data.answer ||
           data.analysis ||
-          data.response ||
-          "";
-
-
-        if (!answer) {
-
-          throw new Error(
-            "Truvora returned an empty answer."
-          );
-
-        }
-
-
-        /*
-         * Preserve citations/sources returned
-         * by the backend.
-         */
-
-        const sources =
-          Array.isArray(
-            data.sources
-          )
-            ? data.sources
-            : [];
-
-
-        /*
-         * Display the response progressively.
-         */
-
-        let visibleAnswer =
-          "";
-
-
-        for (
-          let index = 0;
-          index < answer.length;
-          index++
-        ) {
-
-          if (
-            stopRequested
-          ) {
-
-            break;
-
-          }
-
-
-          visibleAnswer +=
-            answer[index];
-
-
-          setMessages(
-            [
-              ...previousMessages,
-
-              {
-                role:
-                  "assistant",
-
-                text:
-                  visibleAnswer,
-
-                sources,
-              },
-
-            ]
-          );
-
-
-          await new Promise(
-            (resolve) =>
-              setTimeout(
-                resolve,
-                5
-              )
-          );
-
-        }
-
-
-        /*
-         * Always finish with the complete
-         * answer unless the user stopped it.
-         */
-
-        const finalAnswer =
-          stopRequested
-            ? visibleAnswer
-            : answer;
-
-
-        const assistantMessage = {
-
-          role:
-            "assistant",
-
-          text:
-            finalAnswer,
-
-          sources,
-
-          image:
-            data.image ||
-            null,
-
-          document:
-            data.document ||
-            null,
-
-        };
-
-
-        const finalMessages = [
-
-          ...previousMessages,
-
-          assistantMessage,
-
-        ];
+          data.summary ||
+          data.transcript ||
+          "YouTube analysis completed.";
 
 
         setMessages(
-          finalMessages
+          (previous) => [
+            ...previous,
+
+            {
+              role:
+                "user",
+
+              text:
+                `Analyze this YouTube video:\n${url}`,
+
+              timestamp:
+                Date.now(),
+
+            },
+
+            {
+              role:
+                "assistant",
+
+              text:
+                answer,
+
+              content:
+                answer,
+
+              sources:
+                citationRefs(
+                  data.sources ||
+                  data.webResults ||
+                  []
+                ),
+
+              videoUrl:
+                data.videoUrl ||
+                url,
+
+              timestamp:
+                Date.now(),
+
+            },
+
+          ]
         );
-
-
-        await saveCurrentChat(
-          finalMessages
-        );
-
-
-        /*
-         * Clear temporary attachments
-         * after successful processing.
-         */
-
-        clearAttachments();
-
 
       } catch (error) {
 
         console.error(
-          "Truvora request error:",
+          "YouTube analysis failed:",
           error
         );
 
 
-        const errorMessage = {
-
-          role:
-            "assistant",
-
-          text:
-            "Sorry, Truvora could not process your request right now. Please try again.",
-
-          sources: [],
-
-        };
-
-
-        const finalMessages = [
-
-          ...previousMessages,
-
-          errorMessage,
-
-        ];
-
-
         setMessages(
-          finalMessages
-        );
+          (previous) => [
+            ...previous,
 
+            {
+              role:
+                "assistant",
 
-        await saveCurrentChat(
-          finalMessages
+              text:
+                `YouTube analysis failed: ${
+                  error?.message ||
+                  "Please try again."
+                }`,
+
+              error:
+                true,
+
+              timestamp:
+                Date.now(),
+
+            },
+
+          ]
         );
 
       } finally {
@@ -3013,68 +2375,39 @@ function App() {
           false
         );
 
-        setStreaming(
-          false
-        );
-
-        setStopRequested(
-          false
-        );
-
       }
 
     };
 
 
   /* =====================================================
-     STOP GENERATION
-===================================================== */
+     WEBSITE ANALYSIS
+  ===================================================== */
 
-  const handleStopGeneration =
-    () => {
+  const handleWebsiteAnalysis =
+    async (url) => {
 
-      setStopRequested(
-        true
-      );
+      const website =
+        url?.trim();
+
+
+      if (!website) {
+
+        return;
+
+      }
+
 
       setLoading(
-        false
-      );
-
-      setStreaming(
-        false
-      );
-
-    };
-
-
-  /* =====================================================
-     FILE GENERATION
-===================================================== */
-
-  const handleGenerateDocument =
-    async (
-      type,
-      text
-    ) => {
-
-      if (!text?.trim()) {
-        return;
-      }
-
-      setGeneratingFile(
         true
       );
 
-      setShowFileMenu(
-        false
-      );
 
       try {
 
         const response =
           await fetch(
-            "https://truvora-backend.onrender.com/generate-document",
+            `${API_BASE}/analyze-website`,
             {
 
               method:
@@ -3087,14 +2420,553 @@ function App() {
 
               body:
                 JSON.stringify({
+                  url:
+                    website,
+
+                  language:
+                    selectedLanguage,
+                }),
+
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          throw new Error(
+            `Website analysis failed: ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        const answer =
+          data.analysis ||
+          data.summary ||
+          data.text ||
+          "Website analysis completed.";
+
+
+        setMessages(
+          (previous) => [
+            ...previous,
+
+            {
+              role:
+                "user",
+
+              text:
+                `Analyze this website:\n${website}`,
+
+              timestamp:
+                Date.now(),
+
+            },
+
+            {
+              role:
+                "assistant",
+
+              text:
+                answer,
+
+              content:
+                answer,
+
+              sources:
+                citationRefs(
+                  data.sources ||
+                  data.webResults ||
+                  []
+                ),
+
+              timestamp:
+                Date.now(),
+
+            },
+
+          ]
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Website analysis failed:",
+          error
+        );
+
+
+        setMessages(
+          (previous) => [
+            ...previous,
+
+            {
+              role:
+                "assistant",
+
+              text:
+                `Website analysis failed: ${
+                  error?.message ||
+                  "Please try again."
+                }`,
+
+              error:
+                true,
+
+              timestamp:
+                Date.now(),
+
+            },
+
+          ]
+        );
+
+      } finally {
+
+        setLoading(
+          false
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     READ ALOUD
+  ===================================================== */
+
+  const stopSpeaking =
+    () => {
+
+      try {
+
+        window.speechSynthesis.cancel();
+
+      } catch (error) {
+
+        console.error(
+          "Speech stop failed:",
+          error
+        );
+
+      }
+
+
+      setSpeaking(
+        false
+      );
+
+    };
+
+
+  const speakText =
+    (text) => {
+
+      if (
+        !text
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        !window.speechSynthesis
+      ) {
+
+        return;
+
+      }
+
+
+      stopSpeaking();
+
+
+      const languageMap = {
+
+        auto:
+          "en-US",
+
+        en:
+          "en-US",
+
+        hi:
+          "hi-IN",
+
+        kn:
+          "kn-IN",
+
+        te:
+          "te-IN",
+
+        ta:
+          "ta-IN",
+
+        ml:
+          "ml-IN",
+
+        mr:
+          "mr-IN",
+
+        gu:
+          "gu-IN",
+
+        bn:
+          "bn-IN",
+
+        pa:
+          "pa-IN",
+
+        ur:
+          "ur-PK",
+
+        ar:
+          "ar-SA",
+
+        zh:
+          "zh-CN",
+
+        ja:
+          "ja-JP",
+
+        ko:
+          "ko-KR",
+
+        fr:
+          "fr-FR",
+
+        de:
+          "de-DE",
+
+        es:
+          "es-ES",
+
+        it:
+          "it-IT",
+
+        pt:
+          "pt-PT",
+
+        ru:
+          "ru-RU",
+
+      };
+
+
+      const language =
+        languageMap[
+          selectedLanguage
+        ] ||
+        "en-US";
+
+
+      /*
+       * Split long responses into manageable
+       * chunks so mobile browsers don't silently
+       * stop speech.
+       */
+
+      const cleanText =
+        String(text)
+          .replace(
+            /```[\s\S]*?```/g,
+            ""
+          )
+          .replace(
+            /\[[0-9]+\]/g,
+            ""
+          )
+          .trim();
+
+
+      const chunks = [];
+
+
+      for (
+        let index = 0;
+        index < cleanText.length;
+        index += 180
+      ) {
+
+        chunks.push(
+          cleanText.substring(
+            index,
+            index + 180
+          )
+        );
+
+      }
+
+
+      if (
+        !chunks.length
+      ) {
+
+        return;
+
+      }
+
+
+      setSpeaking(
+        true
+      );
+
+
+      let current =
+        0;
+
+
+      const speakNext =
+        () => {
+
+          if (
+            current >=
+            chunks.length
+          ) {
+
+            setSpeaking(
+              false
+            );
+
+            return;
+
+          }
+
+
+          const utterance =
+            new SpeechSynthesisUtterance(
+              chunks[current]
+            );
+
+
+          utterance.lang =
+            language;
+
+
+          utterance.rate =
+            0.95;
+
+
+          utterance.pitch =
+            1;
+
+
+          utterance.onend =
+            () => {
+
+              current += 1;
+
+              speakNext();
+
+            };
+
+
+          utterance.onerror =
+            () => {
+
+              setSpeaking(
+                false
+              );
+
+            };
+
+
+          window.speechSynthesis
+            .speak(
+              utterance
+            );
+
+        };
+
+
+      speakNext();
+
+    };
+
+
+  /* =====================================================
+     COPY
+  ===================================================== */
+
+  const copyAnswer =
+    async (text) => {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          text || ""
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Copy failed:",
+          error
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     SHARE
+  ===================================================== */
+
+  const shareAnswer =
+    async (text) => {
+
+      try {
+
+        if (
+          navigator.share
+        ) {
+
+          await navigator.share({
+
+            title:
+              "Truvora AI",
+
+            text:
+              text || "",
+
+          });
+
+          return;
+
+        }
+
+
+        await copyAnswer(
+          text
+        );
+
+      } catch (error) {
+
+        if (
+          error?.name !==
+          "AbortError"
+        ) {
+
+          console.error(
+            "Share failed:",
+            error
+          );
+
+        }
+
+      }
+
+    };
+
+
+  /* =====================================================
+     SAVE CHAT
+  ===================================================== */
+
+  const saveCurrentChat =
+    async (
+      currentMessages
+    ) => {
+
+      try {
+
+        const data =
+          Array.isArray(
+            currentMessages
+          )
+            ? currentMessages
+            : messages;
+
+
+        saveChat(
+          data
+        );
+
+
+        if (user) {
+
+          await saveChatToCloud(
+            user.uid,
+            data
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Save chat failed:",
+          error
+        );
+
+      }
+
+    };
+
+
+  /* =====================================================
+     DOCUMENT GENERATION
+  ===================================================== */
+
+  const handleGenerateDocument =
+    async (
+      type,
+      messageText
+    ) => {
+
+      if (
+        !messageText
+      ) {
+
+        return;
+
+      }
+
+
+      setGeneratingFile(
+        true
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/generate-document`,
+            {
+
+              method:
+                "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              body:
+                JSON.stringify({
 
                   type,
 
-                  content:
-                    text,
-
                   summary:
-                    text,
+                    messageText,
+
+                  recommendations:
+                    "",
+
+                  sources:
+                    [],
 
                 }),
 
@@ -3102,7 +2974,9 @@ function App() {
           );
 
 
-        if (!response.ok) {
+        if (
+          !response.ok
+        ) {
 
           throw new Error(
             `Document generation failed: ${response.status}`
@@ -3115,39 +2989,43 @@ function App() {
           await response.json();
 
 
-        const url =
-          data.fileUrl ||
-          data.url ||
-          data.downloadUrl ||
-          null;
+        const documentUrl =
+          data.document ||
+          data.documentUrl ||
+          data.url;
 
 
-        if (url) {
+        if (
+          documentUrl
+        ) {
 
-          setGeneratedFile(
-            url
-          );
+          const finalUrl =
+            documentUrl.startsWith(
+              "http"
+            )
+              ? documentUrl
+              : `${API_BASE}${documentUrl}`;
+
 
           window.open(
-            url.startsWith("http")
-              ? url
-              : `https://truvora-backend.onrender.com${url}`,
+            finalUrl,
             "_blank",
             "noopener,noreferrer"
           );
 
         }
 
+
+        return data;
+
       } catch (error) {
 
         console.error(
-          "Document generation error:",
+          "Document generation failed:",
           error
         );
 
-        alert(
-          "The requested file could not be generated."
-        );
+        return null;
 
       } finally {
 
@@ -3161,556 +3039,113 @@ function App() {
 
 
   /* =====================================================
-     SHARE ANSWER
-===================================================== */
+     VOICE INPUT
+  ===================================================== */
 
-  const shareAnswer =
-    async (
-      text
-    ) => {
+  useEffect(() => {
 
-      if (!text) {
-        return;
-      }
-
-      try {
-
-        if (
-          navigator.share
-        ) {
-
-          await navigator.share({
-            title:
-              "Truvora Global AI",
-            text,
-          });
-
-        } else {
-
-          await navigator.clipboard.writeText(
-            text
-          );
-
-          alert(
-            "Answer copied to clipboard."
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Share error:",
-          error
-        );
-
-      }
-
-    };
-
-
-  /* =====================================================
-     FILE MENU
-===================================================== */
-
-  const toggleFileMenu =
-    () => {
-
-      setShowFileMenu(
-        (previous) =>
-          !previous
-      );
-
-      setShowAnalyzeMenu(
-        false
-      );
-
-    };
-
-
-  /* =====================================================
-     SIDEBAR
-===================================================== */
-
-  const toggleSidebar =
-    () => {
-
-      setSidebarOpen(
-        (previous) =>
-          !previous
-      );
-
-    };
-
-
-  /* =====================================================
-     PART 3 ENDS
-===================================================== */
-
-/* =====================================================
-   ANALYZE MENU HANDLERS
-===================================================== */
-
-  const handleAnalyzeDocument =
-    () => {
-
-      setShowAnalyzeMenu(false);
-
-      fileInputRef.current?.click();
-
-    };
-
-
-  const handleAnalyzeImage =
-    () => {
-
-      setShowAnalyzeMenu(false);
-
-      imageInputRef.current?.click();
-
-    };
-
-
-  const handleAnalyzeAudio =
-    () => {
-
-      setShowAnalyzeMenu(false);
-
-      audioInputRef.current?.click();
-
-    };
-
-
-  const handleAnalyzeVideo =
-    () => {
-
-      setShowAnalyzeMenu(false);
-
-      videoInputRef.current?.click();
-
-    };
-
-
-  const handleAnalyzeCamera =
-    async () => {
-
-      setShowAnalyzeMenu(false);
-
-      await startCamera();
-
-    };
-
-
-  const handleAnalyzeYouTube =
-    async () => {
-
-      setShowAnalyzeMenu(false);
-
-      const url =
-        window.prompt(
-          "Paste the YouTube URL:"
-        );
-
-      if (!url) {
-        return;
-      }
-
-      await handleYouTube(
-        url.trim()
-      );
-
-    };
-
-
-  const handleAnalyzeWebsite =
-    async () => {
-
-      setShowAnalyzeMenu(false);
-
-      await handleWebsiteAnalysis();
-
-    };
-
-
-  /* =====================================================
-     INPUT HANDLER
-===================================================== */
-
-  const handleInputChange =
-    (event) => {
+    if (
+      transcript
+    ) {
 
       setInput(
-        event.target.value
+        transcript
       );
 
-    };
+    }
+
+  }, [transcript]);
 
 
-  /* =====================================================
-     ENTER TO SEND
-===================================================== */
-
-  const handleInputKeyDown =
-    (event) => {
+  const toggleVoiceInput =
+    () => {
 
       if (
-        event.key === "Enter" &&
-        !event.shiftKey
+        !browserSupportsSpeechRecognition
       ) {
 
-        event.preventDefault();
-
-        if (!loading) {
-
-          handleSend();
-
-        }
-
-      }
-
-    };
-
-
-  /* =====================================================
-     LANGUAGE CHANGE
-===================================================== */
-
-  const handleLanguageChange =
-    (option) => {
-
-      if (!option) {
         return;
+
       }
 
-      setSelectedLanguage(
-        option.value
-      );
-
-    };
-
-
-  /* =====================================================
-     SELECTED LANGUAGE OBJECT
-===================================================== */
-
-  const selectedLanguageOption =
-    languageOptions.find(
-      (option) =>
-        option.value ===
-        selectedLanguage
-    ) ||
-    {
-      value: "en",
-      label: "English",
-    };
-
-
-  /* =====================================================
-     REACT SELECT STYLES
-===================================================== */
-
-  const languageSelectStyles = {
-
-    control:
-      (base, state) => ({
-
-        ...base,
-
-        minHeight:
-          36,
-
-        width:
-          150,
-
-        background:
-          "rgba(255,255,255,0.035)",
-
-        border:
-          state.isFocused
-            ? "1px solid rgba(41,182,246,0.42)"
-            : "1px solid rgba(148,163,184,0.13)",
-
-        borderRadius:
-          10,
-
-        boxShadow:
-          "none",
-
-        cursor:
-          "pointer",
-
-      }),
-
-
-    menu:
-      (base) => ({
-
-        ...base,
-
-        zIndex:
-          3000,
-
-        background:
-          "#0f1d30",
-
-        border:
-          "1px solid rgba(148,163,184,0.14)",
-
-        borderRadius:
-          12,
-
-        overflow:
-          "hidden",
-
-      }),
-
-
-    option:
-      (
-        base,
-        state
-      ) => ({
-
-        ...base,
-
-        background:
-          state.isFocused
-            ? "rgba(21,101,192,0.22)"
-            : "#0f1d30",
-
-        color:
-          "#eaf3fc",
-
-        cursor:
-          "pointer",
-
-        fontSize:
-          12,
-
-      }),
-
-
-    singleValue:
-      (base) => ({
-
-        ...base,
-
-        color:
-          "#dbe7f5",
-
-        fontSize:
-          12,
-
-      }),
-
-
-    placeholder:
-      (base) => ({
-
-        ...base,
-
-        color:
-          "#71869e",
-
-        fontSize:
-          12,
-
-      }),
-
-
-    input:
-      (base) => ({
-
-        ...base,
-
-        color:
-          "#fff",
-
-      }),
-
-
-    indicatorSeparator:
-      () => ({
-
-        display:
-          "none",
-
-      }),
-
-  };
-
-
-  /* =====================================================
-     LOGIN SCREEN
-===================================================== */
-
-  if (!loggedIn) {
-
-    return (
-
-      <div className="truvora-login-screen">
-
-        <div className="truvora-login-card">
-
-          <div className="truvora-logo">
-
-            <div className="truvora-logo-symbol">
-              T
-            </div>
-
-            <div className="truvora-logo-text">
-
-              <strong>
-                TRUVORA
-              </strong>
-
-              <span>
-                INTELLIGENCE • INNOVATION • TRUST
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div className="truvora-login-content">
-
-            <h1>
-              Welcome to Truvora
-            </h1>
-
-            <p>
-              Your global AI workspace for
-              chat, research, analysis,
-              creation and productivity.
-            </p>
-
-
-            <button
-              className="google-login-button"
-              onClick={
-                handleGoogleLogin
-              }
-            >
-
-              Continue with Google
-
-            </button>
-
-
-            <div className="login-divider">
-              <span>
-                or
-              </span>
-            </div>
-
-
-            <input
-              className="login-input"
-              type="email"
-              placeholder="Email"
-              value={username}
-              onChange={(event) =>
-                setUsername(
-                  event.target.value
-                )
-              }
-            />
-
-
-            <input
-              className="login-input"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(event) =>
-                setPassword(
-                  event.target.value
-                )
-              }
-              onKeyDown={(event) => {
-
-                if (
-                  event.key === "Enter"
-                ) {
-
-                  handleEmailLogin();
-
-                }
-
-              }}
-            />
-
-
-            {loginError && (
-
-              <div className="login-error">
-
-                {loginError}
-
-              </div>
-
-            )}
-
-
-            <button
-              className="email-login-button"
-              onClick={
-                handleEmailLogin
-              }
-            >
-
-              Sign in
-
-            </button>
-
-
-            <button
-              className="signup-link-button"
-              onClick={
-                handleCreateAccount
-              }
-            >
-
-              Create account
-
-            </button>
-
-
-          </div>
-
-
-          <div className="truvora-login-footer">
-
-            Truvora Global AI
-
-          </div>
-
-        </div>
-
-      </div>
-
-    );
-
-  }
-
-
-  /* =====================================================
-     RENDER SOURCE LIST
-===================================================== */
-
-  const renderSources =
-    (sources = []) => {
-
-      const normalizedSources =
-        citationRefs(
-          Array.isArray(sources)
-            ? sources
-            : []
-        );
 
       if (
-        normalizedSources.length === 0
+        listening
+      ) {
+
+        SpeechRecognition.stopListening();
+
+        return;
+
+      }
+
+
+      resetTranscript();
+
+
+      SpeechRecognition.startListening({
+
+        continuous:
+          true,
+
+        language:
+          selectedLanguage === "auto"
+            ? "en-US"
+            : (
+                {
+                  en: "en-US",
+                  hi: "hi-IN",
+                  kn: "kn-IN",
+                  te: "te-IN",
+                  ta: "ta-IN",
+                  ml: "ml-IN",
+                }[
+                  selectedLanguage
+                ] ||
+                "en-US"
+              ),
+
+      });
+
+    };
+
+
+  /* =====================================================
+     PART 3 END
+  ===================================================== */
+
+  /* =====================================================
+     UI HELPERS
+  ===================================================== */
+
+  const getMessageText =
+    (message) =>
+      message?.text ||
+      message?.content ||
+      "";
+
+
+  const getMessageSources =
+    (message) =>
+      citationRefs(
+        message?.sources ||
+        message?.webResults ||
+        message?.citations ||
+        []
+      );
+
+
+  const renderSources =
+    (message) => {
+
+      const sources =
+        getMessageSources(
+          message
+        );
+
+
+      if (
+        !sources.length
       ) {
 
         return null;
@@ -3724,9 +3159,7 @@ function App() {
 
           <div className="sources-title">
 
-            <span>
-              📚
-            </span>
+            <span>📚</span>
 
             <span>
               Sources
@@ -3737,73 +3170,98 @@ function App() {
 
           <div className="sources-list">
 
-            {normalizedSources.map(
-              (source, index) => (
+            {sources.map(
+              (
+                source,
+                index
+              ) => {
 
-                <a
-                  key={
-                    `${source.sourceUrl}-${index}`
-                  }
-
-                  className="source-item"
-
-                  href={
-                    source.sourceUrl
-                  }
-
-                  target="_blank"
-
-                  rel="noopener noreferrer"
-
-                  onClick={() =>
-                    setActiveCitation(
-                      source
-                    )
-                  }
-                >
-
-                  <span className="source-number">
-
-                    {source.citationNumber}
-
-                  </span>
+                const url =
+                  source.sourceUrl ||
+                  source.url ||
+                  "#";
 
 
-                  <span className="source-content">
-
-                    <strong>
-
-                      {
-                        source.title ||
-                        source.name ||
-                        source.domain ||
-                        `Source ${index + 1}`
-                      }
-
-                    </strong>
+                const title =
+                  source.title ||
+                  source.name ||
+                  source.domain ||
+                  `Source ${index + 1}`;
 
 
-                    <small>
+                let hostname =
+                  "";
 
-                      {
-                        source.domain ||
-                        source.sourceUrl
-                      }
+                try {
 
-                    </small>
+                  hostname =
+                    new URL(
+                      url
+                    ).hostname;
 
-                  </span>
+                } catch {
+
+                  hostname =
+                    source.domain ||
+                    "";
+
+                }
 
 
-                  <span className="source-arrow">
+                return (
 
-                    ↗
+                  <a
+                    key={
+                      `${url}-${index}`
+                    }
+                    className="source-item"
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
 
-                  </span>
+                      setActiveCitation(
+                        source
+                      );
 
-                </a>
+                      setCitationPreviewOpen(
+                        true
+                      );
 
-              )
+                    }}
+                  >
+
+                    <span className="source-number">
+
+                      {index + 1}
+
+                    </span>
+
+
+                    <span className="source-content">
+
+                      <strong>
+                        {title}
+                      </strong>
+
+                      <small>
+                        {hostname}
+                      </small>
+
+                    </span>
+
+
+                    <span className="source-arrow">
+
+                      ↗
+
+                    </span>
+
+                  </a>
+
+                );
+
+              }
             )}
 
           </div>
@@ -3817,90 +3275,100 @@ function App() {
 
   /* =====================================================
      RENDER MESSAGE
-===================================================== */
+  ===================================================== */
 
   const renderMessage =
-    (
-      message,
-      index
-    ) => {
+    (message, index) => {
 
       const isUser =
-        message.role ===
+        message?.role ===
         "user";
 
 
-      const messageText =
-        message.text ||
-        message.content ||
-        "";
+      const text =
+        getMessageText(
+          message
+        );
+
+
+      if (
+        isUser
+      ) {
+
+        return (
+
+          <div
+            key={
+              message.timestamp ||
+              index
+            }
+            className="truvora-message truvora-user-message"
+          >
+
+            <div className="message-body">
+
+              <div className="message-text">
+
+                {text}
+
+              </div>
+
+            </div>
+
+
+            <div className="message-avatar user-avatar">
+
+              <FiUser />
+
+            </div>
+
+          </div>
+
+        );
+
+      }
 
 
       return (
 
         <div
           key={
-            message.id ||
-            `${message.role}-${index}`
+            message.timestamp ||
+            index
           }
-
-          className={
-            `truvora-message ${
-              isUser
-                ? "truvora-user-message"
-                : "truvora-ai-message"
-            }`
-          }
+          className="truvora-message truvora-ai-message"
         >
 
-          {!isUser && (
+          <div className="message-avatar">
 
-            <div className="message-avatar">
+            T
 
-              T
-
-            </div>
-
-          )}
+          </div>
 
 
           <div className="message-body">
 
             <div className="message-text">
 
-              {isUser ? (
-
-                <div>
-                  {messageText}
-                </div>
-
-              ) : (
-
-                <ReactMarkdown
-                  remarkPlugins={[
-                    remarkGfm
-                  ]}
-                >
-
-                  {messageText}
-
-                </ReactMarkdown>
-
-              )}
+              <ReactMarkdown
+                remarkPlugins={[
+                  remarkGfm,
+                ]}
+              >
+                {text}
+              </ReactMarkdown>
 
 
-              {message.image && (
+              {message.imageUrl && (
 
                 <div className="message-image-container">
 
                   <img
-                    src={
-                      message.image
-                    }
-
-                    alt="Generated by Truvora"
-
                     className="message-image"
+                    src={
+                      message.imageUrl
+                    }
+                    alt="Generated by Truvora"
                   />
 
                 </div>
@@ -3908,75 +3376,68 @@ function App() {
               )}
 
 
-              {message.document && (
+              {message.documentUrl && (
 
                 <a
                   className="generated-document"
-
                   href={
-                    message.document
+                    message.documentUrl
                   }
-
                   target="_blank"
-
                   rel="noopener noreferrer"
                 >
 
-                  📄 Open generated document
+                  📄
+
+                  <span>
+                    Open generated file
+                  </span>
 
                 </a>
 
               )}
 
-
-              {!isUser &&
-                renderSources(
-                  message.sources
-                )}
-
             </div>
 
 
-            {!isUser && (
+            {!message.error && (
 
               <div className="message-actions">
 
-                <CopyToClipboard
-                  text={
-                    messageText
+                <button
+                  type="button"
+                  className="message-action-btn"
+                  title="Copy"
+                  onClick={() =>
+                    copyAnswer(text)
                   }
                 >
 
-                  <button
-                    className="message-action-btn"
-                    title="Copy"
-                  >
+                  <FiCopy />
 
-                    <FiCopy />
-
-                  </button>
-
-                </CopyToClipboard>
+                </button>
 
 
                 <button
+                  type="button"
                   className="message-action-btn"
                   title={
                     speaking
-                      ? "Stop speaking"
+                      ? "Stop reading"
                       : "Read aloud"
                   }
-
                   onClick={() => {
 
-                    if (speaking) {
+                    if (
+                      speaking
+                    ) {
 
                       stopSpeaking();
 
                     } else {
 
                       speakText(
-                        messageText
+                        text
                       );
 
                     }
@@ -3990,12 +3451,11 @@ function App() {
 
 
                 <button
+                  type="button"
                   className="message-action-btn"
                   title="Share"
                   onClick={() =>
-                    shareAnswer(
-                      messageText
-                    )
+                    shareAnswer(text)
                   }
                 >
 
@@ -4005,8 +3465,9 @@ function App() {
 
 
                 <button
+                  type="button"
                   className="message-action-btn"
-                  title="Save"
+                  title="Save chat"
                   onClick={() =>
                     saveCurrentChat(
                       messages
@@ -4014,23 +3475,41 @@ function App() {
                   }
                 >
 
-                  ☆
+                  💾
 
                 </button>
 
 
                 <button
+                  type="button"
                   className="message-action-btn"
                   title="PDF"
                   onClick={() =>
                     handleGenerateDocument(
                       "pdf",
-                      messageText
+                      text
                     )
                   }
                 >
 
-                  📄
+                  PDF
+
+                </button>
+
+
+                <button
+                  type="button"
+                  className="message-action-btn"
+                  title="DOCX"
+                  onClick={() =>
+                    handleGenerateDocument(
+                      "docx",
+                      text
+                    )
+                  }
+                >
+
+                  DOCX
 
                 </button>
 
@@ -4038,18 +3517,12 @@ function App() {
 
             )}
 
+
+            {renderSources(
+              message
+            )}
+
           </div>
-
-
-          {isUser && (
-
-            <div className="message-avatar user-avatar">
-
-              <FiUser />
-
-            </div>
-
-          )}
 
         </div>
 
@@ -4059,14 +3532,118 @@ function App() {
 
 
   /* =====================================================
-     ANALYZE MENU
-===================================================== */
+     EMPTY STATE
+  ===================================================== */
 
-  const renderAnalyzeMenu =
+  const renderEmptyState =
+    () => (
+
+      <div className="truvora-empty-state">
+
+        <div className="empty-logo">
+
+          <div className="empty-logo-symbol">
+
+            T
+
+          </div>
+
+        </div>
+
+
+        <h1>
+          How can Truvora help?
+        </h1>
+
+
+        <p>
+          Intelligence • Innovation • Trust
+        </p>
+
+
+        <div className="empty-suggestions">
+
+          <button
+            type="button"
+            onClick={() =>
+              setInput(
+                "Explain artificial intelligence in simple terms."
+              )
+            }
+          >
+
+            Explain AI
+
+          </button>
+
+
+          <button
+            type="button"
+            onClick={() =>
+              setInput(
+                "Analyze the latest important news."
+              )
+            }
+          >
+
+            Latest news
+
+          </button>
+
+
+          <button
+            type="button"
+            onClick={() =>
+              setInput(
+                "Help me create a professional document."
+              )
+            }
+          >
+
+            Create document
+
+          </button>
+
+
+          <button
+            type="button"
+            onClick={() =>
+              setInput(
+                "Give me a detailed research summary."
+              )
+            }
+          >
+
+            Research
+
+          </button>
+
+        </div>
+
+      </div>
+
+    );
+
+
+  /* =====================================================
+     COMPOSER ATTACHMENTS
+  ===================================================== */
+
+  const renderAttachmentStatus =
     () => {
 
+      const hasAny =
+        uploadedFile ||
+        audioFile ||
+        videoFile ||
+        documentContext ||
+        imagePreview ||
+        audioAnalysis ||
+        videoAnalysis;
+
+
       if (
-        !showAnalyzeMenu
+        !hasAny
       ) {
 
         return null;
@@ -4076,144 +3653,100 @@ function App() {
 
       return (
 
-        <div className="analyze-menu">
+        <div className="composer-attachment-status">
 
-          <div className="analyze-menu-header">
-
-            <strong>
-              Analyze anything
-            </strong>
-
-            <button
-              onClick={() =>
-                setShowAnalyzeMenu(
-                  false
-                )
-              }
-            >
-
-              ×
-
-            </button>
-
-          </div>
-
-
-          <button
-            onClick={
-              handleAnalyzeDocument
-            }
-          >
+          {uploadedFile && (
 
             <span>
-              📄
+
+              📎
+
+              {uploadedFile.name}
+
             </span>
 
+          )}
+
+
+          {audioFile && (
+
             <span>
-              Document
+
+              🎵
+
+              {audioFile.name}
+
             </span>
 
-          </button>
+          )}
 
 
-          <button
-            onClick={
-              handleAnalyzeImage
-            }
-          >
+          {videoFile && (
 
             <span>
-              🖼️
-            </span>
 
-            <span>
-              Image
-            </span>
-
-          </button>
-
-
-          <button
-            onClick={
-              handleAnalyzeCamera
-            }
-          >
-
-            <span>
-              📷
-            </span>
-
-            <span>
-              Live Camera
-            </span>
-
-          </button>
-
-
-          <button
-            onClick={
-              handleAnalyzeVideo
-            }
-          >
-
-            <span>
               🎥
+
+              {videoFile.name}
+
             </span>
+
+          )}
+
+
+          {imagePreview && (
 
             <span>
-              Video
+
+              🖼️ Image attached
+
             </span>
 
-          </button>
+          )}
+
+
+          {documentContext && (
+
+            <span>
+
+              📄 Document ready
+
+            </span>
+
+          )}
+
+
+          {audioAnalysis && (
+
+            <span>
+
+              🎙️ Audio analyzed
+
+            </span>
+
+          )}
+
+
+          {videoAnalysis && (
+
+            <span>
+
+              🎥 Video analyzed
+
+            </span>
+
+          )}
 
 
           <button
+            type="button"
+            title="Remove attachments"
             onClick={
-              handleAnalyzeAudio
+              clearAttachments
             }
           >
 
-            <span>
-              🎙️
-            </span>
-
-            <span>
-              Audio
-            </span>
-
-          </button>
-
-
-          <button
-            onClick={
-              handleAnalyzeYouTube
-            }
-          >
-
-            <span>
-              ▶️
-            </span>
-
-            <span>
-              YouTube
-            </span>
-
-          </button>
-
-
-          <button
-            onClick={
-              handleAnalyzeWebsite
-            }
-          >
-
-            <span>
-              🌐
-            </span>
-
-            <span>
-              Website
-            </span>
+            ×
 
           </button>
 
@@ -4225,30 +3758,1509 @@ function App() {
 
 
   /* =====================================================
-     CAMERA MODAL
-===================================================== */
+     MODE INDICATORS
+  ===================================================== */
 
-  const renderCamera =
-    () => {
+  const renderModeIndicators =
+    () => (
 
-      if (!cameraOpen) {
-        return null;
-      }
+      <div className="composer-analysis-preview">
+
+        {webEnabled && (
+
+          <>
+
+            <strong>
+              🌐 Web ON
+            </strong>
+
+            <span>
+              Live web search enabled
+            </span>
+
+          </>
+
+        )}
 
 
-      return (
+        {!webEnabled &&
+          automaticWeb && (
 
-        <div className="camera-overlay">
+            <>
+
+              <strong>
+                🌐 Web Auto
+              </strong>
+
+              <span>
+                Truvora searches when needed
+              </span>
+
+            </>
+
+          )}
+
+
+        {agentMode && (
+
+          <>
+
+            <strong>
+              🤖 Agent ON
+            </strong>
+
+            <span>
+              Agent tasks enabled
+            </span>
+
+          </>
+
+        )}
+
+
+        {!agentMode &&
+          automaticAgent && (
+
+            <>
+
+              <strong>
+                🤖 Agent Auto
+              </strong>
+
+              <span>
+                Truvora uses agents when needed
+              </span>
+
+            </>
+
+          )}
+
+      </div>
+
+    );
+
+
+  /* =====================================================
+     AUTH SCREEN
+  ===================================================== */
+
+  if (
+    authLoading
+  ) {
+
+    return (
+
+      <div className="truvora-login-screen">
+
+        <div className="truvora-login-card">
+
+          <div className="empty-logo-symbol">
+
+            T
+
+          </div>
+
+          <h1>
+            TRUVORA
+          </h1>
+
+          <p>
+            Intelligence • Innovation • Trust
+          </p>
+
+          <span>
+            Loading...
+          </span>
+
+        </div>
+
+      </div>
+
+    );
+
+  }
+
+
+  if (
+    !user
+  ) {
+
+    return (
+
+      <div className="truvora-login-screen">
+
+        <div className="truvora-login-card">
+
+          <div className="truvora-logo">
+
+            <div className="truvora-logo-symbol">
+
+              T
+
+            </div>
+
+
+            <div className="truvora-logo-text">
+
+              <strong>
+                TRUVORA
+              </strong>
+
+              <span>
+                GLOBAL AI
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div className="truvora-login-content">
+
+            <h1>
+
+              {authMode === "login"
+                ? "Welcome back"
+                : "Create your account"}
+
+            </h1>
+
+
+            <p>
+              Intelligence • Innovation • Trust
+            </p>
+
+
+            <button
+              type="button"
+              onClick={
+                handleGoogleLogin
+              }
+              className="google-login-button"
+            >
+
+              Continue with Google
+
+            </button>
+
+
+            <div className="auth-divider">
+
+              <span>
+                OR
+              </span>
+
+            </div>
+
+
+            <form
+              onSubmit={
+                handleEmailAuth
+              }
+            >
+
+              <input
+                className="login-input"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(event) =>
+                  setEmail(
+                    event.target.value
+                  )
+                }
+              />
+
+
+              <input
+                className="login-input"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(event) =>
+                  setPassword(
+                    event.target.value
+                  )
+                }
+              />
+
+
+              {authError && (
+
+                <div className="auth-error">
+
+                  {authError}
+
+                </div>
+
+              )}
+
+
+              <button
+                type="submit"
+                className="login-submit-button"
+              >
+
+                {authMode === "login"
+                  ? "Sign in"
+                  : "Create account"}
+
+              </button>
+
+            </form>
+
+
+            <button
+              type="button"
+              className="auth-switch-button"
+              onClick={() => {
+
+                setAuthError("");
+
+                setAuthMode(
+                  authMode === "login"
+                    ? "signup"
+                    : "login"
+                );
+
+              }}
+            >
+
+              {authMode === "login"
+                ? "Create a new account"
+                : "Already have an account? Sign in"}
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    );
+
+  }
+
+
+  /* =====================================================
+     MAIN APPLICATION
+  ===================================================== */
+
+  return (
+
+    <div className="truvora-app">
+
+
+      {/* =================================================
+         MOBILE SIDEBAR BACKDROP
+      ================================================= */}
+
+      {sidebarOpen && (
+
+        <div
+          className="mobile-sidebar-backdrop"
+          onClick={() =>
+            setSidebarOpen(
+              false
+            )
+          }
+        />
+
+      )}
+
+
+      {/* =================================================
+         SIDEBAR
+      ================================================= */}
+
+      <aside
+        className={`truvora-sidebar ${
+          sidebarOpen
+            ? "sidebar-visible"
+            : "sidebar-hidden"
+        }`}
+      >
+
+        <div className="sidebar-header">
+
+          <div className="truvora-logo">
+
+            <div className="truvora-logo-symbol">
+
+              T
+
+            </div>
+
+
+            <div className="truvora-logo-text">
+
+              <strong>
+                TRUVORA
+              </strong>
+
+              <span>
+                GLOBAL AI
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            className="sidebar-mobile-close"
+            onClick={() =>
+              setSidebarOpen(
+                false
+              )
+            }
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <button
+          type="button"
+          className="new-chat-button"
+          onClick={
+            handleNewChat
+          }
+        >
+
+          <FiPlus />
+
+          <span>
+            New Chat
+          </span>
+
+        </button>
+
+
+        <div className="sidebar-search">
+
+          <input
+            type="text"
+            placeholder="Search chats"
+            value={searchChats}
+            onChange={(event) =>
+              setSearchChats(
+                event.target.value
+              )
+            }
+          />
+
+        </div>
+
+
+        <div className="sidebar-section-title">
+
+          Recent
+
+        </div>
+
+
+        <div className="sidebar-chat-list">
+
+          {filteredChats.length ===
+          0 ? (
+
+            <div className="sidebar-empty">
+
+              No saved chats yet.
+
+            </div>
+
+          ) : (
+
+            filteredChats.map(
+              (chat, index) => (
+
+                <button
+                  type="button"
+                  key={
+                    chat?.id ||
+                    chat?.timestamp ||
+                    index
+                  }
+                  className="sidebar-chat-item"
+                  onClick={() =>
+                    openChat(
+                      chat
+                    )
+                  }
+                >
+
+                  <span>
+
+                    {chat?.title ||
+                      chat?.messages?.[0]?.text ||
+                      `Chat ${index + 1}`}
+
+                  </span>
+
+                </button>
+
+              )
+            )
+
+          )}
+
+        </div>
+
+
+        <div className="sidebar-footer">
+
+          <div className="sidebar-user">
+
+            <div className="sidebar-user-avatar">
+
+              {(user?.displayName ||
+                user?.email ||
+                "U")
+                .charAt(0)
+                .toUpperCase()}
+
+            </div>
+
+
+            <div className="sidebar-user-info">
+
+              <strong>
+
+                {user?.displayName ||
+                  "Truvora User"}
+
+              </strong>
+
+              <span>
+
+                {user?.email ||
+                  ""}
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            className="sidebar-logout"
+            onClick={
+              handleLogout
+            }
+          >
+
+            Sign out
+
+          </button>
+
+        </div>
+
+      </aside>
+
+
+      {/* =================================================
+         MAIN
+      ================================================= */}
+
+      <main className="truvora-main">
+
+
+        {/* ===============================================
+           TOP BAR
+        =============================================== */}
+
+        <header className="truvora-topbar">
+
+          <div className="topbar-left">
+
+            <button
+              type="button"
+              className="mobile-menu-button"
+              onClick={
+                toggleSidebar
+              }
+              aria-label="Open menu"
+            >
+
+              <FiMenu />
+
+            </button>
+
+
+            <div className="mobile-brand">
+
+              <div className="truvora-logo-symbol">
+
+                T
+
+              </div>
+
+
+              <div>
+
+                <strong>
+                  TRUVORA
+                </strong>
+
+                <span>
+                  GLOBAL AI
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div className="topbar-center">
+
+            <span className="topbar-slogan">
+
+              Intelligence • Innovation • Trust
+
+            </span>
+
+          </div>
+
+
+          <div className="topbar-right">
+
+            <div className="topbar-avatar">
+
+              {(user?.displayName ||
+                user?.email ||
+                "U")
+                .charAt(0)
+                .toUpperCase()}
+
+            </div>
+
+          </div>
+
+        </header>
+
+
+        {/* ===============================================
+           CHAT AREA
+        =============================================== */}
+
+        <section className="truvora-chat-area">
+
+          {messages.length === 0
+            ? renderEmptyState()
+            : messages.map(
+                renderMessage
+              )}
+
+
+          {loading && (
+
+            <div className="truvora-thinking">
+
+              <div className="message-avatar">
+
+                T
+
+              </div>
+
+
+              <div className="thinking-content">
+
+                <span>
+                  Truvora is thinking
+                </span>
+
+
+                <span className="thinking-dots">
+
+                  <i />
+                  <i />
+                  <i />
+
+                </span>
+
+              </div>
+
+            </div>
+
+          )}
+
+
+          <div
+            ref={
+              messagesEndRef
+            }
+          />
+
+        </section>
+
+
+        {/* ===============================================
+           COMPOSER
+        =============================================== */}
+
+        <section className="truvora-composer-area">
+
+          <div
+            className={`truvora-composer ${
+              isDragActive
+                ? "composer-drag-active"
+                : ""
+            }`}
+            {...getRootProps()}
+          >
+
+            <input
+              {...getInputProps()}
+            />
+
+
+            <div className="composer-toolbar">
+
+              <div className="composer-toolbar-left">
+
+
+                {/* UPLOAD */}
+
+                <button
+                  type="button"
+                  className="composer-icon-button"
+                  title="Upload file"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    fileInputRef.current?.click();
+
+                  }}
+                >
+
+                  <FiUpload />
+
+                </button>
+
+
+                <input
+                  ref={
+                    fileInputRef
+                  }
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.md,.json,.xml,.rtf,.odt,image/*"
+                  style={{
+                    display:
+                      "none",
+                  }}
+                  onChange={
+                    handleDocumentUpload
+                  }
+                />
+
+
+                {/* IMAGE */}
+
+                <button
+                  type="button"
+                  className="composer-icon-button"
+                  title="Image"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    imageInputRef.current?.click();
+
+                  }}
+                >
+
+                  🖼️
+
+                </button>
+
+
+                <input
+                  ref={
+                    imageInputRef
+                  }
+                  type="file"
+                  accept="image/*"
+                  style={{
+                    display:
+                      "none",
+                  }}
+                  onChange={
+                    handleImageUpload
+                  }
+                />
+
+
+                {/* AUDIO */}
+
+                <button
+                  type="button"
+                  className="composer-icon-button"
+                  title="Audio"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    audioInputRef.current?.click();
+
+                  }}
+                >
+
+                  🎙️
+
+                </button>
+
+
+                <input
+                  ref={
+                    audioInputRef
+                  }
+                  type="file"
+                  accept="audio/*"
+                  style={{
+                    display:
+                      "none",
+                  }}
+                  onChange={
+                    handleAudioUpload
+                  }
+                />
+
+
+                {/* VIDEO */}
+
+                <button
+                  type="button"
+                  className="composer-icon-button"
+                  title="Video"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    videoInputRef.current?.click();
+
+                  }}
+                >
+
+                  🎥
+
+                </button>
+
+
+                <input
+                  ref={
+                    videoInputRef
+                  }
+                  type="file"
+                  accept="video/*"
+                  style={{
+                    display:
+                      "none",
+                  }}
+                  onChange={
+                    handleVideoUpload
+                  }
+                />
+
+
+                {/* ANALYZE */}
+
+                <button
+                  type="button"
+                  className={`composer-mode-button ${
+                    showAnalyzeMenu
+                      ? "mode-active"
+                      : ""
+                  }`}
+                  title="Analyze"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    setShowAnalyzeMenu(
+                      (previous) =>
+                        !previous
+                    );
+
+                  }}
+                >
+
+                  🔍
+
+                  <span>
+                    Analyze
+                  </span>
+
+                </button>
+
+
+                {/* WEB */}
+
+                <button
+                  type="button"
+                  className={`composer-mode-button ${
+                    webEnabled
+                      ? "mode-active"
+                      : ""
+                  }`}
+                  title="Web"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    setWebEnabled(
+                      (previous) =>
+                        !previous
+                    );
+
+                  }}
+                >
+
+                  🌐
+
+                  <span>
+                    Web
+                  </span>
+
+                </button>
+
+
+                {/* AGENT */}
+
+                <button
+                  type="button"
+                  className={`composer-mode-button ${
+                    agentMode
+                      ? "mode-active"
+                      : ""
+                  }`}
+                  title="Agent"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    setAgentMode(
+                      (previous) =>
+                        !previous
+                    );
+
+                  }}
+                >
+
+                  🤖
+
+                  <span>
+                    Agent
+                  </span>
+
+                </button>
+
+
+                {/* AUTOMATIC WEB */}
+
+                <button
+                  type="button"
+                  className={`composer-mode-button ${
+                    automaticWeb
+                      ? "mode-active"
+                      : ""
+                  }`}
+                  title="Automatic Web"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    setAutomaticWeb(
+                      (previous) =>
+                        !previous
+                    );
+
+                  }}
+                >
+
+                  ⚡
+
+                  <span>
+                    Auto
+                  </span>
+
+                </button>
+
+
+              </div>
+
+
+              <div className="composer-toolbar-right">
+
+
+                {/* LANGUAGE */}
+
+                <div
+                  className="language-selector"
+                  onClick={(event) =>
+                    event.stopPropagation()
+                  }
+                >
+
+                  <Select
+                    value={
+                      selectedLanguageOption
+                    }
+                    options={
+                      languageOptions
+                    }
+                    onChange={
+                      handleLanguageChange
+                    }
+                    placeholder="Language"
+                    isSearchable
+                    classNamePrefix="truvora-select"
+                    styles={{
+
+                      control:
+                        (base) => ({
+
+                          ...base,
+
+                          background:
+                            "rgba(255,255,255,0.035)",
+
+                          borderColor:
+                            "rgba(148,163,184,0.13)",
+
+                          minHeight:
+                            36,
+
+                          boxShadow:
+                            "none",
+
+                        }),
+
+                      menu:
+                        (base) => ({
+
+                          ...base,
+
+                          zIndex:
+                            2000,
+
+                        }),
+
+                      singleValue:
+                        (base) => ({
+
+                          ...base,
+
+                          color:
+                            "#c9d8e7",
+
+                          fontSize:
+                            11,
+
+                        }),
+
+                      input:
+                        (base) => ({
+
+                          ...base,
+
+                          color:
+                            "#ffffff",
+
+                        }),
+
+                      placeholder:
+                        (base) => ({
+
+                          ...base,
+
+                          color:
+                            "#71869e",
+
+                          fontSize:
+                            11,
+
+                        }),
+
+                      menuList:
+                        (base) => ({
+
+                          ...base,
+
+                          background:
+                            "#0f1d30",
+
+                        }),
+
+                      option:
+                        (base, state) => ({
+
+                          ...base,
+
+                          background:
+                            state.isFocused
+                              ? "rgba(21,101,192,0.20)"
+                              : "#0f1d30",
+
+                          color:
+                            "#dcecff",
+
+                          fontSize:
+                            11,
+
+                        }),
+
+                    }}
+                  />
+
+                </div>
+
+
+                {/* VOICE */}
+
+                <select
+                  className="voice-selector"
+                  value={
+                    selectedVoice
+                  }
+                  onChange={
+                    handleVoiceChange
+                  }
+                  onClick={(event) =>
+                    event.stopPropagation()
+                  }
+                  aria-label="Voice"
+                >
+
+                  {voiceOptions.map(
+                    (voice) => (
+
+                      <option
+                        key={
+                          voice.id
+                        }
+                        value={
+                          voice.id
+                        }
+                      >
+
+                        {voice.name}
+
+                      </option>
+
+                    )
+                  )}
+
+                </select>
+
+
+                {/* VOICE INPUT */}
+
+                <button
+                  type="button"
+                  className={`composer-icon-button ${
+                    listening
+                      ? "mode-active"
+                      : ""
+                  }`}
+                  title="Voice input"
+                  onClick={(event) => {
+
+                    event.stopPropagation();
+
+                    toggleVoiceInput();
+
+                  }}
+                >
+
+                  {listening
+                    ? <FiSquare />
+                    : <FiMic />}
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            {renderAttachmentStatus()}
+
+
+            {renderModeIndicators()}
+
+
+            {/* ANALYZE MENU */}
+
+            {showAnalyzeMenu && (
+
+              <div
+                className="analyze-menu"
+                onClick={(event) =>
+                  event.stopPropagation()
+                }
+              >
+
+                <div className="analyze-menu-header">
+
+                  <strong>
+                    Analyze
+                  </strong>
+
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowAnalyzeMenu(
+                        false
+                      )
+                    }
+                  >
+
+                    ×
+
+                  </button>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+                    fileInputRef.current?.click();
+
+                  }}
+                >
+
+                  <span>
+                    📄
+                  </span>
+
+                  <span>
+                    Document
+                  </span>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+                    imageInputRef.current?.click();
+
+                  }}
+                >
+
+                  <span>
+                    🖼️
+                  </span>
+
+                  <span>
+                    Image
+                  </span>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+                    startCamera();
+
+                  }}
+                >
+
+                  <span>
+                    📷
+                  </span>
+
+                  <span>
+                    Camera
+                  </span>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+                    videoInputRef.current?.click();
+
+                  }}
+                >
+
+                  <span>
+                    🎥
+                  </span>
+
+                  <span>
+                    Video
+                  </span>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+                    audioInputRef.current?.click();
+
+                  }}
+                >
+
+                  <span>
+                    🎙️
+                  </span>
+
+                  <span>
+                    Audio
+                  </span>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    const url =
+                      window.prompt(
+                        "Paste YouTube URL"
+                      );
+
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+
+                    if (url) {
+
+                      handleYouTube(
+                        url
+                      );
+
+                    }
+
+                  }}
+                >
+
+                  <span>
+                    ▶️
+                  </span>
+
+                  <span>
+                    YouTube
+                  </span>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    const url =
+                      window.prompt(
+                        "Paste website URL"
+                      );
+
+
+                    setShowAnalyzeMenu(
+                      false
+                    );
+
+
+                    if (url) {
+
+                      handleWebsiteAnalysis(
+                        url
+                      );
+
+                    }
+
+                  }}
+                >
+
+                  <span>
+                    🌐
+                  </span>
+
+                  <span>
+                    Website
+                  </span>
+
+                </button>
+
+              </div>
+
+            )}
+
+
+            {/* INPUT */}
+
+            <div className="composer-input-container">
+
+              <textarea
+                ref={
+                  inputRef
+                }
+                className="truvora-input"
+                value={
+                  input
+                }
+                onChange={
+                  handleInputChange
+                }
+                onKeyDown={
+                  handleInputKeyDown
+                }
+                placeholder={
+                  isDragActive
+                    ? "Drop your file here..."
+                    : "Message Truvora..."
+                }
+                rows={
+                  1
+                }
+                disabled={
+                  loading
+                }
+              />
+
+
+              <button
+                type="button"
+                className={`composer-send-button ${
+                  loading
+                    ? "stop-button"
+                    : ""
+                }`}
+                onClick={(event) => {
+
+                  event.stopPropagation();
+
+                  if (
+                    loading
+                  ) {
+
+                    handleStopGeneration();
+
+                  } else {
+
+                    handleSend();
+
+                  }
+
+                }}
+                disabled={
+                  !loading &&
+                  !input.trim() &&
+                  !uploadedFile &&
+                  !documentContext &&
+                  !imagePreview &&
+                  !audioAnalysis &&
+                  !videoAnalysis
+                }
+                title={
+                  loading
+                    ? "Stop"
+                    : "Send"
+                }
+              >
+
+                {loading
+                  ? <FiSquare />
+                  : <FiSend />}
+
+              </button>
+
+            </div>
+
+
+            <div className="composer-disclaimer">
+
+              Truvora may make mistakes. Verify important information.
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+      </main>
+
+
+      {/* =================================================
+         CAMERA MODAL
+      ================================================= */}
+
+      {showCamera && (
+
+        <div
+          className="camera-overlay"
+          onClick={(event) => {
+
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+
+              stopCamera();
+
+            }
+
+          }}
+        >
 
           <div className="camera-modal">
 
             <div className="camera-header">
 
               <strong>
-                Live Camera
+                Truvora Camera
               </strong>
 
+
               <button
+                type="button"
                 onClick={
                   stopCamera
                 }
@@ -4265,32 +5277,17 @@ function App() {
               ref={
                 videoRef
               }
-
-              autoPlay
-
-              playsInline
-
-              muted
-
               className="camera-video"
+              autoPlay
+              playsInline
+              muted
             />
 
 
             <div className="camera-actions">
 
               <button
-                className="camera-capture-button"
-                onClick={
-                  captureCameraImage
-                }
-              >
-
-                Capture
-
-              </button>
-
-
-              <button
+                type="button"
                 className="camera-cancel-button"
                 onClick={
                   stopCamera
@@ -4301,166 +5298,69 @@ function App() {
 
               </button>
 
+
+              <button
+                type="button"
+                className="camera-capture-button"
+                onClick={
+                  captureCameraImage
+                }
+              >
+
+                Capture & Analyze
+
+              </button>
+
             </div>
 
           </div>
 
         </div>
 
-      );
-
-    };
+      )}
 
 
-  /* =====================================================
-     PERSONAL VOICE MODAL
-===================================================== */
+      {/* =================================================
+         CITATION PREVIEW
+      ================================================= */}
 
-  const renderPersonalVoice =
-    () => {
+      {citationPreviewOpen &&
+        activeCitation && (
 
-      if (
-        !showPersonalVoice
-      ) {
+        <div
+          className="citation-preview-overlay"
+          onClick={(event) => {
 
-        return null;
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
 
-      }
+              setCitationPreviewOpen(
+                false
+              );
 
-
-      return (
-
-        <div className="personal-voice-panel">
-
-          <div className="personal-voice-header">
-
-            <strong>
-              Personal Voice
-            </strong>
-
-            <button
-              onClick={() =>
-                setShowPersonalVoice(
-                  false
-                )
-              }
-            >
-
-              ×
-
-            </button>
-
-          </div>
-
-
-          <p>
-
-            Record a short voice sample
-            to use as your personal voice.
-
-          </p>
-
-
-          {!recordingVoice ? (
-
-            <button
-              className="personal-voice-record"
-              onClick={
-                startPersonalVoiceRecording
-              }
-            >
-
-              🎤 Start recording
-
-            </button>
-
-          ) : (
-
-            <button
-              className="personal-voice-stop"
-              onClick={
-                stopPersonalVoiceRecording
-              }
-            >
-
-              ■ Stop recording
-
-            </button>
-
-          )}
-
-
-          {personalVoice && (
-
-            <div className="personal-voice-success">
-
-              ✓ Voice sample ready
-
-            </div>
-
-          )}
-
-        </div>
-
-      );
-
-    };
-
-
-  /* =====================================================
-     PART 4 ENDS
-===================================================== */
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-  const renderSidebar =
-    () => {
-
-      return (
-
-        <>
-
-          <aside
-            className={
-              `truvora-sidebar ${
-                sidebarOpen
-                  ? "sidebar-visible"
-                  : "sidebar-hidden"
-              }`
             }
-          >
 
-            <div className="sidebar-brand">
+          }}
+        >
 
-              <div className="sidebar-brand-symbol">
-                T
-              </div>
+          <div className="citation-preview">
 
-              <div className="sidebar-brand-text">
+            <div className="citation-preview-header">
 
-                <strong>
-                  TRUVORA
-                </strong>
-
-                <span>
-                  GLOBAL AI
-                </span>
-
-              </div>
+              <strong>
+                Source
+              </strong>
 
 
               <button
-                className="sidebar-mobile-close"
-
+                type="button"
                 onClick={() =>
-                  setSidebarOpen(
+                  setCitationPreviewOpen(
                     false
                   )
                 }
-
-                aria-label="Close sidebar"
               >
 
                 ×
@@ -4470,1288 +5370,56 @@ function App() {
             </div>
 
 
-            <button
-              className="new-chat-button"
-
-              onClick={
-                handleNewChat
-              }
-            >
-
-              <FiPlus />
-
-              <span>
-                New Chat
-              </span>
-
-            </button>
-
-
-            <div className="sidebar-search">
-
-              <FiCopy />
-
-              <input
-                value={
-                  searchChats
-                }
-
-                onChange={(event) =>
-                  setSearchChats(
-                    event.target.value
-                  )
-                }
-
-                placeholder="Search chats..."
-              />
-
-            </div>
-
-
-            <div className="sidebar-section">
-
-              <div className="sidebar-section-title">
-
-                RECENTS
-
-              </div>
-
-
-              <div className="sidebar-chat-list">
-
-                {filteredChats.length === 0 ? (
-
-                  <div className="sidebar-empty">
-
-                    No conversations yet.
-
-                  </div>
-
-                ) : (
-
-                  filteredChats.map(
-                    (chat, index) => {
-
-                      const chatMessages =
-                        Array.isArray(chat)
-                          ? chat
-                          : Array.isArray(
-                              chat?.messages
-                            )
-                          ? chat.messages
-                          : [];
-
-                      const firstMessage =
-                        chatMessages.find(
-                          (message) =>
-                            message?.text ||
-                            message?.content
-                        );
-
-                      const title =
-                        firstMessage?.text ||
-                        firstMessage?.content ||
-                        `Conversation ${index + 1}`;
-
-                      return (
-
-                        <button
-                          key={
-                            chat?.id ||
-                            chat?.chatId ||
-                            index
-                          }
-
-                          className="sidebar-chat-item"
-
-                          onClick={() =>
-                            openChat(
-                              chat
-                            )
-                          }
-                        >
-
-                          {title}
-
-                        </button>
-
-                      );
-
-                    }
-                  )
-
-                )}
-
-              </div>
-
-            </div>
-
-
-            <div className="sidebar-bottom">
-
-              <div className="sidebar-user">
-
-                <div className="sidebar-user-avatar">
-
-                  {auth.currentUser?.photoURL ? (
-
-                    <img
-                      src={
-                        auth.currentUser.photoURL
-                      }
-
-                      alt="Profile"
-                    />
-
-                  ) : (
-
-                    <FiUser />
-
-                  )}
-
-                </div>
-
-
-                <div className="sidebar-user-info">
-
-                  <strong>
-
-                    {
-                      auth.currentUser?.displayName ||
-                      auth.currentUser?.email ||
-                      "Truvora User"
-                    }
-
-                  </strong>
-
-                  <span>
-                    Free account
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <button
-                className="sidebar-logout"
-
-                onClick={
-                  handleLogout
-                }
-              >
-
-                Sign out
-
-              </button>
-
-            </div>
-
-          </aside>
-
-
-          {sidebarOpen && (
-
-            <div
-              className="mobile-sidebar-backdrop"
-
-              onClick={() =>
-                setSidebarOpen(
-                  false
-                )
-              }
-            />
-
-          )}
-
-        </>
-
-      );
-
-    };
-
-
-  /* =====================================================
-     TOP BAR
-===================================================== */
-
-  const renderTopbar =
-    () => {
-
-      return (
-
-        <header className="truvora-topbar">
-
-          <div className="topbar-left">
-
-            <button
-              className="mobile-menu-button"
-
-              onClick={
-                toggleSidebar
-              }
-
-              aria-label="Open sidebar"
-            >
-
-              <FiMenu />
-
-            </button>
-
-
-            <div className="mobile-brand">
+            <div className="citation-preview-body">
 
               <strong>
-                TRUVORA
+
+                {activeCitation.title ||
+                  activeCitation.name ||
+                  "Web source"}
+
               </strong>
 
-              <span>
-                GLOBAL AI
-              </span>
 
-            </div>
+              <p>
 
-          </div>
+                {activeCitation.url ||
+                  activeCitation.sourceUrl ||
+                  ""}
 
-
-          <div className="topbar-right">
-
-            <span className="topbar-slogan">
-
-              Intelligence • Innovation • Trust
-
-            </span>
+              </p>
 
 
-            <div className="topbar-avatar">
+              {(activeCitation.url ||
+                activeCitation.sourceUrl) && (
 
-              {auth.currentUser?.photoURL ? (
-
-                <img
-                  src={
-                    auth.currentUser.photoURL
+                <a
+                  href={
+                    activeCitation.url ||
+                    activeCitation.sourceUrl
                   }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
 
-                  alt="Profile"
-                />
+                  Open source ↗
 
-              ) : (
-
-                <FiUser />
+                </a>
 
               )}
 
             </div>
-
-          </div>
-
-        </header>
-
-      );
-
-    };
-
-
-  /* =====================================================
-     COMPOSER
-===================================================== */
-
-  const renderComposer =
-    () => {
-
-      const selectedLanguageLabel =
-        selectedLanguageOption?.label ||
-        "English";
-
-
-      return (
-
-        <div className="truvora-composer-area">
-
-          <div className="truvora-composer">
-
-
-            {/* =========================================
-               TOOLBAR
-            ========================================= */}
-
-            <div className="composer-toolbar">
-
-
-              <div className="composer-toolbar-left">
-
-
-                {/* FILE */}
-
-                <label
-                  className="composer-icon-button"
-                  title="Upload document"
-                >
-
-                  <FiUpload />
-
-                  <input
-                    ref={
-                      fileInputRef
-                    }
-
-                    type="file"
-
-                    accept="
-                      .pdf,
-                      .doc,
-                      .docx,
-                      .txt,
-                      .md,
-                      .rtf,
-                      .csv,
-                      .xlsx,
-                      .xls,
-                      .pptx,
-                      .ppt
-                    "
-
-                    onChange={
-                      handleDocumentUpload
-                    }
-                  />
-
-                </label>
-
-
-                {/* IMAGE */}
-
-                <label
-                  className="composer-icon-button"
-                  title="Upload image"
-                >
-
-                  🖼️
-
-                  <input
-                    ref={
-                      imageInputRef
-                    }
-
-                    type="file"
-
-                    accept="
-                      image/*
-                    "
-
-                    onChange={
-                      handleImageUpload
-                    }
-                  />
-
-                </label>
-
-
-                {/* AUDIO */}
-
-                <label
-                  className="composer-icon-button"
-                  title="Upload audio"
-                >
-
-                  🎙️
-
-                  <input
-                    ref={
-                      audioInputRef
-                    }
-
-                    type="file"
-
-                    accept="
-                      audio/*
-                    "
-
-                    onChange={
-                      handleAudioUpload
-                    }
-                  />
-
-                </label>
-
-
-                {/* VIDEO */}
-
-                <label
-                  className="composer-icon-button"
-                  title="Upload video"
-                >
-
-                  🎥
-
-                  <input
-                    ref={
-                      videoInputRef
-                    }
-
-                    type="file"
-
-                    accept="
-                      video/*
-                    "
-
-                    onChange={
-                      handleVideoUpload
-                    }
-                  />
-
-                </label>
-
-
-                {/* VOICE INPUT */}
-
-                <button
-                  className={
-                    `composer-icon-button ${
-                      listening
-                        ? "mode-active"
-                        : ""
-                    }`
-                  }
-
-                  title={
-                    listening
-                      ? "Stop voice input"
-                      : "Voice input"
-                  }
-
-                  onClick={() => {
-
-                    if (
-                      listening
-                    ) {
-
-                      stopVoiceInput();
-
-                    } else {
-
-                      startVoiceInput();
-
-                    }
-
-                  }}
-                >
-
-                  <FiMic />
-
-                </button>
-
-
-                {/* ANALYZE */}
-
-                <button
-                  className={
-                    `composer-mode-button ${
-                      showAnalyzeMenu
-                        ? "mode-active"
-                        : ""
-                    }`
-                  }
-
-                  onClick={
-                    openAnalyzer
-                  }
-
-                  title="Analyze anything"
-                >
-
-                  🔍
-
-                  <span>
-                    Analyze
-                  </span>
-
-                </button>
-
-
-                {/* WEB */}
-
-                <button
-                  className={
-                    `composer-mode-button ${
-                      webEnabled
-                        ? "mode-active"
-                        : ""
-                    }`
-                  }
-
-                  onClick={() =>
-                    setWebEnabled(
-                      (previous) =>
-                        !previous
-                    )
-                  }
-
-                  title="Web search"
-                >
-
-                  🌐
-
-                  <span>
-                    Web
-                  </span>
-
-                </button>
-
-
-                {/* AGENT */}
-
-                <button
-                  className={
-                    `composer-mode-button ${
-                      agentMode
-                        ? "mode-active"
-                        : ""
-                    }`
-                  }
-
-                  onClick={() =>
-                    setAgentMode(
-                      (previous) =>
-                        !previous
-                    )
-                  }
-
-                  title="Agent mode"
-                >
-
-                  🤖
-
-                  <span>
-                    Agent
-                  </span>
-
-                </button>
-
-
-              </div>
-
-
-              <div className="composer-toolbar-right">
-
-
-                {/* LANGUAGE */}
-
-                <div className="language-selector">
-
-                  <Select
-
-                    value={
-                      selectedLanguageOption
-                    }
-
-                    onChange={
-                      handleLanguageChange
-                    }
-
-                    options={
-                      languageOptions
-                    }
-
-                    isSearchable
-
-                    placeholder="Language"
-
-                    styles={
-                      languageSelectStyles
-                    }
-
-                    classNamePrefix="truvora-select"
-
-                    aria-label={
-                      `Language: ${selectedLanguageLabel}`
-                    }
-
-                  />
-
-                </div>
-
-
-                {/* VOICE */}
-
-                <select
-                  className="voice-selector"
-
-                  value={
-                    selectedVoice
-                  }
-
-                  onChange={
-                    handleVoiceChange
-                  }
-
-                  aria-label="Voice"
-                >
-
-                  {voiceOptions.map(
-                    (voice) => (
-
-                      <option
-                        key={
-                          voice.id
-                        }
-
-                        value={
-                          voice.id
-                        }
-                      >
-
-                        {voice.name}
-
-                      </option>
-
-                    )
-                  )}
-
-                </select>
-
-
-              </div>
-
-            </div>
-
-
-            {/* =========================================
-               ATTACHMENT STATUS
-            ========================================= */}
-
-            {(uploadedFile ||
-              imagePreview ||
-              audioFile ||
-              videoFile ||
-              documentContext ||
-              audioAnalysis ||
-              videoAnalysis) && (
-
-              <div className="composer-attachment-status">
-
-
-                {uploadedFile && (
-
-                  <span>
-
-                    📄
-
-                    {uploadedFile.name}
-
-                    <button
-                      onClick={
-                        clearAttachments
-                      }
-
-                      title="Remove"
-                    >
-
-                      ×
-
-                    </button>
-
-                  </span>
-
-                )}
-
-
-                {imagePreview && (
-
-                  <span>
-
-                    🖼️ Image ready
-
-                    <button
-                      onClick={
-                        clearAttachments
-                      }
-
-                      title="Remove"
-                    >
-
-                      ×
-
-                    </button>
-
-                  </span>
-
-                )}
-
-
-                {audioFile && (
-
-                  <span>
-
-                    🎙️
-
-                    {audioFile.name}
-
-                    <button
-                      onClick={
-                        clearAttachments
-                      }
-
-                      title="Remove"
-                    >
-
-                      ×
-
-                    </button>
-
-                  </span>
-
-                )}
-
-
-                {videoFile && (
-
-                  <span>
-
-                    🎥
-
-                    {videoFile.name}
-
-                    <button
-                      onClick={
-                        clearAttachments
-                      }
-
-                      title="Remove"
-                    >
-
-                      ×
-
-                    </button>
-
-                  </span>
-
-                )}
-
-
-              </div>
-
-            )}
-
-
-            {/* =========================================
-               INPUT
-            ========================================= */}
-
-            <div className="composer-input-container">
-
-
-              <textarea
-                ref={
-                  inputRef
-                }
-
-                className="truvora-input"
-
-                value={
-                  input
-                }
-
-                onChange={
-                  handleInputChange
-                }
-
-                onKeyDown={
-                  handleInputKeyDown
-                }
-
-                placeholder={
-                  listening
-                    ? "Listening..."
-                    : webEnabled
-                    ? "Ask Truvora to search the web..."
-                    : agentMode
-                    ? "Tell Truvora what you want done..."
-                    : "Ask Truvora anything..."
-                }
-
-                rows={
-                  2
-                }
-
-              />
-
-
-              <button
-                className={
-                  `composer-send-button ${
-                    loading
-                      ? "stop-button"
-                      : ""
-                  }`
-                }
-
-                onClick={
-                  loading
-                    ? handleStopGeneration
-                    : handleSend
-                }
-
-                disabled={
-                  !loading &&
-                  !input.trim() &&
-                  !documentContext &&
-                  !imagePreview &&
-                  !audioAnalysis &&
-                  !videoAnalysis
-                }
-
-                title={
-                  loading
-                    ? "Stop"
-                    : "Send"
-                }
-              >
-
-                {loading ? (
-
-                  <FiSquare />
-
-                ) : (
-
-                  <FiSend />
-
-                )}
-
-              </button>
-
-            </div>
-
-
-            {/* =========================================
-               ATTACHMENT ANALYSIS PREVIEW
-            ========================================= */}
-
-            {documentContext && (
-
-              <div className="composer-analysis-preview">
-
-                <strong>
-                  Document ready
-                </strong>
-
-                <span>
-                  Truvora can use the uploaded
-                  document as context.
-                </span>
-
-              </div>
-
-            )}
-
-
-            {audioAnalysis && (
-
-              <div className="composer-analysis-preview">
-
-                <strong>
-                  Audio analyzed
-                </strong>
-
-                <span>
-                  Audio analysis is ready.
-                </span>
-
-              </div>
-
-            )}
-
-
-            {videoAnalysis && (
-
-              <div className="composer-analysis-preview">
-
-                <strong>
-                  Video analyzed
-                </strong>
-
-                <span>
-                  Video analysis is ready.
-                </span>
-
-              </div>
-
-            )}
-
-
-            <div className="composer-disclaimer">
-
-              Truvora may make mistakes.
-              Verify important information.
-
-            </div>
-
-
-            {/* ANALYZE MENU */}
-
-            {renderAnalyzeMenu()}
-
 
           </div>
 
         </div>
 
-      );
+      )}
 
-    };
 
-
-  /* =====================================================
-     PART 5 ENDS
-===================================================== */
-
-/* =====================================================
-   MAIN APPLICATION UI
-===================================================== */
-
-  return (
-
-    <div className="truvora-app">
-
-
-      {/* ===============================================
-         SIDEBAR
-      =============================================== */}
-
-      {renderSidebar()}
-
-
-      {/* ===============================================
-         MAIN
-      =============================================== */}
-
-      <main className="truvora-main">
-
-
-        {/* =============================================
-           TOP BAR
-        ============================================= */}
-
-        {renderTopbar()}
-
-
-        {/* =============================================
-           CHAT AREA
-        ============================================= */}
-
-        <section className="truvora-chat-area">
-
-
-          {/* ===========================================
-             EMPTY STATE
-          =========================================== */}
-
-          {messages.length === 0 ? (
-
-            <div className="truvora-empty-state">
-
-
-              <div className="empty-logo">
-
-                <div className="empty-logo-symbol">
-
-                  T
-
-                </div>
-
-              </div>
-
-
-              <h1>
-
-                How can Truvora help you?
-
-              </h1>
-
-
-              <p>
-
-                Ask questions, analyze documents,
-                images, audio and video, research
-                the web, or create professional files.
-
-              </p>
-
-
-              <div className="empty-suggestions">
-
-
-                <button
-                  onClick={() =>
-                    setInput(
-                      "Explain artificial intelligence in simple terms."
-                    )
-                  }
-                >
-
-                  Explain AI
-
-                </button>
-
-
-                <button
-                  onClick={() =>
-                    setInput(
-                      "Analyze this image in detail."
-                    )
-                  }
-                >
-
-                  Analyze an image
-
-                </button>
-
-
-                <button
-                  onClick={() =>
-                    setInput(
-                      "Research the latest developments in artificial intelligence."
-                    )
-                  }
-                >
-
-                  Research latest AI
-
-                </button>
-
-
-                <button
-                  onClick={() =>
-                    setInput(
-                      "Create a professional business plan."
-                    )
-                  }
-                >
-
-                  Create a business plan
-
-                </button>
-
-
-              </div>
-
-
-            </div>
-
-
-          ) : (
-
-
-            /* =========================================
-               MESSAGES
-            ========================================= */
-
-            <div className="message-list">
-
-              {messages.map(
-                (
-                  message,
-                  index
-                ) =>
-                  renderMessage(
-                    message,
-                    index
-                  )
-              )}
-
-
-              {/* =======================================
-                 THINKING INDICATOR
-              ======================================= */}
-
-              {loading && (
-
-                <div className="truvora-thinking">
-
-                  <div className="message-avatar">
-
-                    T
-
-                  </div>
-
-
-                  <div className="thinking-content">
-
-                    <span>
-
-                      Truvora is thinking
-
-                    </span>
-
-
-                    <span className="thinking-dots">
-
-                      <i />
-                      <i />
-                      <i />
-
-                    </span>
-
-                  </div>
-
-                </div>
-
-              )}
-
-
-              <div
-                ref={
-                  messagesEndRef
-                }
-              />
-
-            </div>
-
-          )}
-
-        </section>
-
-
-        {/* =============================================
-           COMPOSER
-        ============================================= */}
-
-        {renderComposer()}
-
-
-      </main>
-
-
-      {/* ===============================================
-         CAMERA
-      =============================================== */}
-
-      {renderCamera()}
-
-
-      {/* ===============================================
-         PERSONAL VOICE
-      =============================================== */}
-
-      {renderPersonalVoice()}
-
-
-      {/* ===============================================
-         ACTIVE CITATION PREVIEW
-      =============================================== */}
-
-      {citationPreviewOpen &&
-        activeCitation && (
-
-          <div
-            className="citation-preview-overlay"
-
-            onClick={() => {
-
-              setCitationPreviewOpen(
-                false
-              );
-
-              setActiveCitation(
-                null
-              );
-
-            }}
-          >
-
-            <div
-              className="citation-preview"
-
-              onClick={(event) =>
-                event.stopPropagation()
-              }
-            >
-
-              <div className="citation-preview-header">
-
-                <strong>
-
-                  Source
-
-                </strong>
-
-
-                <button
-                  onClick={() => {
-
-                    setCitationPreviewOpen(
-                      false
-                    );
-
-                    setActiveCitation(
-                      null
-                    );
-
-                  }}
-                >
-
-                  ×
-
-                </button>
-
-              </div>
-
-
-              <div className="citation-preview-body">
-
-                <strong>
-
-                  {
-                    activeCitation.title ||
-                    activeCitation.name ||
-                    "Source"
-                  }
-
-                </strong>
-
-
-                <p>
-
-                  {
-                    activeCitation.domain ||
-                    activeCitation.sourceUrl ||
-                    ""
-                  }
-
-                </p>
-
-
-                {activeCitation.sourceUrl &&
-                  activeCitation.sourceUrl !== "#" && (
-
-                    <a
-                      href={
-                        activeCitation.sourceUrl
-                      }
-
-                      target="_blank"
-
-                      rel="noopener noreferrer"
-                    >
-
-                      Open source ↗
-
-                    </a>
-
-                  )}
-
-              </div>
-
-            </div>
-
-          </div>
-
-        )}
-
-
-      {/* ===============================================
-         GENERATING FILE INDICATOR
-      =============================================== */}
+      {/* =================================================
+         GENERATION OVERLAY
+      ================================================= */}
 
       {generatingFile && (
 
@@ -5761,17 +5429,14 @@ function App() {
 
             <div className="generation-spinner" />
 
+
             <strong>
-
-              Creating your file...
-
+              Creating your file
             </strong>
 
+
             <span>
-
-              Truvora is preparing a professional
-              document for you.
-
+              Truvora is preparing a professional document.
             </span>
 
           </div>
@@ -5780,17 +5445,11 @@ function App() {
 
       )}
 
-
     </div>
 
   );
 
-
 }
 
-
-/* =====================================================
-   EXPORT
-===================================================== */
 
 export default App;
