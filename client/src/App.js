@@ -431,14 +431,14 @@ function App() {
 
 
   const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } =
-    useDropzone({
-      onDrop,
-      multiple: false,
-    });
+  getRootProps,
+  getInputProps,
+  isDragActive,
+} = useDropzone({
+  onDrop,
+  multiple: false,
+  noClick: true,
+});
 
 
   /* =====================================================
