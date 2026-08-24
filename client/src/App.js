@@ -34,8 +34,6 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { useDropzone } from "react-dropzone";
-
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
