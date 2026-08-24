@@ -4408,21 +4408,14 @@ function App() {
 
         <section className="truvora-composer-area">
 
-          <div
-            className={`truvora-composer ${
-              isDragActive
-                ? "composer-drag-active"
-                : ""
-            }`}
-            {...getRootProps()}
-          >
+    <div
+  className={`truvora-composer ${
+    isDragActive ? "composer-drag-active" : ""
+  }`}
+  {...getRootProps()}
+>
 
-            <input
-              {...getInputProps()}
-            />
-
-
-            <div className="composer-toolbar">
+  <div className="composer-toolbar">
 
               <div className="composer-toolbar-left">
 
