@@ -32,25 +32,13 @@ import {
 } from "react-copy-to-clipboard";
 
 import ReactMarkdown from "react-markdown";
-
 import remarkGfm from "remark-gfm";
 
-// Truvora backend configuration
-const API_BASE = (
-  process.env.REACT_APP_API_BASE_URL ||
-  "https://truvora-backend.onrender.com"
-).replace(/\/$/, "");
-
-const apiUrl = (path) =>
-  `${API_BASE}${path}`;
-
-import { useDropzone }
-from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-
 
 /* FIREBASE */
 
@@ -70,6 +58,17 @@ import {
 } from "firebase/auth";
 
 
+/* TRUVORA BACKEND */
+
+const API_BASE = (
+  process.env.REACT_APP_API_BASE_URL ||
+  "https://truvora-backend.onrender.com"
+).replace(/\/$/, "");
+
+const apiUrl = (path) =>
+  `${API_BASE}${path}`;
+
+
 function saveChat(chat) {
 
   localStorage.setItem(
@@ -81,7 +80,6 @@ function saveChat(chat) {
 
 
 function App() {
-
 
   /* =====================================================
      CITATIONS
