@@ -1303,8 +1303,8 @@ setShowCamera(true);
 
           try {
             const response = await fetch(
-              "http://localhost:5000/analyze-website",
-              {
+  "https://truvora-api.onrender.com/analyze-website",
+  {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
