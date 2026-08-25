@@ -793,6 +793,128 @@ ${completion.choices[0].message.content}`;
 
 /* WEBSITE ANALYSIS ROUTE */
 
+app.post("/analyze-website", async (req, res) => {
+  try {
+    const { url } = req.body;
+
+    if (!url) {
+      return res.status(400).json({
+        error: "Website URL is required",
+      });
+    }
+
+    let websiteUrl = url.trim();
+
+    if (!/^https?:\/\//i.test(websiteUrl)) {
+      websiteUrl = "https://" + websiteUrl;
+    }
+
+    console.log("🌐 WEBSITE ANALYSIS:", websiteUrl);
+
+    const pageResponse = await fetch(websiteUrl, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36",
+      },
+      redirect: "follow",
+    });
+
+    if (!pageResponse.ok) {
+      return res.status(400).json({
+        error: `Website returned HTTP ${pageResponse.status}`,
+      });
+    }
+
+    const html = await pageResponse.text();
+
+    // Remove scripts, styles and HTML tags
+    const cleanText = html
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/gi, "'")
+      .replace(/\s+/g, " ")
+      .trim()
+      .substring(0, 30000);
+
+    if (!cleanText) {
+      return res.status(400).json({
+        error: "Could not extract readable content from this website.",
+      });
+    }
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are Truvora Website Analyzer. Analyze the supplied website content professionally and accurately. Do not invent information.",
+        },
+        {
+          role: "user",
+          content: `Analyze this website.
+
+Website URL:
+${websiteUrl}
+
+Website content:
+${cleanText}
+
+Return a clear report with these sections:
+
+Title
+
+Website Overview
+
+Main Purpose
+
+Key Information
+
+Products or Services
+
+Important Features
+
+Target Audience
+
+Business/Organization Information
+
+Important Observations
+
+Conclusion
+
+Use professional, easy-to-understand language.`,
+        },
+      ],
+    });
+
+    const answer = response.choices[0]?.message?.content || "";
+
+    res.json({
+      success: true,
+      answer,
+      sources: [
+        {
+          title: websiteUrl,
+          url: websiteUrl,
+        },
+      ],
+    });
+
+  } catch (error) {
+    console.error("❌ WEBSITE ANALYSIS ERROR:", error);
+
+    res.status(500).json({
+      error: "Failed to analyze website.",
+      details: error.message,
+    });
+  }
+});
+
 
 /* MAIN AI ROUTE */
 
@@ -849,7 +971,8 @@ if (agentTasks.length > 0) {
   for (const task of agentTasks) {
     try {
       const reportId = Date.now().toString();
-      const outputPath = `./uploads/${reportId}.${task}`;
+const extension = task === "image" ? "png" : task;
+const outputPath = `./uploads/${reportId}.${extension}`;
 
       console.log("🤖 EXECUTING:", task);
 
@@ -909,10 +1032,18 @@ console.log(generatedContent);
   agentMode: true,
   tasks: agentTasks,
   documents: successful,
+
+  image:
+    successful.find((item) => item.type === "image")?.image || null,
+
+  document:
+    successful.find((item) => item.type !== "image")?.document || null,
+
   reply:
     successful.length > 0
       ? `✅ ${successful.map((item) => item.type.toUpperCase()).join(", ")} created successfully.\n\n${successful.map((item) => item.summary || "").join("\n\n")}`
       : "❌ Agent could not create the requested file.",
+
   sources: [],
 });
 }

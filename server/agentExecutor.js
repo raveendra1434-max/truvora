@@ -136,7 +136,10 @@ case "image": {
 
   const buffer = Buffer.from(base64, "base64");
 
-  fs.writeFileSync(outputPath, buffer);
+console.log("🖼️ IMAGE OUTPUT PATH:", outputPath);
+console.log("🖼️ IMAGE BUFFER SIZE:", buffer.length);
+
+fs.writeFileSync(outputPath, buffer);
 
   break;
 }
@@ -146,10 +149,13 @@ case "image": {
   }
 
   return {
-    success: true,
-    type,
-    document: `/uploads/${reportId}.${type === "image" ? "png" : type}`,
-  };
+  success: true,
+  type,
+  document: `/uploads/${reportId}.${type === "image" ? "png" : type}`,
+  image: type === "image"
+    ? `/uploads/${reportId}.png`
+    : null,
+};
 }
 
 export { executeAgentTask };

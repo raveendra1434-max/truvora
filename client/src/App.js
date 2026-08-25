@@ -197,6 +197,8 @@ const [showAnalyzeMenu, setShowAnalyzeMenu] = useState(false);
 const [showYouTubeSearch, setShowYouTubeSearch] = useState(false);
 const [youtubeQuery, setYoutubeQuery] = useState("");
 
+const [showWebsiteSearch, setShowWebsiteSearch] = useState(false);
+const [websiteUrl, setWebsiteUrl] = useState("");
 const [showCamera, setShowCamera] = useState(false);
 
 const [selectedLanguage, setSelectedLanguage] = useState("English");
@@ -1132,7 +1134,14 @@ setShowCamera(true);
   ▶️ YouTube
 </button>
 
-  <button>🌐 Website</button>
+  <button
+  onClick={() => {
+    setShowAnalyzeMenu(false);
+    setShowWebsiteSearch(true);
+  }}
+>
+  🌐 Website
+</button>
 
   <button
     onClick={() => setShowAnalyzeMenu(false)}
@@ -1255,6 +1264,106 @@ setShowCamera(true);
       <button onClick={() => setShowYouTubeSearch(false)}>
         ❌ Cancel
       </button>
+    </div>
+  </div>
+)}
+
+{showWebsiteSearch && (
+  <div className="analyze-overlay">
+    <div className="analyze-menu">
+
+      <h2>🌐 Website Analyzer</h2>
+
+      <p
+        style={{
+          color: "#ccc",
+          textAlign: "center",
+          marginBottom: "15px",
+          fontSize: "14px",
+        }}
+      >
+        Enter a website URL to analyze
+      </p>
+
+      <input
+        type="text"
+        placeholder="https://example.com"
+        value={websiteUrl}
+        onChange={(e) => setWebsiteUrl(e.target.value)}
+      />
+
+      <button
+        onClick={async () => {
+          const url = websiteUrl.trim();
+
+          if (!url) {
+            alert("Please enter a website URL.");
+            return;
+          }
+
+          try {
+            const response = await fetch(
+              "http://localhost:5000/analyze-website",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ url }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(
+                data.error || "Website analysis failed"
+              );
+            }
+
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: "user",
+                text: `Analyze website: ${url}`,
+              },
+              {
+                role: "assistant",
+                text:
+                  data.answer ||
+                  data.analysis ||
+                  "Website analysis completed.",
+                sources: data.sources || [],
+              },
+            ]);
+
+            setWebsiteUrl("");
+            setShowWebsiteSearch(false);
+
+          } catch (error) {
+            console.error(
+              "WEBSITE ANALYSIS ERROR:",
+              error
+            );
+
+            alert(
+              "Website analysis failed. Check the server terminal."
+            );
+          }
+        }}
+      >
+        🔍 Analyze Website
+      </button>
+
+      <button
+        onClick={() => {
+          setWebsiteUrl("");
+          setShowWebsiteSearch(false);
+        }}
+      >
+        ❌ Cancel
+      </button>
+
     </div>
   </div>
 )}
@@ -2081,17 +2190,6 @@ chats
   }
 >
   📄 RTF
-</button>
-<button
-  className="copy-btn"
-  onClick={() =>
-    handleGenerateDocument(
-      "odt",
-      msg.text || msg.content || ""
-    )
-  }
->
-  📄 ODT
 </button>
     <button
       className="copy-btn"
