@@ -11,17 +11,13 @@ import {
   setDoc,
   collection,
   getDocs,
-  query,
-  orderBy,
-  serverTimestamp
+  serverTimestamp,
 } from "firebase/firestore";
-
 
 
 /* FIREBASE CONFIG */
 
 const firebaseConfig = {
-
   apiKey: "AIzaSyDuqAZRS86CP-upVTglCUj8VSvXo9tm7tY",
 
   authDomain:
@@ -41,14 +37,10 @@ const firebaseConfig = {
 };
 
 
-
 /* INITIALIZE FIREBASE */
 
 const app =
-  initializeApp(
-    firebaseConfig
-  );
-
+  initializeApp(firebaseConfig);
 
 
 /* AUTH */
@@ -60,90 +52,210 @@ export const googleProvider =
   new GoogleAuthProvider();
 
 
-
 /* FIRESTORE */
 
 const db =
   getFirestore(app);
 
 
+/* SAVE / UPDATE CHAT */
 
-/* SAVE CHAT */
+export const saveChatToCloud = async (
+  userId,
+  chatId,
+  chat
+) => {
 
-export const saveChatToCloud =
-  async (
-    userId,
-    chat
-  ) => {
+  try {
 
-    try {
-
-      await setDoc(
-  doc(db, "users", userId),
-  {
-    createdAt: serverTimestamp()
-  },
-  { merge: true }
-);
-
-await setDoc(
-  doc(
-    db,
-    "users",
-    userId,
-    "chats",
-    Date.now().toString()
-  ),
-  {
-    messages: chat,
-    createdAt: serverTimestamp()
-  }
-);
-
-    } catch (error) {
-
-      console.log(error);
+    if (!userId) {
+      console.log("❌ No user ID");
+      return null;
     }
-  };
+
+    /*
+      If this is a NEW conversation,
+      create a permanent ID.
+
+      If this is an existing conversation,
+      reuse the same ID.
+    */
+
+    const finalChatId =
+      chatId ||
+      `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2, 10)}`;
 
 
+    /*
+      Make sure the user document exists.
+    */
 
-/* LOAD CHATS */
+    await setDoc(
+      doc(
+        db,
+        "users",
+        userId
+      ),
+      {
+        updatedAt:
+          serverTimestamp(),
+      },
+      {
+        merge: true,
+      }
+    );
 
-export const loadUserChats =
-  async (
-    userId
-  ) => {
 
-    try {
+    /*
+      Save the conversation to ONE
+      permanent Firestore document.
+    */
 
-      const q = query(
+    await setDoc(
+      doc(
+        db,
+        "users",
+        userId,
+        "chats",
+        finalChatId
+      ),
+      {
+        messages: chat,
+
+        /*
+          First user message becomes
+          the chat title.
+        */
+
+        title:
+          chat?.find(
+            (message) =>
+              message.role === "user" &&
+              message.text
+          )?.text?.slice(0, 60) ||
+          "New Chat",
+
+        /*
+          Only set createdAt when the
+          document is first created.
+        */
+
+        ...(chatId
+          ? {}
+          : {
+              createdAt:
+                serverTimestamp(),
+            }),
+
+        /*
+          Always update this when
+          conversation changes.
+        */
+
+        updatedAt:
+          serverTimestamp(),
+      },
+      {
+        merge: true,
+      }
+    );
+
+
+    console.log(
+      "✅ CHAT SAVED:",
+      finalChatId
+    );
+
+
+    return finalChatId;
+
+  } catch (error) {
+
+    console.error(
+      "❌ FIREBASE SAVE ERROR:",
+      error
+    );
+
+    return null;
+  }
+};
+
+
+/* LOAD ALL USER CHATS */
+
+export const loadUserChats = async (
+  userId
+) => {
+
+  try {
+
+    if (!userId) {
+      return [];
+    }
+
+    const snapshot =
+      await getDocs(
         collection(
           db,
           "users",
           userId,
           "chats"
-        ),
-        orderBy(
-          "createdAt",
-          "desc"
         )
       );
 
-      const snapshot =
-        await getDocs(q);
 
-      return snapshot.docs.map(
-        (doc) => ({
-          id: doc.id,
-          ...doc.data()
+    const chats =
+      snapshot.docs.map(
+        (chatDoc) => ({
+          id: chatDoc.id,
+          ...chatDoc.data(),
         })
       );
 
-    } catch (error) {
 
-      console.log(error);
+    /*
+      Sort newest conversations first.
 
-      return [];
-    }
-  };
+      We use updatedAt when available.
+      Older documents may only have
+      createdAt, so we safely fall back.
+    */
+
+    chats.sort(
+      (a, b) => {
+
+        const aTime =
+          a.updatedAt?.toMillis?.() ||
+          a.createdAt?.toMillis?.() ||
+          0;
+
+        const bTime =
+          b.updatedAt?.toMillis?.() ||
+          b.createdAt?.toMillis?.() ||
+          0;
+
+        return bTime - aTime;
+      }
+    );
+
+
+    console.log(
+      "✅ FIREBASE CHATS:",
+      chats
+    );
+
+
+    return chats;
+
+  } catch (error) {
+
+    console.error(
+      "❌ FIREBASE LOAD ERROR:",
+      error
+    );
+
+    return [];
+  }
+};

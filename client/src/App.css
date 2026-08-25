@@ -1,4 +1,5 @@
 /* =========================================================
+<<<<<<< HEAD
    TRUVORA GLOBAL AI — CLEAN SPACIOUS UI
    Original Truvora identity
    Primary: #1565C0
@@ -476,11 +477,261 @@ a{
 
   margin:0 auto 28px;
 }
+=======
+   TRUVORA GLOBAL AI
+   APP.CSS — PART 1
+   Clean enterprise UI
+   ========================================================= */
 
-.user-message{
-  justify-content:flex-end;
+:root {
+
+  --truvora-primary:
+    #1565c0;
+
+  --truvora-primary-dark:
+    #0d47a1;
+
+  --truvora-accent:
+    #29b6f6;
+
+  --truvora-bg:
+    #07111f;
+
+  --truvora-sidebar:
+    #0a1626;
+
+  --truvora-surface:
+    #0f1d30;
+
+  --truvora-surface-light:
+    #14253a;
+
+  --truvora-border:
+    rgba(148, 163, 184, 0.14);
+
+  --truvora-text:
+    #e7f0fa;
+
+  --truvora-muted:
+    #71869d;
+
+  --truvora-success:
+    #4ade80;
+
 }
 
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+
+  box-sizing:
+    border-box;
+
+}
+
+
+html,
+body,
+#root {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+}
+
+
+html {
+
+  scroll-behavior:
+    smooth;
+
+}
+
+
+body {
+
+  background:
+    var(--truvora-bg);
+
+  color:
+    var(--truvora-text);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  overflow:
+    hidden;
+
+}
+
+
+button,
+input,
+textarea,
+select {
+
+  font-family:
+    inherit;
+
+}
+
+
+button {
+
+  border:
+    0;
+
+}
+
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+
+  outline:
+    2px solid
+    rgba(41, 182, 246, 0.55);
+
+  outline-offset:
+    2px;
+
+}
+
+
+/* =========================================================
+   MAIN APP
+   ========================================================= */
+
+.truvora-app {
+
+  display:
+    flex;
+
+  width:
+    100%;
+
+  height:
+    100dvh;
+
+  min-height:
+    100vh;
+
+  background:
+    var(--truvora-bg);
+
+  overflow:
+    hidden;
+
+}
+
+
+.truvora-main {
+
+  position:
+    relative;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  flex:
+    1;
+
+  min-width:
+    0;
+
+  height:
+    100%;
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(21, 101, 192, 0.10),
+      transparent 38%
+    ),
+    var(--truvora-bg);
+
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.truvora-logo {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  min-width:
+    0;
+
+}
+
+
+.truvora-logo-symbol {
+
+  width:
+    40px;
+
+  height:
+    40px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 40px;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--truvora-primary),
+      var(--truvora-primary-dark)
+    );
+
+  color:
+    #ffffff;
+>>>>>>> origin/main
+
+  font-size:
+    18px;
+
+<<<<<<< HEAD
 .avatar{
   width:36px;
   height:36px;
@@ -889,10 +1140,1950 @@ a{
     rgba(41,182,246,.07) !important;
 }
 
+=======
+  font-weight:
+    800;
+
+  box-shadow:
+    0 7px 22px
+    rgba(21, 101, 192, 0.22);
+
+}
+
+
+.truvora-logo-text {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  min-width:
+    0;
+
+}
+
+
+.truvora-logo-text strong {
+
+  color:
+    #ffffff;
+
+  font-size:
+    15px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.5px;
+
+  line-height:
+    1.15;
+
+}
+
+
+.truvora-logo-text span {
+
+  margin-top:
+    3px;
+
+  color:
+    var(--truvora-accent);
+
+  font-size:
+    8px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    1.5px;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.truvora-sidebar {
+
+  position:
+    relative;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  width:
+    270px;
+
+  min-width:
+    270px;
+
+  height:
+    100%;
+
+  padding:
+    17px 13px;
+
+  background:
+    var(--truvora-sidebar);
+
+  border-right:
+    1px solid
+    var(--truvora-border);
+
+  z-index:
+    1200;
+
+}
+
+
+.sidebar-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  min-height:
+    45px;
+
+  margin-bottom:
+    18px;
+
+}
+
+
+.sidebar-mobile-close {
+
+  display:
+    none;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    32px;
+
+  height:
+    32px;
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  color:
+    #8ea2b7;
+
+  cursor:
+    pointer;
+
+  font-size:
+    20px;
+
+}
+
+
+.new-chat-button {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    9px;
+
+  width:
+    100%;
+
+  min-height:
+    42px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.18);
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(21, 101, 192, 0.14);
+
+  color:
+    #dceeff;
+
+  cursor:
+    pointer;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  transition:
+    0.18s ease;
+
+}
+
+
+.new-chat-button:hover {
+
+  background:
+    rgba(21, 101, 192, 0.24);
+
+  border-color:
+    rgba(41, 182, 246, 0.32);
+
+}
+
+
+.sidebar-search {
+
+  margin:
+    13px 0 18px;
+
+}
+
+
+.sidebar-search input {
+
+  width:
+    100%;
+
+  height:
+    37px;
+
+  padding:
+    0 11px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    9px;
+
+  outline:
+    none;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #dce8f4;
+
+  font-size:
+    12px;
+
+}
+
+
+.sidebar-search input::placeholder {
+
+  color:
+    #61768c;
+
+}
+
+
+.sidebar-search input:focus {
+
+  border-color:
+    rgba(41, 182, 246, 0.38);
+
+}
+
+
+.sidebar-section-title {
+
+  padding:
+    0 7px 8px;
+
+  color:
+    #61768c;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.8px;
+
+}
+
+
+.sidebar-chat-list {
+
+  flex:
+    1;
+
+  min-height:
+    0;
+
+  overflow-y:
+    auto;
+
+}
+
+
+.sidebar-empty {
+
+  padding:
+    16px 8px;
+
+  color:
+    #61768c;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.sidebar-chat-item {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  margin:
+    2px 0;
+
+  padding:
+    9px 10px;
+
+  border-radius:
+    8px;
+
+  background:
+    transparent;
+
+  color:
+    #9aacc0;
+
+  cursor:
+    pointer;
+
+  text-align:
+    left;
+
+  font-size:
+    11px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.sidebar-chat-item:hover {
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color:
+    #e1edf8;
+
+}
+
+
+.sidebar-footer {
+
+  margin-top:
+    12px;
+
+  padding-top:
+    13px;
+
+  border-top:
+    1px solid
+    var(--truvora-border);
+
+}
+
+
+.sidebar-user {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  min-width:
+    0;
+
+}
+
+
+.sidebar-user-avatar {
+
+  width:
+    32px;
+
+  height:
+    32px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 32px;
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(21, 101, 192, 0.22);
+
+  color:
+    #8edcff;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+}
+
+
+.sidebar-user-info {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  min-width:
+    0;
+
+}
+
+
+.sidebar-user-info strong {
+
+  color:
+    #d9e6f3;
+
+  font-size:
+    11px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.sidebar-user-info span {
+
+  margin-top:
+    2px;
+
+  color:
+    #61768c;
+
+  font-size:
+    9px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.sidebar-logout {
+
+  width:
+    100%;
+
+  margin-top:
+    10px;
+
+  min-height:
+    33px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #8297ad;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+}
+
+
+.sidebar-logout:hover {
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  color:
+    #dce7f2;
+
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.truvora-topbar {
+
+  position:
+    relative;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  width:
+    100%;
+
+  height:
+    62px;
+
+  min-height:
+    62px;
+
+  padding:
+    0 20px;
+
+  border-bottom:
+    1px solid
+    var(--truvora-border);
+
+  background:
+    rgba(7, 17, 31, 0.88);
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  z-index:
+    500;
+
+}
+
+
+.topbar-left,
+.topbar-right,
+.topbar-center {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+}
+
+
+.topbar-center {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  transform:
+    translateX(-50%);
+
+}
+
+
+.topbar-slogan {
+
+  color:
+    #667d94;
+
+  font-size:
+    10px;
+
+  letter-spacing:
+    0.7px;
+
+}
+
+
+.topbar-avatar {
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.15);
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(21, 101, 192, 0.15);
+
+  color:
+    #8bdcff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+.mobile-menu-button,
+.mobile-brand {
+
+  display:
+    none;
+
+}
+
+
+/* =========================================================
+   CHAT AREA
+   ========================================================= */
+
+.truvora-chat-area {
+
+  flex:
+    1;
+
+  min-height:
+    0;
+
+  overflow-y:
+    auto;
+
+  overflow-x:
+    hidden;
+
+  padding:
+    35px 7vw 30px;
+
+  scroll-behavior:
+    smooth;
+
+}
+
+
+.truvora-message {
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  gap:
+    10px;
+
+  width:
+    100%;
+
+  max-width:
+    1050px;
+
+  margin:
+    0 auto 28px;
+
+}
+
+
+.truvora-user-message {
+
+  justify-content:
+    flex-end;
+
+}
+
+
+.message-avatar {
+
+  width:
+    32px;
+
+  height:
+    32px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 32px;
+
+  border-radius:
+    9px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--truvora-primary),
+      var(--truvora-primary-dark)
+    );
+
+  color:
+    #ffffff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+.user-avatar {
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    #a7b8c9;
+
+}
+
+
+.message-body {
+
+  min-width:
+    0;
+
+  max-width:
+    calc(100% - 43px);
+
+}
+
+
+.truvora-user-message
+.message-body {
+
+  max-width:
+    82%;
+
+}
+
+
+.message-text {
+
+  color:
+    #d7e2ed;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.75;
+
+  overflow-wrap:
+    anywhere;
+
+}
+
+
+.truvora-user-message
+.message-text {
+
+  padding:
+    11px 14px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.10);
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+}
+
+
+.message-text p {
+
+  margin:
+    0 0 12px;
+
+}
+
+
+.message-text p:last-child {
+
+  margin-bottom:
+    0;
+
+}
+
+
+.message-text h1,
+.message-text h2,
+.message-text h3 {
+
+  margin:
+    18px 0 9px;
+
+  color:
+    #ffffff;
+
+}
+
+
+.message-text ul,
+.message-text ol {
+
+  padding-left:
+    22px;
+
+}
+
+
+.message-text li {
+
+  margin:
+    5px 0;
+
+}
+
+
+.message-text a {
+
+  color:
+    #67d1ff;
+
+}
+
+
+.message-text code {
+
+  padding:
+    2px 5px;
+
+  border-radius:
+    5px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  color:
+    #9edfff;
+
+  font-size:
+    0.9em;
+
+}
+
+
+.message-text pre {
+
+  max-width:
+    100%;
+
+  padding:
+    13px;
+
+  overflow-x:
+    auto;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.10);
+
+  border-radius:
+    9px;
+
+  background:
+    #08121f;
+
+}
+
+
+.message-text pre code {
+
+  padding:
+    0;
+
+  background:
+    transparent;
+
+}
+
+
+/* =========================================================
+   MESSAGE ACTIONS
+   ========================================================= */
+
+.message-actions {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    4px;
+
+  margin-top:
+    8px;
+
+}
+
+
+.message-action-btn {
+
+  min-width:
+    29px;
+
+  height:
+    29px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    0 7px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    7px;
+
+  background:
+    transparent;
+
+  color:
+    #61788f;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.message-action-btn:hover {
+
+  border-color:
+    var(--truvora-border);
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color:
+    #a9bfd2;
+
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.message-image-container {
+
+  margin-top:
+    13px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    12px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+}
+
+
+.message-image {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  max-width:
+    650px;
+
+  height:
+    auto;
+
+}
+
+
+/* =========================================================
+   GENERATED DOCUMENT
+   ========================================================= */
+
+.generated-document {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  margin-top:
+    12px;
+
+  padding:
+    9px 12px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.15);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(21, 101, 192, 0.10);
+
+  color:
+    #74d4ff;
+
+  text-decoration:
+    none;
+
+  font-size:
+    11px;
+
+}
+
+
+/* =========================================================
+   THINKING
+   ========================================================= */
+
+.truvora-thinking {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  max-width:
+    1050px;
+
+  margin:
+    0 auto;
+
+}
+
+
+.thinking-content {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.thinking-dots {
+
+  display:
+    flex;
+
+  gap:
+    3px;
+
+}
+
+
+.thinking-dots i {
+
+  width:
+    4px;
+
+  height:
+    4px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--truvora-accent);
+
+  animation:
+    thinkingPulse 1.2s
+    infinite ease-in-out;
+
+}
+
+
+.thinking-dots i:nth-child(2) {
+
+  animation-delay:
+    0.15s;
+
+}
+
+
+.thinking-dots i:nth-child(3) {
+
+  animation-delay:
+    0.3s;
+
+}
+
+
+@keyframes thinkingPulse {
+
+  0%,
+  70%,
+  100% {
+
+    opacity:
+      0.25;
+
+    transform:
+      translateY(0);
+
+  }
+
+  35% {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(-2px);
+
+  }
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.truvora-empty-state {
+
+  min-height:
+    72%;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    35px 15px;
+
+  text-align:
+    center;
+
+}
+
+
+.empty-logo-symbol {
+
+  width:
+    58px;
+
+  height:
+    58px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--truvora-primary),
+      var(--truvora-primary-dark)
+    );
+
+  color:
+    #ffffff;
+
+  font-size:
+    25px;
+
+  font-weight:
+    800;
+
+  box-shadow:
+    0 14px 35px
+    rgba(21, 101, 192, 0.22);
+
+}
+
+
+.truvora-empty-state h1 {
+
+  margin:
+    18px 0 7px;
+
+  color:
+    #f1f7fd;
+
+  font-size:
+    28px;
+
+  font-weight:
+    700;
+
+}
+
+
+.truvora-empty-state p {
+
+  margin:
+    0 0 22px;
+
+  color:
+    #6f849a;
+
+  font-size:
+    12px;
+
+}
+
+
+.empty-suggestions {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(130px, 1fr));
+
+  gap:
+    8px;
+
+  width:
+    min(500px, 100%);
+
+}
+
+
+.empty-suggestions button {
+
+  min-height:
+    40px;
+
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #8ea2b7;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.empty-suggestions button:hover {
+
+  border-color:
+    rgba(41, 182, 246, 0.22);
+
+  background:
+    rgba(21, 101, 192, 0.08);
+
+  color:
+    #cce8f8;
+
+}
+
+
+/* =========================================================
+   COMPOSER AREA
+   ========================================================= */
+
+.truvora-composer-area {
+
+  width:
+    100%;
+
+  padding:
+    0 7vw 13px;
+
+}
+
+
+.truvora-composer {
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  max-width:
+    1050px;
+
+  margin:
+    0 auto;
+
+  padding:
+    10px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.15);
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(15, 29, 48, 0.94);
+
+  box-shadow:
+    0 15px 45px
+    rgba(0, 0, 0, 0.18);
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+
+}
+
+
+.truvora-composer:focus-within {
+
+  border-color:
+    rgba(41, 182, 246, 0.28);
+
+  box-shadow:
+    0 18px 55px
+    rgba(0, 0, 0, 0.24);
+
+}
+
+
+.composer-drag-active {
+
+  border-color:
+    var(--truvora-accent);
+
+  background:
+    rgba(21, 101, 192, 0.12);
+
+}
+
+
+/* =========================================================
+   COMPOSER TOOLBAR
+   ========================================================= */
+
+.composer-toolbar {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
+  padding:
+    0 2px 9px;
+
+}
+
+
+.composer-toolbar-left,
+.composer-toolbar-right {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+  min-width:
+    0;
+
+}
+
+
+.composer-toolbar-left {
+
+  overflow-x:
+    auto;
+
+}
+
+
+.composer-toolbar-left::-webkit-scrollbar {
+
+  height:
+    0;
+
+}
+
+
+.composer-toolbar-right {
+
+  flex:
+    0 0 auto;
+
+}
+
+
+/* =========================================================
+   COMPOSER BUTTONS
+   ========================================================= */
+
+.composer-icon-button,
+.composer-mode-button {
+
+  height:
+    34px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    5px;
+
+  flex:
+    0 0 auto;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.10);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #7f95aa;
+
+  cursor:
+    pointer;
+
+  font-size:
+    11px;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.composer-icon-button {
+
+  width:
+    34px;
+
+}
+
+
+.composer-mode-button {
+
+  padding:
+    0 9px;
+
+}
+
+
+.composer-icon-button:hover,
+.composer-mode-button:hover {
+
+  border-color:
+    rgba(41, 182, 246, 0.20);
+
+  background:
+    rgba(21, 101, 192, 0.09);
+
+  color:
+    #c4d9e9;
+
+}
+
+
+.composer-mode-button.mode-active,
+.composer-icon-button.mode-active {
+
+  border-color:
+    rgba(41, 182, 246, 0.32);
+
+  background:
+    rgba(21, 101, 192, 0.16);
+
+  color:
+    #7bd7ff;
+
+}
+
+
+/* =========================================================
+   PART 1 END
+   ========================================================= */
+
+/* =========================================================
+   ATTACHMENT STATUS
+   ========================================================= */
+
+.composer-attachment-status {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    6px;
+
+  width:
+    100%;
+
+  margin:
+    0 0 8px;
+
+  padding:
+    7px 8px;
+
+  overflow-x:
+    auto;
+
+}
+
+
+.composer-attachment-status span {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+  flex:
+    0 0 auto;
+
+  max-width:
+    230px;
+
+  padding:
+    6px 8px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.14);
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(21, 101, 192, 0.08);
+
+  color:
+    #8db7d1;
+
+  font-size:
+    9px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.composer-attachment-status button {
+
+  width:
+    25px;
+
+  height:
+    25px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 25px;
+
+  border:
+    0;
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  color:
+    #8298ad;
+
+  cursor:
+    pointer;
+
+}
+
+
+/* =========================================================
+   MODE / ANALYSIS STATUS
+   ========================================================= */
+
+.composer-analysis-preview {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  min-height:
+    26px;
+
+  margin:
+    0 2px 8px;
+
+  padding:
+    5px 8px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.08);
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  overflow:
+    hidden;
+
+}
+
+
+.composer-analysis-preview strong {
+
+  flex:
+    0 0 auto;
+
+  color:
+    #6bcdf5;
+
+  font-size:
+    9px;
+
+}
+
+
+.composer-analysis-preview span {
+
+  min-width:
+    0;
+
+  color:
+    #61778d;
+
+  font-size:
+    9px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.composer-input-container {
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+}
+
+
+.truvora-input {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  min-height:
+    62px;
+
+  max-height:
+    190px;
+
+  padding:
+    13px 55px 13px 13px;
+
+  border:
+    0;
+
+  outline:
+    none;
+
+  resize:
+    none;
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #e1ebf5;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.55;
+
+}
+
+
+.truvora-input::placeholder {
+
+  color:
+    #61768c;
+
+}
+
+
+.truvora-input:disabled {
+
+  opacity:
+    0.65;
+
+  cursor:
+    not-allowed;
+
+}
+
+
+>>>>>>> origin/main
 /* =========================================================
    SEND BUTTON
    ========================================================= */
 
+<<<<<<< HEAD
 .send-btn{
   position:absolute !important;
 
@@ -2661,6 +4852,1564 @@ textarea:focus{
   /* Make tool row feel like one clean toolbar */
   .left-buttons{
     min-height:36px;
+=======
+.composer-send-button {
+
+  position:
+    absolute;
+
+  right:
+    8px;
+
+  bottom:
+    8px;
+
+  width:
+    39px;
+
+  height:
+    39px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    0;
+
+  border-radius:
+    10px;
+
+  background:
+    var(--truvora-primary);
+
+  color:
+    #ffffff;
+
+  cursor:
+    pointer;
+
+  font-size:
+    15px;
+
+  box-shadow:
+    0 5px 16px
+    rgba(21, 101, 192, 0.22);
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.composer-send-button:hover:not(:disabled) {
+
+  background:
+    #1976d2;
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.composer-send-button:disabled {
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  color:
+    #53697e;
+
+  box-shadow:
+    none;
+
+  cursor:
+    not-allowed;
+
+}
+
+
+.composer-send-button.stop-button {
+
+  background:
+    #7f2930;
+
+}
+
+
+.composer-send-button.stop-button:hover {
+
+  background:
+    #9b3139;
+
+}
+
+
+/* =========================================================
+   DISCLAIMER
+   ========================================================= */
+
+.composer-disclaimer {
+
+  padding:
+    7px 3px 0;
+
+  color:
+    #4f6478;
+
+  text-align:
+    center;
+
+  font-size:
+    8px;
+
+}
+
+
+/* =========================================================
+   ANALYZE MENU
+   ========================================================= */
+
+.analyze-menu {
+
+  position:
+    absolute;
+
+  left:
+    10px;
+
+  bottom:
+    calc(100% - 4px);
+
+  width:
+    255px;
+
+  max-height:
+    480px;
+
+  overflow-y:
+    auto;
+
+  padding:
+    8px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.15);
+
+  border-radius:
+    12px;
+
+  background:
+    #0e1c2d;
+
+  box-shadow:
+    0 20px 55px
+    rgba(0, 0, 0, 0.38);
+
+  z-index:
+    2100;
+
+}
+
+
+.analyze-menu-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    5px 6px 8px;
+
+  border-bottom:
+    1px solid
+    rgba(148, 163, 184, 0.09);
+
+}
+
+
+.analyze-menu-header strong {
+
+  color:
+    #dce9f5;
+
+  font-size:
+    11px;
+
+}
+
+
+.analyze-menu-header button {
+
+  width:
+    26px;
+
+  height:
+    26px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    0;
+
+  border-radius:
+    7px;
+
+  background:
+    transparent;
+
+  color:
+    #71869c;
+
+  cursor:
+    pointer;
+
+  font-size:
+    17px;
+
+}
+
+
+.analyze-menu > button {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  width:
+    100%;
+
+  min-height:
+    40px;
+
+  margin-top:
+    3px;
+
+  padding:
+    0 9px;
+
+  border:
+    0;
+
+  border-radius:
+    8px;
+
+  background:
+    transparent;
+
+  color:
+    #9bb0c3;
+
+  cursor:
+    pointer;
+
+  text-align:
+    left;
+
+  font-size:
+    11px;
+
+}
+
+
+.analyze-menu > button:hover {
+
+  background:
+    rgba(21, 101, 192, 0.13);
+
+  color:
+    #d9ebf8;
+
+}
+
+
+.analyze-menu > button span:first-child {
+
+  width:
+    25px;
+
+  text-align:
+    center;
+
+  font-size:
+    14px;
+
+}
+
+
+/* =========================================================
+   LANGUAGE SELECTOR
+   ========================================================= */
+
+.language-selector {
+
+  width:
+    135px;
+
+  min-width:
+    0;
+
+}
+
+
+.truvora-select__control {
+
+  min-height:
+    34px !important;
+
+  height:
+    34px !important;
+
+  border-radius:
+    8px !important;
+
+}
+
+
+.truvora-select__menu {
+
+  border:
+    1px solid
+    var(--truvora-border) !important;
+
+  background:
+    #0f1d30 !important;
+
+}
+
+
+.truvora-select__menu-list {
+
+  background:
+    #0f1d30 !important;
+
+}
+
+
+.truvora-select__option {
+
+  background:
+    #0f1d30 !important;
+
+  color:
+    #c6d6e5 !important;
+
+  font-size:
+    11px !important;
+
+}
+
+
+.truvora-select__option--is-focused {
+
+  background:
+    rgba(21, 101, 192, 0.18) !important;
+
+}
+
+
+.truvora-select__option--is-selected {
+
+  background:
+    rgba(21, 101, 192, 0.30) !important;
+
+  color:
+    #ffffff !important;
+
+}
+
+
+.truvora-select__single-value {
+
+  color:
+    #c6d6e5 !important;
+
+}
+
+
+.truvora-select__placeholder {
+
+  color:
+    #61768c !important;
+
+}
+
+
+.truvora-select__indicator-separator {
+
+  display:
+    none;
+
+}
+
+
+/* =========================================================
+   VOICE SELECTOR
+   ========================================================= */
+
+.voice-selector {
+
+  height:
+    34px;
+
+  width:
+    96px;
+
+  padding:
+    0 7px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.11);
+
+  border-radius:
+    8px;
+
+  outline:
+    none;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #9ab0c3;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+}
+
+
+.voice-selector:focus {
+
+  border-color:
+    rgba(41, 182, 246, 0.30);
+
+}
+
+
+.voice-selector option {
+
+  background:
+    #0f1d30;
+
+  color:
+    #dce9f5;
+
+}
+
+
+/* =========================================================
+   SOURCES
+   ========================================================= */
+
+.truvora-sources {
+
+  margin-top:
+    12px;
+
+  padding-top:
+    10px;
+
+  border-top:
+    1px solid
+    rgba(148, 163, 184, 0.08);
+
+}
+
+
+.sources-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+  margin-bottom:
+    7px;
+
+  color:
+    #71879c;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+.sources-list {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    6px;
+
+}
+
+
+.source-item {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  min-width:
+    180px;
+
+  max-width:
+    300px;
+
+  padding:
+    7px 8px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.09);
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  color:
+    inherit;
+
+  text-decoration:
+    none;
+
+  transition:
+    0.15s ease;
+
+}
+
+
+.source-item:hover {
+
+  border-color:
+    rgba(41, 182, 246, 0.22);
+
+  background:
+    rgba(21, 101, 192, 0.07);
+
+}
+
+
+.source-number {
+
+  width:
+    21px;
+
+  height:
+    21px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 21px;
+
+  border-radius:
+    6px;
+
+  background:
+    rgba(21, 101, 192, 0.15);
+
+  color:
+    #73cdf3;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+}
+
+
+.source-content {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  min-width:
+    0;
+
+  flex:
+    1;
+
+}
+
+
+.source-content strong {
+
+  overflow:
+    hidden;
+
+  color:
+    #a9bed1;
+
+  font-size:
+    10px;
+
+  font-weight:
+    600;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.source-content small {
+
+  margin-top:
+    2px;
+
+  overflow:
+    hidden;
+
+  color:
+    #526a80;
+
+  font-size:
+    8px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.source-arrow {
+
+  color:
+    #60778c;
+
+  font-size:
+    11px;
+
+}
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+.camera-overlay {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    2700;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    rgba(0, 0, 0, 0.65);
+
+  backdrop-filter:
+    blur(6px);
+
+}
+
+
+.camera-modal {
+
+  width:
+    min(650px, 100%);
+
+  padding:
+    12px;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.16);
+
+  border-radius:
+    16px;
+
+  background:
+    #0f1d30;
+
+  box-shadow:
+    0 30px 80px
+    rgba(0, 0, 0, 0.45);
+
+}
+
+
+.camera-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    2px 4px 10px;
+
+}
+
+
+.camera-header strong {
+
+  color:
+    #e2edf7;
+
+  font-size:
+    12px;
+
+}
+
+
+.camera-header button {
+
+  width:
+    30px;
+
+  height:
+    30px;
+
+  border:
+    0;
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  color:
+    #8096aa;
+
+  cursor:
+    pointer;
+
+  font-size:
+    18px;
+
+}
+
+
+.camera-video {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  max-height:
+    65vh;
+
+  object-fit:
+    cover;
+
+  border-radius:
+    11px;
+
+  background:
+    #02070d;
+
+}
+
+
+.camera-actions {
+
+  display:
+    flex;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    8px;
+
+  padding-top:
+    10px;
+
+}
+
+
+.camera-cancel-button,
+.camera-capture-button {
+
+  min-height:
+    38px;
+
+  padding:
+    0 14px;
+
+  border-radius:
+    8px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+.camera-cancel-button {
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #8499ad;
+
+}
+
+
+.camera-capture-button {
+
+  background:
+    var(--truvora-primary);
+
+  color:
+    #ffffff;
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.truvora-login-screen {
+
+  width:
+    100%;
+
+  min-height:
+    100dvh;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(21, 101, 192, 0.15),
+      transparent 42%
+    ),
+    var(--truvora-bg);
+
+}
+
+
+.truvora-login-card {
+
+  width:
+    min(430px, 100%);
+
+  padding:
+    32px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    20px;
+
+  background:
+    rgba(15, 29, 48, 0.94);
+
+  box-shadow:
+    0 30px 90px
+    rgba(0, 0, 0, 0.34);
+
+  text-align:
+    center;
+
+}
+
+
+.truvora-login-card > h1 {
+
+  margin:
+    16px 0 4px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    24px;
+
+}
+
+
+.truvora-login-card > p {
+
+  margin:
+    0 0 24px;
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.truvora-login-card > span {
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.truvora-login-content {
+
+  margin-top:
+    25px;
+
+}
+
+
+.truvora-login-content h1 {
+
+  margin:
+    0 0 7px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    24px;
+
+}
+
+
+.truvora-login-content p {
+
+  margin:
+    0 0 22px;
+
+  color:
+    #71869d;
+
+  font-size:
+    11px;
+
+}
+
+
+.google-login-button,
+.login-submit-button {
+
+  width:
+    100%;
+
+  min-height:
+    42px;
+
+  border-radius:
+    9px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+}
+
+
+.google-login-button {
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color:
+    #d9e5f0;
+
+}
+
+
+.login-submit-button {
+
+  margin-top:
+    10px;
+
+  background:
+    var(--truvora-primary);
+
+  color:
+    #ffffff;
+
+}
+
+
+.auth-divider {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  margin:
+    18px 0;
+
+  color:
+    #52677c;
+
+  font-size:
+    9px;
+
+}
+
+
+.auth-divider::before,
+.auth-divider::after {
+
+  content:
+    "";
+
+  flex:
+    1;
+
+  height:
+    1px;
+
+  background:
+    var(--truvora-border);
+
+}
+
+
+.login-input {
+
+  width:
+    100%;
+
+  height:
+    42px;
+
+  margin-bottom:
+    9px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    9px;
+
+  outline:
+    none;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    #dce8f3;
+
+  font-size:
+    12px;
+
+}
+
+
+.login-input:focus {
+
+  border-color:
+    rgba(41, 182, 246, 0.35);
+
+}
+
+
+.auth-error {
+
+  margin:
+    7px 0;
+
+  color:
+    #ff8c8c;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.auth-switch-button {
+
+  margin-top:
+    15px;
+
+  padding:
+    5px;
+
+  border:
+    0;
+
+  background:
+    transparent;
+
+  color:
+    #65cdf7;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+}
+
+
+/* =========================================================
+   PART 2 END
+   ========================================================= */
+
+/* =========================================================
+   CITATION PREVIEW
+   ========================================================= */
+
+.citation-preview-overlay {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    2800;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    rgba(0, 0, 0, 0.58);
+
+  backdrop-filter:
+    blur(5px);
+
+}
+
+
+.citation-preview {
+
+  width:
+    min(500px, 100%);
+
+  border:
+    1px solid
+    var(--truvora-border);
+
+  border-radius:
+    14px;
+
+  background:
+    #0f1d30;
+
+  box-shadow:
+    0 25px 70px
+    rgba(0, 0, 0, 0.42);
+
+  overflow:
+    hidden;
+
+}
+
+
+.citation-preview-header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    13px 15px;
+
+  border-bottom:
+    1px solid
+    var(--truvora-border);
+
+}
+
+
+.citation-preview-header strong {
+
+  color:
+    #dce9f5;
+
+  font-size:
+    12px;
+
+}
+
+
+.citation-preview-header button {
+
+  width:
+    29px;
+
+  height:
+    29px;
+
+  border:
+    0;
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color:
+    #8297aa;
+
+  cursor:
+    pointer;
+
+  font-size:
+    17px;
+
+}
+
+
+.citation-preview-body {
+
+  padding:
+    18px;
+
+}
+
+
+.citation-preview-body strong {
+
+  display:
+    block;
+
+  color:
+    #dbe8f3;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.citation-preview-body p {
+
+  margin:
+    9px 0 14px;
+
+  color:
+    #71869d;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+
+  overflow-wrap:
+    anywhere;
+
+}
+
+
+.citation-preview-body a {
+
+  color:
+    #6dd2fa;
+
+  text-decoration:
+    none;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+.citation-preview-body a:hover {
+
+  text-decoration:
+    underline;
+
+}
+
+
+/* =========================================================
+   FILE GENERATION OVERLAY
+   ========================================================= */
+
+.truvora-generation-overlay {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    2900;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    rgba(0, 0, 0, 0.48);
+
+  backdrop-filter:
+    blur(4px);
+
+}
+
+
+.truvora-generation-card {
+
+  width:
+    min(360px, 100%);
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  padding:
+    25px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.14);
+
+  border-radius:
+    15px;
+
+  background:
+    #0f1d30;
+
+  box-shadow:
+    0 25px 75px
+    rgba(0, 0, 0, 0.42);
+
+  text-align:
+    center;
+
+}
+
+
+.truvora-generation-card strong {
+
+  margin-top:
+    13px;
+
+  color:
+    #e5f0fa;
+
+  font-size:
+    12px;
+
+}
+
+
+.truvora-generation-card span {
+
+  margin-top:
+    6px;
+
+  color:
+    #6f849a;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.generation-spinner {
+
+  width:
+    30px;
+
+  height:
+    30px;
+
+  border:
+    3px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-top-color:
+    var(--truvora-accent);
+
+  border-radius:
+    50%;
+
+  animation:
+    truvoraSpin 0.8s
+    linear infinite;
+
+}
+
+
+@keyframes truvoraSpin {
+
+  to {
+
+    transform:
+      rotate(360deg);
+
+>>>>>>> origin/main
   }
 
   /* Prevent selectors from becoming oversized */
@@ -2671,6 +6420,7 @@ textarea:focus{
 }
 
 /* =========================================================
+<<<<<<< HEAD
    MOBILE — 360px PHONES
    ========================================================= */
 
@@ -2915,4 +6665,1125 @@ video{
 
 /* =========================================================
    END — TRUVORA CLEAN GLOBAL UI
+=======
+   SCROLLBARS
+   ========================================================= */
+
+.truvora-chat-area::-webkit-scrollbar,
+.sidebar-chat-list::-webkit-scrollbar,
+.analyze-menu::-webkit-scrollbar {
+
+  width:
+    6px;
+
+}
+
+
+.truvora-chat-area::-webkit-scrollbar-track,
+.sidebar-chat-list::-webkit-scrollbar-track,
+.analyze-menu::-webkit-scrollbar-track {
+
+  background:
+    transparent;
+
+}
+
+
+.truvora-chat-area::-webkit-scrollbar-thumb,
+.sidebar-chat-list::-webkit-scrollbar-thumb,
+.analyze-menu::-webkit-scrollbar-thumb {
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(148, 163, 184, 0.13);
+
+}
+
+
+.truvora-chat-area::-webkit-scrollbar-thumb:hover,
+.sidebar-chat-list::-webkit-scrollbar-thumb:hover,
+.analyze-menu::-webkit-scrollbar-thumb:hover {
+
+  background:
+    rgba(148, 163, 184, 0.22);
+
+}
+
+
+/* =========================================================
+   MOBILE BACKDROP
+   ========================================================= */
+
+.mobile-sidebar-backdrop {
+
+  display:
+    none;
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (
+  max-width: 1050px
+) {
+
+  .truvora-chat-area,
+  .truvora-composer-area {
+
+    padding-left:
+      4vw;
+
+    padding-right:
+      4vw;
+
+  }
+
+
+  .composer-mode-button {
+
+    padding-left:
+      7px;
+
+    padding-right:
+      7px;
+
+  }
+
+
+  .composer-mode-button span {
+
+    display:
+      none;
+
+  }
+
+
+  .language-selector {
+
+    width:
+      115px;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 760px
+) {
+
+  body {
+
+    overflow:
+      hidden;
+
+  }
+
+
+  .truvora-app {
+
+    min-height:
+      100dvh;
+
+    height:
+      100dvh;
+
+  }
+
+
+  /* ---------------------------------------------
+     SIDEBAR
+  --------------------------------------------- */
+
+  .truvora-sidebar {
+
+    position:
+      fixed;
+
+    left:
+      0;
+
+    top:
+      0;
+
+    width:
+      min(290px, 86vw);
+
+    min-width:
+      min(290px, 86vw);
+
+    height:
+      100dvh;
+
+    transform:
+      translateX(-105%);
+
+    transition:
+      transform 0.22s
+      ease;
+
+    box-shadow:
+      20px 0 60px
+      rgba(0, 0, 0, 0.30);
+
+  }
+
+
+  .truvora-sidebar.sidebar-visible {
+
+    transform:
+      translateX(0);
+
+  }
+
+
+  .truvora-sidebar.sidebar-hidden {
+
+    transform:
+      translateX(-105%);
+
+  }
+
+
+  .sidebar-mobile-close {
+
+    display:
+      inline-flex;
+
+  }
+
+
+  .mobile-sidebar-backdrop {
+
+    position:
+      fixed;
+
+    inset:
+      0;
+
+    display:
+      block;
+
+    z-index:
+      1100;
+
+    background:
+      rgba(0, 0, 0, 0.48);
+
+    backdrop-filter:
+      blur(2px);
+
+  }
+
+
+  /* ---------------------------------------------
+     TOP BAR
+  --------------------------------------------- */
+
+  .truvora-topbar {
+
+    height:
+      57px;
+
+    min-height:
+      57px;
+
+    padding:
+      0 11px;
+
+  }
+
+
+  .mobile-menu-button {
+
+    width:
+      37px;
+
+    height:
+      37px;
+
+    display:
+      flex;
+
+    align-items:
+      center;
+
+    justify-content:
+      center;
+
+    margin-right:
+      8px;
+
+    border:
+      1px solid
+      rgba(148, 163, 184, 0.10);
+
+    border-radius:
+      9px;
+
+    background:
+      rgba(255, 255, 255, 0.025);
+
+    color:
+      #a0b4c7;
+
+    cursor:
+      pointer;
+
+    font-size:
+      17px;
+
+  }
+
+
+  .mobile-brand {
+
+    display:
+      flex;
+
+    align-items:
+      center;
+
+    gap:
+      7px;
+
+  }
+
+
+  .mobile-brand .truvora-logo-symbol {
+
+    width:
+      31px;
+
+    height:
+      31px;
+
+    flex-basis:
+      31px;
+
+    border-radius:
+      9px;
+
+    font-size:
+      14px;
+
+  }
+
+
+  .mobile-brand > div:last-child {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+  }
+
+
+  .mobile-brand strong {
+
+    color:
+      #ffffff;
+
+    font-size:
+      12px;
+
+    line-height:
+      1;
+
+    letter-spacing:
+      0.4px;
+
+  }
+
+
+  .mobile-brand span {
+
+    margin-top:
+      2px;
+
+    color:
+      var(--truvora-accent);
+
+    font-size:
+      6px;
+
+    font-weight:
+      700;
+
+    letter-spacing:
+      1.2px;
+
+  }
+
+
+  .topbar-center {
+
+    display:
+      none;
+
+  }
+
+
+  .topbar-avatar {
+
+    width:
+      31px;
+
+    height:
+      31px;
+
+    font-size:
+      10px;
+
+  }
+
+
+  /* ---------------------------------------------
+     CHAT
+  --------------------------------------------- */
+
+  .truvora-chat-area {
+
+    padding:
+      18px 10px 20px;
+
+  }
+
+
+  .truvora-message {
+
+    gap:
+      7px;
+
+    margin-bottom:
+      22px;
+
+  }
+
+
+  .message-avatar {
+
+    width:
+      28px;
+
+    height:
+      28px;
+
+    flex-basis:
+      28px;
+
+    border-radius:
+      8px;
+
+    font-size:
+      10px;
+
+  }
+
+
+  .message-body {
+
+    max-width:
+      calc(100% - 35px);
+
+  }
+
+
+  .truvora-user-message
+  .message-body {
+
+    max-width:
+      88%;
+
+  }
+
+
+  .message-text {
+
+    font-size:
+      13px;
+
+    line-height:
+      1.65;
+
+  }
+
+
+  .truvora-user-message
+  .message-text {
+
+    padding:
+      9px 11px;
+
+  }
+
+
+  /* ---------------------------------------------
+     EMPTY STATE
+  --------------------------------------------- */
+
+  .truvora-empty-state {
+
+    min-height:
+      70%;
+
+    padding:
+      20px 8px;
+
+  }
+
+
+  .empty-logo-symbol {
+
+    width:
+      50px;
+
+    height:
+      50px;
+
+    border-radius:
+      14px;
+
+    font-size:
+      22px;
+
+  }
+
+
+  .truvora-empty-state h1 {
+
+    margin-top:
+      15px;
+
+    font-size:
+      22px;
+
+  }
+
+
+  .truvora-empty-state p {
+
+    font-size:
+      10px;
+
+  }
+
+
+  .empty-suggestions {
+
+    width:
+      min(400px, 100%);
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+  }
+
+
+  /* ---------------------------------------------
+     COMPOSER
+  --------------------------------------------- */
+
+  .truvora-composer-area {
+
+    padding:
+      0 7px 8px;
+
+  }
+
+
+  .truvora-composer {
+
+    padding:
+      7px;
+
+    border-radius:
+      13px;
+
+  }
+
+
+  .composer-toolbar {
+
+    gap:
+      6px;
+
+    padding:
+      0 1px 7px;
+
+  }
+
+
+  .composer-toolbar-left {
+
+    flex:
+      1;
+
+    min-width:
+      0;
+
+  }
+
+
+  .composer-toolbar-right {
+
+    gap:
+      3px;
+
+  }
+
+
+  .composer-icon-button {
+
+    width:
+      31px;
+
+    height:
+      31px;
+
+  }
+
+
+  .composer-mode-button {
+
+    width:
+      31px;
+
+    height:
+      31px;
+
+    padding:
+      0;
+
+  }
+
+
+  .composer-mode-button span {
+
+    display:
+      none;
+
+  }
+
+
+  .language-selector {
+
+    width:
+      95px;
+
+  }
+
+
+  .voice-selector {
+
+    width:
+      72px;
+
+    height:
+      31px;
+
+  }
+
+
+  .composer-attachment-status {
+
+    padding:
+      5px 3px;
+
+  }
+
+
+  .composer-attachment-status span {
+
+    max-width:
+      180px;
+
+  }
+
+
+  .composer-analysis-preview {
+
+    margin-bottom:
+      6px;
+
+  }
+
+
+  .truvora-input {
+
+    min-height:
+      56px;
+
+    max-height:
+      150px;
+
+    padding:
+      11px 50px 11px 10px;
+
+    font-size:
+      13px;
+
+  }
+
+
+  .composer-send-button {
+
+    right:
+      6px;
+
+    bottom:
+      6px;
+
+    width:
+      37px;
+
+    height:
+      37px;
+
+  }
+
+
+  .composer-disclaimer {
+
+    padding-top:
+      5px;
+
+    font-size:
+      7px;
+
+  }
+
+
+  /* ---------------------------------------------
+     ANALYZE MENU
+  --------------------------------------------- */
+
+  .analyze-menu {
+
+    left:
+      7px;
+
+    right:
+      7px;
+
+    bottom:
+      calc(100% - 2px);
+
+    width:
+      auto;
+
+    max-height:
+      55vh;
+
+  }
+
+
+  .analyze-menu > button {
+
+    min-height:
+      42px;
+
+  }
+
+
+  /* ---------------------------------------------
+     SOURCES
+  --------------------------------------------- */
+
+  .sources-list {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+  }
+
+
+  .source-item {
+
+    width:
+      100%;
+
+    max-width:
+      none;
+
+    min-width:
+      0;
+
+  }
+
+
+  /* ---------------------------------------------
+     CAMERA
+  --------------------------------------------- */
+
+  .camera-overlay {
+
+    padding:
+      10px;
+
+  }
+
+
+  .camera-modal {
+
+    width:
+      100%;
+
+    border-radius:
+      13px;
+
+  }
+
+
+  .camera-video {
+
+    max-height:
+      55vh;
+
+  }
+
+
+  .camera-actions {
+
+    flex-direction:
+      column-reverse;
+
+  }
+
+
+  .camera-cancel-button,
+  .camera-capture-button {
+
+    width:
+      100%;
+
+  }
+
+
+  /* ---------------------------------------------
+     LOGIN
+  --------------------------------------------- */
+
+  .truvora-login-screen {
+
+    padding:
+      12px;
+
+  }
+
+
+  .truvora-login-card {
+
+    padding:
+      24px 17px;
+
+    border-radius:
+      16px;
+
+  }
+
+
+  /* ---------------------------------------------
+     CITATION
+  --------------------------------------------- */
+
+  .citation-preview-overlay {
+
+    align-items:
+      flex-end;
+
+    padding:
+      8px;
+
+  }
+
+
+  .citation-preview {
+
+    width:
+      100%;
+
+    border-radius:
+      14px;
+
+  }
+
+
+  /* ---------------------------------------------
+     GENERATION
+  --------------------------------------------- */
+
+  .truvora-generation-overlay {
+
+    padding:
+      12px;
+
+  }
+
+
+  .truvora-generation-card {
+
+    width:
+      100%;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (
+  max-width: 420px
+) {
+
+  .mobile-brand strong {
+
+    font-size:
+      11px;
+
+  }
+
+
+  .mobile-brand span {
+
+    font-size:
+      5px;
+
+  }
+
+
+  .topbar-avatar {
+
+    width:
+      29px;
+
+    height:
+      29px;
+
+  }
+
+
+  .truvora-chat-area {
+
+    padding-left:
+      7px;
+
+    padding-right:
+      7px;
+
+  }
+
+
+  .truvora-empty-state h1 {
+
+    font-size:
+      20px;
+
+  }
+
+
+  .empty-suggestions button {
+
+    min-height:
+      38px;
+
+    padding:
+      6px 8px;
+
+    font-size:
+      9px;
+
+  }
+
+
+  .composer-toolbar-left {
+
+    gap:
+      3px;
+
+  }
+
+
+  .composer-toolbar-right {
+
+    gap:
+      2px;
+
+  }
+
+
+  .language-selector {
+
+    width:
+      82px;
+
+  }
+
+
+  .voice-selector {
+
+    width:
+      63px;
+
+  }
+
+
+  .composer-icon-button,
+  .composer-mode-button {
+
+    width:
+      29px;
+
+    height:
+      29px;
+
+  }
+
+
+  .composer-input-container {
+
+    margin-top:
+      1px;
+
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
+
+@media (
+  hover: none
+) {
+
+  .composer-icon-button,
+  .composer-mode-button,
+  .message-action-btn,
+  .sidebar-chat-item,
+  .empty-suggestions button {
+
+    -webkit-tap-highlight-color:
+      transparent;
+
+  }
+
+
+  .composer-icon-button:active,
+  .composer-mode-button:active {
+
+    transform:
+      scale(0.96);
+
+  }
+
+}
+
+
+/* =========================================================
+   SAFE AREA — MOBILE DEVICES
+   ========================================================= */
+
+@supports (
+  padding-bottom:
+  env(safe-area-inset-bottom)
+) {
+
+  .truvora-composer-area {
+
+    padding-bottom:
+      calc(
+        8px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+
+  }
+
+
+  @media (
+    max-width: 760px
+  ) {
+
+    .truvora-topbar {
+
+      padding-top:
+        env(
+          safe-area-inset-top
+        );
+
+      height:
+        calc(
+          57px +
+          env(
+            safe-area-inset-top
+          )
+        );
+
+      min-height:
+        calc(
+          57px +
+          env(
+            safe-area-inset-top
+          )
+        );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+
+    scroll-behavior:
+      auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   END — TRUVORA APP.CSS
+>>>>>>> origin/main
    ========================================================= */
