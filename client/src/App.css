@@ -1,6773 +1,1394 @@
-/* =========================================================
-<<<<<<< HEAD
-   TRUVORA GLOBAL AI — CLEAN SPACIOUS UI
-   Original Truvora identity
-   Primary: #1565C0
-   Secondary: #0D47A1
-   Accent: #29B6F6
-   ========================================================= */
-
-:root{
-  --tv-bg:#07111f;
-  --tv-bg-soft:#0b1728;
-  --tv-surface:#0f1d30;
-  --tv-surface-2:#12243a;
-  --tv-border:rgba(148,163,184,.16);
-  --tv-border-strong:rgba(41,182,246,.28);
-
-  --tv-text:#f8fafc;
-  --tv-text-soft:#dbe7f5;
-  --tv-muted:#91a4bb;
-
-  --tv-primary:#1565C0;
-  --tv-primary-2:#0D47A1;
-  --tv-accent:#29B6F6;
-
-  --tv-user:#123d70;
-  --tv-ai:#0d1b2d;
-
-  --tv-radius:18px;
-  --tv-radius-small:12px;
-
-  --tv-shadow:
-    0 18px 55px rgba(0,0,0,.28);
-
-  --tv-glow:
-    0 0 24px rgba(41,182,246,.12);
-}
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-*,
-*::before,
-*::after{
+*{
+  margin:0;
+  padding:0;
   box-sizing:border-box;
 }
 
-html,
-body,
-#root{
-  width:100%;
-  height:100%;
-  margin:0;
-  padding:0;
-}
-
-html{
-  background:var(--tv-bg);
-}
-
 body{
-  background:
-    radial-gradient(
-      circle at 50% -20%,
-      rgba(21,101,192,.16),
-      transparent 38%
-    ),
-    var(--tv-bg);
-
-  color:var(--tv-text);
-
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  background:#020617;
+  color:white;
+  font-family:Arial, Helvetica, sans-serif;
 }
-
-button,
-input,
-textarea,
-select{
-  font:inherit;
-}
-
-button{
-  -webkit-tap-highlight-color:transparent;
-}
-
-a{
-  color:inherit;
-}
-
-/* =========================================================
-   APP
-   ========================================================= */
 
 .app{
-  width:100%;
-  height:100vh;
-  min-height:100vh;
-
   display:flex;
-
+  height:100vh;
+  width:100vw;
   overflow:hidden;
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(21,101,192,.08),
-      transparent 42%
-    ),
-    var(--tv-bg);
 }
 
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
+/* SIDEBAR */
 
 .sidebar{
-  width:276px;
-  min-width:276px;
-  height:100vh;
-
+  min-width:260px;
+  width:260px;
+  background:#031035;
+  border-right:1px solid #1e293b;
+  padding:20px;
   display:flex;
   flex-direction:column;
-
-  padding:20px 14px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #091525 0%,
-      #07111f 100%
-    );
-
-  border-right:1px solid var(--tv-border);
-
+  height:100vh;
   overflow:hidden;
-
-  z-index:100;
 }
 
 .logo{
   display:flex;
   align-items:center;
-
-  gap:12px;
-
-  padding:4px 9px 20px;
-
-  margin:0;
+  gap:15px;
+  margin-bottom:25px;
 }
 
 .logo-icon{
-  width:42px;
-  height:42px;
-
-  flex:0 0 42px;
-
+  width:55px;
+  height:55px;
+  background:#1d8fff;
+  border-radius:15px;
   display:flex;
   align-items:center;
   justify-content:center;
-
-  border-radius:13px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary),
-      var(--tv-accent)
-    );
-
-  color:#fff;
-
-  font-size:20px;
-  font-weight:800;
-
-  box-shadow:
-    0 8px 24px rgba(21,101,192,.3),
-    0 0 22px rgba(41,182,246,.1);
+  font-size:30px;
+  font-weight:bold;
 }
 
 .logo-text h2{
-  margin:0;
-
-  color:#fff;
-
   font-size:18px;
-  line-height:1.2;
-
-  font-weight:760;
-
-  letter-spacing:-.02em;
 }
 
 .logo-text p{
-  margin:4px 0 0;
-
-  color:var(--tv-muted);
-
-  font-size:11px;
+  color:#94a3b8;
+  margin-top:5px;
 }
-
-/* =========================================================
-   NEW CHAT
-   ========================================================= */
 
 .new-chat{
-  width:100%;
-
-  margin:0 0 22px;
-
-  padding:12px 14px;
-
-  border:1px solid rgba(41,182,246,.22);
-
-  border-radius:12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(21,101,192,.22),
-      rgba(41,182,246,.08)
-    );
-
-  color:#eaf6ff;
-
-  font-size:14px;
-  font-weight:650;
-
+  background:#1d73f2;
+  border:none;
+  color:white;
+  padding:18px;
+  border-radius:18px;
+  font-size:22px;
   cursor:pointer;
-
-  transition:
-    background .18s ease,
-    border-color .18s ease,
-    transform .18s ease;
+  margin-bottom:25px;
 }
-
-.new-chat:hover{
-  background:
-    linear-gradient(
-      135deg,
-      rgba(21,101,192,.32),
-      rgba(41,182,246,.13)
-    );
-
-  border-color:rgba(41,182,246,.38);
-
-  transform:translateY(-1px);
-}
-
-/* =========================================================
-   CHAT TITLE
-   ========================================================= */
 
 .chat-title{
-  margin:3px 9px 9px;
-
-  color:#71869e;
-
-  font-size:10px;
-
-  font-weight:750;
-
-  letter-spacing:.09em;
-
-  text-transform:uppercase;
+  color:#cbd5e1;
+  margin-bottom:15px;
 }
-
-/* =========================================================
-   CHAT LIST
-   ========================================================= */
-
-.chat-list{
-  display:flex;
-  flex-direction:column;
-
-  gap:4px;
-
-  margin:0;
-  padding:0 2px;
-
-  overflow-y:auto;
-
-  scrollbar-width:thin;
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  overflow-y: auto;
+  max-height: 60vh;
 }
-
 .chat-item{
-  width:100%;
-  min-height:43px;
+    width:100%;
+    min-height:60px;
+    padding:15px;
+    margin-bottom:10px;
 
-  margin:0;
+    background:rgba(17,24,39,.7);
 
-  padding:10px 12px;
+    border:1px solid rgba(255,255,255,.05);
 
-  border:1px solid transparent;
+    border-radius:16px;
 
-  border-radius:11px;
+    color:white;
 
-  background:transparent;
+    cursor:pointer;
 
-  color:#aebfd2;
+    overflow:hidden;
 
-  font-size:13px;
+    text-overflow:ellipsis;
 
-  text-align:left;
+    white-space:nowrap;
 
-  cursor:pointer;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
-
-  white-space:nowrap;
-
-  transition:
-    background .16s ease,
-    border-color .16s ease,
-    color .16s ease;
+    transition:.3s;
 }
-
 .chat-item:hover{
-  background:rgba(255,255,255,.045);
+    background:rgba(29,78,216,.25);
 
-  border-color:rgba(148,163,184,.1);
+    border-color:rgba(0,229,255,.3);
 
-  color:#fff;
+    transform:translateX(3px);
+
+    box-shadow:0 0 20px rgba(0,229,255,.15);
 }
-
-/* =========================================================
-   MAIN
-   ========================================================= */
+/* MAIN */
 
 .main{
   flex:1;
-
-  min-width:0;
-
-  height:100vh;
-
   display:flex;
   flex-direction:column;
-
+  height:100vh;
   overflow:hidden;
-
-  background:transparent;
 }
 
-/* =========================================================
-   TOP BAR
-   ========================================================= */
+/* TOPBAR */
 
 .topbar{
-  height:66px;
-  min-height:66px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 26px;
-
-  background:
-    rgba(7,17,31,.82);
-
-  border-bottom:1px solid var(--tv-border);
-
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-
-  z-index:50;
+    height:90px;
+    border-bottom:1px solid #1e293b;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    background:rgba(3,7,18,.9);
+    backdrop-filter:blur(20px);
 }
 
 .top-title{
-  margin:0;
+  font-size: 26px;
+  font-weight:800;
+  letter-spacing:2px;
 
-  color:#fff;
+  background:linear-gradient(
+    90deg,
+    #00e5ff,
+    #00ff88,
+    #ffffff,
+    #00e5ff
+  );
 
-  font-size:19px;
+  background-size:300% 300%;
 
-  font-weight:730;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 
-  letter-spacing:-.02em;
+  text-shadow:
+    0 0 20px rgba(0,229,255,.5),
+    0 0 40px rgba(0,255,136,.3);
 
-  background:none;
-
-  -webkit-text-fill-color:initial;
-
-  text-shadow:none;
-
-  animation:none;
+  animation:shine 5s linear infinite;
 }
 
 .top-title:hover{
-  transform:none;
-  text-shadow:none;
+  transform:scale(1.03);
+
+  text-shadow:
+    0 0 25px rgba(0,255,136,.7),
+    0 0 50px rgba(0,229,255,.5);
+
+  transition:all .3s ease;
 }
 
+@keyframes shine{
+  0%{
+    background-position:0% 50%;
+  }
+
+  100%{
+    background-position:100% 50%;
+  }
+}
 .logout{
-  width:38px;
-  height:38px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border:1px solid transparent;
-
-  border-radius:11px;
-
-  background:transparent;
-
-  color:#9eb1c7;
-
   cursor:pointer;
-
-  font-size:16px;
-
-  transition:
-    background .16s ease,
-    color .16s ease,
-    border-color .16s ease;
+  font-size:22px;
 }
 
-.logout:hover{
-  background:rgba(255,255,255,.05);
-
-  border-color:var(--tv-border);
-
-  color:#fff;
-}
-
-/* =========================================================
-   MESSAGES
-   ========================================================= */
+/* MESSAGES */
 
 .messages{
-  flex:1;
-
-  min-height:0;
-
-  overflow-y:auto;
-
-  padding:
-    36px
-    clamp(20px,5vw,86px)
-    34px;
-
-  scroll-behavior:smooth;
-
-  background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(21,101,192,.055),
-      transparent 42%
+    flex:1;
+    overflow-y:auto;
+    padding:30px;
+    background:linear-gradient(
+        180deg,
+        #020617 0%,
+        #000b2a 100%
     );
-
-  scrollbar-width:thin;
 }
 
 .message{
   display:flex;
-
-  gap:12px;
-
-  width:100%;
-
-  max-width:980px;
-
-  margin:0 auto 28px;
-}
-=======
-   TRUVORA GLOBAL AI
-   APP.CSS — PART 1
-   Clean enterprise UI
-   ========================================================= */
-
-:root {
-
-  --truvora-primary:
-    #1565c0;
-
-  --truvora-primary-dark:
-    #0d47a1;
-
-  --truvora-accent:
-    #29b6f6;
-
-  --truvora-bg:
-    #07111f;
-
-  --truvora-sidebar:
-    #0a1626;
-
-  --truvora-surface:
-    #0f1d30;
-
-  --truvora-surface-light:
-    #14253a;
-
-  --truvora-border:
-    rgba(148, 163, 184, 0.14);
-
-  --truvora-text:
-    #e7f0fa;
-
-  --truvora-muted:
-    #71869d;
-
-  --truvora-success:
-    #4ade80;
-
+  gap:15px;
+  margin-bottom:25px;
 }
 
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-* {
-
-  box-sizing:
-    border-box;
-
+.user-message{
+  justify-content:flex-end;
 }
 
-
-html,
-body,
-#root {
-
-  width:
-    100%;
-
-  height:
-    100%;
-
-  margin:
-    0;
-
-  padding:
-    0;
-
-}
-
-
-html {
-
-  scroll-behavior:
-    smooth;
-
-}
-
-
-body {
-
-  background:
-    var(--truvora-bg);
-
-  color:
-    var(--truvora-text);
-
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  overflow:
-    hidden;
-
-}
-
-
-button,
-input,
-textarea,
-select {
-
-  font-family:
-    inherit;
-
-}
-
-
-button {
-
-  border:
-    0;
-
-}
-
-
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-
-  outline:
-    2px solid
-    rgba(41, 182, 246, 0.55);
-
-  outline-offset:
-    2px;
-
-}
-
-
-/* =========================================================
-   MAIN APP
-   ========================================================= */
-
-.truvora-app {
-
-  display:
-    flex;
-
-  width:
-    100%;
-
-  height:
-    100dvh;
-
-  min-height:
-    100vh;
-
-  background:
-    var(--truvora-bg);
-
-  overflow:
-    hidden;
-
-}
-
-
-.truvora-main {
-
-  position:
-    relative;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  flex:
-    1;
-
-  min-width:
-    0;
-
-  height:
-    100%;
-
-  background:
-    radial-gradient(
-      circle at 50% -20%,
-      rgba(21, 101, 192, 0.10),
-      transparent 38%
-    ),
-    var(--truvora-bg);
-
-}
-
-
-/* =========================================================
-   LOGO
-   ========================================================= */
-
-.truvora-logo {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
-
-  min-width:
-    0;
-
-}
-
-
-.truvora-logo-symbol {
-
-  width:
-    40px;
-
-  height:
-    40px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex:
-    0 0 40px;
-
-  border-radius:
-    12px;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--truvora-primary),
-      var(--truvora-primary-dark)
-    );
-
-  color:
-    #ffffff;
->>>>>>> origin/main
-
-  font-size:
-    18px;
-
-<<<<<<< HEAD
 .avatar{
-  width:36px;
-  height:36px;
+  width:52px;
+  height:52px;
 
-  flex:0 0 36px;
+  background:linear-gradient(
+    135deg,
+    #00e5ff,
+    #1d8fff
+  );
+
+  border-radius:18px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  margin-top:3px;
+  font-size:24px;
 
-  border-radius:11px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary),
-      var(--tv-accent)
-    );
-
-  color:#fff;
-
-  font-size:15px;
+  flex-shrink:0;
 
   box-shadow:
-    0 7px 20px rgba(21,101,192,.22);
+    0 0 15px rgba(0,229,255,.5),
+    0 0 30px rgba(29,143,255,.3);
 }
 
 .bubble{
-  max-width:min(840px,94%);
+    background:rgba(17,24,39,.85);
+    backdrop-filter:blur(20px);
 
-  width:fit-content;
+    border:1px solid rgba(255,255,255,.08);
 
-  padding:16px 18px;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.3);
 
-  border:
-    1px solid
-    rgba(148,163,184,.14);
+    padding:20px;
 
-  border-radius:17px;
+    border-radius:22px;
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(15,29,48,.94),
-      rgba(13,27,45,.94)
-    );
+    max-width:95%;
+    width:fit-content;
 
-  color:var(--tv-text-soft);
+    line-height:1.7;
+
+    position:relative;
+
+    word-wrap:break-word;
+
+    color:white;
+
+    font-size:18px;
+}
+
+/* =========================================
+   TRUVORA INPUT AREA — GLOBAL APP LAYOUT
+   ========================================= */
+
+.input-area {
+  padding: 6px 12px 8px;
+  border-top: 1px solid #1e293b;
+}
+
+/* MAIN COMPOSER */
+.input-box {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 10px;
+
+  background: rgba(17, 24, 39, 0.96);
+  backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
 
   box-shadow:
-    0 8px 28px rgba(0,0,0,.16);
-
-  font-size:15px;
-
-  line-height:1.7;
-
-  word-wrap:break-word;
-
-  position:relative;
-
-  animation:truvoraAnswerIn .18s ease-out;
+    0 0 20px rgba(0, 229, 255, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.user-message .bubble{
-  background:
-    linear-gradient(
-      135deg,
-      #123f72,
-      #0e3158
-    );
+/* =========================================
+   TOP CONTROL ROW
+   ========================================= */
 
-  border-color:
-    rgba(41,182,246,.18);
+.input-box .left-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-  color:#f4f9ff;
+  width: 100%;
+  flex-wrap: nowrap;
 }
 
-.bubble p{
-  margin:0 0 11px;
-}
+/* ICON BUTTONS */
 
-.bubble p:last-child{
-  margin-bottom:0;
-}
+.icon-btn {
+  flex: 0 0 auto;
 
-@keyframes truvoraAnswerIn{
-  from{
-    opacity:0;
-    transform:translateY(5px);
-  }
+  width: 48px;
+  height: 48px;
 
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
+  border: none;
+  border-radius: 16px;
 
-/* =========================================================
-   COMPOSER AREA
-   ========================================================= */
+  background: rgba(30, 41, 59, 0.9);
+  color: white;
 
-.input-area{
-  width:100%;
-
-  padding:
-    12px
-    clamp(14px,4vw,58px)
-    18px;
-
-  background:
-    linear-gradient(
-      to top,
-      rgba(7,17,31,1) 68%,
-      rgba(7,17,31,.84)
-    );
-
-  border-top:1px solid rgba(148,163,184,.04);
-}
-
-/* =========================================================
-   INPUT BOX
-   ========================================================= */
-
-.input-box{
-  position:relative;
-
-  width:100%;
-
-  max-width:980px;
-
-  margin:0 auto;
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  align-items:center;
-
-  gap:9px;
-
-  padding:10px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.2);
-
-  border-radius:19px;
-
-  background:
-    rgba(15,29,48,.94);
+  cursor: pointer;
+  font-size: 21px;
 
   box-shadow:
-    0 14px 45px rgba(0,0,0,.3),
-    0 0 25px rgba(21,101,192,.05);
+    0 0 10px rgba(0, 229, 255, 0.12);
 
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
+  transition: all 0.25s ease;
 }
 
-.left-buttons{
-  display:flex;
+.icon-btn:hover {
+  background: rgba(0, 229, 255, 0.15);
 
-  align-items:center;
+  box-shadow:
+    0 0 20px rgba(0, 229, 255, 0.35);
 
-  gap:6px;
-
-  flex:0 0 auto;
-
-  width:auto;
+  transform: translateY(-2px);
 }
 
-.icon-btn{
-  width:39px;
-  min-width:39px;
+.active-btn {
+  background: #1d8fff !important;
+}
 
-  height:39px;
-  min-height:39px;
+/* =========================================
+   LANGUAGE SELECT
+   ========================================= */
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.input-box .language-select {
+  width: 210px !important;
+  min-width: 210px !important;
 
-  padding:0;
+  margin: 0 !important;
+  flex: 0 0 auto;
+}
 
-  border:
-    1px solid
-    transparent;
+/* =========================================
+   VOICE SELECT
+   ========================================= */
 
-  border-radius:11px;
+.input-box .voice-select {
+  width: 170px !important;
+  min-width: 170px !important;
 
-  background:transparent;
+  margin: 0 !important;
+  flex: 0 0 auto;
+}
 
-  color:#a8bbcf;
+/* =========================================
+   QUESTION AREA
+   ========================================= */
 
+.input-box .main-input {
+  width: 100% !important;
+
+  min-height: 90px !important;
+
+  box-sizing: border-box;
+
+  padding: 18px 85px 18px 20px !important;
+
+  background: #0b1220 !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 18px !important;
+
+  color: white !important;
+
+  font-size: 19px !important;
+  font-weight: 500;
+
+  line-height: 1.5;
+
+  outline: none;
+
+  resize: none;
+}
+
+.input-box .main-input::placeholder {
+  color: #94a3b8;
+}
+
+.input-box .main-input:focus {
+  border-color: rgba(0, 229, 255, 0.45) !important;
+
+  box-shadow:
+    0 0 15px rgba(0, 229, 255, 0.12);
+}
+
+/* =========================================
+   SEND BUTTON
+   ========================================= */
+
+.input-box .send-btn {
+  position: absolute;
+
+  right: 28px;
+  bottom: 28px;
+
+  width: 64px;
+  height: 64px;
+
+  border: none;
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #00e5ff,
+    #1d8fff
+  );
+
+  color: white;
+
+  font-size: 26px;
+
+  cursor: pointer;
+
+  z-index: 10;
+
+  box-shadow:
+    0 0 20px rgba(0, 229, 255, 0.4),
+    0 0 40px rgba(29, 143, 255, 0.2);
+
+  transition: all 0.3s ease;
+}
+
+.input-box .send-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+
+  box-shadow:
+    0 0 30px rgba(0, 229, 255, 0.7),
+    0 0 60px rgba(29, 143, 255, 0.4);
+}
+
+/* =========================================
+   CODE BLOCK
+   ========================================= */
+
+pre {
+  margin-top: 15px;
+  border-radius: 15px !important;
+  overflow: auto;
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    display: none;
+  }
+
+  .bubble {
+    max-width: 98%;
+  }
+
+  .top-title {
+    font-size: 22px;
+  }
+
+  .input-box .left-buttons {
+    flex-wrap: wrap;
+  }
+
+  .input-box .language-select {
+    width: 180px !important;
+    min-width: 180px !important;
+  }
+
+  .input-box .voice-select {
+    width: 150px !important;
+    min-width: 150px !important;
+  }
+
+  .input-box .main-input {
+    min-height: 80px !important;
+  }
+}
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .bubble{
+    max-width:98%;
+}
+
+  .top-title{
+    font-size:22px;
+  }
+}
+.sources {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.sources h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.sources a {
+  color: #4da6ff;
+  text-decoration: none;
+}
+
+.sources a:hover {
+  text-decoration: underline;
+}
+.sources-box{
+  margin-top:20px;
+  padding:15px;
+  background:#111827;
+  border:1px solid #2b2b2b;
+  border-radius:14px;
+}
+.sources-box h4{
+  color:#4da6ff;
+  margin-bottom:12px;
+}
+.source-card{
+  background:#1a2332;
+  border:1px solid #2d3d55;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:10px;
+  transition:0.25s;
   cursor:pointer;
-
-  font-size:17px;
-
-  box-shadow:none;
-
-  transition:
-    background .16s ease,
-    color .16s ease,
-    border-color .16s ease;
 }
 
-.icon-btn:hover{
-  background:rgba(41,182,246,.08);
-
-  border-color:rgba(41,182,246,.15);
-
-  color:#fff;
-
-  transform:none;
-
-  box-shadow:none;
+.source-card:hover{
+  background:#24344d;
+  transform:translateY(-4px);
+  border-color:#4da6ff;
+  box-shadow:0 8px 24px rgba(77,166,255,.25);
+}
+.source-link{
+  display:block;
+  text-decoration:none;
+  color:white;
+}
+.source-title{
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.source-domain{
+  font-size:13px;
+  color:#8fb7ff;
+}
+.camera-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #0b1020;
+  padding: 20px;
+  border-radius: 15px;
+  z-index: 9999;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
 }
 
-.active-btn{
-  background:
-    rgba(21,101,192,.2) !important;
-
-  color:
-    #69caff !important;
-
-  border-color:
-    rgba(41,182,246,.24) !important;
+.camera-box video {
+  width: 500px;
+  max-width: 90vw;
+  border-radius: 12px;
 }
 
-/* =========================================================
-   LANGUAGE / VOICE
-   ========================================================= */
-
-.language-select{
-  width:160px;
-  min-width:160px;
-
-  margin:0;
-
-  flex:0 0 160px;
+.camera-box button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.language-select {
+  width: 170px;
+  min-width: 170px;
+  margin: 0 8px;
+  flex-shrink: 0;
 }
 
-.voice-select{
-  width:135px;
-  min-width:135px;
-
-  margin:0;
-
-  flex:0 0 135px;
+.language__control {
+  min-height: 42px !important;
+  height: 42px;
+  border-radius: 10px !important;
+  border: 1px solid #2c3e50 !important;
+  background: #1a2233 !important;
+  box-shadow: none !important;
 }
 
-.language__control,
-.voice__control{
-  min-height:39px !important;
-  height:39px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.18) !important;
-
-  border-radius:11px !important;
-
-  background:
-    rgba(255,255,255,.035) !important;
-
-  box-shadow:none !important;
+.language__control:hover {
+  border-color: #00d4ff !important;
 }
 
-.language__control:hover,
-.voice__control:hover{
-  border-color:
-    rgba(41,182,246,.3) !important;
+.language__single-value {
+  color: white !important;
 }
 
-.language__single-value,
-.voice__single-value{
-  color:#c8d7e7 !important;
-
-  font-size:13px !important;
+.language__input-container {
+  color: white !important;
 }
 
-.language__placeholder,
-.voice__placeholder{
-  color:#748aa1 !important;
-
-  font-size:13px !important;
+.language__placeholder {
+  color: #b0b0b0 !important;
 }
 
-.language__menu,
-.voice__menu{
-  z-index:99999 !important;
+.language__menu {
+  background: #1b2233 !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
 
-  border:
-    1px solid
-    rgba(148,163,184,.18) !important;
+.language__option {
+  background: #1b2233 !important;
+  color: white !important;
+}
 
-  border-radius:13px !important;
+.language__option--is-focused {
+  background: #1565C0 !important;
+}
 
-  background:
-    #0f1d30 !important;
+.language__option--is-selected {
+  background: #00BCD4 !important;
+}
+
+.language__indicator {
+  color: white !important;
+}
+
+.language__dropdown-indicator:hover {
+  color: #00BCD4 !important;
+}
+
+.language__menu-list {
+  max-height: 300px;
+}
+.analyze-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.analyze-menu {
+  background: #1b2335;
+  padding: 25px;
+  border-radius: 15px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+.analyze-menu h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.analyze-menu button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #1565C0;
+  color: white;
+  font-size: 16px;
+}
+
+.analyze-menu button:hover {
+  background: #1976D2;
+}
+/* =========================
+   TRUVORA VOICE SELECT
+   ========================= */
+
+.voice-select {
+  width: 140px;
+  min-width: 140px;
+}
+
+/* SELECT CONTROL */
+.voice-select .voice__control {
+  min-height: 44px !important;
+  background: #111827 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 8px !important;
+  color: white !important;
+}
+
+.voice-select .voice__single-value {
+  color: white !important;
+}
+
+.voice-select .voice__placeholder {
+  color: #cbd5e1 !important;
+}
+
+/* DROPDOWN */
+.voice-select .voice__menu {
+  background: white !important;
+  color: #111827 !important;
+  z-index: 9999 !important;
+}
+
+.voice-select .voice__menu-list {
+  background: white !important;
+}
+
+/* VOICE OPTIONS */
+.voice-select .voice__option {
+  background: white !important;
+  color: #111827 !important;
+  padding: 10px 12px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* FORCE THE ACTUAL TEXT */
+.voice-select .voice__option,
+.voice-select .voice__option *,
+.voice-select .voice__option span,
+.voice-select .voice__option div {
+  color: #111827 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* HOVER / FOCUSED */
+.voice-select .voice__option--is-focused {
+  background: #1e40af !important;
+  color: white !important;
+}
+
+.voice-select .voice__option--is-focused *,
+.voice-select .voice__option--is-focused span,
+.voice-select .voice__option--is-focused div {
+  color: white !important;
+}
+
+/* SELECTED */
+.voice-select .voice__option--is-selected {
+  background: #2563eb !important;
+  color: white !important;
+}
+
+.voice-select .voice__option--is-selected *,
+.voice-select .voice__option--is-selected span,
+.voice-select .voice__option--is-selected div {
+  color: white !important;
+}
+
+/* ARROW */
+.voice-select .voice__indicator-separator {
+  background: #475569 !important;
+}
+
+.voice-select .voice__dropdown-indicator {
+  color: #cbd5e1 !important;
+}
+.voice-select .voice__menu {
+  max-height: 420px !important;
+  overflow: hidden !important;
+}
+
+.voice-select .voice__menu-list {
+  max-height: 400px !important;
+  overflow-y: auto !important;
+}
+
+.voice-select .voice__option {
+  min-height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+voice-select
+/* =========================================
+   PERSONAL VOICE MODAL
+   ========================================= */
+
+.personal-voice-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.personal-voice-modal {
+  width: 420px;
+  max-width: 90%;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+.personal-voice-modal h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: white;
+}
+
+.personal-voice-modal p {
+  margin: 0 0 20px;
+  color: #cbd5e1;
+  font-size: 15px;
+}
+
+.personal-voice-name {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  background: #111827;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+}
+
+.personal-voice-name::placeholder {
+  color: #94a3b8;
+}
+
+.personal-voice-name:focus {
+  border-color: #3b82f6;
+}
+
+.personal-voice-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.personal-voice-buttons button {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.personal-voice-buttons button:first-child {
+  background: #2563eb;
+  color: white;
+}
+
+.personal-voice-buttons button:first-child:hover {
+  background: #1d4ed8;
+}
+
+.personal-voice-buttons button:last-child {
+  background: #334155;
+  color: white;
+}
+
+.personal-voice-buttons button:last-child:hover {
+  background: #475569;
+}
+/* =========================================
+   TRUVORA CLEAN GLOBAL COMPOSER
+   ========================================= */
+
+.input-area {
+  padding: 12px 20px 18px !important;
+  border-top: 1px solid #1e293b !important;
+}
+
+/* MAIN COMPOSER */
+.input-box {
+  position: relative !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+
+  width: 100% !important;
+  box-sizing: border-box !important;
+
+  padding: 16px !important;
+  gap: 14px !important;
+
+  background: rgba(17, 24, 39, 0.96) !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 24px !important;
 
   box-shadow:
-    0 20px 50px rgba(0,0,0,.42) !important;
-
-  overflow:hidden !important;
+    0 0 25px rgba(0, 229, 255, 0.08),
+    0 10px 35px rgba(0, 0, 0, 0.35) !important;
 }
 
-.language__menu-list,
-.voice__menu-list{
-  max-height:360px !important;
+/* =========================================
+   TOP ICON ROW
+   ========================================= */
 
-  overflow-y:auto !important;
+.input-box .left-buttons {
+  display: flex !important;
 
-  background:#0f1d30 !important;
+  flex-direction: row !important;
+  align-items: center !important;
+
+  flex-wrap: nowrap !important;
+
+  width: 100% !important;
+
+  gap: 10px !important;
+
+  overflow: visible !important;
 }
 
-.language__option,
-.voice__option{
-  background:#0f1d30 !important;
+/* ICONS */
 
-  color:#c4d3e3 !important;
+.input-box .icon-btn {
+  flex: 0 0 50px !important;
 
-  padding:10px 12px !important;
+  width: 50px !important;
+  min-width: 50px !important;
 
-  min-height:40px !important;
+  height: 50px !important;
+  min-height: 50px !important;
 
-  font-size:13px !important;
+  border-radius: 16px !important;
+
+  font-size: 23px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.language__option--is-focused,
-.voice__option--is-focused{
-  background:
-    rgba(21,101,192,.2) !important;
+/* =========================================
+   LANGUAGE
+   ========================================= */
 
-  color:#fff !important;
+.input-box .language-select {
+  width: 230px !important;
+  min-width: 230px !important;
+
+  margin: 0 !important;
 }
 
-.language__option--is-selected,
-.voice__option--is-selected{
-  background:
-    rgba(21,101,192,.3) !important;
+/* LANGUAGE BOX */
 
-  color:#7bd5ff !important;
+.input-box .language__control {
+  min-height: 50px !important;
+  height: 50px !important;
 
-  font-weight:650 !important;
+  border-radius: 12px !important;
+
+  font-size: 17px !important;
 }
 
-.language__indicator,
-.voice__dropdown-indicator{
-  color:#7890a8 !important;
+/* LANGUAGE TEXT */
+
+.input-box .language__single-value,
+.input-box .language__placeholder {
+  font-size: 17px !important;
+
+  font-weight: 500 !important;
 }
 
-/* =========================================================
-   MAIN INPUT
-   ========================================================= */
+/* LANGUAGE MENU */
 
-.main-input{
-  order:10;
+.input-box .language__menu {
+  z-index: 99999 !important;
 
-  flex:1 0 100%;
-
-  width:100% !important;
-
-  min-height:72px !important;
-
-  padding:
-    15px
-    68px
-    15px
-    16px !important;
-
-  border:
-    1px solid
-    rgba(148,163,184,.16) !important;
-
-  border-radius:14px !important;
-
-  background:
-    rgba(7,17,31,.82) !important;
-
-  color:#f8fafc !important;
-
-  outline:none !important;
-
-  resize:none !important;
-
-  font-size:15px !important;
-
-  line-height:1.55 !important;
-
-  box-shadow:none !important;
+  font-size: 16px !important;
 }
 
-.main-input::placeholder{
-  color:#6f849b !important;
+
+/* =========================================
+   VOICE
+   ========================================= */
+
+.input-box .voice-select {
+  width: 190px !important;
+  min-width: 190px !important;
+
+  margin: 0 !important;
 }
 
-.main-input:focus{
-  border-color:
-    rgba(41,182,246,.42) !important;
+/* VOICE BOX */
+
+.input-box .voice__control {
+  min-height: 50px !important;
+  height: 50px !important;
+
+  border-radius: 12px !important;
+
+  font-size: 17px !important;
+}
+
+/* VOICE TEXT */
+
+.input-box .voice__single-value,
+.input-box .voice__placeholder {
+  font-size: 17px !important;
+
+  font-weight: 500 !important;
+}
+
+/* VOICE MENU */
+
+.input-box .voice__menu {
+  z-index: 99999 !important;
+}
+
+/* =========================================
+   QUESTION AREA
+   ========================================= */
+
+.input-box .main-input {
+  width: 100% !important;
+
+  min-height: 90px !important;
+
+  box-sizing: border-box !important;
+
+  padding: 18px 95px 18px 20px !important;
+
+  background: #0b1220 !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+
+  border-radius: 18px !important;
+
+  color: white !important;
+
+  font-size: 19px !important;
+
+  font-weight: 500 !important;
+
+  line-height: 1.5 !important;
+
+  outline: none !important;
+
+  resize: none !important;
+}
+
+/* QUESTION FOCUS */
+
+.input-box .main-input:focus {
+  border-color: rgba(0, 229, 255, 0.5) !important;
 
   box-shadow:
-    0 0 0 3px
-    rgba(41,182,246,.07) !important;
+    0 0 18px rgba(0, 229, 255, 0.12) !important;
 }
 
-=======
-  font-weight:
-    800;
+/* PLACEHOLDER */
 
-  box-shadow:
-    0 7px 22px
-    rgba(21, 101, 192, 0.22);
+.input-box .main-input::placeholder {
+  color: #94a3b8 !important;
 
+  font-size: 18px !important;
 }
 
+/* =========================================
+   SEND BUTTON
+   ========================================= */
 
-.truvora-logo-text {
+.input-box .send-btn {
+  position: absolute !important;
 
-  display:
-    flex;
+  right: 28px !important;
+  bottom: 28px !important;
 
-  flex-direction:
-    column;
+  width: 64px !important;
+  min-width: 64px !important;
 
-  min-width:
-    0;
+  height: 64px !important;
+  min-height: 64px !important;
 
+  z-index: 20 !important;
+
+  border-radius: 20px !important;
 }
 
+/* =========================================
+   MOBILE
+   ========================================= */
 
-.truvora-logo-text strong {
+@media (max-width: 900px) {
 
-  color:
-    #ffffff;
-
-  font-size:
-    15px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    0.5px;
-
-  line-height:
-    1.15;
-
-}
-
-
-.truvora-logo-text span {
-
-  margin-top:
-    3px;
-
-  color:
-    var(--truvora-accent);
-
-  font-size:
-    8px;
-
-  font-weight:
-    700;
-
-  letter-spacing:
-    1.5px;
-
-}
-
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.truvora-sidebar {
-
-  position:
-    relative;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  width:
-    270px;
-
-  min-width:
-    270px;
-
-  height:
-    100%;
-
-  padding:
-    17px 13px;
-
-  background:
-    var(--truvora-sidebar);
-
-  border-right:
-    1px solid
-    var(--truvora-border);
-
-  z-index:
-    1200;
-
-}
-
-
-.sidebar-header {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  min-height:
-    45px;
-
-  margin-bottom:
-    18px;
-
-}
-
-
-.sidebar-mobile-close {
-
-  display:
-    none;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  width:
-    32px;
-
-  height:
-    32px;
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(255, 255, 255, 0.05);
-
-  color:
-    #8ea2b7;
-
-  cursor:
-    pointer;
-
-  font-size:
-    20px;
-
-}
-
-
-.new-chat-button {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    9px;
-
-  width:
-    100%;
-
-  min-height:
-    42px;
-
-  padding:
-    0 13px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.18);
-
-  border-radius:
-    10px;
-
-  background:
-    rgba(21, 101, 192, 0.14);
-
-  color:
-    #dceeff;
-
-  cursor:
-    pointer;
-
-  font-size:
-    12px;
-
-  font-weight:
-    700;
-
-  transition:
-    0.18s ease;
-
-}
-
-
-.new-chat-button:hover {
-
-  background:
-    rgba(21, 101, 192, 0.24);
-
-  border-color:
-    rgba(41, 182, 246, 0.32);
-
-}
-
-
-.sidebar-search {
-
-  margin:
-    13px 0 18px;
-
-}
-
-
-.sidebar-search input {
-
-  width:
-    100%;
-
-  height:
-    37px;
-
-  padding:
-    0 11px;
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  border-radius:
-    9px;
-
-  outline:
-    none;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #dce8f4;
-
-  font-size:
-    12px;
-
-}
-
-
-.sidebar-search input::placeholder {
-
-  color:
-    #61768c;
-
-}
-
-
-.sidebar-search input:focus {
-
-  border-color:
-    rgba(41, 182, 246, 0.38);
-
-}
-
-
-.sidebar-section-title {
-
-  padding:
-    0 7px 8px;
-
-  color:
-    #61768c;
-
-  font-size:
-    10px;
-
-  font-weight:
-    700;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    0.8px;
-
-}
-
-
-.sidebar-chat-list {
-
-  flex:
-    1;
-
-  min-height:
-    0;
-
-  overflow-y:
-    auto;
-
-}
-
-
-.sidebar-empty {
-
-  padding:
-    16px 8px;
-
-  color:
-    #61768c;
-
-  font-size:
-    11px;
-
-  line-height:
-    1.5;
-
-}
-
-
-.sidebar-chat-item {
-
-  display:
-    block;
-
-  width:
-    100%;
-
-  margin:
-    2px 0;
-
-  padding:
-    9px 10px;
-
-  border-radius:
-    8px;
-
-  background:
-    transparent;
-
-  color:
-    #9aacc0;
-
-  cursor:
-    pointer;
-
-  text-align:
-    left;
-
-  font-size:
-    11px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-  transition:
-    0.15s ease;
-
-}
-
-
-.sidebar-chat-item:hover {
-
-  background:
-    rgba(255, 255, 255, 0.045);
-
-  color:
-    #e1edf8;
-
-}
-
-
-.sidebar-footer {
-
-  margin-top:
-    12px;
-
-  padding-top:
-    13px;
-
-  border-top:
-    1px solid
-    var(--truvora-border);
-
-}
-
-
-.sidebar-user {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    9px;
-
-  min-width:
-    0;
-
-}
-
-
-.sidebar-user-avatar {
-
-  width:
-    32px;
-
-  height:
-    32px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex:
-    0 0 32px;
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(21, 101, 192, 0.22);
-
-  color:
-    #8edcff;
-
-  font-size:
-    12px;
-
-  font-weight:
-    800;
-
-}
-
-
-.sidebar-user-info {
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  min-width:
-    0;
-
-}
-
-
-.sidebar-user-info strong {
-
-  color:
-    #d9e6f3;
-
-  font-size:
-    11px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-}
-
-
-.sidebar-user-info span {
-
-  margin-top:
-    2px;
-
-  color:
-    #61768c;
-
-  font-size:
-    9px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-}
-
-
-.sidebar-logout {
-
-  width:
-    100%;
-
-  margin-top:
-    10px;
-
-  min-height:
-    33px;
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #8297ad;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-}
-
-
-.sidebar-logout:hover {
-
-  background:
-    rgba(255, 255, 255, 0.05);
-
-  color:
-    #dce7f2;
-
-}
-
-
-/* =========================================================
-   TOP BAR
-   ========================================================= */
-
-.truvora-topbar {
-
-  position:
-    relative;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  width:
-    100%;
-
-  height:
-    62px;
-
-  min-height:
-    62px;
-
-  padding:
-    0 20px;
-
-  border-bottom:
-    1px solid
-    var(--truvora-border);
-
-  background:
-    rgba(7, 17, 31, 0.88);
-
-  backdrop-filter:
-    blur(16px);
-
-  -webkit-backdrop-filter:
-    blur(16px);
-
-  z-index:
-    500;
-
-}
-
-
-.topbar-left,
-.topbar-right,
-.topbar-center {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-}
-
-
-.topbar-center {
-
-  position:
-    absolute;
-
-  left:
-    50%;
-
-  transform:
-    translateX(-50%);
-
-}
-
-
-.topbar-slogan {
-
-  color:
-    #667d94;
-
-  font-size:
-    10px;
-
-  letter-spacing:
-    0.7px;
-
-}
-
-
-.topbar-avatar {
-
-  width:
-    34px;
-
-  height:
-    34px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.15);
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(21, 101, 192, 0.15);
-
-  color:
-    #8bdcff;
-
-  font-size:
-    11px;
-
-  font-weight:
-    800;
-
-}
-
-
-.mobile-menu-button,
-.mobile-brand {
-
-  display:
-    none;
-
-}
-
-
-/* =========================================================
-   CHAT AREA
-   ========================================================= */
-
-.truvora-chat-area {
-
-  flex:
-    1;
-
-  min-height:
-    0;
-
-  overflow-y:
-    auto;
-
-  overflow-x:
-    hidden;
-
-  padding:
-    35px 7vw 30px;
-
-  scroll-behavior:
-    smooth;
-
-}
-
-
-.truvora-message {
-
-  display:
-    flex;
-
-  align-items:
-    flex-start;
-
-  gap:
-    10px;
-
-  width:
-    100%;
-
-  max-width:
-    1050px;
-
-  margin:
-    0 auto 28px;
-
-}
-
-
-.truvora-user-message {
-
-  justify-content:
-    flex-end;
-
-}
-
-
-.message-avatar {
-
-  width:
-    32px;
-
-  height:
-    32px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex:
-    0 0 32px;
-
-  border-radius:
-    9px;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--truvora-primary),
-      var(--truvora-primary-dark)
-    );
-
-  color:
-    #ffffff;
-
-  font-size:
-    11px;
-
-  font-weight:
-    800;
-
-}
-
-
-.user-avatar {
-
-  background:
-    rgba(255, 255, 255, 0.08);
-
-  color:
-    #a7b8c9;
-
-}
-
-
-.message-body {
-
-  min-width:
-    0;
-
-  max-width:
-    calc(100% - 43px);
-
-}
-
-
-.truvora-user-message
-.message-body {
-
-  max-width:
-    82%;
-
-}
-
-
-.message-text {
-
-  color:
-    #d7e2ed;
-
-  font-size:
-    14px;
-
-  line-height:
-    1.75;
-
-  overflow-wrap:
-    anywhere;
-
-}
-
-
-.truvora-user-message
-.message-text {
-
-  padding:
-    11px 14px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.10);
-
-  border-radius:
-    13px;
-
-  background:
-    rgba(255, 255, 255, 0.045);
-
-}
-
-
-.message-text p {
-
-  margin:
-    0 0 12px;
-
-}
-
-
-.message-text p:last-child {
-
-  margin-bottom:
-    0;
-
-}
-
-
-.message-text h1,
-.message-text h2,
-.message-text h3 {
-
-  margin:
-    18px 0 9px;
-
-  color:
-    #ffffff;
-
-}
-
-
-.message-text ul,
-.message-text ol {
-
-  padding-left:
-    22px;
-
-}
-
-
-.message-text li {
-
-  margin:
-    5px 0;
-
-}
-
-
-.message-text a {
-
-  color:
-    #67d1ff;
-
-}
-
-
-.message-text code {
-
-  padding:
-    2px 5px;
-
-  border-radius:
-    5px;
-
-  background:
-    rgba(255, 255, 255, 0.07);
-
-  color:
-    #9edfff;
-
-  font-size:
-    0.9em;
-
-}
-
-
-.message-text pre {
-
-  max-width:
-    100%;
-
-  padding:
-    13px;
-
-  overflow-x:
-    auto;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.10);
-
-  border-radius:
-    9px;
-
-  background:
-    #08121f;
-
-}
-
-
-.message-text pre code {
-
-  padding:
-    0;
-
-  background:
-    transparent;
-
-}
-
-
-/* =========================================================
-   MESSAGE ACTIONS
-   ========================================================= */
-
-.message-actions {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    4px;
-
-  margin-top:
-    8px;
-
-}
-
-
-.message-action-btn {
-
-  min-width:
-    29px;
-
-  height:
-    29px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    0 7px;
-
-  border:
-    1px solid
-    transparent;
-
-  border-radius:
-    7px;
-
-  background:
-    transparent;
-
-  color:
-    #61788f;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-  transition:
-    0.15s ease;
-
-}
-
-
-.message-action-btn:hover {
-
-  border-color:
-    var(--truvora-border);
-
-  background:
-    rgba(255, 255, 255, 0.04);
-
-  color:
-    #a9bfd2;
-
-}
-
-
-/* =========================================================
-   IMAGE
-   ========================================================= */
-
-.message-image-container {
-
-  margin-top:
-    13px;
-
-  overflow:
-    hidden;
-
-  border-radius:
-    12px;
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-}
-
-
-.message-image {
-
-  display:
-    block;
-
-  width:
-    100%;
-
-  max-width:
-    650px;
-
-  height:
-    auto;
-
-}
-
-
-/* =========================================================
-   GENERATED DOCUMENT
-   ========================================================= */
-
-.generated-document {
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  margin-top:
-    12px;
-
-  padding:
-    9px 12px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.15);
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(21, 101, 192, 0.10);
-
-  color:
-    #74d4ff;
-
-  text-decoration:
-    none;
-
-  font-size:
-    11px;
-
-}
-
-
-/* =========================================================
-   THINKING
-   ========================================================= */
-
-.truvora-thinking {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
-
-  max-width:
-    1050px;
-
-  margin:
-    0 auto;
-
-}
-
-
-.thinking-content {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  color:
-    #71869d;
-
-  font-size:
-    11px;
-
-}
-
-
-.thinking-dots {
-
-  display:
-    flex;
-
-  gap:
-    3px;
-
-}
-
-
-.thinking-dots i {
-
-  width:
-    4px;
-
-  height:
-    4px;
-
-  border-radius:
-    50%;
-
-  background:
-    var(--truvora-accent);
-
-  animation:
-    thinkingPulse 1.2s
-    infinite ease-in-out;
-
-}
-
-
-.thinking-dots i:nth-child(2) {
-
-  animation-delay:
-    0.15s;
-
-}
-
-
-.thinking-dots i:nth-child(3) {
-
-  animation-delay:
-    0.3s;
-
-}
-
-
-@keyframes thinkingPulse {
-
-  0%,
-  70%,
-  100% {
-
-    opacity:
-      0.25;
-
-    transform:
-      translateY(0);
-
+  .input-area {
+    padding: 8px !important;
   }
 
-  35% {
-
-    opacity:
-      1;
-
-    transform:
-      translateY(-2px);
-
+  .input-box {
+    padding: 12px !important;
   }
 
+  .input-box .left-buttons {
+    flex-wrap: wrap !important;
+  }
+
+  .input-box .language-select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .input-box .voice-select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .input-box .main-input {
+    min-height: 80px !important;
+  }
 }
-
-
 /* =========================================================
-   EMPTY STATE
+   TRUVORA GLOBAL — FINAL COMPOSER LAYOUT
+   CSS ONLY — PUT AT VERY BOTTOM OF App.css
    ========================================================= */
 
-.truvora-empty-state {
+.input-box {
+  position: relative !important;
 
-  min-height:
-    72%;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
 
-  display:
-    flex;
+  align-items: center !important;
 
-  flex-direction:
-    column;
+  width: 100% !important;
+  box-sizing: border-box !important;
 
-  align-items:
-    center;
+  padding: 14px !important;
+  gap: 10px !important;
 
-  justify-content:
-    center;
+  background: rgba(17, 24, 39, 0.96) !important;
 
-  padding:
-    35px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
 
-  text-align:
-    center;
-
-}
-
-
-.empty-logo-symbol {
-
-  width:
-    58px;
-
-  height:
-    58px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border-radius:
-    16px;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--truvora-primary),
-      var(--truvora-primary-dark)
-    );
-
-  color:
-    #ffffff;
-
-  font-size:
-    25px;
-
-  font-weight:
-    800;
+  border-radius: 24px !important;
 
   box-shadow:
-    0 14px 35px
-    rgba(21, 101, 192, 0.22);
-
+    0 0 20px rgba(0, 229, 255, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.30) !important;
 }
 
 
-.truvora-empty-state h1 {
+/* =========================================================
+   ICONS — ONE LINE
+   ========================================================= */
 
-  margin:
-    18px 0 7px;
+.input-box .left-buttons {
+  display: flex !important;
 
-  color:
-    #f1f7fd;
+  flex-direction: row !important;
 
-  font-size:
-    28px;
+  align-items: center !important;
 
-  font-weight:
-    700;
+  flex-wrap: nowrap !important;
 
+  width: auto !important;
+
+  flex: 0 0 auto !important;
+
+  gap: 10px !important;
 }
 
 
-.truvora-empty-state p {
+.input-box .left-buttons .icon-btn {
+  width: 50px !important;
+  min-width: 50px !important;
 
-  margin:
-    0 0 22px;
+  height: 50px !important;
+  min-height: 50px !important;
 
-  color:
-    #6f849a;
+  flex: 0 0 50px !important;
 
-  font-size:
-    12px;
+  border-radius: 16px !important;
 
+  font-size: 22px !important;
 }
 
 
-.empty-suggestions {
+/* =========================================================
+   LANGUAGE — SAME ROW
+   ========================================================= */
 
-  display:
-    grid;
+.input-box .language-select {
+  width: 230px !important;
+  min-width: 230px !important;
 
-  grid-template-columns:
-    repeat(2, minmax(130px, 1fr));
+  flex: 0 0 230px !important;
 
-  gap:
-    8px;
-
-  width:
-    min(500px, 100%);
-
+  margin: 0 !important;
 }
 
 
-.empty-suggestions button {
+.input-box > .language-select .language__control {
+  min-height: 50px !important;
+  height: 50px !important;
 
-  min-height:
-    40px;
+  border-radius: 12px !important;
 
-  padding:
-    8px 12px;
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #8ea2b7;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-  transition:
-    0.15s ease;
-
+  font-size: 17px !important;
 }
 
 
-.empty-suggestions button:hover {
+.input-box > .language-select .language__single-value,
+.input-box > .language-select .language__placeholder {
+  font-size: 17px !important;
 
-  border-color:
-    rgba(41, 182, 246, 0.22);
+  font-weight: 500 !important;
+}
 
-  background:
-    rgba(21, 101, 192, 0.08);
 
-  color:
-    #cce8f8;
+/* =========================================================
+   VOICE — SAME ROW
+   ========================================================= */
+
+.input-box > .voice-select {
+  width: 190px !important;
+  min-width: 190px !important;
+
+  flex: 0 0 190px !important;
+
+  margin: 0 !important;
+}
+
+
+.input-box > .voice-select .voice__control {
+  min-height: 50px !important;
+  height: 50px !important;
+
+  border-radius: 12px !important;
+
+  font-size: 17px !important;
+}
+
+
+.input-box > .voice-select .voice__single-value,
+.input-box > .voice-select .voice__placeholder {
+  font-size: 17px !important;
+
+  font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   DROPDOWN — LANGUAGE
+   ========================================================= */
+
+.input-box .language__menu {
+  z-index: 99999 !important;
+
+  font-size: 16px !important;
 
 }
 
 
 /* =========================================================
-   COMPOSER AREA
+   DROPDOWN — VOICE
    ========================================================= */
 
-.truvora-composer-area {
-
-  width:
-    100%;
-
-  padding:
-    0 7vw 13px;
-
+.input-box .voice__menu {
+  z-index: 99999 !important;
 }
 
 
-.truvora-composer {
+/* =========================================================
+   QUESTION BOX — FULL WIDTH BELOW
+   ========================================================= */
 
-  position:
-    relative;
+.input-box > .main-input {
+  order: 10 !important;
 
-  width:
-    100%;
+  flex: 1 0 100% !important;
 
-  max-width:
-    1050px;
+  width: 100% !important;
 
-  margin:
-    0 auto;
+  min-height: 90px !important;
 
-  padding:
-    10px;
+  box-sizing: border-box !important;
 
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.15);
+  padding: 18px 95px 18px 20px !important;
 
-  border-radius:
-    15px;
+  background: #0b1220 !important;
 
-  background:
-    rgba(15, 29, 48, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+
+  border-radius: 18px !important;
+
+  color: white !important;
+
+  font-size: 19px !important;
+
+  font-weight: 500 !important;
+
+  line-height: 1.5 !important;
+
+  outline: none !important;
+
+  resize: none !important;
+}
+
+
+.input-box > .main-input::placeholder {
+  color: #94a3b8 !important;
+
+  font-size: 18px !important;
+}
+
+
+.input-box > .main-input:focus {
+  border-color: rgba(0, 229, 255, 0.50) !important;
 
   box-shadow:
-    0 15px 45px
-    rgba(0, 0, 0, 0.18);
-
-  transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease;
-
+    0 0 18px rgba(0, 229, 255, 0.12) !important;
 }
 
 
-.truvora-composer:focus-within {
-
-  border-color:
-    rgba(41, 182, 246, 0.28);
-
-  box-shadow:
-    0 18px 55px
-    rgba(0, 0, 0, 0.24);
-
-}
-
-
-.composer-drag-active {
-
-  border-color:
-    var(--truvora-accent);
-
-  background:
-    rgba(21, 101, 192, 0.12);
-
-}
-
-
-/* =========================================================
-   COMPOSER TOOLBAR
-   ========================================================= */
-
-.composer-toolbar {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  gap:
-    10px;
-
-  padding:
-    0 2px 9px;
-
-}
-
-
-.composer-toolbar-left,
-.composer-toolbar-right {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  min-width:
-    0;
-
-}
-
-
-.composer-toolbar-left {
-
-  overflow-x:
-    auto;
-
-}
-
-
-.composer-toolbar-left::-webkit-scrollbar {
-
-  height:
-    0;
-
-}
-
-
-.composer-toolbar-right {
-
-  flex:
-    0 0 auto;
-
-}
-
-
-/* =========================================================
-   COMPOSER BUTTONS
-   ========================================================= */
-
-.composer-icon-button,
-.composer-mode-button {
-
-  height:
-    34px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    5px;
-
-  flex:
-    0 0 auto;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.10);
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #7f95aa;
-
-  cursor:
-    pointer;
-
-  font-size:
-    11px;
-
-  transition:
-    0.15s ease;
-
-}
-
-
-.composer-icon-button {
-
-  width:
-    34px;
-
-}
-
-
-.composer-mode-button {
-
-  padding:
-    0 9px;
-
-}
-
-
-.composer-icon-button:hover,
-.composer-mode-button:hover {
-
-  border-color:
-    rgba(41, 182, 246, 0.20);
-
-  background:
-    rgba(21, 101, 192, 0.09);
-
-  color:
-    #c4d9e9;
-
-}
-
-
-.composer-mode-button.mode-active,
-.composer-icon-button.mode-active {
-
-  border-color:
-    rgba(41, 182, 246, 0.32);
-
-  background:
-    rgba(21, 101, 192, 0.16);
-
-  color:
-    #7bd7ff;
-
-}
-
-
-/* =========================================================
-   PART 1 END
-   ========================================================= */
-
-/* =========================================================
-   ATTACHMENT STATUS
-   ========================================================= */
-
-.composer-attachment-status {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-
-  width:
-    100%;
-
-  margin:
-    0 0 8px;
-
-  padding:
-    7px 8px;
-
-  overflow-x:
-    auto;
-
-}
-
-
-.composer-attachment-status span {
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  flex:
-    0 0 auto;
-
-  max-width:
-    230px;
-
-  padding:
-    6px 8px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.14);
-
-  border-radius:
-    7px;
-
-  background:
-    rgba(21, 101, 192, 0.08);
-
-  color:
-    #8db7d1;
-
-  font-size:
-    9px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-}
-
-
-.composer-attachment-status button {
-
-  width:
-    25px;
-
-  height:
-    25px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex:
-    0 0 25px;
-
-  border:
-    0;
-
-  border-radius:
-    7px;
-
-  background:
-    rgba(255, 255, 255, 0.05);
-
-  color:
-    #8298ad;
-
-  cursor:
-    pointer;
-
-}
-
-
-/* =========================================================
-   MODE / ANALYSIS STATUS
-   ========================================================= */
-
-.composer-analysis-preview {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    7px;
-
-  min-height:
-    26px;
-
-  margin:
-    0 2px 8px;
-
-  padding:
-    5px 8px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.08);
-
-  border-radius:
-    7px;
-
-  background:
-    rgba(255, 255, 255, 0.018);
-
-  overflow:
-    hidden;
-
-}
-
-
-.composer-analysis-preview strong {
-
-  flex:
-    0 0 auto;
-
-  color:
-    #6bcdf5;
-
-  font-size:
-    9px;
-
-}
-
-
-.composer-analysis-preview span {
-
-  min-width:
-    0;
-
-  color:
-    #61778d;
-
-  font-size:
-    9px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-}
-
-
-/* =========================================================
-   INPUT
-   ========================================================= */
-
-.composer-input-container {
-
-  position:
-    relative;
-
-  width:
-    100%;
-
-}
-
-
-.truvora-input {
-
-  display:
-    block;
-
-  width:
-    100%;
-
-  min-height:
-    62px;
-
-  max-height:
-    190px;
-
-  padding:
-    13px 55px 13px 13px;
-
-  border:
-    0;
-
-  outline:
-    none;
-
-  resize:
-    none;
-
-  border-radius:
-    10px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #e1ebf5;
-
-  font-size:
-    14px;
-
-  line-height:
-    1.55;
-
-}
-
-
-.truvora-input::placeholder {
-
-  color:
-    #61768c;
-
-}
-
-
-.truvora-input:disabled {
-
-  opacity:
-    0.65;
-
-  cursor:
-    not-allowed;
-
-}
-
-
->>>>>>> origin/main
 /* =========================================================
    SEND BUTTON
    ========================================================= */
 
-<<<<<<< HEAD
-.send-btn{
-  position:absolute !important;
+.input-box > .send-btn {
+  position: absolute !important;
 
-  right:19px !important;
+  right: 28px !important;
 
-  bottom:19px !important;
+  bottom: 28px !important;
 
-  z-index:20;
+  width: 64px !important;
 
-  width:45px !important;
-  min-width:45px !important;
+  min-width: 64px !important;
 
-  height:45px !important;
-  min-height:45px !important;
+  height: 64px !important;
 
-  display:flex;
+  min-height: 64px !important;
 
-  align-items:center;
-  justify-content:center;
+  z-index: 20 !important;
 
-  border:0 !important;
-
-  border-radius:12px !important;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary),
-      var(--tv-accent)
-    ) !important;
-
-  color:#fff !important;
-
-  font-size:18px !important;
-
-  cursor:pointer;
-
-  box-shadow:
-    0 7px 20px
-    rgba(21,101,192,.28) !important;
-
-  transition:
-    transform .16s ease,
-    box-shadow .16s ease;
+  border-radius: 20px !important;
 }
 
-.send-btn:hover{
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary-2),
-      var(--tv-accent)
-    ) !important;
-
-  transform:translateY(-1px);
-
-  box-shadow:
-    0 10px 26px
-    rgba(21,101,192,.36) !important;
-}
-/* =========================================================
-   SOURCES / CITATIONS
-   ========================================================= */
-
-.sources{
-  margin-top:16px;
-
-  padding-top:12px;
-
-  border-top:
-    1px solid
-    rgba(148,163,184,.12);
-
-  max-height:300px;
-
-  overflow-y:auto;
-}
-
-.sources h4{
-  margin:0 0 9px;
-
-  color:#cbd9e8;
-
-  font-size:12px;
-
-  font-weight:700;
-}
-
-.sources a,
-.source-link{
-  color:#59c8ff;
-
-  text-decoration:none;
-}
-
-.sources a:hover,
-.source-link:hover{
-  color:#8bdcff;
-
-  text-decoration:underline;
-}
-
-.sources-box{
-  margin-top:15px;
-
-  padding:13px;
-
-  background:
-    rgba(7,17,31,.62);
-
-  border:
-    1px solid
-    rgba(148,163,184,.13);
-
-  border-radius:13px;
-}
-
-.sources-box h4{
-  color:#dbe7f5;
-
-  margin:0 0 10px;
-}
-
-.source-card{
-  margin:0 0 7px;
-
-  padding:10px 11px;
-
-  background:
-    rgba(255,255,255,.025);
-
-  border:
-    1px solid
-    rgba(148,163,184,.1);
-
-  border-radius:10px;
-
-  cursor:pointer;
-
-  transition:
-    background .16s ease,
-    border-color .16s ease;
-}
-
-.source-card:hover{
-  background:
-    rgba(41,182,246,.055);
-
-  border-color:
-    rgba(41,182,246,.22);
-
-  transform:none;
-
-  box-shadow:none;
-}
-
-.source-title{
-  margin-bottom:4px;
-
-  color:#dbe7f5;
-
-  font-size:13px;
-
-  font-weight:650;
-}
-
-.source-domain{
-  color:#758ba2;
-
-  font-size:11px;
-}
 
 /* =========================================================
-   CAMERA
+   DESKTOP
    ========================================================= */
 
-.camera-box{
-  position:fixed;
+@media (min-width: 901px) {
 
-  top:50%;
-  left:50%;
-
-  transform:translate(-50%,-50%);
-
-  width:min(560px,92vw);
-
-  padding:18px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.2);
-
-  border-radius:18px;
-
-  background:
-    #0f1d30;
-
-  color:#fff;
-
-  z-index:9999;
-
-  text-align:center;
-
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.5);
-}
-
-.camera-box video{
-  width:500px;
-
-  max-width:100%;
-
-  border-radius:12px;
-}
-
-.camera-box button{
-  margin-top:12px;
-
-  padding:10px 17px;
-
-  border:0;
-
-  border-radius:10px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary),
-      var(--tv-accent)
-    );
-
-  color:#fff;
-
-  cursor:pointer;
-}
-
-/* =========================================================
-   OVERLAYS
-   ========================================================= */
-
-.analyze-overlay,
-.personal-voice-overlay{
-  position:fixed;
-
-  inset:0;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  background:
-    rgba(0,0,0,.58);
-
-  backdrop-filter:blur(5px);
-
-  -webkit-backdrop-filter:blur(5px);
-
-  z-index:9999;
-
-  padding:20px;
-}
-
-.analyze-menu{
-  width:min(380px,94vw);
-
-  padding:23px;
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:10px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.18);
-
-  border-radius:18px;
-
-  background:
-    #0f1d30;
-
-  color:#fff;
-
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.5);
-}
-
-.analyze-menu h2{
-  margin:0 0 7px;
-
-  color:#fff;
-
-  text-align:center;
-}
-
-.analyze-menu button{
-  padding:12px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.15);
-
-  border-radius:11px;
-
-  background:
-    rgba(255,255,255,.035);
-
-  color:#dbe7f5;
-
-  cursor:pointer;
-
-  transition:
-    background .16s ease,
-    border-color .16s ease;
-}
-
-.analyze-menu button:hover{
-  background:
-    rgba(21,101,192,.2);
-
-  border-color:
-    rgba(41,182,246,.22);
-
-  color:#fff;
-}
-
-/* =========================================================
-   PERSONAL VOICE MODAL
-   ========================================================= */
-
-.personal-voice-modal{
-  width:min(430px,94vw);
-
-  padding:25px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.18);
-
-  border-radius:18px;
-
-  background:#0f1d30;
-
-  color:#f8fafc;
-
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.5);
-}
-
-.personal-voice-modal h2{
-  margin:0 0 9px;
-
-  font-size:21px;
-}
-
-.personal-voice-modal p{
-  margin:0 0 17px;
-
-  color:#91a4bb;
-
-  font-size:14px;
-
-  line-height:1.55;
-}
-
-.personal-voice-name{
-  width:100%;
-
-  padding:12px 13px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.18);
-
-  border-radius:10px;
-
-  background:
-    rgba(7,17,31,.8);
-
-  color:#fff;
-
-  outline:none;
-}
-
-.personal-voice-name::placeholder{
-  color:#667d95;
-}
-
-.personal-voice-name:focus{
-  border-color:
-    rgba(41,182,246,.42);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(41,182,246,.07);
-}
-
-.personal-voice-buttons{
-  display:flex;
-
-  gap:9px;
-
-  margin-top:17px;
-}
-
-.personal-voice-buttons button{
-  flex:1;
-
-  padding:11px 14px;
-
-  border:0;
-
-  border-radius:10px;
-
-  cursor:pointer;
-
-  font-weight:650;
-}
-
-.personal-voice-buttons button:first-child{
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary),
-      var(--tv-accent)
-    );
-
-  color:#fff;
-}
-
-.personal-voice-buttons button:last-child{
-  background:
-    rgba(255,255,255,.09);
-
-  color:#dbe7f5;
-}
-
-/* =========================================================
-   CODE / MARKDOWN
-   ========================================================= */
-
-pre{
-  max-width:100%;
-
-  margin-top:12px;
-
-  border-radius:11px !important;
-
-  overflow:auto;
-
-  background:
-    #07111f !important;
-
-  border:
-    1px solid
-    rgba(148,163,184,.1);
-}
-
-code{
-  font-family:
-    "SFMono-Regular",
-    Consolas,
-    "Liberation Mono",
-    monospace;
-}
-
-/* =========================================================
-   GENERAL SCROLLBARS
-   ========================================================= */
-
-.messages::-webkit-scrollbar,
-.chat-list::-webkit-scrollbar,
-.sources::-webkit-scrollbar,
-.language__menu-list::-webkit-scrollbar,
-.voice__menu-list::-webkit-scrollbar{
-  width:6px;
-}
-
-.messages::-webkit-scrollbar-track,
-.chat-list::-webkit-scrollbar-track,
-.sources::-webkit-scrollbar-track,
-.language__menu-list::-webkit-scrollbar-track,
-.voice__menu-list::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-.messages::-webkit-scrollbar-thumb,
-.chat-list::-webkit-scrollbar-thumb,
-.sources::-webkit-scrollbar-thumb,
-.language__menu-list::-webkit-scrollbar-thumb,
-.voice__menu-list::-webkit-scrollbar-thumb{
-  background:
-    rgba(148,163,184,.25);
-
-  border-radius:999px;
-}
-
-.messages::-webkit-scrollbar-thumb:hover,
-.chat-list::-webkit-scrollbar-thumb:hover{
-  background:
-    rgba(41,182,246,.32);
-}
-
-/* =========================================================
-   TABLES
-   ========================================================= */
-
-.bubble table{
-  width:100%;
-
-  margin:14px 0;
-
-  border-collapse:collapse;
-
-  overflow:hidden;
-
-  border-radius:10px;
-
-  font-size:13px;
-}
-
-.bubble th,
-.bubble td{
-  padding:9px 10px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.14);
-
-  text-align:left;
-}
-
-.bubble th{
-  background:
-    rgba(21,101,192,.16);
-
-  color:#dbe7f5;
-
-  font-weight:700;
-}
-
-.bubble td{
-  color:#b9c9da;
-
-  background:
-    rgba(255,255,255,.015);
-}
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-.bubble a{
-  color:#59c8ff;
-
-  text-decoration:none;
-}
-
-.bubble a:hover{
-  color:#8bdcff;
-
-  text-decoration:underline;
-}
-
-/* =========================================================
-   LISTS
-   ========================================================= */
-
-.bubble ul,
-.bubble ol{
-  padding-left:22px;
-
-  margin-top:8px;
-  margin-bottom:10px;
-}
-
-.bubble li{
-  margin-bottom:5px;
-}
-
-/* =========================================================
-   HEADINGS INSIDE AI ANSWERS
-   ========================================================= */
-
-.bubble h1,
-.bubble h2,
-.bubble h3,
-.bubble h4,
-.bubble h5,
-.bubble h6{
-  color:#fff;
-
-  line-height:1.3;
-
-  margin-top:16px;
-
-  margin-bottom:8px;
-}
-
-.bubble h1{
-  font-size:24px;
-}
-
-.bubble h2{
-  font-size:21px;
-}
-
-.bubble h3{
-  font-size:18px;
-}
-
-.bubble h4{
-  font-size:16px;
-}
-
-/* =========================================================
-   BLOCKQUOTE
-   ========================================================= */
-
-.bubble blockquote{
-  margin:13px 0;
-
-  padding:10px 14px;
-
-  border-left:
-    3px solid
-    var(--tv-accent);
-
-  background:
-    rgba(41,182,246,.045);
-
-  color:#a9bdd0;
-
-  border-radius:0 9px 9px 0;
-}
-
-/* =========================================================
-   SELECTION
-   ========================================================= */
-
-::selection{
-  background:
-    rgba(41,182,246,.3);
-
-  color:#fff;
-}
-
-/* =========================================================
-   MOBILE — MAIN
-   ========================================================= */
-
-@media (max-width:900px){
-
-  .app{
-    min-height:100dvh;
-
-    height:100dvh;
-
-    width:100%;
-
-    overflow:hidden;
-  }
-
-  /* -------------------------------------------------------
-     HIDE DESKTOP SIDEBAR
-     ------------------------------------------------------- */
-
-  .sidebar{
-    display:none;
-  }
-
-  /* -------------------------------------------------------
-     HEADER
-     ------------------------------------------------------- */
-
-  .topbar{
-    height:58px;
-
-    min-height:58px;
-
-    padding:
-      0
-      13px;
-
-    background:
-      rgba(7,17,31,.94);
-
-    border-bottom:
-      1px solid
-      rgba(148,163,184,.13);
-  }
-
-  .top-title{
-    font-size:17px;
-
-    font-weight:720;
-  }
-
-  .logout{
-    width:36px;
-
-    height:36px;
-  }
-
-  /* -------------------------------------------------------
-     CHAT AREA
-     ------------------------------------------------------- */
-
-  .messages{
-    padding:
-      20px
-      11px
-      16px;
-
-    background:
-      radial-gradient(
-        circle at 50% 0%,
-        rgba(21,101,192,.09),
-        transparent 45%
-      );
-  }
-
-  .message{
-    width:100%;
-
-    max-width:none;
-
-    gap:7px;
-
-    margin-bottom:19px;
-  }
-
-  .avatar{
-    width:31px;
-
-    height:31px;
-
-    flex-basis:31px;
-
-    border-radius:9px;
-
-    font-size:13px;
-  }
-
-  .bubble{
-    max-width:
-      calc(100% - 38px);
-
-    padding:
-      13px
-      14px;
-
-    border-radius:15px;
-
-    font-size:14px;
-
-    line-height:1.62;
-
-    box-shadow:
-      0 6px 20px
-      rgba(0,0,0,.14);
-  }
-
-  .user-message .bubble{
-    max-width:90%;
-  }
-
-  /* -------------------------------------------------------
-     COMPOSER
-     ------------------------------------------------------- */
-
-  .input-area{
-    padding:
-      7px
-      8px
-      max(10px,env(safe-area-inset-bottom));
-
-    background:
-      linear-gradient(
-        to top,
-        #07111f 76%,
-        rgba(7,17,31,.94)
-      );
-  }
-
-  .input-box{
-    max-width:none;
-
-    padding:8px;
-
-    gap:7px;
-
-    border-radius:17px;
-
-    background:
-      rgba(15,29,48,.97);
-
-    box-shadow:
-      0 10px 35px
-      rgba(0,0,0,.32);
-  }
-
-  /* -------------------------------------------------------
-     TOOL ROW
-     ------------------------------------------------------- */
-
-  .left-buttons{
-    width:100%;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:5px;
-
-    overflow-x:auto;
-
-    padding-bottom:1px;
-
-    scrollbar-width:none;
-  }
-
-  .left-buttons::-webkit-scrollbar{
-    display:none;
-  }
-
-  .icon-btn{
-    width:36px;
-
-    min-width:36px;
-
-    height:36px;
-
-    min-height:36px;
-
-    border-radius:10px;
-
-    font-size:16px;
-  }
-
-  /* -------------------------------------------------------
-     SELECTORS
-     ------------------------------------------------------- */
-
-  .language-select,
-  .voice-select{
-    min-width:0;
-
-    margin:0;
-
-    flex:1 1 calc(50% - 4px);
-
-    width:calc(50% - 4px);
-  }
-
-  .language__control,
-  .voice__control{
-    height:36px;
-
-    min-height:36px !important;
-
-    border-radius:10px !important;
-  }
-
-  .language__single-value,
-  .voice__single-value,
-  .language__placeholder,
-  .voice__placeholder{
-    font-size:12px !important;
-  }
-
-  /* -------------------------------------------------------
-     TEXT INPUT
-     ------------------------------------------------------- */
-
-  .main-input{
-    min-height:66px !important;
-
-    max-height:180px;
-
-    padding:
-      13px
-      57px
-      13px
-      13px !important;
-
-    border-radius:13px !important;
-
-    font-size:14px !important;
-
-    line-height:1.5 !important;
-
-    background:
-      rgba(7,17,31,.9) !important;
-  }
-
-  /* -------------------------------------------------------
-     SEND
-     ------------------------------------------------------- */
-
-  .send-btn{
-    right:15px !important;
-
-    bottom:16px !important;
-
-    width:40px !important;
-
-    min-width:40px !important;
-
-    height:40px !important;
-
-    min-height:40px !important;
-
-    border-radius:11px !important;
-
-    font-size:16px !important;
-  }
-
-  /* -------------------------------------------------------
-     SOURCES
-     ------------------------------------------------------- */
-
-  .sources{
-    max-height:240px;
-
-    margin-top:13px;
-  }
-
-  .sources-box{
-    padding:10px;
-  }
-
-  .source-card{
-    padding:9px;
-  }
-
-  /* -------------------------------------------------------
-     TABLES ON MOBILE
-     ------------------------------------------------------- */
-
-  .bubble table{
-    display:block;
-
-    overflow-x:auto;
-
-    white-space:nowrap;
-  }
-}
-
-/* =========================================================
-   MOBILE — SMALL PHONES
-   ========================================================= */
-
-@media (max-width:420px){
-
-  .topbar{
-    padding:
-      0
-      10px;
-  }
-
-  .top-title{
-    font-size:16px;
-  }
-
-  .messages{
-    padding-left:8px;
-
-    padding-right:8px;
-  }
-
-  .message{
-    margin-bottom:17px;
-  }
-
-  .bubble{
-    max-width:
-      calc(100% - 36px);
-
-    padding:
-      12px
-      13px;
-
-    font-size:14px;
-  }
-
-  .user-message .bubble{
-    max-width:93%;
-  }
-
-  .input-box{
-    border-radius:15px;
-
-    padding:7px;
-  }
-
-  .language-select,
-  .voice-select{
-    flex-basis:100%;
-
-    width:100%;
-  }
-
-  .main-input{
-    min-height:62px !important;
-
-    padding:
-      12px
-      55px
-      12px
-      12px !important;
-  }
-
-  .send-btn{
-    right:14px !important;
-
-    bottom:15px !important;
-  }
-}
-/* =========================================================
-   MOBILE UI POLISH
-   ========================================================= */
-
-@media (max-width:900px){
-
-  /* Keep the main application spacious */
-  .main{
-    width:100%;
-    min-width:0;
-  }
-
-  /* Prevent accidental page-level horizontal scrolling */
-  .app,
-  .main,
-  .messages,
-  .input-area{
-    max-width:100%;
-    overflow-x:hidden;
-  }
-
-  /* Make AI answers easier to read */
-  .bubble strong{
-    color:#ffffff;
-  }
-
-  .bubble em{
-    color:#c8d9e9;
-  }
-
-  /* Better paragraph spacing */
-  .bubble p + p{
-    margin-top:10px;
-  }
-
-  /* Better code blocks */
-  .bubble pre{
-    max-width:100%;
-    margin-left:0;
-    margin-right:0;
-    padding:12px !important;
-  }
-
-  /* Keep long URLs from breaking layout */
-  .bubble a{
-    overflow-wrap:anywhere;
-    word-break:break-word;
-  }
-
-  /* Lists use available width */
-  .bubble ul,
-  .bubble ol{
-    padding-left:20px;
-  }
-}
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (min-width:901px) and (max-width:1200px){
-
-  .sidebar{
-    width:250px;
-    min-width:250px;
-  }
-
-  .messages{
-    padding-left:35px;
-    padding-right:35px;
-  }
-
-  .input-area{
-    padding-left:30px;
-    padding-right:30px;
-  }
-
-  .message{
-    max-width:900px;
-  }
-}
-
-/* =========================================================
-   WIDE DESKTOP
-   ========================================================= */
-
-@media (min-width:1400px){
-
-  .messages{
-    padding-left:clamp(40px,8vw,150px);
-    padding-right:clamp(40px,8vw,150px);
-  }
-
-  .message{
-    max-width:1040px;
-  }
-
-  .input-box{
-    max-width:1040px;
-  }
-}
-
-/* =========================================================
-   FOCUS STATES
-   ========================================================= */
-
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible{
-  outline:
-    2px solid
-    rgba(41,182,246,.65);
-
-  outline-offset:2px;
-}
-
-/* =========================================================
-   DISABLED BUTTONS
-   ========================================================= */
-
-button:disabled{
-  cursor:not-allowed;
-
-  opacity:.55;
-
-  transform:none !important;
-}
-
-/* =========================================================
-   LOADING / TYPING
-   ========================================================= */
-
-.typing,
-.typing-indicator{
-  color:#91a8bf;
-}
-
-.typing-dot{
-  display:inline-block;
-
-  width:5px;
-  height:5px;
-
-  margin:0 2px;
-
-  border-radius:50%;
-
-  background:#29B6F6;
-
-  animation:
-    truvoraTyping 1.2s infinite ease-in-out;
-}
-
-.typing-dot:nth-child(2){
-  animation-delay:.15s;
-}
-
-.typing-dot:nth-child(3){
-  animation-delay:.3s;
-}
-
-@keyframes truvoraTyping{
-
-  0%,
-  60%,
-  100%{
-    opacity:.3;
-    transform:translateY(0);
-  }
-
-  30%{
-    opacity:1;
-    transform:translateY(-3px);
-  }
-}
-
-/* =========================================================
-   IMAGE PREVIEWS
-   ========================================================= */
-
-.bubble img{
-  max-width:100%;
-
-  height:auto;
-
-  border-radius:12px;
-
-  display:block;
-
-  margin-top:10px;
-}
-
-/* =========================================================
-   FILE / DOWNLOAD ELEMENTS
-   ========================================================= */
-
-.bubble button{
-  max-width:100%;
-}
-
-.bubble .download-btn,
-.bubble .file-btn,
-.bubble .generate-btn{
-  border:
-    1px solid
-    rgba(41,182,246,.2);
-
-  border-radius:10px;
-
-  background:
-    rgba(21,101,192,.13);
-
-  color:#8bdcff;
-
-  transition:
-    background .16s ease,
-    border-color .16s ease;
-}
-
-.bubble .download-btn:hover,
-.bubble .file-btn:hover,
-.bubble .generate-btn:hover{
-  background:
-    rgba(21,101,192,.25);
-
-  border-color:
-    rgba(41,182,246,.36);
-}
-
-/* =========================================================
-   EMPTY / WELCOME STATE
-   ========================================================= */
-
-.welcome,
-.welcome-screen,
-.empty-state{
-  width:100%;
-
-  min-height:100%;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  text-align:center;
-
-  padding:30px 20px;
-}
-
-.welcome h1,
-.welcome-screen h1,
-.empty-state h1{
-  color:#fff;
-
-  margin-bottom:8px;
-
-  font-weight:750;
-}
-
-.welcome p,
-.welcome-screen p,
-.empty-state p{
-  color:#8298af;
-
-  max-width:560px;
-
-  line-height:1.6;
-}
-
-/* =========================================================
-   MOBILE WELCOME
-   ========================================================= */
-
-@media (max-width:600px){
-
-  .welcome,
-  .welcome-screen,
-  .empty-state{
-    padding:
-      20px
-      12px;
-  }
-
-  .welcome h1,
-  .welcome-screen h1,
-  .empty-state h1{
-    font-size:24px;
-  }
-
-  .welcome p,
-  .welcome-screen p,
-  .empty-state p{
-    font-size:14px;
-  }
-}
-
-/* =========================================================
-   MOBILE TOUCH TARGETS
-   ========================================================= */
-
-@media (max-width:900px){
-
-  .icon-btn,
-  .send-btn,
-  .logout{
-    -webkit-user-select:none;
-    user-select:none;
-
-    touch-action:manipulation;
-  }
-
-  .icon-btn{
-    min-height:36px;
-  }
-
-  .send-btn{
-    min-height:40px !important;
-  }
-}
-
-/* =========================================================
-   SAFE AREA
-   ========================================================= */
-
-@supports (padding:env(safe-area-inset-bottom)){
-
-  .input-area{
-    padding-bottom:
-      max(
-        12px,
-        env(safe-area-inset-bottom)
-      );
-  }
-}
-
-/* =========================================================
-   MOBILE HEIGHT OPTIMIZATION
-   ========================================================= */
-
-@media (max-width:900px) and (max-height:700px){
-
-  .topbar{
-    height:54px;
-    min-height:54px;
-  }
-
-  .messages{
-    padding-top:14px;
-    padding-bottom:10px;
-  }
-
-  .input-area{
-    padding-top:5px;
-  }
-
-  .input-box{
-    padding:6px;
-  }
-
-  .main-input{
-    min-height:58px !important;
-  }
-}
-
-/* =========================================================
-   VERY SMALL HEIGHT DEVICES
-   ========================================================= */
-
-@media (max-width:900px) and (max-height:580px){
-
-  .topbar{
-    height:50px;
-    min-height:50px;
-  }
-
-  .messages{
-    padding-top:10px;
-  }
-
-  .input-area{
-    padding-top:4px;
-  }
-
-  .left-buttons{
-    gap:4px;
-  }
-
-  .icon-btn{
-    width:34px;
-    min-width:34px;
-    height:34px;
-    min-height:34px;
-  }
-
-  .language__control,
-  .voice__control{
-    height:34px;
-    min-height:34px !important;
-  }
-
-  .main-input{
-    min-height:54px !important;
-  }
-}
-
-/* =========================================================
-   DARK INPUT PLACEHOLDER
-   ========================================================= */
-
-input::placeholder,
-textarea::placeholder{
-  opacity:1;
-}
-
-/* =========================================================
-   SEARCH / FILTER INPUTS
-   ========================================================= */
-
-.search-input,
-.chat-search,
-input[type="search"]{
-  border:
-    1px solid
-    rgba(148,163,184,.16);
-
-  background:
-    rgba(255,255,255,.035);
-
-  color:#fff;
-
-  border-radius:10px;
-
-  outline:none;
-}
-
-.search-input:focus,
-.chat-search:focus,
-input[type="search"]:focus{
-  border-color:
-    rgba(41,182,246,.35);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(41,182,246,.06);
-}
-
-/* =========================================================
-   GENERIC CARDS
-   ========================================================= */
-
-.card,
-.panel,
-.settings-card,
-.library-card{
-  border:
-    1px solid
-    rgba(148,163,184,.14);
-
-  border-radius:15px;
-
-  background:
-    rgba(15,29,48,.9);
-
-  color:#dbe7f5;
-
-  box-shadow:
-    0 8px 28px
-    rgba(0,0,0,.15);
-}
-
-/* =========================================================
-   GENERIC PRIMARY BUTTON
-   ========================================================= */
-
-.primary-btn,
-.primary-button{
-  border:0;
-
-  border-radius:11px;
-
-  padding:10px 16px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--tv-primary),
-      var(--tv-accent)
-    );
-
-  color:#fff;
-
-  font-weight:650;
-
-  cursor:pointer;
-
-  box-shadow:
-    0 7px 20px
-    rgba(21,101,192,.22);
-
-  transition:
-    transform .16s ease,
-    box-shadow .16s ease;
-}
-
-.primary-btn:hover,
-.primary-button:hover{
-  transform:translateY(-1px);
-
-  box-shadow:
-    0 10px 26px
-    rgba(21,101,192,.3);
-}
-
-/* =========================================================
-   SECONDARY BUTTON
-   ========================================================= */
-
-.secondary-btn,
-.secondary-button{
-  border:
-    1px solid
-    rgba(148,163,184,.16);
-
-  border-radius:11px;
-
-  padding:10px 16px;
-
-  background:
-    rgba(255,255,255,.04);
-
-  color:#c9d8e8;
-
-  cursor:pointer;
-
-  transition:
-    background .16s ease,
-    border-color .16s ease;
-}
-
-.secondary-btn:hover,
-.secondary-button:hover{
-  background:
-    rgba(255,255,255,.07);
-
-  border-color:
-    rgba(41,182,246,.2);
-}
-
-/* =========================================================
-   MODAL BACKDROP
-   ========================================================= */
-
-.modal-overlay,
-.overlay{
-  position:fixed;
-
-  inset:0;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:20px;
-
-  background:
-    rgba(0,0,0,.62);
-
-  backdrop-filter:blur(5px);
-
-  -webkit-backdrop-filter:blur(5px);
-
-  z-index:9999;
-}
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-.modal,
-.modal-content{
-  width:min(500px,94vw);
-
-  max-height:90vh;
-
-  overflow:auto;
-
-  padding:22px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.18);
-
-  border-radius:18px;
-
-  background:
-    #0f1d30;
-
-  color:#f8fafc;
-
-  box-shadow:
-    0 30px 90px
-    rgba(0,0,0,.5);
-}
-
-/* =========================================================
-   FORM FIELDS
-   ========================================================= */
-
-input:not([type="checkbox"]):not([type="radio"]),
-textarea,
-select{
-  color:#f8fafc;
-}
-
-input:not([type="checkbox"]):not([type="radio"]),
-textarea{
-  background:
-    rgba(7,17,31,.82);
-
-  border-color:
-    rgba(148,163,184,.16);
-}
-
-input:not([type="checkbox"]):not([type="radio"]):focus,
-textarea:focus{
-  border-color:
-    rgba(41,182,246,.38);
-}
-
-/* =========================================================
-   MOBILE MODALS
-   ========================================================= */
-
-@media (max-width:600px){
-
-  .modal,
-  .modal-content{
-    width:calc(100vw - 24px);
-
-    max-height:
-      calc(100vh - 24px);
-
-    padding:18px;
-
-    border-radius:16px;
-  }
-
-  .analyze-menu{
-    width:calc(100vw - 24px);
-
-    padding:18px;
-
-    border-radius:16px;
-  }
-
-  .personal-voice-modal{
-    width:calc(100vw - 24px);
-
-    padding:19px;
-
-    border-radius:16px;
-  }
-}
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
-    animation:none !important;
-
-    transition:none !important;
-
-    scroll-behavior:auto !important;
-  }
-}
-
-/* =========================================================
-   PRINT
-   ========================================================= */
-
-@media print{
-
-  .sidebar,
-  .topbar,
-  .input-area{
-    display:none !important;
-  }
-
-  .main{
-    height:auto;
-
-    overflow:visible;
-  }
-
-  .messages{
-    overflow:visible;
-
-    background:#fff;
-
-    color:#000;
-  }
-
-  .bubble{
-    background:#fff;
-
-    color:#000;
-
-    box-shadow:none;
-
-    border:1px solid #ddd;
-  }
-}
-/* =========================================================
-   TRUVORA FINAL MOBILE SPACING
-   ========================================================= */
-
-@media (max-width:900px){
-
-  /* Give the conversation the maximum useful height */
-  .main{
-    height:100dvh;
-  }
-
-  .messages{
-    flex:1;
-    min-height:0;
-  }
-
-  /* Keep the composer compact so answers get more space */
-  .input-area{
-    flex-shrink:0;
-  }
-
-  /* Make tool row feel like one clean toolbar */
-  .left-buttons{
-    min-height:36px;
-=======
-.composer-send-button {
-
-  position:
-    absolute;
-
-  right:
-    8px;
-
-  bottom:
-    8px;
-
-  width:
-    39px;
-
-  height:
-    39px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    0;
-
-  border-radius:
-    10px;
-
-  background:
-    var(--truvora-primary);
-
-  color:
-    #ffffff;
-
-  cursor:
-    pointer;
-
-  font-size:
-    15px;
-
-  box-shadow:
-    0 5px 16px
-    rgba(21, 101, 192, 0.22);
-
-  transition:
-    0.15s ease;
-
-}
-
-
-.composer-send-button:hover:not(:disabled) {
-
-  background:
-    #1976d2;
-
-  transform:
-    translateY(-1px);
-
-}
-
-
-.composer-send-button:disabled {
-
-  background:
-    rgba(255, 255, 255, 0.07);
-
-  color:
-    #53697e;
-
-  box-shadow:
-    none;
-
-  cursor:
-    not-allowed;
-
-}
-
-
-.composer-send-button.stop-button {
-
-  background:
-    #7f2930;
-
-}
-
-
-.composer-send-button.stop-button:hover {
-
-  background:
-    #9b3139;
-
-}
-
-
-/* =========================================================
-   DISCLAIMER
-   ========================================================= */
-
-.composer-disclaimer {
-
-  padding:
-    7px 3px 0;
-
-  color:
-    #4f6478;
-
-  text-align:
-    center;
-
-  font-size:
-    8px;
-
-}
-
-
-/* =========================================================
-   ANALYZE MENU
-   ========================================================= */
-
-.analyze-menu {
-
-  position:
-    absolute;
-
-  left:
-    10px;
-
-  bottom:
-    calc(100% - 4px);
-
-  width:
-    255px;
-
-  max-height:
-    480px;
-
-  overflow-y:
-    auto;
-
-  padding:
-    8px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.15);
-
-  border-radius:
-    12px;
-
-  background:
-    #0e1c2d;
-
-  box-shadow:
-    0 20px 55px
-    rgba(0, 0, 0, 0.38);
-
-  z-index:
-    2100;
-
-}
-
-
-.analyze-menu-header {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  padding:
-    5px 6px 8px;
-
-  border-bottom:
-    1px solid
-    rgba(148, 163, 184, 0.09);
-
-}
-
-
-.analyze-menu-header strong {
-
-  color:
-    #dce9f5;
-
-  font-size:
-    11px;
-
-}
-
-
-.analyze-menu-header button {
-
-  width:
-    26px;
-
-  height:
-    26px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    0;
-
-  border-radius:
-    7px;
-
-  background:
-    transparent;
-
-  color:
-    #71869c;
-
-  cursor:
-    pointer;
-
-  font-size:
-    17px;
-
-}
-
-
-.analyze-menu > button {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
-
-  width:
-    100%;
-
-  min-height:
-    40px;
-
-  margin-top:
-    3px;
-
-  padding:
-    0 9px;
-
-  border:
-    0;
-
-  border-radius:
-    8px;
-
-  background:
-    transparent;
-
-  color:
-    #9bb0c3;
-
-  cursor:
-    pointer;
-
-  text-align:
-    left;
-
-  font-size:
-    11px;
-
-}
-
-
-.analyze-menu > button:hover {
-
-  background:
-    rgba(21, 101, 192, 0.13);
-
-  color:
-    #d9ebf8;
-
-}
-
-
-.analyze-menu > button span:first-child {
-
-  width:
-    25px;
-
-  text-align:
-    center;
-
-  font-size:
-    14px;
-
-}
-
-
-/* =========================================================
-   LANGUAGE SELECTOR
-   ========================================================= */
-
-.language-selector {
-
-  width:
-    135px;
-
-  min-width:
-    0;
-
-}
-
-
-.truvora-select__control {
-
-  min-height:
-    34px !important;
-
-  height:
-    34px !important;
-
-  border-radius:
-    8px !important;
-
-}
-
-
-.truvora-select__menu {
-
-  border:
-    1px solid
-    var(--truvora-border) !important;
-
-  background:
-    #0f1d30 !important;
-
-}
-
-
-.truvora-select__menu-list {
-
-  background:
-    #0f1d30 !important;
-
-}
-
-
-.truvora-select__option {
-
-  background:
-    #0f1d30 !important;
-
-  color:
-    #c6d6e5 !important;
-
-  font-size:
-    11px !important;
-
-}
-
-
-.truvora-select__option--is-focused {
-
-  background:
-    rgba(21, 101, 192, 0.18) !important;
-
-}
-
-
-.truvora-select__option--is-selected {
-
-  background:
-    rgba(21, 101, 192, 0.30) !important;
-
-  color:
-    #ffffff !important;
-
-}
-
-
-.truvora-select__single-value {
-
-  color:
-    #c6d6e5 !important;
-
-}
-
-
-.truvora-select__placeholder {
-
-  color:
-    #61768c !important;
-
-}
-
-
-.truvora-select__indicator-separator {
-
-  display:
-    none;
-
-}
-
-
-/* =========================================================
-   VOICE SELECTOR
-   ========================================================= */
-
-.voice-selector {
-
-  height:
-    34px;
-
-  width:
-    96px;
-
-  padding:
-    0 7px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.11);
-
-  border-radius:
-    8px;
-
-  outline:
-    none;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #9ab0c3;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-}
-
-
-.voice-selector:focus {
-
-  border-color:
-    rgba(41, 182, 246, 0.30);
-
-}
-
-
-.voice-selector option {
-
-  background:
-    #0f1d30;
-
-  color:
-    #dce9f5;
-
-}
-
-
-/* =========================================================
-   SOURCES
-   ========================================================= */
-
-.truvora-sources {
-
-  margin-top:
-    12px;
-
-  padding-top:
-    10px;
-
-  border-top:
-    1px solid
-    rgba(148, 163, 184, 0.08);
-
-}
-
-
-.sources-title {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  margin-bottom:
-    7px;
-
-  color:
-    #71879c;
-
-  font-size:
-    10px;
-
-  font-weight:
-    700;
-
-}
-
-
-.sources-list {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    6px;
-
-}
-
-
-.source-item {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    7px;
-
-  min-width:
-    180px;
-
-  max-width:
-    300px;
-
-  padding:
-    7px 8px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.09);
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(255, 255, 255, 0.018);
-
-  color:
-    inherit;
-
-  text-decoration:
-    none;
-
-  transition:
-    0.15s ease;
-
-}
-
-
-.source-item:hover {
-
-  border-color:
-    rgba(41, 182, 246, 0.22);
-
-  background:
-    rgba(21, 101, 192, 0.07);
-
-}
-
-
-.source-number {
-
-  width:
-    21px;
-
-  height:
-    21px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex:
-    0 0 21px;
-
-  border-radius:
-    6px;
-
-  background:
-    rgba(21, 101, 192, 0.15);
-
-  color:
-    #73cdf3;
-
-  font-size:
-    9px;
-
-  font-weight:
-    700;
-
-}
-
-
-.source-content {
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  min-width:
-    0;
-
-  flex:
-    1;
-
-}
-
-
-.source-content strong {
-
-  overflow:
-    hidden;
-
-  color:
-    #a9bed1;
-
-  font-size:
-    10px;
-
-  font-weight:
-    600;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-}
-
-
-.source-content small {
-
-  margin-top:
-    2px;
-
-  overflow:
-    hidden;
-
-  color:
-    #526a80;
-
-  font-size:
-    8px;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-}
-
-
-.source-arrow {
-
-  color:
-    #60778c;
-
-  font-size:
-    11px;
-
-}
-
-
-/* =========================================================
-   CAMERA
-   ========================================================= */
-
-.camera-overlay {
-
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  z-index:
-    2700;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    20px;
-
-  background:
-    rgba(0, 0, 0, 0.65);
-
-  backdrop-filter:
-    blur(6px);
-
-}
-
-
-.camera-modal {
-
-  width:
-    min(650px, 100%);
-
-  padding:
-    12px;
-
-  border:
-    1px solid
-    rgba(148, 163, 184, 0.16);
-
-  border-radius:
-    16px;
-
-  background:
-    #0f1d30;
-
-  box-shadow:
-    0 30px 80px
-    rgba(0, 0, 0, 0.45);
-
-}
-
-
-.camera-header {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  padding:
-    2px 4px 10px;
-
-}
-
-
-.camera-header strong {
-
-  color:
-    #e2edf7;
-
-  font-size:
-    12px;
-
-}
-
-
-.camera-header button {
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  border:
-    0;
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(255, 255, 255, 0.05);
-
-  color:
-    #8096aa;
-
-  cursor:
-    pointer;
-
-  font-size:
-    18px;
-
-}
-
-
-.camera-video {
-
-  display:
-    block;
-
-  width:
-    100%;
-
-  max-height:
-    65vh;
-
-  object-fit:
-    cover;
-
-  border-radius:
-    11px;
-
-  background:
-    #02070d;
-
-}
-
-
-.camera-actions {
-
-  display:
-    flex;
-
-  justify-content:
-    flex-end;
-
-  gap:
-    8px;
-
-  padding-top:
-    10px;
-
-}
-
-
-.camera-cancel-button,
-.camera-capture-button {
-
-  min-height:
-    38px;
-
-  padding:
-    0 14px;
-
-  border-radius:
-    8px;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-  font-weight:
-    700;
-
-}
-
-
-.camera-cancel-button {
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #8499ad;
-
-}
-
-
-.camera-capture-button {
-
-  background:
-    var(--truvora-primary);
-
-  color:
-    #ffffff;
-
-}
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-.truvora-login-screen {
-
-  width:
-    100%;
-
-  min-height:
-    100dvh;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    20px;
-
-  background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(21, 101, 192, 0.15),
-      transparent 42%
-    ),
-    var(--truvora-bg);
-
-}
-
-
-.truvora-login-card {
-
-  width:
-    min(430px, 100%);
-
-  padding:
-    32px;
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  border-radius:
-    20px;
-
-  background:
-    rgba(15, 29, 48, 0.94);
-
-  box-shadow:
-    0 30px 90px
-    rgba(0, 0, 0, 0.34);
-
-  text-align:
-    center;
-
-}
-
-
-.truvora-login-card > h1 {
-
-  margin:
-    16px 0 4px;
-
-  color:
-    #ffffff;
-
-  font-size:
-    24px;
-
-}
-
-
-.truvora-login-card > p {
-
-  margin:
-    0 0 24px;
-
-  color:
-    #71869d;
-
-  font-size:
-    11px;
-
-}
-
-
-.truvora-login-card > span {
-
-  color:
-    #71869d;
-
-  font-size:
-    11px;
-
-}
-
-
-.truvora-login-content {
-
-  margin-top:
-    25px;
-
-}
-
-
-.truvora-login-content h1 {
-
-  margin:
-    0 0 7px;
-
-  color:
-    #ffffff;
-
-  font-size:
-    24px;
-
-}
-
-
-.truvora-login-content p {
-
-  margin:
-    0 0 22px;
-
-  color:
-    #71869d;
-
-  font-size:
-    11px;
-
-}
-
-
-.google-login-button,
-.login-submit-button {
-
-  width:
-    100%;
-
-  min-height:
-    42px;
-
-  border-radius:
-    9px;
-
-  cursor:
-    pointer;
-
-  font-size:
-    11px;
-
-  font-weight:
-    700;
-
-}
-
-
-.google-login-button {
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  background:
-    rgba(255, 255, 255, 0.045);
-
-  color:
-    #d9e5f0;
-
-}
-
-
-.login-submit-button {
-
-  margin-top:
-    10px;
-
-  background:
-    var(--truvora-primary);
-
-  color:
-    #ffffff;
-
-}
-
-
-.auth-divider {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
-
-  margin:
-    18px 0;
-
-  color:
-    #52677c;
-
-  font-size:
-    9px;
-
-}
-
-
-.auth-divider::before,
-.auth-divider::after {
-
-  content:
-    "";
-
-  flex:
-    1;
-
-  height:
-    1px;
-
-  background:
-    var(--truvora-border);
-
-}
-
-
-.login-input {
-
-  width:
-    100%;
-
-  height:
-    42px;
-
-  margin-bottom:
-    9px;
-
-  padding:
-    0 12px;
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  border-radius:
-    9px;
-
-  outline:
-    none;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color:
-    #dce8f3;
-
-  font-size:
-    12px;
-
-}
-
-
-.login-input:focus {
-
-  border-color:
-    rgba(41, 182, 246, 0.35);
-
-}
-
-
-.auth-error {
-
-  margin:
-    7px 0;
-
-  color:
-    #ff8c8c;
-
-  font-size:
-    10px;
-
-  line-height:
-    1.5;
-
-}
-
-
-.auth-switch-button {
-
-  margin-top:
-    15px;
-
-  padding:
-    5px;
-
-  border:
-    0;
-
-  background:
-    transparent;
-
-  color:
-    #65cdf7;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-}
-
-
-/* =========================================================
-   PART 2 END
-   ========================================================= */
-
-/* =========================================================
-   CITATION PREVIEW
-   ========================================================= */
-
-.citation-preview-overlay {
-
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  z-index:
-    2800;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    20px;
-
-  background:
-    rgba(0, 0, 0, 0.58);
-
-  backdrop-filter:
-    blur(5px);
-
-}
-
-
-.citation-preview {
-
-  width:
-    min(500px, 100%);
-
-  border:
-    1px solid
-    var(--truvora-border);
-
-  border-radius:
-    14px;
-
-  background:
-    #0f1d30;
-
-  box-shadow:
-    0 25px 70px
-    rgba(0, 0, 0, 0.42);
-
-  overflow:
-    hidden;
-
-}
-
-
-.citation-preview-header {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  padding:
-    13px 15px;
-
-  border-bottom:
-    1px solid
-    var(--truvora-border);
-
-}
-
-
-.citation-preview-header strong {
-
-  color:
-    #dce9f5;
-
-  font-size:
-    12px;
-
-}
-
-
-.citation-preview-header button {
-
-  width:
-    29px;
-
-  height:
-    29px;
-
-  border:
-    0;
-
-  border-radius:
-    7px;
-
-  background:
-    rgba(255, 255, 255, 0.045);
-
-  color:
-    #8297aa;
-
-  cursor:
-    pointer;
-
-  font-size:
-    17px;
-
-}
-
-
-.citation-preview-body {
-
-  padding:
-    18px;
-
-}
-
-
-.citation-preview-body strong {
-
-  display:
-    block;
-
-  color:
-    #dbe8f3;
-
-  font-size:
-    12px;
-
-  line-height:
-    1.5;
-
-}
-
-
-.citation-preview-body p {
-
-  margin:
-    9px 0 14px;
-
-  color:
-    #71869d;
-
-  font-size:
-    10px;
-
-  line-height:
-    1.5;
-
-  overflow-wrap:
-    anywhere;
-
-}
-
-
-.citation-preview-body a {
-
-  color:
-    #6dd2fa;
-
-  text-decoration:
-    none;
-
-  font-size:
-    10px;
-
-  font-weight:
-    700;
-
-}
-
-
-.citation-preview-body a:hover {
-
-  text-decoration:
-    underline;
-
-}
-
-
-/* =========================================================
-   FILE GENERATION OVERLAY
-   ========================================================= */
-
-.truvora-generation-overlay {
-
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  z-index:
-    2900;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    20px;
-
-  background:
-    rgba(0, 0, 0, 0.48);
-
-  backdrop-filter:
-    blur(4px);
-
-}
-
-
-.truvora-generation-card {
-
-  width:
-    min(360px, 100%);
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
-  padding:
-    25px;
-
-  border:
-    1px solid
-    rgba(41, 182, 246, 0.14);
-
-  border-radius:
-    15px;
-
-  background:
-    #0f1d30;
-
-  box-shadow:
-    0 25px 75px
-    rgba(0, 0, 0, 0.42);
-
-  text-align:
-    center;
-
-}
-
-
-.truvora-generation-card strong {
-
-  margin-top:
-    13px;
-
-  color:
-    #e5f0fa;
-
-  font-size:
-    12px;
-
-}
-
-
-.truvora-generation-card span {
-
-  margin-top:
-    6px;
-
-  color:
-    #6f849a;
-
-  font-size:
-    10px;
-
-  line-height:
-    1.5;
-
-}
-
-
-.generation-spinner {
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  border:
-    3px solid
-    rgba(255, 255, 255, 0.08);
-
-  border-top-color:
-    var(--truvora-accent);
-
-  border-radius:
-    50%;
-
-  animation:
-    truvoraSpin 0.8s
-    linear infinite;
-
-}
-
-
-@keyframes truvoraSpin {
-
-  to {
-
-    transform:
-      rotate(360deg);
-
->>>>>>> origin/main
-  }
-
-  /* Prevent selectors from becoming oversized */
-  .language-select,
-  .voice-select{
-    max-width:100%;
-  }
-}
-
-/* =========================================================
-<<<<<<< HEAD
-   MOBILE — 360px PHONES
-   ========================================================= */
-
-@media (max-width:380px){
-
-  .topbar{
-    padding-left:8px;
-    padding-right:8px;
-  }
-
-  .top-title{
-    font-size:15px;
-  }
-
-  .messages{
-    padding-left:6px;
-    padding-right:6px;
-  }
-
-  .bubble{
-    padding:11px 12px;
-    font-size:13.5px;
-  }
-
-  .input-area{
-    padding-left:6px;
-    padding-right:6px;
-  }
-
-  .input-box{
-    padding:6px;
-  }
-
-  .icon-btn{
-    width:34px;
-    min-width:34px;
-    height:34px;
-    min-height:34px;
-  }
-
-  .main-input{
-    min-height:58px !important;
-  }
-}
-
-/* =========================================================
-   DESKTOP — MORE BREATHING ROOM
-   ========================================================= */
-
-@media (min-width:901px){
-
-  .messages{
-    padding-top:42px;
-    padding-bottom:38px;
-  }
-
-  .message{
-    margin-bottom:30px;
-  }
-
-  .input-area{
-    padding-top:14px;
-    padding-bottom:20px;
-  }
-}
-
-/* =========================================================
-   MOBILE — KEEP CHAT VISIBLE
-   ========================================================= */
-
-@media (max-width:900px){
-
-  .messages{
-    display:block;
-  }
-
-  .message{
-    visibility:visible;
-    opacity:1;
-  }
-
-  .bubble{
-    visibility:visible;
-    opacity:1;
-  }
-}
-
-/* =========================================================
-   MOBILE MENU BUTTON SUPPORT
-   ========================================================= */
-
-@media (max-width:900px){
-
-  .menu-btn,
-  .hamburger-btn,
-  .sidebar-toggle{
-    width:38px;
-    min-width:38px;
-
-    height:38px;
-    min-height:38px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border:
-      1px solid
-      rgba(148,163,184,.12);
-
-    border-radius:10px;
-
-    background:
-      rgba(255,255,255,.035);
-
-    color:#dbe7f5;
-
-    cursor:pointer;
-  }
-
-  .menu-btn:hover,
-  .hamburger-btn:hover,
-  .sidebar-toggle:hover{
-    background:
-      rgba(41,182,246,.08);
-
-    color:#fff;
-  }
-}
-
-/* =========================================================
-   FILE PREVIEW
-   ========================================================= */
-
-.file-preview,
-.upload-preview,
-.attachment-preview{
-  max-width:100%;
-
-  margin-top:10px;
-
-  padding:10px;
-
-  border:
-    1px solid
-    rgba(148,163,184,.13);
-
-  border-radius:11px;
-
-  background:
-    rgba(255,255,255,.025);
-
-  color:#b9cadb;
-
-  overflow:hidden;
-}
-
-/* =========================================================
-   AUDIO / VIDEO PREVIEW
-   ========================================================= */
-
-video,
-audio{
-  max-width:100%;
-}
-
-video{
-  border-radius:12px;
-}
-
-/* =========================================================
-   TOOLTIP
-   ========================================================= */
-
-[title]{
-  -webkit-tap-highlight-color:transparent;
-}
-
-/* =========================================================
-   HOVER-ONLY EFFECTS SHOULD NOT BREAK MOBILE
-   ========================================================= */
-
-@media (hover:none){
-
-  .new-chat:hover,
-  .chat-item:hover,
-  .icon-btn:hover,
-  .send-btn:hover,
-  .source-card:hover,
-  .primary-btn:hover,
-  .primary-button:hover{
-    transform:none;
-  }
-}
-
-/* =========================================================
-   FINAL MOBILE BACKGROUND
-   ========================================================= */
-
-@media (max-width:900px){
-
-  body{
-    background:
-      radial-gradient(
-        circle at 50% -15%,
-        rgba(21,101,192,.18),
-        transparent 42%
-      ),
-      var(--tv-bg);
-  }
-
-  .app{
-    background:
-      radial-gradient(
-        circle at 50% 0%,
-        rgba(21,101,192,.08),
-        transparent 45%
-      ),
-      var(--tv-bg);
-  }
-}
-
-/* =========================================================
-   FINAL ACCESSIBILITY
-   ========================================================= */
-
-@media (prefers-reduced-motion:reduce){
-
-  html{
-    scroll-behavior:auto !important;
-  }
-
-  *,
-  *::before,
-  *::after{
-    animation-duration:0.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:0.01ms !important;
-  }
-}
-
-/* =========================================================
-   END — TRUVORA CLEAN GLOBAL UI
-=======
-   SCROLLBARS
-   ========================================================= */
-
-.truvora-chat-area::-webkit-scrollbar,
-.sidebar-chat-list::-webkit-scrollbar,
-.analyze-menu::-webkit-scrollbar {
-
-  width:
-    6px;
-
-}
-
-
-.truvora-chat-area::-webkit-scrollbar-track,
-.sidebar-chat-list::-webkit-scrollbar-track,
-.analyze-menu::-webkit-scrollbar-track {
-
-  background:
-    transparent;
-
-}
-
-
-.truvora-chat-area::-webkit-scrollbar-thumb,
-.sidebar-chat-list::-webkit-scrollbar-thumb,
-.analyze-menu::-webkit-scrollbar-thumb {
-
-  border-radius:
-    10px;
-
-  background:
-    rgba(148, 163, 184, 0.13);
-
-}
-
-
-.truvora-chat-area::-webkit-scrollbar-thumb:hover,
-.sidebar-chat-list::-webkit-scrollbar-thumb:hover,
-.analyze-menu::-webkit-scrollbar-thumb:hover {
-
-  background:
-    rgba(148, 163, 184, 0.22);
-
-}
-
-
-/* =========================================================
-   MOBILE BACKDROP
-   ========================================================= */
-
-.mobile-sidebar-backdrop {
-
-  display:
-    none;
-
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (
-  max-width: 1050px
-) {
-
-  .truvora-chat-area,
-  .truvora-composer-area {
-
-    padding-left:
-      4vw;
-
-    padding-right:
-      4vw;
-
-  }
-
-
-  .composer-mode-button {
-
-    padding-left:
-      7px;
-
-    padding-right:
-      7px;
-
-  }
-
-
-  .composer-mode-button span {
-
-    display:
-      none;
-
-  }
-
-
-  .language-selector {
-
-    width:
-      115px;
-
+  .input-box {
+    min-height: 160px !important;
   }
 
 }
@@ -6777,1013 +1398,1264 @@ video{
    MOBILE
    ========================================================= */
 
-@media (
-  max-width: 760px
-) {
+@media (max-width: 900px) {
 
-  body {
+  .input-box {
+    flex-direction: row !important;
 
-    overflow:
-      hidden;
+    padding: 10px !important;
 
+    gap: 8px !important;
   }
 
 
-  .truvora-app {
+  .input-box .left-buttons {
+    width: 100% !important;
 
-    min-height:
-      100dvh;
+    overflow-x: auto !important;
 
-    height:
-      100dvh;
-
+    padding-bottom: 3px !important;
   }
 
 
-  /* ---------------------------------------------
-     SIDEBAR
-  --------------------------------------------- */
+  .input-box > .language-select {
+    width: calc(50% - 4px) !important;
 
-  .truvora-sidebar {
+    min-width: 0 !important;
 
-    position:
-      fixed;
-
-    left:
-      0;
-
-    top:
-      0;
-
-    width:
-      min(290px, 86vw);
-
-    min-width:
-      min(290px, 86vw);
-
-    height:
-      100dvh;
-
-    transform:
-      translateX(-105%);
-
-    transition:
-      transform 0.22s
-      ease;
-
-    box-shadow:
-      20px 0 60px
-      rgba(0, 0, 0, 0.30);
-
+    flex: 1 1 calc(50% - 4px) !important;
   }
 
 
-  .truvora-sidebar.sidebar-visible {
+  .input-box > .voice-select {
+    width: calc(50% - 4px) !important;
 
-    transform:
-      translateX(0);
+    min-width: 0 !important;
 
+    flex: 1 1 calc(50% - 4px) !important;
   }
 
 
-  .truvora-sidebar.sidebar-hidden {
+  .input-box > .main-input {
+    min-height: 80px !important;
 
-    transform:
-      translateX(-105%);
-
+    font-size: 17px !important;
   }
 
 
-  .sidebar-mobile-close {
+  .input-box > .send-btn {
+    right: 20px !important;
 
-    display:
-      inline-flex;
+    bottom: 20px !important;
 
+    width: 56px !important;
+
+    height: 56px !important;
   }
 
+}
+/* =========================================================
+   TRUVORA LANGUAGE DROPDOWN — CLEAN GLOBAL STYLE
+   ========================================================= */
 
-  .mobile-sidebar-backdrop {
+.input-box .language__menu {
+  background: #ffffff !important;
 
-    position:
-      fixed;
+  color: #111827 !important;
 
-    inset:
-      0;
+  border-radius: 10px !important;
 
-    display:
-      block;
+  border: 1px solid #d1d5db !important;
 
-    z-index:
-      1100;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35) !important;
 
-    background:
-      rgba(0, 0, 0, 0.48);
+  z-index: 999999 !important;
 
-    backdrop-filter:
-      blur(2px);
+  overflow: hidden !important;
 
+  top: 100% !important;
+
+  bottom: auto !important;
+
+  margin-top: 6px !important;
+}
+
+
+/* LANGUAGE LIST */
+
+.input-box .language__menu-list {
+  background: #ffffff !important;
+
+  max-height: 420px !important;
+
+  overflow-y: auto !important;
+
+  padding: 4px 0 !important;
+}
+
+
+/* LANGUAGE GROUP HEADING */
+
+.input-box .language__group-heading {
+  background: #f1f5f9 !important;
+
+  color: #64748b !important;
+
+  font-size: 12px !important;
+
+  font-weight: 700 !important;
+
+  text-transform: uppercase !important;
+
+  padding: 8px 12px !important;
+}
+
+
+/* LANGUAGE OPTIONS */
+
+.input-box .language__option {
+  background: #ffffff !important;
+
+  color: #111827 !important;
+
+  font-size: 16px !important;
+
+  font-weight: 500 !important;
+
+  padding: 11px 14px !important;
+
+  min-height: 44px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  cursor: pointer !important;
+}
+
+
+/* HOVER */
+
+.input-box .language__option--is-focused {
+  background: #2563eb !important;
+
+  color: #ffffff !important;
+}
+
+
+/* SELECTED */
+
+.input-box .language__option--is-selected {
+  background: #2563eb !important;
+
+  color: #ffffff !important;
+
+  font-weight: 600 !important;
+}
+
+
+/* REMOVE DARK TEXT OVERRIDES */
+
+.input-box .language__option *,
+.input-box .language__option span,
+.input-box .language__option div {
+  color: inherit !important;
+}
+
+
+/* SCROLLBAR */
+
+.input-box .language__menu-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+
+.input-box .language__menu-list::-webkit-scrollbar-track {
+  background: #f1f5f9 !important;
+}
+
+
+.input-box .language__menu-list::-webkit-scrollbar-thumb {
+  background: #94a3b8 !important;
+
+  border-radius: 10px !important;
+}
+
+
+.input-box .language__menu-list::-webkit-scrollbar-thumb:hover {
+  background: #64748b !important;
+}
+/* =========================================================
+   TRUVORA — FINAL LANGUAGE DROPDOWN
+   PUT THIS AT THE VERY BOTTOM OF App.css
+   ========================================================= */
+
+.input-box .language-select {
+  width: 230px !important;
+  min-width: 230px !important;
+  margin: 0 !important;
+  flex: 0 0 230px !important;
+}
+
+/* LANGUAGE CONTROL */
+
+.input-box .language__control {
+  min-height: 50px !important;
+  height: 50px !important;
+
+  background: #111827 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+
+  box-shadow: none !important;
+  color: white !important;
+}
+
+/* LANGUAGE TEXT */
+
+.input-box .language__single-value {
+  color: white !important;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+}
+
+.input-box .language__placeholder {
+  color: #cbd5e1 !important;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+}
+
+/* DROPDOWN */
+
+.input-box .language__menu {
+  background: #ffffff !important;
+  color: #111827 !important;
+
+  border: 1px solid #d1d5db !important;
+  border-radius: 10px !important;
+
+  z-index: 999999 !important;
+
+  overflow: hidden !important;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* DROPDOWN LIST */
+
+.input-box .language__menu-list {
+  background: #ffffff !important;
+
+  max-height: 420px !important;
+  overflow-y: auto !important;
+
+  padding: 4px !important;
+}
+
+/* GROUP TITLE */
+
+.input-box .language__group {
+  padding: 0 !important;
+}
+
+.input-box .language__group-heading {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+
+  font-size: 12px !important;
+  font-weight: 700 !important;
+
+  padding: 9px 12px !important;
+}
+
+/* LANGUAGE OPTIONS */
+
+.input-box .language__option {
+  background: #ffffff !important;
+  color: #111827 !important;
+
+  font-size: 16px !important;
+  font-weight: 500 !important;
+
+  padding: 12px 14px !important;
+
+  min-height: 44px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  cursor: pointer !important;
+}
+
+/* HOVER */
+
+.input-box .language__option--is-focused {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* SELECTED */
+
+.input-box .language__option--is-selected {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* ARROW */
+
+.input-box .language__dropdown-indicator {
+  color: #cbd5e1 !important;
+}
+
+.input-box .language__dropdown-indicator:hover {
+  color: #00d9ff !important;
+}
+
+.input-box .language__indicator-separator {
+  background: #475569 !important;
+}
+
+/* =========================================================
+   VOICE — MATCH LANGUAGE SIZE
+   ========================================================= */
+
+.input-box .voice-select {
+  width: 190px !important;
+  min-width: 190px !important;
+  flex: 0 0 190px !important;
+}
+
+.input-box .voice__control {
+  min-height: 50px !important;
+  height: 50px !important;
+
+  background: #111827 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+}
+
+.input-box .voice__single-value,
+.input-box .voice__placeholder {
+  font-size: 17px !important;
+  font-weight: 500 !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .input-box .language-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
   }
 
-
-  /* ---------------------------------------------
-     TOP BAR
-  --------------------------------------------- */
-
-  .truvora-topbar {
-
-    height:
-      57px;
-
-    min-height:
-      57px;
-
-    padding:
-      0 11px;
-
+  .input-box .voice-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
   }
 
+}
+/* =========================================
+   TRUVORA LANGUAGE DROPDOWN — OPEN UP
+   ========================================= */
 
-  .mobile-menu-button {
+.input-box .language__menu {
+  top: auto !important;
+  bottom: 100% !important;
+  margin-bottom: 6px !important;
 
-    width:
-      37px;
+  z-index: 999999 !important;
 
-    height:
-      37px;
+  background: #ffffff !important;
+  color: #111827 !important;
 
-    display:
-      flex;
+  border: 1px solid #d1d5db !important;
+  border-radius: 10px !important;
 
-    align-items:
-      center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+}
 
-    justify-content:
-      center;
+.input-box .language__menu-list {
+  max-height: 420px !important;
+  overflow-y: auto !important;
+  background: #ffffff !important;
+}
 
-    margin-right:
-      8px;
+.input-box .language__option {
+  background: #ffffff !important;
+  color: #111827 !important;
 
-    border:
-      1px solid
-      rgba(148, 163, 184, 0.10);
+  font-size: 16px !important;
+  padding: 12px 14px !important;
+  min-height: 44px !important;
+}
 
-    border-radius:
-      9px;
+.input-box .language__option--is-focused,
+.input-box .language__option--is-selected {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+/* =========================================
+   TRUVORA — SHOW ALL LANGUAGE OPTIONS
+   ========================================= */
 
-    background:
-      rgba(255, 255, 255, 0.025);
+.input-box .language__menu {
+  overflow: visible !important;
+  max-height: none !important;
+}
 
-    color:
-      #a0b4c7;
+.input-box .language__menu-list {
+  max-height: 420px !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+/* =========================================================
+   TRUVORA — COMPACT ANSWER-FIRST COMPOSER
+   FINAL OVERRIDE
+   ========================================================= */
 
-    cursor:
-      pointer;
+/* Smaller global branding */
+.top-title {
+  font-size: 22px !important;
+  letter-spacing: 1.5px !important;
+}
 
-    font-size:
-      17px;
+/* Smaller logout */
+.logout {
+  font-size: 16px !important;
+}
 
+/* Smaller composer */
+.input-area {
+  padding: 8px 14px 12px !important;
+}
+
+/* Smaller composer container */
+.input-box {
+  padding: 10px !important;
+  gap: 8px !important;
+  border-radius: 18px !important;
+}
+
+/* Smaller top buttons */
+.input-box .left-buttons .icon-btn {
+  width: 42px !important;
+  min-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  border-radius: 13px !important;
+  font-size: 18px !important;
+}
+
+/* Smaller language selector */
+.input-box > .language-select {
+  width: 170px !important;
+  min-width: 170px !important;
+  flex: 0 0 170px !important;
+}
+
+.input-box > .language-select .language__control {
+  height: 42px !important;
+  min-height: 42px !important;
+  border-radius: 10px !important;
+}
+
+.input-box > .language-select .language__single-value,
+.input-box > .language-select .language__placeholder {
+  font-size: 14px !important;
+}
+
+/* Smaller voice selector */
+.input-box > .voice-select {
+  width: 140px !important;
+  min-width: 140px !important;
+  flex: 0 0 140px !important;
+}
+
+.input-box > .voice-select .voice__control {
+  height: 42px !important;
+  min-height: 42px !important;
+  border-radius: 10px !important;
+}
+
+.input-box > .voice-select .voice__single-value,
+.input-box > .voice-select .voice__placeholder {
+  font-size: 14px !important;
+}
+
+/* Smaller ASK area */
+.input-box > .main-input {
+  min-height: 70px !important;
+  padding: 14px 72px 14px 16px !important;
+  border-radius: 15px !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+}
+
+/* Smaller placeholder */
+.input-box > .main-input::placeholder {
+  font-size: 16px !important;
+}
+
+/* Smaller send button */
+.input-box > .send-btn {
+  width: 52px !important;
+  min-width: 52px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  border-radius: 16px !important;
+  font-size: 21px !important;
+}
+
+/* Give answers more vertical space */
+@media (min-width: 901px) {
+  .input-box {
+    min-height: 135px !important;
+  }
+}
+/* =========================================================
+   TRUVORA — COMPOSER SPACING / ALIGNMENT
+   ========================================================= */
+
+.input-box {
+  padding: 12px !important;
+  gap: 10px !important;
+}
+
+.input-box .left-buttons {
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.input-box .left-buttons .icon-btn {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+}
+
+.input-box > .language-select {
+  margin-left: 2px !important;
+}
+
+.input-box > .voice-select {
+  margin-left: 0 !important;
+}
+
+.input-box > .main-input {
+  min-height: 76px !important;
+}
+
+.input-box > .send-btn {
+  right: 18px !important;
+  bottom: 18px !important;
+}
+/* =========================================================
+   TRUVORA — PREMIUM ANSWER AREA
+   ========================================================= */
+
+.chat-container,
+.messages-container,
+.chat-messages {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.35) transparent;
+}
+
+.chat-container::-webkit-scrollbar,
+.messages-container::-webkit-scrollbar,
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-container::-webkit-scrollbar-track,
+.messages-container::-webkit-scrollbar-track,
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-container::-webkit-scrollbar-thumb,
+.messages-container::-webkit-scrollbar-thumb,
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.28);
+  border-radius: 999px;
+}
+
+.bubble {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.65;
+  font-size: 15px;
+  letter-spacing: 0.05px;
+}
+
+.bubble p {
+  margin: 0 0 10px;
+}
+
+.bubble p:last-child {
+  margin-bottom: 0;
+}
+
+/* smoother answer appearance */
+.bubble {
+  animation: truvoraAnswerIn 0.22s ease-out;
+}
+
+@keyframes truvoraAnswerIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
   }
 
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .mobile-brand {
+/* keep answer content visually separated */
+.bubble + .bubble {
+  margin-top: 14px;
+}
 
-    display:
-      flex;
+/* cleaner source section */
+.sources {
+  margin-top: 18px;
+}
 
-    align-items:
-      center;
+/* mobile */
+@media (max-width: 900px) {
+  .bubble {
+    max-width: 96%;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+/* =========================================================
+   TRUVORA — COMPACT ASK BAR
+   ========================================================= */
 
-    gap:
-      7px;
+.input-box {
+  padding: 10px !important;
+  gap: 8px !important;
+}
 
+.input-box .input-area {
+  min-height: 58px !important;
+  height: 58px !important;
+  padding: 0 70px 0 16px !important;
+}
+
+.input-box textarea,
+.input-box input {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+.input-box .send-btn {
+  width: 52px !important;
+  height: 52px !important;
+  right: 10px !important;
+  bottom: 3px !important;
+}
+
+.input-box .left-buttons button {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  font-size: 16px !important;
+}
+
+.input-box select {
+  height: 40px !important;
+  font-size: 13px !important;
+}
+
+@media (max-width: 900px) {
+  .input-box .input-area {
+    height: 54px !important;
+    min-height: 54px !important;
+  }
+}
+/* =========================================================
+   TRUVORA — COMPACT SOURCE CARDS
+   ========================================================= */
+
+.sources {
+  margin-top: 12px !important;
+  padding-top: 8px !important;
+}
+
+.sources > div {
+  gap: 5px !important;
+}
+
+/* individual citation row */
+.sources [id^="truvora-source-"] {
+  min-height: 48px !important;
+  padding: 7px 10px !important;
+  border-radius: 9px !important;
+}
+
+/* citation number */
+.sources [id^="truvora-source-"] span:first-child {
+  min-width: 28px !important;
+  height: 28px !important;
+  font-size: 11px !important;
+}
+
+/* title */
+.sources [id^="truvora-source-"] span {
+  font-size: 11px;
+}
+
+/* source domain */
+.sources [id^="truvora-source-"] a span span:last-child {
+  font-size: 9px !important;
+}
+
+/* snippet */
+.sources [id^="truvora-source-"] > div {
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+  margin-top: 4px !important;
+}
+
+/* smooth hover */
+.sources [id^="truvora-source-"]:hover {
+  transform: translateX(3px);
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+/* mobile */
+@media (max-width: 900px) {
+  .sources [id^="truvora-source-"] {
+    min-height: 44px !important;
+  }
+}
+/* =========================================================
+   TRUVORA — SMOOTH CITATION LIST
+   ========================================================= */
+
+.sources {
+  max-height: 270px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 5px !important;
+  scroll-behavior: smooth !important;
+  overscroll-behavior: contain !important;
+}
+
+.sources::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sources::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sources::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.32);
+  border-radius: 999px;
+}
+
+.sources::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.58);
+}
+
+/* Each citation stays compact */
+.sources [id^="truvora-source-"] {
+  height: 46px !important;
+  min-height: 46px !important;
+  box-sizing: border-box !important;
+  margin-bottom: 5px !important;
+  padding: 6px 9px !important;
+  cursor: pointer !important;
+  transition:
+    transform 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease !important;
+}
+
+/* subtle movement when hovering */
+.sources [id^="truvora-source-"]:hover {
+  transform: translateX(4px) !important;
+  background: rgba(14, 165, 233, 0.09) !important;
+  border-color: rgba(56, 189, 248, 0.42) !important;
+  box-shadow: 0 3px 14px rgba(14, 165, 233, 0.08) !important;
+}
+
+/* Hide snippets so citations remain lightweight */
+.sources [id^="truvora-source-"] > div {
+  display: none !important;
+}
+/* =========================================================
+   TRUVORA — FINAL COMPACT ASK BAR
+   ========================================================= */
+
+.input-area {
+  padding: 6px 12px 8px !important;
+  border-top: 1px solid #1e293b !important;
+}
+
+/* Composer */
+.input-box {
+  position: relative !important;
+
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+
+  box-sizing: border-box !important;
+
+  padding: 8px !important;
+  gap: 8px !important;
+
+  border-radius: 16px !important;
+}
+
+/* Top controls */
+.input-box .left-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+
+  width: auto !important;
+  flex: 0 0 auto !important;
+
+  gap: 7px !important;
+}
+
+/* Icons */
+.input-box .left-buttons .icon-btn {
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+
+  border-radius: 11px !important;
+  font-size: 17px !important;
+}
+
+/* Language */
+.input-box > .language-select {
+  width: 150px !important;
+  min-width: 150px !important;
+  flex: 0 0 150px !important;
+  margin: 0 !important;
+}
+
+.input-box > .language-select .language__control {
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 9px !important;
+}
+
+.input-box > .language-select .language__single-value,
+.input-box > .language-select .language__placeholder {
+  font-size: 14px !important;
+}
+
+/* Voice */
+.input-box > .voice-select {
+  width: 130px !important;
+  min-width: 130px !important;
+  flex: 0 0 130px !important;
+  margin: 0 !important;
+}
+
+.input-box > .voice-select .voice__control {
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 9px !important;
+}
+
+.input-box > .voice-select .voice__single-value,
+.input-box > .voice-select .voice__placeholder {
+  font-size: 14px !important;
+}
+
+/* ASK INPUT */
+.input-box > .main-input {
+  order: 10 !important;
+
+  flex: 1 0 100% !important;
+  width: 100% !important;
+
+  min-height: 62px !important;
+  height: 62px !important;
+
+  box-sizing: border-box !important;
+
+  padding: 13px 70px 13px 16px !important;
+
+  border-radius: 13px !important;
+
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+}
+
+/* Placeholder */
+.input-box > .main-input::placeholder {
+  font-size: 16px !important;
+}
+
+/* SEND BUTTON */
+.input-box > .send-btn {
+  position: absolute !important;
+
+  right: 16px !important;
+  bottom: 13px !important;
+
+  width: 48px !important;
+  min-width: 48px !important;
+
+  height: 48px !important;
+  min-height: 48px !important;
+
+  border-radius: 14px !important;
+
+  font-size: 20px !important;
+}
+
+/* Desktop */
+@media (min-width: 901px) {
+  .input-box {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+
+  .input-area {
+    padding: 5px 8px 6px !important;
   }
 
-
-  .mobile-brand .truvora-logo-symbol {
-
-    width:
-      31px;
-
-    height:
-      31px;
-
-    flex-basis:
-      31px;
-
-    border-radius:
-      9px;
-
-    font-size:
-      14px;
-
+  .input-box {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 7px !important;
   }
 
-
-  .mobile-brand > div:last-child {
-
-    display:
-      flex;
-
-    flex-direction:
-      column;
-
+  .input-box .left-buttons {
+    width: 100% !important;
+    overflow-x: auto !important;
   }
 
-
-  .mobile-brand strong {
-
-    color:
-      #ffffff;
-
-    font-size:
-      12px;
-
-    line-height:
-      1;
-
-    letter-spacing:
-      0.4px;
-
+  .input-box > .language-select,
+  .input-box > .voice-select {
+    width: calc(50% - 4px) !important;
+    min-width: 0 !important;
+    flex: 1 1 calc(50% - 4px) !important;
   }
 
-
-  .mobile-brand span {
-
-    margin-top:
-      2px;
-
-    color:
-      var(--truvora-accent);
-
-    font-size:
-      6px;
-
-    font-weight:
-      700;
-
-    letter-spacing:
-      1.2px;
-
+  .input-box > .main-input {
+    min-height: 58px !important;
+    height: 58px !important;
   }
 
+  .input-box > .send-btn {
+    right: 12px !important;
+    bottom: 11px !important;
 
-  .topbar-center {
+    width: 46px !important;
+    height: 46px !important;
+  }
+}
+/* =========================================================
+   TRUVORA — FINAL COMPOSER FIX
+   KEEP ALL 5 ICON BUTTONS VISIBLE
+   GLOBE • CPU • ANALYZE • MIC • SPEAKER
+   ========================================================= */
 
-    display:
-      none;
+/* Main composer */
+.input-box {
+  position: relative !important;
 
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+
+  align-items: center !important;
+
+  width: 100% !important;
+  box-sizing: border-box !important;
+
+  padding: 10px !important;
+  gap: 8px !important;
+
+  background: rgba(17, 24, 39, 0.96) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 18px !important;
+
+  overflow: visible !important;
+}
+
+
+/* =========================================================
+   FIVE ICON BUTTONS
+   ========================================================= */
+
+.input-box .left-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+
+  align-items: center !important;
+
+  width: auto !important;
+  min-width: max-content !important;
+
+  flex: 0 0 auto !important;
+
+  gap: 8px !important;
+
+  overflow: visible !important;
+}
+
+
+/* EVERY ICON */
+.input-box .left-buttons .icon-btn {
+  display: flex !important;
+
+  flex: 0 0 42px !important;
+
+  width: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 13px !important;
+
+  font-size: 19px !important;
+
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  position: relative !important;
+  z-index: 30 !important;
+}
+
+
+/* =========================================================
+   FORCE SPEAKER BUTTON VISIBLE
+   ========================================================= */
+
+/* Speaker is the 5th button inside left-buttons */
+.input-box .left-buttons > .icon-btn:nth-child(5) {
+  display: flex !important;
+
+  width: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+
+  flex: 0 0 42px !important;
+
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  position: relative !important;
+  z-index: 999 !important;
+}
+
+
+/* =========================================================
+   LANGUAGE SELECTOR
+   ========================================================= */
+
+.input-box > .language-select {
+  width: 170px !important;
+  min-width: 170px !important;
+  max-width: 170px !important;
+
+  flex: 0 0 170px !important;
+
+  margin: 0 !important;
+}
+
+
+/* Language control */
+.input-box > .language-select .language__control {
+  width: 100% !important;
+
+  height: 42px !important;
+  min-height: 42px !important;
+
+  border-radius: 10px !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   VOICE SELECTOR
+   ========================================================= */
+
+.input-box > .voice-select {
+  width: 140px !important;
+  min-width: 140px !important;
+  max-width: 140px !important;
+
+  flex: 0 0 140px !important;
+
+  margin: 0 !important;
+}
+
+
+.input-box > .voice-select .voice__control {
+  width: 100% !important;
+
+  height: 42px !important;
+  min-height: 42px !important;
+
+  border-radius: 10px !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   QUESTION INPUT
+   ========================================================= */
+
+.input-box > .main-input {
+  order: 20 !important;
+
+  flex: 1 1 100% !important;
+
+  width: 100% !important;
+
+  min-height: 70px !important;
+
+  box-sizing: border-box !important;
+
+  padding: 16px 80px 16px 16px !important;
+
+  border-radius: 16px !important;
+
+  font-size: 17px !important;
+}
+
+
+/* =========================================================
+   SEND BUTTON
+   ========================================================= */
+
+.input-box > .send-btn {
+  position: absolute !important;
+
+  right: 14px !important;
+  bottom: 14px !important;
+
+  width: 52px !important;
+  min-width: 52px !important;
+
+  height: 52px !important;
+  min-height: 52px !important;
+
+  z-index: 100 !important;
+
+  border-radius: 17px !important;
+}
+
+
+/* =========================================================
+   DESKTOP — KEEP EVERYTHING ON ONE TOP ROW
+   ========================================================= */
+
+@media (min-width: 901px) {
+
+  .input-box {
+    flex-wrap: wrap !important;
   }
 
-
-  .topbar-avatar {
-
-    width:
-      31px;
-
-    height:
-      31px;
-
-    font-size:
-      10px;
-
+  .input-box .left-buttons {
+    width: auto !important;
+    flex: 0 0 auto !important;
   }
 
-
-  /* ---------------------------------------------
-     CHAT
-  --------------------------------------------- */
-
-  .truvora-chat-area {
-
-    padding:
-      18px 10px 20px;
-
+  .input-box > .language-select {
+    flex: 0 0 170px !important;
   }
 
-
-  .truvora-message {
-
-    gap:
-      7px;
-
-    margin-bottom:
-      22px;
-
-  }
-
-
-  .message-avatar {
-
-    width:
-      28px;
-
-    height:
-      28px;
-
-    flex-basis:
-      28px;
-
-    border-radius:
-      8px;
-
-    font-size:
-      10px;
-
-  }
-
-
-  .message-body {
-
-    max-width:
-      calc(100% - 35px);
-
-  }
-
-
-  .truvora-user-message
-  .message-body {
-
-    max-width:
-      88%;
-
-  }
-
-
-  .message-text {
-
-    font-size:
-      13px;
-
-    line-height:
-      1.65;
-
-  }
-
-
-  .truvora-user-message
-  .message-text {
-
-    padding:
-      9px 11px;
-
-  }
-
-
-  /* ---------------------------------------------
-     EMPTY STATE
-  --------------------------------------------- */
-
-  .truvora-empty-state {
-
-    min-height:
-      70%;
-
-    padding:
-      20px 8px;
-
-  }
-
-
-  .empty-logo-symbol {
-
-    width:
-      50px;
-
-    height:
-      50px;
-
-    border-radius:
-      14px;
-
-    font-size:
-      22px;
-
-  }
-
-
-  .truvora-empty-state h1 {
-
-    margin-top:
-      15px;
-
-    font-size:
-      22px;
-
-  }
-
-
-  .truvora-empty-state p {
-
-    font-size:
-      10px;
-
-  }
-
-
-  .empty-suggestions {
-
-    width:
-      min(400px, 100%);
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-  }
-
-
-  /* ---------------------------------------------
-     COMPOSER
-  --------------------------------------------- */
-
-  .truvora-composer-area {
-
-    padding:
-      0 7px 8px;
-
-  }
-
-
-  .truvora-composer {
-
-    padding:
-      7px;
-
-    border-radius:
-      13px;
-
-  }
-
-
-  .composer-toolbar {
-
-    gap:
-      6px;
-
-    padding:
-      0 1px 7px;
-
-  }
-
-
-  .composer-toolbar-left {
-
-    flex:
-      1;
-
-    min-width:
-      0;
-
-  }
-
-
-  .composer-toolbar-right {
-
-    gap:
-      3px;
-
-  }
-
-
-  .composer-icon-button {
-
-    width:
-      31px;
-
-    height:
-      31px;
-
-  }
-
-
-  .composer-mode-button {
-
-    width:
-      31px;
-
-    height:
-      31px;
-
-    padding:
-      0;
-
-  }
-
-
-  .composer-mode-button span {
-
-    display:
-      none;
-
-  }
-
-
-  .language-selector {
-
-    width:
-      95px;
-
-  }
-
-
-  .voice-selector {
-
-    width:
-      72px;
-
-    height:
-      31px;
-
-  }
-
-
-  .composer-attachment-status {
-
-    padding:
-      5px 3px;
-
-  }
-
-
-  .composer-attachment-status span {
-
-    max-width:
-      180px;
-
-  }
-
-
-  .composer-analysis-preview {
-
-    margin-bottom:
-      6px;
-
-  }
-
-
-  .truvora-input {
-
-    min-height:
-      56px;
-
-    max-height:
-      150px;
-
-    padding:
-      11px 50px 11px 10px;
-
-    font-size:
-      13px;
-
-  }
-
-
-  .composer-send-button {
-
-    right:
-      6px;
-
-    bottom:
-      6px;
-
-    width:
-      37px;
-
-    height:
-      37px;
-
-  }
-
-
-  .composer-disclaimer {
-
-    padding-top:
-      5px;
-
-    font-size:
-      7px;
-
-  }
-
-
-  /* ---------------------------------------------
-     ANALYZE MENU
-  --------------------------------------------- */
-
-  .analyze-menu {
-
-    left:
-      7px;
-
-    right:
-      7px;
-
-    bottom:
-      calc(100% - 2px);
-
-    width:
-      auto;
-
-    max-height:
-      55vh;
-
-  }
-
-
-  .analyze-menu > button {
-
-    min-height:
-      42px;
-
-  }
-
-
-  /* ---------------------------------------------
-     SOURCES
-  --------------------------------------------- */
-
-  .sources-list {
-
-    display:
-      flex;
-
-    flex-direction:
-      column;
-
-  }
-
-
-  .source-item {
-
-    width:
-      100%;
-
-    max-width:
-      none;
-
-    min-width:
-      0;
-
-  }
-
-
-  /* ---------------------------------------------
-     CAMERA
-  --------------------------------------------- */
-
-  .camera-overlay {
-
-    padding:
-      10px;
-
-  }
-
-
-  .camera-modal {
-
-    width:
-      100%;
-
-    border-radius:
-      13px;
-
-  }
-
-
-  .camera-video {
-
-    max-height:
-      55vh;
-
-  }
-
-
-  .camera-actions {
-
-    flex-direction:
-      column-reverse;
-
-  }
-
-
-  .camera-cancel-button,
-  .camera-capture-button {
-
-    width:
-      100%;
-
-  }
-
-
-  /* ---------------------------------------------
-     LOGIN
-  --------------------------------------------- */
-
-  .truvora-login-screen {
-
-    padding:
-      12px;
-
-  }
-
-
-  .truvora-login-card {
-
-    padding:
-      24px 17px;
-
-    border-radius:
-      16px;
-
-  }
-
-
-  /* ---------------------------------------------
-     CITATION
-  --------------------------------------------- */
-
-  .citation-preview-overlay {
-
-    align-items:
-      flex-end;
-
-    padding:
-      8px;
-
-  }
-
-
-  .citation-preview {
-
-    width:
-      100%;
-
-    border-radius:
-      14px;
-
-  }
-
-
-  /* ---------------------------------------------
-     GENERATION
-  --------------------------------------------- */
-
-  .truvora-generation-overlay {
-
-    padding:
-      12px;
-
-  }
-
-
-  .truvora-generation-card {
-
-    width:
-      100%;
-
+  .input-box > .voice-select {
+    flex: 0 0 140px !important;
   }
 
 }
 
 
 /* =========================================================
-   SMALL PHONES
+   SMALLER SCREENS
    ========================================================= */
 
-@media (
-  max-width: 420px
-) {
+@media (max-width: 900px) {
 
-  .mobile-brand strong {
-
-    font-size:
-      11px;
-
+  .input-box {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
   }
 
+  .input-box .left-buttons {
+    width: 100% !important;
 
-  .mobile-brand span {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
 
-    font-size:
-      5px;
+    flex: 0 0 100% !important;
 
+    padding-bottom: 3px !important;
   }
 
+  .input-box > .language-select {
+    width: calc(50% - 4px) !important;
+    min-width: 0 !important;
+    max-width: none !important;
 
-  .topbar-avatar {
-
-    width:
-      29px;
-
-    height:
-      29px;
-
+    flex: 1 1 calc(50% - 4px) !important;
   }
 
+  .input-box > .voice-select {
+    width: calc(50% - 4px) !important;
+    min-width: 0 !important;
+    max-width: none !important;
 
-  .truvora-chat-area {
-
-    padding-left:
-      7px;
-
-    padding-right:
-      7px;
-
-  }
-
-
-  .truvora-empty-state h1 {
-
-    font-size:
-      20px;
-
-  }
-
-
-  .empty-suggestions button {
-
-    min-height:
-      38px;
-
-    padding:
-      6px 8px;
-
-    font-size:
-      9px;
-
-  }
-
-
-  .composer-toolbar-left {
-
-    gap:
-      3px;
-
-  }
-
-
-  .composer-toolbar-right {
-
-    gap:
-      2px;
-
-  }
-
-
-  .language-selector {
-
-    width:
-      82px;
-
-  }
-
-
-  .voice-selector {
-
-    width:
-      63px;
-
-  }
-
-
-  .composer-icon-button,
-  .composer-mode-button {
-
-    width:
-      29px;
-
-    height:
-      29px;
-
-  }
-
-
-  .composer-input-container {
-
-    margin-top:
-      1px;
-
+    flex: 1 1 calc(50% - 4px) !important;
   }
 
 }
-
-
-/* =========================================================
-   TOUCH DEVICES
-   ========================================================= */
-
-@media (
-  hover: none
-) {
-
-  .composer-icon-button,
-  .composer-mode-button,
-  .message-action-btn,
-  .sidebar-chat-item,
-  .empty-suggestions button {
-
-    -webkit-tap-highlight-color:
-      transparent;
-
-  }
-
-
-  .composer-icon-button:active,
-  .composer-mode-button:active {
-
-    transform:
-      scale(0.96);
-
-  }
-
-}
-
-
-/* =========================================================
-   SAFE AREA — MOBILE DEVICES
-   ========================================================= */
-
-@supports (
-  padding-bottom:
-  env(safe-area-inset-bottom)
-) {
-
-  .truvora-composer-area {
-
-    padding-bottom:
-      calc(
-        8px +
-        env(
-          safe-area-inset-bottom
-        )
-      );
-
-  }
-
-
-  @media (
-    max-width: 760px
-  ) {
-
-    .truvora-topbar {
-
-      padding-top:
-        env(
-          safe-area-inset-top
-        );
-
-      height:
-        calc(
-          57px +
-          env(
-            safe-area-inset-top
-          )
-        );
-
-      min-height:
-        calc(
-          57px +
-          env(
-            safe-area-inset-top
-          )
-        );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITY
-   ========================================================= */
-
-@media (
-  prefers-reduced-motion: reduce
-) {
-
-  *,
-  *::before,
-  *::after {
-
-    scroll-behavior:
-      auto !important;
-
-    animation-duration:
-      0.01ms !important;
-
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      0.01ms !important;
-
-  }
-
-}
-
-
-/* =========================================================
-   END — TRUVORA APP.CSS
->>>>>>> origin/main
-   ========================================================= */
