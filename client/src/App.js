@@ -1406,11 +1406,12 @@ setShowCamera(true);
         <button
   className="new-chat"
   onClick={() => {
-    setMessages([]);
-    setInput("");
-    setPdfText("");
-    setImage(null);
-  }}
+  setMessages([]);
+  setInput("");
+  setPdfText("");
+  setImage(null);
+  localStorage.removeItem("current-chat");
+}}
 >
   <FiPlus />
   New Chat
