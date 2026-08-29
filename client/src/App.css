@@ -1704,18 +1704,20 @@ textarea::placeholder{
   */
 
   .sidebar[style*="260px"]{
-    width:min(280px,86vw) !important;
-    min-width:min(280px,86vw) !important;
+  width:min(280px, 86vw) !important;
+  min-width:min(280px, 86vw) !important;
 
-    padding:
-      20px
-      14px !important;
+  padding:20px 14px !important;
 
-    visibility:visible;
-    opacity:1;
+  visibility:visible !important;
+  opacity:1 !important;
 
-    transform:translateX(0);
-  }
+  transform:translateX(0) !important;
+
+  overflow:hidden !important;
+
+  pointer-events:auto !important;
+}
 
   .sidebar[style*="260px"] .chat-list{
     min-height:0;
@@ -2595,3 +2597,4 @@ select:focus-visible{
 /* =========================================================
    END — TRUVORA RESPONSIVE UI
    ========================================================= */
+   
