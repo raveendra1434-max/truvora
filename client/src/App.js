@@ -399,15 +399,15 @@ setChatHistory(
 /* SPEAK */
 const speakText = async (text) => {
   try {
-    const response = await fetch("https://truvora-api.onrender.com/tts", {
+    const response = await fetch("http://localhost:5000/tts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-  text,
-  voice: selectedVoice,
-}),
+        text,
+        voice: selectedVoice,
+      }),
     });
 
     if (!response.ok) {
@@ -417,7 +417,18 @@ const speakText = async (text) => {
     const data = await response.json();
 
     const audio = new Audio(data.audioUrl);
-    audio.play();
+
+    audio.preload = "auto";
+    audio.playsInline = true;
+
+    audio.oncanplaythrough = async () => {
+      try {
+        await audio.play();
+      } catch (error) {
+        console.error("Mobile audio playback blocked:", error);
+        alert("Please tap the speaker button again to play the voice.");
+      }
+    };
 
   } catch (error) {
     console.error("TTS Error:", error);
@@ -928,11 +939,16 @@ console.log(data.sources);
 console.log(data.sources);
 
 
-let currentText = "";
+let currentText =
+  data.reply ||
+  data.answer ||
+  data.response ||
+  data.message ||
+  "";
 
-    for (
-      let char of data.reply
-    ) {
+for (
+  let char of currentText
+) {
 
       if (
         stopGeneration
