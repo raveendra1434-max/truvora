@@ -2986,3 +2986,70 @@ video{
   }
 
 }
+/* =========================================================
+   TRUVORA — FINAL MOBILE SIDEBAR
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+
+    width: 280px !important;
+    min-width: 280px !important;
+    height: 100dvh !important;
+
+    z-index: 10000 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    box-sizing: border-box !important;
+
+    transform: translateX(-105%) !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    transition:
+      transform .25s ease,
+      opacity .2s ease,
+      visibility .25s ease !important;
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .sidebar.sidebar-closed {
+    transform: translateX(-105%) !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .main {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .topbar {
+    position: relative !important;
+    z-index: 10001 !important;
+  }
+
+  .menu-btn {
+    position: relative !important;
+    z-index: 10002 !important;
+    pointer-events: auto !important;
+  }
+}

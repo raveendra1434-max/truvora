@@ -1381,14 +1381,9 @@ setShowCamera(true);
     <div className="app">
 
       <div
-  className="sidebar"
-  style={{
-    width: sidebarOpen ? "260px" : "0",
-    minWidth: sidebarOpen ? "260px" : "0",
-    padding: sidebarOpen ? "20px" : "0",
-    overflow: "hidden",
-    transition: "all .3s ease"
-  }}
+  className={`sidebar ${
+    sidebarOpen ? "sidebar-open" : "sidebar-closed"
+  }`}
 >
 
         <div className="logo">
