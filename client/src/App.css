@@ -3053,3 +3053,24 @@ video{
     pointer-events: auto !important;
   }
 }
+/* =========================================================
+   MOBILE SIDEBAR — NEW CHAT POSITION
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .sidebar .new-chat {
+    margin-top: 22px !important;
+    margin-bottom: 12px !important;
+
+    min-height: 46px !important;
+
+    flex-shrink: 0 !important;
+  }
+
+  .sidebar .logo {
+    flex-shrink: 0 !important;
+    margin-bottom: 4px !important;
+  }
+
+}
