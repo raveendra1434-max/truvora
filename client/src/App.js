@@ -131,7 +131,7 @@ const [loginError, setLoginError] = useState("");
     useState([]);
     const [sidebarOpen,
   setSidebarOpen] =
-  useState(true);
+  useState(false);
 const [chats,
   setChats] =
   useState([]);
