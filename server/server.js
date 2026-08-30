@@ -5121,7 +5121,3 @@ app.listen(
 
   }
 );
-
-app.listen(PORT, () => {
-  console.log(`✅ Truvora server running on port ${PORT}`);
-});
