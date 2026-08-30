@@ -3626,6 +3626,227 @@ ${safeWebsiteText}
 
   }
 );
+/* =====================================================
+   GENERATE DOCUMENT
+===================================================== */
+
+app.post("/generate-document", async (req, res) => {
+  try {
+    const {
+      type,
+      summary,
+      analysis,
+      recommendations,
+      sources,
+      title,
+      content,
+    } = req.body;
+
+    const requestedType = String(type || "")
+      .toLowerCase()
+      .replace(/^\./, "");
+
+    const documentContent = String(
+      content || summary || analysis || ""
+    ).trim();
+
+    if (!requestedType) {
+      return res.status(400).json({
+        success: false,
+        error: "Document type is required",
+      });
+    }
+
+    if (!documentContent) {
+      return res.status(400).json({
+        success: false,
+        error: "Document content is empty",
+      });
+    }
+
+    const supportedTypes = [
+      "pdf",
+      "docx",
+      "xlsx",
+      "csv",
+      "pptx",
+      "html",
+      "md",
+      "txt",
+      "json",
+      "xml",
+      "rtf",
+    ];
+
+    if (!supportedTypes.includes(requestedType)) {
+      return res.status(400).json({
+        success: false,
+        error: `Unsupported document type: ${requestedType}`,
+      });
+    }
+
+    const safeTitle = String(
+      title || "Truvora Document"
+    ).trim();
+
+    const reportId = `truvora-${Date.now()}`;
+
+    const extension =
+      requestedType === "markdown"
+        ? "md"
+        : requestedType;
+
+    const filename = `${reportId}.${extension}`;
+
+    const outputPath = path.join(
+      uploadsPath,
+      filename
+    );
+
+    console.log("==========================================");
+    console.log("📄 GENERATING:", requestedType, safeTitle);
+    console.log("📁 OUTPUT:", outputPath);
+
+    const commonData = {
+      outputPath,
+      reportId,
+      title: safeTitle,
+      summary: documentContent,
+      analysis: analysis || documentContent,
+      recommendations: recommendations || "",
+      sources: Array.isArray(sources) ? sources : [],
+    };
+
+    let generatedFile = outputPath;
+
+    if (requestedType === "pdf") {
+      generatedFile = await generatePDF(commonData);
+    }
+
+    else if (requestedType === "docx") {
+      generatedFile = await generateDOCX(commonData);
+    }
+
+    else if (requestedType === "xlsx") {
+      generatedFile = await generateXLSX(commonData);
+    }
+
+    else if (requestedType === "pptx") {
+      generatedFile = await generatePPTX(commonData);
+    }
+
+    else if (requestedType === "csv") {
+      generatedFile = await generateCSV(commonData);
+    }
+
+    else if (requestedType === "html") {
+      generatedFile = await generateHTML(commonData);
+    }
+
+    else if (
+      requestedType === "md" ||
+      requestedType === "markdown"
+    ) {
+      generatedFile = await generateMarkdown(commonData);
+    }
+
+    else if (requestedType === "txt") {
+      generatedFile = await generateTXT(commonData);
+    }
+
+    else if (requestedType === "json") {
+      const data = await generateJSON(commonData);
+
+      if (data !== undefined) {
+        fs.writeFileSync(
+          outputPath,
+          typeof data === "string"
+            ? data
+            : JSON.stringify(data, null, 2),
+          "utf8"
+        );
+      }
+    }
+
+    else if (requestedType === "xml") {
+      const data = await generateXML(commonData);
+
+      if (data !== undefined) {
+        fs.writeFileSync(
+          outputPath,
+          String(data),
+          "utf8"
+        );
+      }
+    }
+
+    else if (requestedType === "rtf") {
+      const data = await generateRTF(commonData);
+
+      if (data !== undefined) {
+        fs.writeFileSync(
+          outputPath,
+          String(data),
+          "utf8"
+        );
+      }
+    }
+
+    const finalPath = fs.existsSync(outputPath)
+      ? outputPath
+      : (
+          typeof generatedFile === "string" &&
+          fs.existsSync(generatedFile)
+            ? generatedFile
+            : null
+        );
+
+    if (!finalPath) {
+      throw new Error(
+        "Document generator did not create a file."
+      );
+    }
+
+    const finalFilename = path.basename(finalPath);
+
+    const documentUrl = getUploadUrl(
+      req,
+      finalFilename
+    );
+
+    console.log(
+      "✅ DOCUMENT CREATED:",
+      finalPath
+    );
+
+    console.log(
+      "🔗 DOWNLOAD:",
+      documentUrl
+    );
+
+    return res.json({
+      success: true,
+      type: requestedType,
+      filename: finalFilename,
+      document: documentUrl,
+      url: documentUrl,
+      downloadUrl: documentUrl,
+    });
+
+  } catch (error) {
+    console.error(
+      "❌ DOCUMENT GENERATION ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      error:
+        error?.message ||
+        "Document generation failed",
+    });
+  }
+});
 // ============================================================
 // TRUVORA TEXT TO SPEECH
 // ============================================================
