@@ -1,5 +1,5 @@
-﻿/*
- * TRUVORA GLOBAL AI — CLEAN APP.JS
+/*
+ * TRUVORA GLOBAL AI � CLEAN APP.JS
  * Preserves the existing Truvora frontend/backend contract.
  * Web search and agent capability are enabled automatically;
  * the backend decides when they are actually needed.
@@ -217,7 +217,7 @@ function App() {
 
     {
       id: "personal",
-      name: "🎤 Add Personal Voice"
+      name: "?? Add Personal Voice"
     },
 
   ];
@@ -839,7 +839,7 @@ function App() {
 
         const response =
   await fetch(
-    "http://localhost:5000/generate-speech",
+    "https://truvora-api-new.onrender.com/generate-speech",
     {
               method: "POST",
 
@@ -1048,7 +1048,7 @@ function App() {
         const userImageMessage = {
           role: "user",
           text:
-            "📷 Captured Image",
+            "?? Captured Image",
           content:
             imageData,
         };
@@ -1056,7 +1056,7 @@ function App() {
 
         const response =
           await fetch(
-            "http://localhost:5000/analyze-image",
+            "https://truvora-api-new.onrender.com/analyze-image",
             {
               method: "POST",
 
@@ -1176,13 +1176,13 @@ function App() {
               minPrice ===
               maxPrice
 
-                ? `₹${minPrice.toLocaleString(
+                ? `?${minPrice.toLocaleString(
                     "en-IN"
                   )}`
 
-                : `₹${minPrice.toLocaleString(
+                : `?${minPrice.toLocaleString(
                     "en-IN"
-                  )} – ₹${maxPrice.toLocaleString(
+                  )} � ?${maxPrice.toLocaleString(
                     "en-IN"
                   )}`;
 
@@ -1208,27 +1208,27 @@ function App() {
 
 
           answer = `
-📦 What I found
+?? What I found
 
 ${productName}
 
-🔎 Identification
+?? Identification
 
 ${identification}
 
-🎯 Confidence
+?? Confidence
 
 ${confidence}
 
-💰 Current Market Price
+?? Current Market Price
 
 ${priceRange || "Price unavailable"}
 
-⚠️ Price Note
+?? Price Note
 
 The exact model was not necessarily identified. The range below is based on matching products found in live shopping results.
 
-🛒 Matching Products
+?? Matching Products
 
 ${results
   .map(
@@ -1240,11 +1240,11 @@ ${results
         item.title ||
         "Product"
       }
-💵 ${
+?? ${
         item.price ||
         "Price unavailable"
       }
-🏪 ${
+?? ${
         item.source ||
         "Seller unavailable"
       }`
@@ -1348,7 +1348,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/analyze-document",
+            "https://truvora-api-new.onrender.com/analyze-document",
             {
               method: "POST",
               body: formData,
@@ -1387,7 +1387,7 @@ ${results
             {
               role: "user",
               text:
-                `📄 Uploaded: ${file.name}`,
+                `?? Uploaded: ${file.name}`,
             },
 
             {
@@ -1504,7 +1504,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/upload-video",
+            "https://truvora-api-new.onrender.com/upload-video",
             {
               method: "POST",
               body: formData,
@@ -1605,7 +1605,7 @@ ${results
 
           const response =
             await fetch(
-              "http://localhost:5000/analyze-youtube",
+              "https://truvora-api-new.onrender.com/analyze-youtube",
               {
                 method: "POST",
 
@@ -1709,7 +1709,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/analyze-website",
+            "https://truvora-api-new.onrender.com/analyze-website",
             {
               method: "POST",
 
@@ -1755,7 +1755,7 @@ ${results
                 "user",
 
               text:
-                `🌐 Website: ${websiteUrlValue}`,
+                `?? Website: ${websiteUrlValue}`,
             },
 
             {
@@ -1816,7 +1816,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/upload-audio",
+            "https://truvora-api-new.onrender.com/upload-audio",
             {
               method: "POST",
               body: formData,
@@ -1959,7 +1959,7 @@ ${results
 
               const response =
                 await fetch(
-                  "http://localhost:5000/analyze-document",
+                  "https://truvora-api-new.onrender.com/analyze-document",
                   {
                     method:
                       "POST",
@@ -1993,7 +1993,7 @@ ${results
                         "user",
 
                       text:
-                        `📊 Uploaded: ${file.name}`,
+                        `?? Uploaded: ${file.name}`,
                     },
 
                     {
@@ -2029,7 +2029,7 @@ ${results
 
             const imageResponse =
               await fetch(
-                "http://localhost:5000/upload-image",
+                "https://truvora-api-new.onrender.com/upload-image",
                 {
                   method:
                     "POST",
@@ -2100,7 +2100,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/api/login",
+            "https://truvora-api-new.onrender.com/api/login",
             {
               method: "POST",
 
@@ -2219,11 +2219,11 @@ ${results
         text:
           conversationImageUrl
 
-            ? `🖼️ Image Uploaded\n\n${finalPrompt}`
+            ? `??? Image Uploaded\n\n${finalPrompt}`
 
             : pdfText
 
-              ? `📄 PDF Uploaded\n\n${finalPrompt}`
+              ? `?? PDF Uploaded\n\n${finalPrompt}`
 
               : finalPrompt,
 
@@ -2292,7 +2292,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/ask",
+            "https://truvora-api-new.onrender.com/ask",
             {
 
               method:
@@ -2524,12 +2524,12 @@ const handleGenerateDocument =
     )
 
       .replace(
-        /^☑\s*Quick Answer\s*/i,
+        /^?\s*Quick Answer\s*/i,
         ""
       )
 
       .replace(
-        /^✅\s*Quick Answer\s*/i,
+        /^?\s*Quick Answer\s*/i,
         ""
       )
 
@@ -2539,13 +2539,13 @@ const handleGenerateDocument =
     try {
 
       const recommendations = `
-• Verify important information using official sources.
+� Verify important information using official sources.
 
-• Review AI-generated content before making important decisions.
+� Review AI-generated content before making important decisions.
 
-• Cross-check facts from multiple trusted sources.
+� Cross-check facts from multiple trusted sources.
 
-• Continue monitoring this topic because information may change.
+� Continue monitoring this topic because information may change.
       `;
 
 
@@ -2562,7 +2562,7 @@ const handleGenerateDocument =
 
       const response =
         await fetch(
-          "http://localhost:5000/generate-document",
+          "https://truvora-api-new.onrender.com/generate-document",
           {
             method: "POST",
 
@@ -2718,7 +2718,7 @@ const handleGenerateDocument =
           }}
         >
 
-          🔵 Continue with Google
+          ?? Continue with Google
 
         </button>
 
@@ -2752,7 +2752,7 @@ const handleGenerateDocument =
           >
 
             <h2>
-              🔍 Analyze Anything
+              ?? Analyze Anything
             </h2>
 
 
@@ -2762,7 +2762,7 @@ const handleGenerateDocument =
                 documentUploadRef.current?.click()
               }
             >
-              📄 Document
+              ?? Document
             </button>
 
 
@@ -2772,7 +2772,7 @@ const handleGenerateDocument =
                 imageUploadRef.current?.click()
               }
             >
-              🖼 Image
+              ?? Image
             </button>
 
 
@@ -2789,7 +2789,7 @@ const handleGenerateDocument =
 
               }}
             >
-              📷 Live Camera
+              ?? Live Camera
             </button>
 
 
@@ -2802,7 +2802,7 @@ const handleGenerateDocument =
                   ?.click()
               }
             >
-              🎥 Video
+              ?? Video
             </button>
 
 
@@ -2815,7 +2815,7 @@ const handleGenerateDocument =
                   ?.click()
               }
             >
-              🎙 Audio
+              ?? Audio
             </button>
 
 
@@ -2832,7 +2832,7 @@ const handleGenerateDocument =
 
               }}
             >
-              ▶️ YouTube
+              ?? YouTube
             </button>
 
 
@@ -2849,7 +2849,7 @@ const handleGenerateDocument =
 
               }}
             >
-              🌐 Website
+              ?? Website
             </button>
 
 
@@ -2860,7 +2860,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              ❌ Cancel
+              ? Cancel
             </button>
 
 
@@ -2999,7 +2999,7 @@ const handleGenerateDocument =
 
                     const response =
                       await fetch(
-                        "http://localhost:5000/upload-image",
+                        "https://truvora-api-new.onrender.com/upload-image",
                         {
                           method:
                             "POST",
@@ -3041,7 +3041,7 @@ const handleGenerateDocument =
                             "user",
 
                           text:
-                            `🖼️ Image Uploaded: ${file.name}`,
+                            `??? Image Uploaded: ${file.name}`,
 
                           image:
                             data.imageUrl,
@@ -3143,7 +3143,7 @@ const handleGenerateDocument =
           >
 
             <h2>
-              🎥 YouTube
+              ?? YouTube
             </h2>
 
 
@@ -3169,7 +3169,7 @@ const handleGenerateDocument =
             <input
               type="text"
 
-              placeholder="🔍 Search YouTube videos..."
+              placeholder="?? Search YouTube videos..."
 
               value={
                 youtubeQuery
@@ -3237,7 +3237,7 @@ const handleGenerateDocument =
                 }
               }
             >
-              🚀 Search YouTube
+              ?? Search YouTube
             </button>
 
 
@@ -3265,7 +3265,7 @@ const handleGenerateDocument =
               >
 
                 <h3>
-                  📺 Search Preview
+                  ?? Search Preview
                 </h3>
 
 
@@ -3295,7 +3295,7 @@ const handleGenerateDocument =
                     )
                   }
                 >
-                  ▶ Open YouTube
+                  ? Open YouTube
                 </button>
 
               </div>
@@ -3310,7 +3310,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              ❌ Cancel
+              ? Cancel
             </button>
 
           </div>
@@ -3335,7 +3335,7 @@ const handleGenerateDocument =
           >
 
             <h2>
-              🌐 Website
+              ?? Website
             </h2>
 
 
@@ -3412,7 +3412,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              🌐 Analyze Website
+              ?? Analyze Website
             </button>
 
 
@@ -3429,7 +3429,7 @@ const handleGenerateDocument =
 
               }}
             >
-              ❌ Cancel
+              ? Cancel
             </button>
 
           </div>
@@ -3761,7 +3761,7 @@ const handleGenerateDocument =
 
               >
 
-                📸 Capture
+                ?? Capture
 
               </button>
 
@@ -3968,7 +3968,7 @@ const handleGenerateDocument =
 
                                     ? msg.content
 
-                                    : `http://localhost:5000${msg.content}`
+                                    : `https://truvora-api-new.onrender.com${msg.content}`
 
                               )
 
@@ -3980,7 +3980,7 @@ const handleGenerateDocument =
 
                                   ? msg.image
 
-                                  : `http://localhost:5000${msg.image}`
+                                  : `https://truvora-api-new.onrender.com${msg.image}`
 
                               )
 
@@ -4041,7 +4041,7 @@ const handleGenerateDocument =
 
                                         ? msg.image
 
-                                        : `http://localhost:5000${msg.image}`;
+                                        : `https://truvora-api-new.onrender.com${msg.image}`;
 
 
                                     const response =
@@ -4104,7 +4104,7 @@ const handleGenerateDocument =
 
                             >
 
-                              ⬇ Download Image
+                              ? Download Image
 
                             </button>
 
@@ -4147,7 +4147,7 @@ const handleGenerateDocument =
                             }
 
                           >
-                            📄 PDF
+                            ?? PDF
                           </button>
 
 
@@ -4165,7 +4165,7 @@ const handleGenerateDocument =
                             }
 
                           >
-                            📝 DOCX
+                            ?? DOCX
                           </button>
 
 
@@ -4183,7 +4183,7 @@ const handleGenerateDocument =
                             }
 
                           >
-                            📊 XLSX
+                            ?? XLSX
                           </button>
 
 
@@ -4201,7 +4201,7 @@ const handleGenerateDocument =
                             }
 
                           >
-                            📽 PPTX
+                            ?? PPTX
                           </button>
 
 
@@ -4219,7 +4219,7 @@ const handleGenerateDocument =
                             }
 
                           >
-                            📝 MD
+                            ?? MD
                           </button>
 
                         </div>
@@ -4238,7 +4238,7 @@ const handleGenerateDocument =
 
                             <a
 
-                              href={`http://localhost:5000${msg.document}`}
+                              href={`https://truvora-api-new.onrender.com${msg.document}`}
 
                               target="_blank"
 
@@ -4250,7 +4250,7 @@ const handleGenerateDocument =
 
                             >
 
-                              ⬇ Download Generated File
+                              ? Download Generated File
 
                             </a>
 
@@ -4354,7 +4354,7 @@ const handleGenerateDocument =
 
                               }}
                             >
-                              🔗
+                              ??
                             </div>
 
 
@@ -4740,7 +4740,7 @@ const handleGenerateDocument =
                                     }}
                                   >
 
-                                    ↗
+                                    ?
 
                                   </div>
 
@@ -4775,7 +4775,7 @@ const handleGenerateDocument =
                             }}
                           >
 
-                            ↓ Scroll for more sources
+                            ? Scroll for more sources
 
                           </div>
 
@@ -4819,7 +4819,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📕 PDF
+                      ?? PDF
                     </button>
 
 
@@ -4837,7 +4837,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📝 DOCX
+                      ?? DOCX
                     </button>
 
 
@@ -4855,7 +4855,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📊 XLSX
+                      ?? XLSX
                     </button>
 
 
@@ -4873,7 +4873,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📽 PPTX
+                      ?? PPTX
                     </button>
 
 
@@ -4891,7 +4891,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      🌐 HTML
+                      ?? HTML
                     </button>
 
 
@@ -4909,7 +4909,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📝 MD
+                      ?? MD
                     </button>
 
 
@@ -4927,7 +4927,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📄 TXT
+                      ?? TXT
                     </button>
 
 
@@ -4945,7 +4945,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📄 JSON
+                      ?? JSON
                     </button>
 
 
@@ -4963,7 +4963,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📄 XML
+                      ?? XML
                     </button>
 
 
@@ -4981,7 +4981,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📄 RTF
+                      ?? RTF
                     </button>
 
 
@@ -5047,7 +5047,7 @@ const handleGenerateDocument =
                       }}
 
                     >
-                      📤
+                      ??
                     </button>
 
 
@@ -5064,7 +5064,7 @@ const handleGenerateDocument =
                       }
 
                     >
-                      💾
+                      ??
                     </button>
 
 
@@ -5156,7 +5156,7 @@ const handleGenerateDocument =
 
                   >
 
-                    🔍
+                    ??
 
                   </button>
 
@@ -5210,8 +5210,8 @@ const handleGenerateDocument =
 
                   {
                     voiceEnabled
-                      ? "🔊"
-                      : "🔇"
+                      ? "??"
+                      : "??"
                   }
 
                 </button>
@@ -5267,7 +5267,7 @@ const handleGenerateDocument =
 
                 }}
 
-                placeholder="🌍 Select Language"
+                placeholder="?? Select Language"
 
                 isSearchable
 
@@ -5341,7 +5341,7 @@ const handleGenerateDocument =
 
                 }}
 
-                placeholder="🎙️ Select Voice"
+                placeholder="??? Select Voice"
 
                 isSearchable={
                   false
@@ -5365,7 +5365,7 @@ const handleGenerateDocument =
                   >
 
                     <h2>
-                      🎙️ Personal Voice
+                      ??? Personal Voice
                     </h2>
 
 
@@ -5461,7 +5461,7 @@ const handleGenerateDocument =
 
                                 const response =
                                   await fetch(
-                                    "http://localhost:5000/upload-personal-voice",
+                                    "https://truvora-api-new.onrender.com/upload-personal-voice",
                                     {
                                       method:
                                         "POST",
@@ -5540,7 +5540,7 @@ const handleGenerateDocument =
 
                       >
 
-                        🎙️ Record Voice
+                        ??? Record Voice
 
                       </button>
 
