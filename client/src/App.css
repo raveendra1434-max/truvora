@@ -2987,13 +2987,15 @@ video{
 
 }
 /* =========================================================
-   TRUVORA — FINAL MOBILE SIDEBAR
+   TRUVORA — MOBILE SIDEBAR RESTORE
+   CSS ONLY — DO NOT TOUCH APP.JS / SERVER.JS
    ========================================================= */
 
 @media (max-width: 900px) {
 
   .sidebar {
     position: fixed !important;
+
     top: 0 !important;
     left: 0 !important;
     bottom: 0 !important;
@@ -3002,75 +3004,147 @@ video{
     min-width: 280px !important;
     height: 100dvh !important;
 
-    z-index: 10000 !important;
-
     display: flex !important;
     flex-direction: column !important;
 
-    box-sizing: border-box !important;
+    z-index: 9999 !important;
 
     transform: translateX(-105%) !important;
-    visibility: hidden !important;
+
     opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
 
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-
     transition:
-      transform .25s ease,
-      opacity .2s ease,
-      visibility .25s ease !important;
+      transform 0.25s ease,
+      opacity 0.2s ease,
+      visibility 0.25s ease !important;
   }
 
+  /* OPEN */
   .sidebar.sidebar-open {
+    display: flex !important;
+
     transform: translateX(0) !important;
-    visibility: visible !important;
+
     opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: auto !important;
   }
 
+  /* CLOSED */
   .sidebar.sidebar-closed {
     transform: translateX(-105%) !important;
-    visibility: hidden !important;
+
     opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
   }
 
+  /* Keep main chat visible */
   .main {
     width: 100% !important;
     min-width: 0 !important;
+    height: 100dvh !important;
   }
 
-  .topbar {
-    position: relative !important;
-    z-index: 10001 !important;
-  }
-
+  /* Menu button must remain above the chat */
   .menu-btn {
+    display: flex !important;
     position: relative !important;
-    z-index: 10002 !important;
+    z-index: 10000 !important;
+
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    cursor: pointer !important;
+    pointer-events: auto !important;
+  }
+
+  /* New Chat remains usable */
+  .sidebar .new-chat {
+    display: block !important;
+    width: 100% !important;
     pointer-events: auto !important;
   }
 }
 /* =========================================================
-   MOBILE SIDEBAR — NEW CHAT POSITION
+   TRUVORA — DESKTOP SIDEBAR TOGGLE
+   CSS ONLY
    ========================================================= */
 
-@media (max-width: 900px) {
+@media (min-width: 901px) {
 
-  .sidebar .new-chat {
-    margin-top: 22px !important;
-    margin-bottom: 12px !important;
+  .sidebar {
+    position: relative !important;
 
-    min-height: 46px !important;
+    flex: 0 0 260px !important;
+    width: 260px !important;
+    min-width: 260px !important;
 
-    flex-shrink: 0 !important;
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+
+    transition:
+      width 0.25s ease,
+      min-width 0.25s ease,
+      transform 0.25s ease,
+      opacity 0.2s ease !important;
   }
 
-  .sidebar .logo {
-    flex-shrink: 0 !important;
-    margin-bottom: 4px !important;
+  /* DESKTOP CLOSED */
+  .sidebar.sidebar-closed {
+    width: 0 !important;
+    min-width: 0 !important;
+    flex-basis: 0 !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-right: none !important;
+
+    transform: translateX(-100%) !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+
+    overflow: hidden !important;
   }
 
+  /* DESKTOP OPEN */
+  .sidebar.sidebar-open {
+    width: 260px !important;
+    min-width: 260px !important;
+    flex-basis: 260px !important;
+
+    transform: translateX(0) !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .main {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .menu-btn {
+    display: flex !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    cursor: pointer !important;
+    pointer-events: auto !important;
+  }
 }
