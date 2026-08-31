@@ -3148,3 +3148,202 @@ video{
     pointer-events: auto !important;
   }
 }
+/* =========================================================
+   COPY / SAVE BUTTONS
+   ========================================================= */
+
+.copy-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:70px;
+  height:36px;
+  padding:0 12px;
+  margin-left:8px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:9px;
+  background:rgba(255,255,255,.04);
+  color:#dbe7f5;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.copy-btn:hover{
+  background:rgba(21,101,192,.2);
+  border-color:rgba(41,182,246,.3);
+  color:#fff;
+}
+
+
+/* VOICE ON/OFF BUTTON */
+.voice-toggle-btn{
+  min-width:78px !important;
+  width:auto !important;
+  padding:0 10px !important;
+  white-space:nowrap !important;
+  font-size:13px !important;
+}
+
+
+/* =========================================================
+   TRUVORA LAUNCH UI - TOOLBAR / ACTIONS
+   ========================================================= */
+
+/* AI answer action area */
+.message-actions{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:center !important;
+  gap:8px !important;
+  width:100% !important;
+  margin-top:12px !important;
+}
+
+/* Document / AI action buttons */
+.message-actions .copy-btn{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:auto !important;
+  min-width:76px !important;
+  height:38px !important;
+  min-height:38px !important;
+  padding:0 12px !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+  flex:0 0 auto !important;
+}
+
+/* Analyze / Agent menu */
+.analyze-menu{
+  overflow-y:auto !important;
+  max-height:80vh !important;
+}
+
+/* Analyze menu buttons */
+.analyze-menu button{
+  width:100% !important;
+  min-height:46px !important;
+  font-size:15px !important;
+  cursor:pointer !important;
+}
+
+/* Voice toggle */
+.voice-toggle-btn{
+  width:auto !important;
+  min-width:88px !important;
+  max-width:none !important;
+  height:38px !important;
+  padding:0 10px !important;
+  white-space:nowrap !important;
+  flex-shrink:0 !important;
+}
+
+/* =========================================================
+   MOBILE COMPOSER
+   ========================================================= */
+
+@media (max-width:600px){
+
+  .input-box{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    gap:6px !important;
+    padding:8px !important;
+  }
+
+  .left-buttons{
+    display:flex !important;
+    align-items:center !important;
+    gap:5px !important;
+    flex:1 1 auto !important;
+    min-width:0 !important;
+    overflow-x:auto !important;
+    scrollbar-width:none !important;
+  }
+
+  .left-buttons::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .left-buttons .icon-btn{
+    flex:0 0 auto !important;
+  }
+
+  .voice-toggle-btn{
+    min-width:82px !important;
+    font-size:12px !important;
+  }
+
+  .language-select,
+  .voice-select{
+    flex:0 1 120px !important;
+    min-width:95px !important;
+    max-width:130px !important;
+  }
+
+  .main-input{
+    width:100% !important;
+    flex:1 1 100% !important;
+    min-height:58px !important;
+  }
+
+  /* AI answer buttons become a clean grid */
+  .message-actions{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:7px !important;
+  }
+
+  .message-actions .copy-btn{
+    width:100% !important;
+    min-width:0 !important;
+    padding:0 6px !important;
+    font-size:12px !important;
+  }
+
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width:380px){
+
+  .message-actions{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .message-actions .copy-btn{
+    font-size:12px !important;
+  }
+
+  .voice-toggle-btn{
+    min-width:76px !important;
+    font-size:11px !important;
+  }
+
+  .language-select,
+  .voice-select{
+    max-width:105px !important;
+  }
+
+}
+
+/* =========================================================
+   DESKTOP ANSWER ACTIONS
+   ========================================================= */
+
+@media (min-width:601px){
+
+  .message-actions{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:8px !important;
+  }
+
+}
+

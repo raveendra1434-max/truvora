@@ -1,4 +1,4 @@
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI, { toFile } from "openai";
@@ -333,7 +333,7 @@ async function askTruvoraAgent(
   ) {
 
     console.log(
-      "🔵 AI ROUTER: OPENAI"
+      "ðŸ”µ AI ROUTER: OPENAI"
     );
 
 
@@ -404,7 +404,7 @@ Return only the document content.
   try {
 
     console.log(
-      "🟢 AI ROUTER: GEMINI"
+      "ðŸŸ¢ AI ROUTER: GEMINI"
     );
 
 
@@ -459,13 +459,13 @@ ${prompt}
   ) {
 
     console.error(
-      "⚠️ GEMINI FAILED:",
+      "âš ï¸ GEMINI FAILED:",
       error.message
     );
 
 
     console.log(
-      "🔵 AI ROUTER: OPENAI FALLBACK"
+      "ðŸ”µ AI ROUTER: OPENAI FALLBACK"
     );
 
 
@@ -563,7 +563,7 @@ app.post(
 
 
       console.log(
-        "🖼️ IMAGE UPLOADED:",
+        "ðŸ–¼ï¸ IMAGE UPLOADED:",
         imageUrl
       );
 
@@ -622,10 +622,13 @@ app.post(
 
       const {
         image,
+        imageUrl,
       } = req.body;
+      const analysisImage =
+        image || imageUrl;
 
 
-      if (!image) {
+      if (!analysisImage) {
 
         return res
           .status(400)
@@ -643,7 +646,7 @@ app.post(
 
 
       console.log(
-        "📷 CAMERA IMAGE RECEIVED"
+        "ðŸ“· CAMERA IMAGE RECEIVED"
       );
 
 
@@ -838,7 +841,7 @@ IMPORTANT RULES:
                   image_url: {
 
                     url:
-                      image,
+                    analysisImage,
 
                   },
 
@@ -862,7 +865,7 @@ IMPORTANT RULES:
 
 
       console.log(
-        "🤖 CAMERA AI RAW RESULT:"
+        "ðŸ¤– CAMERA AI RAW RESULT:"
       );
 
       console.log(
@@ -910,7 +913,7 @@ IMPORTANT RULES:
       ) {
 
         console.error(
-          "❌ CAMERA JSON PARSE ERROR:",
+          "âŒ CAMERA JSON PARSE ERROR:",
           parseError
         );
 
@@ -952,15 +955,15 @@ IMPORTANT RULES:
             "",
 
           answer: `
-❓ Question
+â“ Question
 
 ${vision.questionText || "Question detected in image."}
 
-✅ Answer
+âœ… Answer
 
 ${vision.answer || "I could not determine the answer reliably."}
 
-🎯 Confidence
+ðŸŽ¯ Confidence
 
 ${vision.confidence || "MEDIUM"}
           `.trim(),
@@ -980,7 +983,7 @@ ${vision.confidence || "MEDIUM"}
       ) {
 
         console.log(
-          "📦 PRODUCT DETECTED:",
+          "ðŸ“¦ PRODUCT DETECTED:",
           vision.productName
         );
 
@@ -996,7 +999,7 @@ ${vision.confidence || "MEDIUM"}
           ) {
 
             console.log(
-              "🔎 SEARCHING LIVE PRODUCT PRICES"
+              "ðŸ”Ž SEARCHING LIVE PRODUCT PRICES"
             );
 
 
@@ -1116,7 +1119,7 @@ ${vision.confidence || "MEDIUM"}
         ) {
 
           console.error(
-            "⚠️ PRICE SEARCH FAILED:",
+            "âš ï¸ PRICE SEARCH FAILED:",
             priceError
               .response
               ?.data ||
@@ -1152,7 +1155,7 @@ ${vision.confidence || "MEDIUM"}
 
             priceText =
               `Live prices found: ${prices.join(
-                " • "
+                " â€¢ "
               )}`;
 
           }
@@ -1191,7 +1194,7 @@ ${vision.confidence || "MEDIUM"}
           shoppingResults,
 
           answer: `
-📦 What I found
+ðŸ“¦ What I found
 
 ${
   vision.productName ||
@@ -1199,25 +1202,25 @@ ${
   "Unknown product"
 }
 
-🔎 Identification
+ðŸ”Ž Identification
 
 ${
   vision.identification ||
   "The exact product could not be determined."
 }
 
-💰 Current Price
+ðŸ’° Current Price
 
 ${priceText}
 
-🎯 Identification Confidence
+ðŸŽ¯ Identification Confidence
 
 ${
   vision.confidence ||
   "MEDIUM"
 }
 
-⚠️ Price Note
+âš ï¸ Price Note
 
 Prices can change. The prices shown above come from live search results and should be checked with the seller before purchasing.
           `.trim(),
@@ -1251,13 +1254,13 @@ Analyze the image professionally.
 
 Provide:
 
-📋 Overview
-👁️ What I See
-📦 Key Objects
-🎨 Colors and Lighting
-🏠 Environment
-📝 Important Observations
-🎯 Conclusion
+ðŸ“‹ Overview
+ðŸ‘ï¸ What I See
+ðŸ“¦ Key Objects
+ðŸŽ¨ Colors and Lighting
+ðŸ  Environment
+ðŸ“ Important Observations
+ðŸŽ¯ Conclusion
 
 Only describe things that can reasonably be determined from the image.
 
@@ -1293,7 +1296,7 @@ Do not invent information.
                   image_url: {
 
                     url:
-                      image,
+                      analysisImage,
 
                   },
 
@@ -1335,7 +1338,7 @@ Do not invent information.
     ) {
 
       console.error(
-        "❌ CAMERA ANALYSIS ERROR:",
+        "âŒ CAMERA ANALYSIS ERROR:",
         error
       );
 
@@ -1399,7 +1402,7 @@ async function extractFrame(
           () => {
 
             console.log(
-              "✅ Frame extraction completed:",
+              "âœ… Frame extraction completed:",
               outputImage
             );
 
@@ -1414,7 +1417,7 @@ async function extractFrame(
           (err) => {
 
             console.error(
-              "❌ Frame extraction failed:",
+              "âŒ Frame extraction failed:",
               err
             );
 
@@ -1573,7 +1576,7 @@ app.post(
     try {
 
       console.log(
-        "🔥 NEW YOUTUBE ANALYSIS REQUEST"
+        "ðŸ”¥ NEW YOUTUBE ANALYSIS REQUEST"
       );
 
       const { url } = req.body;
@@ -1698,12 +1701,12 @@ app.post(
             .trim();
 
         console.log(
-          "✅ FINAL TRANSCRIPT LENGTH:",
+          "âœ… FINAL TRANSCRIPT LENGTH:",
           text.length
         );
 
         console.log(
-          "✅ FINAL TRANSCRIPT PREVIEW:",
+          "âœ… FINAL TRANSCRIPT PREVIEW:",
           text.substring(
             0,
             500
@@ -1715,7 +1718,7 @@ app.post(
         );
 
         console.log(
-          "✅ YouTube subtitles extracted:",
+          "âœ… YouTube subtitles extracted:",
           text.length,
           "characters"
         );
@@ -1766,39 +1769,39 @@ Analyze the following YouTube transcript and create useful content for the user.
 
 Your response must contain these sections:
 
-📋 SUMMARY
+ðŸ“‹ SUMMARY
 
 Give a clear, easy-to-understand summary of the entire video.
 
-📚 DETAILED EXPLANATION
+ðŸ“š DETAILED EXPLANATION
 
 Explain the important concepts from the video in simple language.
 
-📌 KEY POINTS
+ðŸ“Œ KEY POINTS
 
 List the most important things the user should remember.
 
-📖 IMPORTANT TERMS
+ðŸ“– IMPORTANT TERMS
 
 List important technical or subject-specific terms and explain each one.
 
-💡 EXAMPLES
+ðŸ’¡ EXAMPLES
 
 Include useful examples mentioned or explained in the video.
 
-📝 STUDY NOTES
+ðŸ“ STUDY NOTES
 
 Create organized notes that a student can use for revision.
 
-❓ QUESTIONS AND ANSWERS
+â“ QUESTIONS AND ANSWERS
 
 Create useful questions and answers based only on the video content.
 
-🧠 QUICK QUIZ
+ðŸ§  QUICK QUIZ
 
 Create 5 multiple-choice questions with the correct answers.
 
-🎯 IMPORTANT TAKEAWAYS
+ðŸŽ¯ IMPORTANT TAKEAWAYS
 
 Give the final lessons or conclusions from the video.
 
@@ -1886,7 +1889,7 @@ app.post(
     try {
 
       console.log(
-        "🌐 NEW WEBSITE ANALYSIS REQUEST"
+        "ðŸŒ NEW WEBSITE ANALYSIS REQUEST"
       );
 
       const {
@@ -1919,7 +1922,7 @@ app.post(
       }
 
       console.log(
-        "🌐 FETCHING WEBSITE:",
+        "ðŸŒ FETCHING WEBSITE:",
         websiteUrl
       );
 
@@ -2006,19 +2009,19 @@ Analyze the following website content and provide useful information.
 
 Your response must contain:
 
-📋 SUMMARY
+ðŸ“‹ SUMMARY
 
-🎯 PURPOSE
+ðŸŽ¯ PURPOSE
 
-📚 DETAILED EXPLANATION
+ðŸ“š DETAILED EXPLANATION
 
-📌 KEY POINTS
+ðŸ“Œ KEY POINTS
 
-💡 IMPORTANT INFORMATION
+ðŸ’¡ IMPORTANT INFORMATION
 
-📝 STUDY NOTES
+ðŸ“ STUDY NOTES
 
-🎯 IMPORTANT TAKEAWAYS
+ðŸŽ¯ IMPORTANT TAKEAWAYS
 
 Rules:
 
@@ -2055,7 +2058,7 @@ Now analyze the website content.
     ) {
 
       console.error(
-        "🌐 WEBSITE ERROR:",
+        "ðŸŒ WEBSITE ERROR:",
         error
       );
 
@@ -2119,7 +2122,7 @@ app.post(
         );
 
       console.log(
-        "🎬 VIDEO RECEIVED:",
+        "ðŸŽ¬ VIDEO RECEIVED:",
         videoPath
       );
 
@@ -2138,7 +2141,7 @@ app.post(
       ) {
 
         console.log(
-          "⚠️ Could not get video duration:",
+          "âš ï¸ Could not get video duration:",
           durationError.message
         );
 
@@ -2282,7 +2285,7 @@ app.post(
       ) {
 
         console.log(
-          "⚠️ Video transcription failed:",
+          "âš ï¸ Video transcription failed:",
           transcriptionError.message
         );
 
@@ -2317,19 +2320,19 @@ Do not invent information.
 
 Return the result in exactly this structure:
 
-🎤 Transcript
+ðŸŽ¤ Transcript
 
-🌍 Language
+ðŸŒ Language
 
-📋 AI Summary
+ðŸ“‹ AI Summary
 
-👁️ Visual Analysis
+ðŸ‘ï¸ Visual Analysis
 
-📌 Key Points
+ðŸ“Œ Key Points
 
-😊 Sentiment
+ðŸ˜Š Sentiment
 
-🎯 Action Items
+ðŸŽ¯ Action Items
 
 If the video has no understandable speech, clearly say:
 
@@ -2421,7 +2424,7 @@ Also analyze the supplied video frame visually.
     ) {
 
       console.error(
-        "❌ VIDEO ANALYSIS ERROR:",
+        "âŒ VIDEO ANALYSIS ERROR:",
         error
       );
 
@@ -2486,7 +2489,7 @@ app.post(
 
 
       console.log(
-        "🎤 Audio Duration:",
+        "ðŸŽ¤ Audio Duration:",
         duration,
         "seconds"
       );
@@ -2550,17 +2553,17 @@ Analyze the audio transcript professionally.
 
 Return your answer in exactly this format:
 
-🌍 Language
+ðŸŒ Language
 
-🌐 English Translation
+ðŸŒ English Translation
 
-😊 Sentiment
+ðŸ˜Š Sentiment
 
-📋 Summary
+ðŸ“‹ Summary
 
-📌 Key Points
+ðŸ“Œ Key Points
 
-🎯 Action Items
+ðŸŽ¯ Action Items
 
 If there are no action items, write "None."
 `,
@@ -2591,11 +2594,11 @@ If there are no action items, write "None."
 
 
       const summary =
-        `🎤 Transcript:
+        `ðŸŽ¤ Transcript:
 
 ${transcript}
 
-📋 AI Summary:
+ðŸ“‹ AI Summary:
 
 ${analysis}`;
 
@@ -2621,7 +2624,7 @@ ${analysis}`;
     ) {
 
       console.error(
-        "❌ AUDIO ERROR:",
+        "âŒ AUDIO ERROR:",
         error
       );
 
@@ -2708,7 +2711,7 @@ app.post(
 
 
       console.log(
-        "🖼️ NORMALIZED IMAGE URL:",
+        "ðŸ–¼ï¸ NORMALIZED IMAGE URL:",
         imageUrl
       );
 
@@ -2777,17 +2780,81 @@ app.post(
 
 
       console.log(
-        "🤖 MESSAGE SENT TO AGENT:",
+        "ðŸ¤– MESSAGE SENT TO AGENT:",
         JSON.stringify(
           message
         )
       );
 
 
+
+      /* =================================================
+         DIRECT UPLOADED IMAGE ANALYSIS
+      ================================================= */
+
+      if (imageUrl) {
+        console.log("🖼️ DIRECT IMAGE ANALYSIS:", imageUrl);
+
+        try {
+          const imageAnalysisResponse =
+            await openai.chat.completions.create({
+              model: "gpt-4.1",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are Truvora Global AI's image analysis assistant. Analyze the uploaded image carefully. Describe what is visible, identify important objects, read visible text when possible, explain the scene clearly, and answer the user's request. Do not invent details."
+                },
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: message || "Analyze this image in detail."
+                    },
+                    {
+                      type: "image_url",
+                      image_url: {
+                        url: imageUrl
+                      }
+                    }
+                  ]
+                }
+              ]
+            });
+
+          const imageAnalysis =
+            imageAnalysisResponse.choices?.[0]?.message?.content ||
+            "Unable to analyze this image.";
+
+          console.log("✅ DIRECT IMAGE ANALYSIS COMPLETE");
+
+          return res.json({
+            success: true,
+            agentMode: false,
+            tasks: [],
+            documents: [],
+            images: [],
+            reply: imageAnalysis,
+            answer: imageAnalysis,
+            sources: []
+          });
+
+        } catch (imageAnalysisError) {
+          console.error("❌ DIRECT IMAGE ANALYSIS FAILED:", imageAnalysisError);
+
+          return res.status(500).json({
+            success: false,
+            error: "Image analysis failed.",
+            details: imageAnalysisError.message
+          });
+        }
+      }
+
+
       const agentTasks =
-        detectAgentTasks(
-          message
-        );
+        imageUrl
+          ? detectAgentTasks(message).filter((task) => task !== "image")
+          : detectAgentTasks(message);
 
 
       console.log(
@@ -2802,11 +2869,12 @@ app.post(
 
       if (
         agentMode &&
-        agentTasks.length > 0
+        agentTasks.length > 0 &&
+        !imageUrl
       ) {
 
         console.log(
-          "🤖 AUTOMATIC AGENT MODE"
+          "ðŸ¤– AUTOMATIC AGENT MODE"
         );
 
 
@@ -2841,7 +2909,7 @@ app.post(
 
 
             console.log(
-              "🤖 EXECUTING:",
+              "ðŸ¤– EXECUTING:",
               task
             );
 
@@ -2915,7 +2983,7 @@ app.post(
 
 
             console.log(
-              "✅ AGENT CREATED:",
+              "âœ… AGENT CREATED:",
               result
             );
 
@@ -2925,7 +2993,7 @@ app.post(
           ) {
 
             console.error(
-              "❌ AGENT TASK FAILED:",
+              "âŒ AGENT TASK FAILED:",
               task,
               error
             );
@@ -2985,7 +3053,7 @@ app.post(
           reply:
             successful.length > 0
 
-              ? `✅ ${successful
+              ? `âœ… ${successful
                   .map(
                     (item) =>
                       item.type
@@ -3001,7 +3069,7 @@ app.post(
                     "\n\n"
                   )}`
 
-              : "❌ Agent could not create the requested file.",
+              : "âŒ Agent could not create the requested file.",
 
           sources:
             [],
@@ -3088,12 +3156,15 @@ app.post(
         );
 
 
-      console.log(
-        "🌐 WEB MODE:",
-        autoWeb
-      );
+      console.log("===== TRUVORA WEB DEBUG =====");
+      console.log("MESSAGE:", message);
+      console.log("WEB:", web);
+      console.log("ANALYSIS NEEDS WEB:", analysis.needsWeb);
+      console.log("NEEDS CURRENT INFO:", needsCurrentInfo);
+      console.log("TRUVORA PROJECT:", truvoraProject);
+      console.log("AUTO WEB:", autoWeb);
 
-
+      console.log("WEB MODE:", autoWeb);
       /* =================================================
          CONTINUE TRUVORA
       ================================================= */
@@ -3146,7 +3217,7 @@ app.post(
             true,
 
           reply:
-            `🌐 Website Project
+            `ðŸŒ Website Project
 
 Before I help, tell me:
 
@@ -3180,7 +3251,7 @@ I can then create the complete implementation plan.`,
             true,
 
           reply:
-            `🏢 Business Project
+            `ðŸ¢ Business Project
 
 Before I help, tell me:
 
@@ -3216,7 +3287,7 @@ I can then create the business plan.`,
             true,
 
           reply:
-            `📱 App Project
+            `ðŸ“± App Project
 
 Tell me:
 
@@ -3248,7 +3319,7 @@ I can then help build it step by step.`,
       ) {
 
         console.log(
-          "🌐 RUNNING LIVE WEB SEARCH"
+          "ðŸŒ RUNNING LIVE WEB SEARCH"
         );
 
 
@@ -3257,7 +3328,7 @@ I can then help build it step by step.`,
         ) {
 
           console.warn(
-            "⚠️ SERPAPI_KEY is missing"
+            "âš ï¸ SERPAPI_KEY is missing"
           );
 
         } else {
@@ -3337,7 +3408,7 @@ I can then help build it step by step.`,
 
 
             console.log(
-              "🌐 WEB RESULTS:",
+              "ðŸŒ WEB RESULTS:",
               webResults.length
             );
 
@@ -3347,7 +3418,7 @@ I can then help build it step by step.`,
           ) {
 
             console.error(
-              "❌ WEB SEARCH ERROR:",
+              "âŒ WEB SEARCH ERROR:",
               webError
                 .response
                 ?.data ||
@@ -3548,7 +3619,7 @@ WEB RESPONSE RULES:
 - If different sources disagree, clearly explain the disagreement.
 - At the end include:
 
-📚 Sources
+ðŸ“š Sources
 
 [1] Source title
 [2] Source title
@@ -3696,7 +3767,7 @@ GENERAL RULES:
 
 
       console.log(
-        "🤖 SENDING REQUEST TO OPENAI"
+        "ðŸ¤– SENDING REQUEST TO OPENAI"
       );
 
 
@@ -3748,7 +3819,7 @@ GENERAL RULES:
         ) {
 
           console.warn(
-            "⚠️ Citation formatting failed:",
+            "âš ï¸ Citation formatting failed:",
             citationError.message
           );
 
@@ -3809,7 +3880,7 @@ GENERAL RULES:
       ) {
 
         console.warn(
-          "⚠️ MEMORY SAVE FAILED:",
+          "âš ï¸ MEMORY SAVE FAILED:",
           memoryError.message
         );
 
@@ -3854,7 +3925,7 @@ GENERAL RULES:
     ) {
 
       console.error(
-        "❌ /ask ERROR:",
+        "âŒ /ask ERROR:",
         error
       );
 
@@ -3932,7 +4003,7 @@ app.post(
 
 
       console.log(
-        "📄 DOCUMENT RECEIVED:",
+        "ðŸ“„ DOCUMENT RECEIVED:",
         originalName
       );
 
@@ -4141,7 +4212,7 @@ app.post(
 
 
       console.log(
-        "📄 DOCUMENT TEXT LENGTH:",
+        "ðŸ“„ DOCUMENT TEXT LENGTH:",
         extractedText.length
       );
 
@@ -4170,15 +4241,15 @@ Analyze the uploaded document accurately.
 
 Use this structure:
 
-📋 SUMMARY
+ðŸ“‹ SUMMARY
 
-📌 KEY POINTS
+ðŸ“Œ KEY POINTS
 
-📚 DETAILED ANALYSIS
+ðŸ“š DETAILED ANALYSIS
 
-📝 IMPORTANT INFORMATION
+ðŸ“ IMPORTANT INFORMATION
 
-🎯 CONCLUSION
+ðŸŽ¯ CONCLUSION
 
 Rules:
 
@@ -4248,7 +4319,7 @@ Rules:
     ) {
 
       console.error(
-        "❌ DOCUMENT ANALYSIS ERROR:",
+        "âŒ DOCUMENT ANALYSIS ERROR:",
         error
       );
 
@@ -4382,13 +4453,13 @@ app.post(
       );
 
       console.log(
-        "📄 GENERATING:",
+        "ðŸ“„ GENERATING:",
         requestedType,
         safeTitle
       );
 
       console.log(
-        "📁 OUTPUT:",
+        "ðŸ“ OUTPUT:",
         outputPath
       );
 
@@ -4786,12 +4857,12 @@ app.post(
 
 
       console.log(
-        "✅ DOCUMENT CREATED:",
+        "âœ… DOCUMENT CREATED:",
         finalPath
       );
 
       console.log(
-        "🔗 DOWNLOAD:",
+        "ðŸ”— DOWNLOAD:",
         documentUrl
       );
 
@@ -4824,7 +4895,7 @@ app.post(
     ) {
 
       console.error(
-        "❌ DOCUMENT GENERATION ERROR:",
+        "âŒ DOCUMENT GENERATION ERROR:",
         error
       );
 
@@ -4932,7 +5003,7 @@ app.post(
     ) {
 
       console.error(
-        "❌ TTS ERROR:",
+        "TTS ERROR:",
         error
       );
 
@@ -5010,7 +5081,7 @@ app.get(
         "Truvora Global AI",
 
       slogan:
-        "Intelligence • Innovation • Trust",
+        "Intelligence â€¢ Innovation â€¢ Trust",
 
       status:
         "online",
@@ -5034,7 +5105,7 @@ app.use(
   ) => {
 
     console.error(
-      "❌ UNHANDLED SERVER ERROR:",
+      "âŒ UNHANDLED SERVER ERROR:",
       error
     );
 
@@ -5086,31 +5157,31 @@ app.listen(
     );
 
     console.log(
-      "🚀 TRUVORA GLOBAL AI SERVER"
+      "ðŸš€ TRUVORA GLOBAL AI SERVER"
     );
 
     console.log(
-      `🚀 Server running on port ${PORT}`
+      `ðŸš€ Server running on port ${PORT}`
     );
 
     console.log(
-      `🌐 Uploads: ${uploadsPath}`
+      `ðŸŒ Uploads: ${uploadsPath}`
     );
 
     console.log(
-      `🤖 OpenAI: ${
+      `ðŸ¤– OpenAI: ${
         !!process.env.OPENAI_API_KEY
       }`
     );
 
     console.log(
-      `🟢 Gemini: ${
+      `ðŸŸ¢ Gemini: ${
         !!process.env.GEMINI_API_KEY
       }`
     );
 
     console.log(
-      `🔎 SerpAPI: ${
+      `ðŸ”Ž SerpAPI: ${
         !!process.env.SERPAPI_KEY
       }`
     );
@@ -5121,3 +5192,4 @@ app.listen(
 
   }
 );
+

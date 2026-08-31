@@ -1,4 +1,4 @@
-function detectAgentTasks(prompt) {
+﻿function detectAgentTasks(prompt) {
   const text = String(prompt || "").toLowerCase();
 
   const tasks = [];
@@ -83,8 +83,13 @@ function detectAgentTasks(prompt) {
     tasks.push("rtf");
   }
 
-  // Image generation
+// Image generation
+const isImageAnalysis =
+  /\b(analyze|analyse|describe|identify|inspect|read|ocr|what do you see|what is in)\b/.test(text) &&
+  /\b(image|picture|photo|photograph)\b/.test(text);
+
 if (
+  !isImageAnalysis &&
   /\b(create|make|generate|draw|design|render|show|give|produce|build)\b/.test(text) &&
   /\b(image|picture|photo|illustration|logo|poster|wallpaper|artwork|drawing|portrait|icon|banner|graphic)\b/.test(text)
 ) {
