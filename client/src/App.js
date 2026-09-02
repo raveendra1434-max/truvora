@@ -1,5 +1,5 @@
 ﻿/*
- * TRUVORA GLOBAL AI — CLEAN APP.JS
+ *  * TRULEXITY GLOBAL AI — CLEAN APP.JS
  * Preserves the existing Truvora frontend/backend contract.
  * Web search and agent capability are enabled automatically;
  * the backend decides when they are actually needed.
@@ -839,8 +839,8 @@ function App() {
 
         const response =
   await fetch(
-    "http://localhost:5000/generate-speech",
-    {
+  "https://trulexity-api.onrender.com/generate-speech",
+  {
               method: "POST",
 
               headers: {
@@ -1056,7 +1056,7 @@ function App() {
 
         const response =
           await fetch(
-            "https://truvora-api-new.onrender.com/analyze-image",
+            "https://trulexity-api.onrender.com/analyze-image",
             {
               method: "POST",
 
@@ -1348,7 +1348,7 @@ ${results
 
         const response =
           await fetch(
-            "https://truvora-api-new.onrender.com/analyze-document",
+            "https://trulexity-api.onrender.com/analyze-document",
             {
               method: "POST",
               body: formData,
@@ -1504,7 +1504,7 @@ ${results
 
         const response =
           await fetch(
-            "https://truvora-api-new.onrender.com/upload-video",
+            "https://trulexity-api.onrender.com/upload-video",
             {
               method: "POST",
               body: formData,
@@ -1605,7 +1605,7 @@ ${results
 
           const response =
             await fetch(
-              "https://truvora-api-new.onrender.com/analyze-youtube",
+              "https://trulexity-api.onrender.com/analyze-youtube",
               {
                 method: "POST",
 
@@ -1709,7 +1709,7 @@ ${results
 
         const response =
           await fetch(
-            "https://truvora-api-new.onrender.com/analyze-website",
+            "https://trulexity-api.onrender.com/analyze-website",
             {
               method: "POST",
 
@@ -1816,7 +1816,7 @@ ${results
 
         const response =
           await fetch(
-            "https://truvora-api-new.onrender.com/upload-audio",
+            "https://trulexity-api.onrender.com/upload-audio",
             {
               method: "POST",
               body: formData,
@@ -1959,7 +1959,7 @@ ${results
 
               const response =
                 await fetch(
-                  "https://truvora-api-new.onrender.com/analyze-document",
+                  "https://trulexity-api.onrender.com/analyze-document",
                   {
                     method:
                       "POST",
@@ -2029,7 +2029,7 @@ ${results
 
             const imageResponse =
               await fetch(
-                "https://truvora-api-new.onrender.com/upload-image",
+                "https://trulexity-api.onrender.com/upload-image",
                 {
                   method:
                     "POST",
@@ -2100,7 +2100,7 @@ ${results
 
         const response =
           await fetch(
-            "https://truvora-api-new.onrender.com/api/login",
+            "https://trulexity-api.onrender.com/api/login",
             {
               method: "POST",
 
@@ -2292,7 +2292,7 @@ ${results
 
         const response =
           await fetch(
-            "http://localhost:5000/ask",
+            "https://trulexity-api.onrender.com/ask",
             {
 
               method:
@@ -2562,7 +2562,7 @@ const handleGenerateDocument =
 
       const response =
         await fetch(
-          "https://truvora-api-new.onrender.com/generate-document",
+          "https://trulexity-api.onrender.com/generate-document",
           {
             method: "POST",
 
@@ -2680,7 +2680,7 @@ const handleGenerateDocument =
       >
 
         <h1>
-          TRUVORA GLOBAL AI
+          TRULEXITY GLOBAL AI
         </h1>
 
 
@@ -2999,7 +2999,7 @@ const handleGenerateDocument =
 
                     const response =
                       await fetch(
-                        "https://truvora-api-new.onrender.com/upload-image",
+                        "https://trulexity-api.onrender.com/upload-image",
                         {
                           method:
                             "POST",
@@ -3475,7 +3475,7 @@ const handleGenerateDocument =
             >
 
               <h2>
-                TRUVORA
+                TRULEXITY
               </h2>
 
               <p>
@@ -3798,7 +3798,7 @@ const handleGenerateDocument =
             <div
               className="top-title"
             >
-              TRUVORA GLOBAL AI
+              TRULEXITY GLOBAL AI
             </div>
 
 
@@ -3968,7 +3968,7 @@ const handleGenerateDocument =
 
                                     ? msg.content
 
-                                    : `https://truvora-api-new.onrender.com${msg.content}`
+                                    : `https://trulexity-api.onrender.com${msg.content}`
 
                               )
 
@@ -3980,7 +3980,7 @@ const handleGenerateDocument =
 
                                   ? msg.image
 
-                                  : `https://truvora-api-new.onrender.com${msg.image}`
+                                  : `https://trulexity-api.onrender.com${msg.image}`
 
                               )
 
@@ -4041,7 +4041,7 @@ const handleGenerateDocument =
 
                                         ? msg.image
 
-                                        : `https://truvora-api-new.onrender.com${msg.image}`;
+                                        : `https://trulexity-api.onrender.com${msg.image}`;
 
 
                                     const response =
@@ -4070,7 +4070,7 @@ const handleGenerateDocument =
                                       url;
 
                                     a.download =
-                                      "truvora-image.png";
+                                      "trulexity-image.png"
 
 
                                     document.body.appendChild(
@@ -4270,7 +4270,7 @@ const handleGenerateDocument =
 
                         <div
 
-                          className="truvora-source-feed"
+                          className="trulexity-source-feed"
 
                           style={{
 
@@ -4876,7 +4876,7 @@ const handleGenerateDocument =
 
                             await navigator.share({
                               title:
-                                "Truvora AI",
+                                 "Trulexity AI",
 
                               text:
                                 msg.text ||
@@ -5228,9 +5228,9 @@ const handleGenerateDocument =
                     </h2>
 
 
-                    <p>
-                      Create your personal voice for Truvora.
-                    </p>
+                     <p>
+  Create your personal voice for Trulexity.
+</p>              
 
 
                     <input
@@ -5320,7 +5320,7 @@ const handleGenerateDocument =
 
                                 const response =
                                   await fetch(
-                                    "https://truvora-api-new.onrender.com/upload-personal-voice",
+                                    "https://trulexity-api.onrender.com/upload-personal-voice",
                                     {
                                       method:
                                         "POST",
@@ -5435,7 +5435,7 @@ const handleGenerateDocument =
 
                 className="main-input"
 
-                placeholder="Ask Truvora anything..."
+                placeholder="Ask Trulexity anything..."
 
                 value={
                   input
