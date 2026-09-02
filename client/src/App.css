@@ -3525,3 +3525,736 @@ video{
     font-size: 11px !important;
   }
 }
+/* =========================================================
+   TRULEXITY — MODERN UI REDESIGN
+   PART 1 — COMPOSER + TOOLBAR
+   ========================================================= */
+
+.input-area{
+  padding-top:10px !important;
+}
+
+.input-box{
+  max-width:1000px !important;
+  gap:8px !important;
+  padding:9px !important;
+  border-radius:20px !important;
+  border-color:rgba(148,163,184,.18) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,36,58,.94),
+      rgba(10,22,38,.97)
+    ) !important;
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.34),
+    0 0 0 1px rgba(255,255,255,.015) inset !important;
+}
+
+/* ONE CLEAN TOOLBAR */
+
+.left-buttons{
+  display:flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  min-width:0 !important;
+}
+
+.icon-btn{
+  width:38px !important;
+  min-width:38px !important;
+  height:38px !important;
+  min-height:38px !important;
+  border-radius:12px !important;
+  color:#a9bdd0 !important;
+  background:rgba(255,255,255,.025) !important;
+  border-color:rgba(148,163,184,.10) !important;
+}
+
+.icon-btn:hover{
+  background:rgba(41,182,246,.10) !important;
+  border-color:rgba(41,182,246,.24) !important;
+  color:#fff !important;
+}
+
+.voice-toggle-btn{
+  min-width:82px !important;
+  height:38px !important;
+  min-height:38px !important;
+  padding:0 10px !important;
+  border-radius:12px !important;
+  background:rgba(255,255,255,.035) !important;
+  border:1px solid rgba(148,163,184,.12) !important;
+  color:#c9d9e9 !important;
+  font-weight:600 !important;
+}
+
+.voice-toggle-btn:hover{
+  background:rgba(41,182,246,.10) !important;
+  border-color:rgba(41,182,246,.24) !important;
+}
+/* =========================================================
+   TRULEXITY — MODERN UI REDESIGN
+   PART 2 — VOICE / LANGUAGE / INPUT
+   ========================================================= */
+
+/* VOICE / ALLOY SELECTS */
+
+.voice-select,
+.language-select{
+  height:38px !important;
+  min-height:38px !important;
+
+  border-radius:12px !important;
+
+  padding:0 30px 0 10px !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+
+  border:1px solid
+    rgba(148,163,184,.12) !important;
+
+  color:#d7e6f4 !important;
+
+  font-size:12px !important;
+  font-weight:600 !important;
+
+  outline:none !important;
+
+  transition:
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease !important;
+}
+
+.voice-select{
+  width:92px !important;
+  min-width:92px !important;
+}
+
+.language-select{
+  width:105px !important;
+  min-width:105px !important;
+}
+
+.voice-select:hover,
+.language-select:hover{
+  background:
+    rgba(41,182,246,.08) !important;
+
+  border-color:
+    rgba(41,182,246,.24) !important;
+}
+
+.voice-select:focus,
+.language-select:focus{
+  border-color:
+    rgba(41,182,246,.42) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(41,182,246,.08) !important;
+}
+
+/* MAIN TEXT INPUT */
+
+.main-input{
+  flex:1 1 auto !important;
+
+  min-width:0 !important;
+
+  min-height:42px !important;
+
+  padding:10px 12px !important;
+
+  border:none !important;
+
+  outline:none !important;
+
+  background:
+    transparent !important;
+
+  color:#f5f9fd !important;
+
+  font-size:15px !important;
+
+  line-height:1.45 !important;
+
+  resize:none !important;
+}
+
+.main-input::placeholder{
+  color:
+    rgba(169,189,208,.58) !important;
+}
+
+.main-input:focus{
+  outline:none !important;
+  box-shadow:none !important;
+}
+
+/* SEND BUTTON */
+
+.send-btn{
+  width:42px !important;
+  min-width:42px !important;
+
+  height:42px !important;
+  min-height:42px !important;
+
+  display:flex !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  border-radius:13px !important;
+
+  border:1px solid
+    rgba(41,182,246,.30) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1565C0,
+      #0D47A1
+    ) !important;
+
+  color:#fff !important;
+
+  cursor:pointer !important;
+
+  box-shadow:
+    0 8px 22px rgba(13,71,161,.25) !important;
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    filter .16s ease !important;
+}
+
+.send-btn:hover{
+  transform:translateY(-1px) !important;
+
+  filter:brightness(1.08) !important;
+
+  box-shadow:
+    0 10px 28px rgba(13,71,161,.35) !important;
+}
+
+.send-btn:active{
+  transform:scale(.96) !important;
+}
+
+/* DISABLED SEND */
+
+.send-btn:disabled{
+  opacity:.45 !important;
+
+  cursor:not-allowed !important;
+
+  transform:none !important;
+
+  box-shadow:none !important;
+}
+/* =========================================================
+   TRULEXITY — MODERN UI REDESIGN
+   PART 3 — MOBILE TOOLBAR + ACTION GRID
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* -----------------------------------------
+     COMPOSER
+     ----------------------------------------- */
+
+  .input-area{
+    padding:
+      8px
+      10px
+      calc(8px + env(safe-area-inset-bottom))
+      !important;
+  }
+
+  .input-box{
+    width:100% !important;
+    max-width:none !important;
+
+    display:flex !important;
+    flex-wrap:wrap !important;
+
+    gap:7px !important;
+
+    padding:8px !important;
+
+    border-radius:18px !important;
+  }
+
+
+  /* -----------------------------------------
+     ONE-LINE CONTROL BAR
+     
+     Analyzer | Speaker | Voice | Alloy | Language
+     ----------------------------------------- */
+
+  .left-buttons{
+    width:100% !important;
+    flex:0 0 100% !important;
+
+    display:flex !important;
+    align-items:center !important;
+
+    justify-content:space-between !important;
+
+    gap:5px !important;
+
+    overflow:hidden !important;
+  }
+
+
+  /* Keep toolbar buttons compact */
+
+  .left-buttons .icon-btn{
+    flex:0 0 auto !important;
+
+    width:34px !important;
+    min-width:34px !important;
+
+    height:34px !important;
+    min-height:34px !important;
+
+    padding:0 !important;
+
+    border-radius:10px !important;
+
+    font-size:15px !important;
+  }
+
+
+  .left-buttons .voice-toggle-btn{
+    flex:0 0 auto !important;
+
+    min-width:66px !important;
+    width:auto !important;
+
+    height:34px !important;
+    min-height:34px !important;
+
+    padding:
+      0 8px
+      !important;
+
+    border-radius:10px !important;
+
+    font-size:11px !important;
+  }
+
+
+  .left-buttons .voice-select{
+    flex:0 1 78px !important;
+
+    width:78px !important;
+    min-width:0 !important;
+
+    height:34px !important;
+    min-height:34px !important;
+
+    padding:
+      0 24px 0 7px
+      !important;
+
+    border-radius:10px !important;
+
+    font-size:10px !important;
+  }
+
+
+  .left-buttons .language-select{
+    flex:0 1 88px !important;
+
+    width:88px !important;
+    min-width:0 !important;
+
+    height:34px !important;
+    min-height:34px !important;
+
+    padding:
+      0 24px 0 7px
+      !important;
+
+    border-radius:10px !important;
+
+    font-size:10px !important;
+  }
+
+
+  /* -----------------------------------------
+     INPUT = SECOND ROW
+     ----------------------------------------- */
+
+  .main-input{
+    order:10 !important;
+
+    flex:
+      1 1 auto
+      !important;
+
+    width:auto !important;
+
+    min-width:0 !important;
+
+    min-height:40px !important;
+
+    padding:
+      8px 6px
+      !important;
+
+    font-size:14px !important;
+  }
+
+
+  .send-btn{
+    order:11 !important;
+
+    flex:0 0 40px !important;
+
+    width:40px !important;
+    min-width:40px !important;
+
+    height:40px !important;
+    min-height:40px !important;
+
+    border-radius:12px !important;
+  }
+
+
+  /* -----------------------------------------
+     ACTION BUTTONS
+     ----------------------------------------- */
+
+  .message-actions{
+    display:grid !important;
+
+    grid-template-columns:
+      repeat(3, minmax(0,1fr))
+      !important;
+
+    gap:7px !important;
+
+    width:100% !important;
+  }
+
+
+  .message-actions button{
+    width:100% !important;
+
+    min-width:0 !important;
+
+    min-height:36px !important;
+
+    padding:
+      7px 5px
+      !important;
+
+    border-radius:10px !important;
+
+    font-size:11px !important;
+  }
+
+
+  /* -----------------------------------------
+     MOBILE ANSWER CARD
+     ----------------------------------------- */
+
+  .bubble{
+    max-width:94vw !important;
+
+    font-size:14px !important;
+
+    line-height:1.6 !important;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES — 360px / 375px
+   ========================================================= */
+
+@media (max-width:390px){
+
+  .input-area{
+    padding-left:7px !important;
+    padding-right:7px !important;
+  }
+
+  .input-box{
+    padding:7px !important;
+    gap:5px !important;
+  }
+
+  .left-buttons{
+    gap:3px !important;
+  }
+
+  .left-buttons .icon-btn{
+    width:31px !important;
+    min-width:31px !important;
+
+    height:32px !important;
+    min-height:32px !important;
+
+    border-radius:9px !important;
+
+    font-size:14px !important;
+  }
+
+  .left-buttons .voice-toggle-btn{
+    min-width:59px !important;
+
+    height:32px !important;
+    min-height:32px !important;
+
+    padding:0 6px !important;
+
+    font-size:10px !important;
+  }
+
+  .left-buttons .voice-select{
+    width:69px !important;
+
+    flex-basis:69px !important;
+
+    height:32px !important;
+    min-height:32px !important;
+
+    font-size:9px !important;
+  }
+
+  .left-buttons .language-select{
+    width:76px !important;
+
+    flex-basis:76px !important;
+
+    height:32px !important;
+    min-height:32px !important;
+
+    font-size:9px !important;
+  }
+
+  .main-input{
+    min-height:38px !important;
+
+    font-size:13px !important;
+  }
+
+  .send-btn{
+    width:38px !important;
+    min-width:38px !important;
+
+    height:38px !important;
+    min-height:38px !important;
+  }
+
+  .message-actions{
+    grid-template-columns:
+      repeat(2, minmax(0,1fr))
+      !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — MODERN UI REDESIGN
+   PART 4 — FINAL POLISH + DESKTOP PROTECTION
+   ========================================================= */
+
+
+/* =========================================================
+   DESKTOP — KEEP EVERYTHING BALANCED
+   ========================================================= */
+
+@media (min-width:601px){
+
+  .input-area{
+    padding-left:24px !important;
+    padding-right:24px !important;
+  }
+
+  .input-box{
+    max-width:1000px !important;
+  }
+
+  .left-buttons{
+    gap:6px !important;
+  }
+
+  .main-input{
+    min-width:180px !important;
+  }
+
+}
+
+
+/* =========================================================
+   PREMIUM TOOLBAR FEEL
+   ========================================================= */
+
+.left-buttons{
+  scrollbar-width:none !important;
+}
+
+.left-buttons::-webkit-scrollbar{
+  display:none !important;
+}
+
+.icon-btn,
+.voice-toggle-btn,
+.voice-select,
+.language-select{
+  -webkit-tap-highlight-color:transparent !important;
+}
+
+
+/* =========================================================
+   ACTIVE / SELECTED STATE
+   ========================================================= */
+
+.left-buttons .active,
+.left-buttons .active-btn{
+  background:
+    rgba(41,182,246,.12) !important;
+
+  border-color:
+    rgba(41,182,246,.30) !important;
+
+  color:
+    #69caff !important;
+
+  box-shadow:
+    0 0 14px rgba(41,182,246,.07) !important;
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+   ========================================================= */
+
+.icon-btn:focus-visible,
+.voice-toggle-btn:focus-visible,
+.voice-select:focus-visible,
+.language-select:focus-visible,
+.send-btn:focus-visible,
+.main-input:focus-visible{
+  outline:
+    2px solid rgba(41,182,246,.55) !important;
+
+  outline-offset:2px !important;
+}
+
+
+/* =========================================================
+   TOUCH FRIENDLY
+   ========================================================= */
+
+@media (pointer:coarse){
+
+  .icon-btn,
+  .voice-toggle-btn,
+  .send-btn{
+    -webkit-user-select:none !important;
+    user-select:none !important;
+
+    touch-action:manipulation !important;
+  }
+
+}
+
+
+/* =========================================================
+   EXTRA SMALL HEIGHT PHONES
+   ========================================================= */
+
+@media (max-width:600px) and (max-height:700px){
+
+  .input-area{
+    padding-top:5px !important;
+    padding-bottom:5px !important;
+  }
+
+  .input-box{
+    padding:6px !important;
+    gap:5px !important;
+  }
+
+  .left-buttons .icon-btn,
+  .left-buttons .voice-toggle-btn,
+  .left-buttons .voice-select,
+  .left-buttons .language-select{
+    height:32px !important;
+    min-height:32px !important;
+  }
+
+  .main-input{
+    min-height:36px !important;
+  }
+
+}
+
+
+/* =========================================================
+   PREVENT HORIZONTAL PAGE SCROLL
+   ========================================================= */
+
+html,
+body,
+#root{
+  max-width:100% !important;
+  overflow-x:hidden !important;
+}
+
+
+/* =========================================================
+   SMOOTH COMPOSER TRANSITION
+   ========================================================= */
+
+.input-box{
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease !important;
+}
+
+.input-box:focus-within{
+  border-color:
+    rgba(41,182,246,.24) !important;
+
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.34),
+    0 0 0 1px rgba(41,182,246,.05) inset !important;
+}
+
+
+/* =========================================================
+   FINAL MOBILE SAFETY
+   ========================================================= */
+
+@media (max-width:600px){
+
+  .input-box,
+  .left-buttons,
+  .main-input,
+  .message-actions{
+    box-sizing:border-box !important;
+  }
+
+  .main-input{
+    overflow:hidden !important;
+  }
+
+  .send-btn{
+    flex-shrink:0 !important;
+  }
+
+}
+
+
+/* =========================================================
+   TRULEXITY — END OF REDESIGN
+   ========================================================= */
