@@ -3347,3 +3347,181 @@ video{
 
 }
 
+/* =========================================================
+   TRULEXITY MOBILE — ONE-LINE CONTROL BAR
+   Analyzer | Speaker | Voice | Language
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .input-box {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 7px !important;
+    padding: 8px !important;
+  }
+
+  /* ONE horizontal toolbar */
+  .left-buttons {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    gap: 5px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
+
+  /* Analyzer */
+  .left-buttons .icon-btn {
+    flex: 0 0 auto !important;
+
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+
+    border-radius: 10px !important;
+    font-size: 16px !important;
+  }
+
+  /* Speaker / Voice */
+  .voice-toggle-btn {
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 90px !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+
+    padding: 0 8px !important;
+
+    border-radius: 10px !important;
+    font-size: 12px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Alloy */
+  .voice-select {
+    flex: 1 1 0 !important;
+
+    width: auto !important;
+    min-width: 82px !important;
+    max-width: 105px !important;
+
+    margin: 0 !important;
+  }
+
+  /* Language */
+  .language-select {
+    flex: 1 1 0 !important;
+
+    width: auto !important;
+    min-width: 82px !important;
+    max-width: 105px !important;
+
+    margin: 0 !important;
+  }
+
+  .language__control,
+  .voice__control {
+    height: 38px !important;
+    min-height: 38px !important;
+
+    border-radius: 10px !important;
+  }
+
+  .language__single-value,
+  .voice__single-value,
+  .language__placeholder,
+  .voice__placeholder {
+    font-size: 12px !important;
+  }
+
+  /* Ask box stays below toolbar */
+  .main-input {
+    order: 20 !important;
+
+    width: 100% !important;
+    flex: 0 0 100% !important;
+
+    min-height: 58px !important;
+
+    padding: 12px 55px 12px 13px !important;
+
+    border-radius: 13px !important;
+  }
+
+  .send-btn {
+    right: 14px !important;
+    bottom: 15px !important;
+
+    width: 40px !important;
+    min-width: 40px !important;
+
+    height: 40px !important;
+    min-height: 40px !important;
+
+    border-radius: 11px !important;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES — 360/375/390px
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .input-box {
+    gap: 5px !important;
+    padding: 7px !important;
+  }
+
+  .left-buttons {
+    gap: 4px !important;
+  }
+
+  .left-buttons .icon-btn {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+  }
+
+  .voice-toggle-btn {
+    max-width: 76px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    font-size: 11px !important;
+    padding: 0 6px !important;
+  }
+
+  .voice-select,
+  .language-select {
+    min-width: 76px !important;
+    max-width: 90px !important;
+  }
+
+  .language__control,
+  .voice__control {
+    height: 34px !important;
+    min-height: 34px !important;
+  }
+
+  .language__single-value,
+  .voice__single-value,
+  .language__placeholder,
+  .voice__placeholder {
+    font-size: 11px !important;
+  }
+}
