@@ -4061,200 +4061,427 @@ video{
   }
 }
 /* =========================================================
-   TRULEXITY — MODERN UI REDESIGN
-   PART 4 — FINAL POLISH + DESKTOP PROTECTION
+   TRULEXITY — MOBILE COMPOSER FINAL
    ========================================================= */
 
+@media (max-width: 600px) {
 
+  .input-box {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  /* Analyzer + Mic + Voice */
+  .left-buttons {
+    display: contents !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
+
+  .left-buttons > div,
+  .left-buttons > button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .left-buttons > div {
+    grid-column: 1 !important;
+  }
+
+  .left-buttons > button:nth-of-type(1) {
+    grid-column: 2 !important;
+  }
+
+  .left-buttons > button:nth-of-type(2) {
+    grid-column: 3 !important;
+  }
+
+  /* Language */
+  .language-select {
+    grid-column: 4 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+
+  /* Alloy / Voice */
+  .voice-select {
+    grid-column: 5 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+
+  .icon-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 3px !important;
+    font-size: 15px !important;
+  }
+
+  .language__control,
+  .voice__control {
+    width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  /* Ask input goes to second row */
+  .main-input {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    min-height: 62px !important;
+  }
+
+  .send-btn {
+    z-index: 20 !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 390px) {
+
+  .input-box {
+    gap: 4px !important;
+    padding: 6px !important;
+  }
+
+  .icon-btn {
+    font-size: 14px !important;
+  }
+
+  .language__single-value,
+  .voice__single-value,
+  .language__placeholder,
+  .voice__placeholder {
+    font-size: 10px !important;
+  }
+}
 /* =========================================================
-   DESKTOP — KEEP EVERYTHING BALANCED
+   TRULEXITY — COMPOSER STRUCTURE FIX
+   Desktop + Mobile
    ========================================================= */
 
-@media (min-width:601px){
-
-  .input-area{
-    padding-left:24px !important;
-    padding-right:24px !important;
-  }
-
-  .input-box{
-    max-width:1000px !important;
-  }
-
-  .left-buttons{
-    gap:6px !important;
-  }
-
-  .main-input{
-    min-width:180px !important;
-  }
-
+/* Keep ALL composer controls in one toolbar row */
+.composer-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: 100% !important;
+  flex: 0 0 100% !important;
+  min-width: 0 !important;
 }
 
-
-/* =========================================================
-   PREMIUM TOOLBAR FEEL
-   ========================================================= */
-
-.left-buttons{
-  scrollbar-width:none !important;
+/* Analyzer + Mic + Voice */
+.composer-toolbar .left-buttons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  overflow: visible !important;
 }
 
-.left-buttons::-webkit-scrollbar{
-  display:none !important;
+/* Put Alloy before Language */
+.composer-toolbar .voice-select {
+  order: 4 !important;
 }
 
-.icon-btn,
-.voice-toggle-btn,
-.voice-select,
-.language-select{
-  -webkit-tap-highlight-color:transparent !important;
+.composer-toolbar .language-select {
+  order: 5 !important;
 }
 
-
-/* =========================================================
-   ACTIVE / SELECTED STATE
-   ========================================================= */
-
-.left-buttons .active,
-.left-buttons .active-btn{
-  background:
-    rgba(41,182,246,.12) !important;
-
-  border-color:
-    rgba(41,182,246,.30) !important;
-
-  color:
-    #69caff !important;
-
-  box-shadow:
-    0 0 14px rgba(41,182,246,.07) !important;
-}
-
-
-/* =========================================================
-   FOCUS ACCESSIBILITY
-   ========================================================= */
-
-.icon-btn:focus-visible,
-.voice-toggle-btn:focus-visible,
-.voice-select:focus-visible,
-.language-select:focus-visible,
-.send-btn:focus-visible,
-.main-input:focus-visible{
-  outline:
-    2px solid rgba(41,182,246,.55) !important;
-
-  outline-offset:2px !important;
-}
-
-
-/* =========================================================
-   TOUCH FRIENDLY
-   ========================================================= */
-
-@media (pointer:coarse){
-
-  .icon-btn,
-  .voice-toggle-btn,
-  .send-btn{
-    -webkit-user-select:none !important;
-    user-select:none !important;
-
-    touch-action:manipulation !important;
-  }
-
-}
-
-
-/* =========================================================
-   EXTRA SMALL HEIGHT PHONES
-   ========================================================= */
-
-@media (max-width:600px) and (max-height:700px){
-
-  .input-area{
-    padding-top:5px !important;
-    padding-bottom:5px !important;
-  }
-
-  .input-box{
-    padding:6px !important;
-    gap:5px !important;
-  }
-
-  .left-buttons .icon-btn,
-  .left-buttons .voice-toggle-btn,
-  .left-buttons .voice-select,
-  .left-buttons .language-select{
-    height:32px !important;
-    min-height:32px !important;
-  }
-
-  .main-input{
-    min-height:36px !important;
-  }
-
-}
-
-
-/* =========================================================
-   PREVENT HORIZONTAL PAGE SCROLL
-   ========================================================= */
-
-html,
-body,
-#root{
-  max-width:100% !important;
-  overflow-x:hidden !important;
+/* Keep Ask box underneath */
+.input-box > .main-input {
+  order: 20 !important;
+  flex: 1 0 100% !important;
+  width: 100% !important;
 }
 
 
 /* =========================================================
-   SMOOTH COMPOSER TRANSITION
+   MOBILE — COMPACT 5 CONTROL ROW
    ========================================================= */
 
-.input-box{
-  transition:
-    border-color .18s ease,
-    box-shadow .18s ease,
-    background .18s ease !important;
+@media (max-width: 600px) {
+
+  .composer-toolbar {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+    width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  /* Flatten the first group so its 3 buttons become
+     individual grid items */
+  .composer-toolbar .left-buttons {
+    display: contents !important;
+  }
+
+  /* Analyzer */
+  .composer-toolbar .left-buttons > div {
+    grid-column: 1 !important;
+    min-width: 0 !important;
+  }
+
+  /* Mic */
+  .composer-toolbar .left-buttons > button:nth-of-type(1) {
+    grid-column: 2 !important;
+  }
+
+  /* Voice On/Off */
+  .composer-toolbar .left-buttons > button:nth-of-type(2) {
+    grid-column: 3 !important;
+  }
+
+  /* Alloy */
+  .composer-toolbar .voice-select {
+    grid-column: 4 !important;
+    order: unset !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Language */
+  .composer-toolbar .language-select {
+    grid-column: 5 !important;
+    order: unset !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* All 3 icon controls */
+  .composer-toolbar .icon-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 2px !important;
+    font-size: 14px !important;
+  }
+
+  /* Voice On text */
+  .composer-toolbar .voice-toggle-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  /* Dropdowns */
+  .composer-toolbar .language__control,
+  .composer-toolbar .voice__control {
+    width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  .composer-toolbar .language__single-value,
+  .composer-toolbar .voice__single-value,
+  .composer-toolbar .language__placeholder,
+  .composer-toolbar .voice__placeholder {
+    font-size: 10px !important;
+  }
+
+  /* Ask box = second row */
+  .input-box > .main-input {
+    order: 20 !important;
+    width: 100% !important;
+    flex: 1 0 100% !important;
+    min-height: 58px !important;
+  }
 }
 
-.input-box:focus-within{
-  border-color:
-    rgba(41,182,246,.24) !important;
 
-  box-shadow:
-    0 18px 55px rgba(0,0,0,.34),
-    0 0 0 1px rgba(41,182,246,.05) inset !important;
+/* Very small phones */
+@media (max-width: 390px) {
+
+  .composer-toolbar {
+    gap: 3px !important;
+  }
+
+  .composer-toolbar .icon-btn {
+    height: 34px !important;
+    min-height: 34px !important;
+    font-size: 13px !important;
+  }
+
+  .composer-toolbar .voice-toggle-btn {
+    font-size: 9px !important;
+  }
+
+  .composer-toolbar .language__single-value,
+  .composer-toolbar .voice__single-value,
+  .composer-toolbar .language__placeholder,
+  .composer-toolbar .voice__placeholder {
+    font-size: 9px !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — FINAL COMPOSER VISUAL FIX
+   ========================================================= */
+
+/* Remove the fake outer box around React Select */
+.composer-toolbar .language-select,
+.composer-toolbar .voice-select {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
+/* Only the actual React Select control gets the border */
+.composer-toolbar .language__control,
+.composer-toolbar .voice__control {
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+
+  border: 1px solid rgba(148,163,184,.20) !important;
+  border-radius: 10px !important;
+
+  background: rgba(255,255,255,.035) !important;
+  box-shadow: none !important;
+}
 
 /* =========================================================
-   FINAL MOBILE SAFETY
+   ASK BOX — RESTORE VISIBLE BORDER
    ========================================================= */
 
-@media (max-width:600px){
+.input-box > .main-input {
+  border: 1px solid rgba(148,163,184,.18) !important;
+  border-radius: 14px !important;
 
-  .input-box,
-  .left-buttons,
-  .main-input,
-  .message-actions{
-    box-sizing:border-box !important;
-  }
+  background: rgba(7,17,31,.82) !important;
 
-  .main-input{
-    overflow:hidden !important;
-  }
-
-  .send-btn{
-    flex-shrink:0 !important;
-  }
-
+  color: #f8fafc !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
+.input-box > .main-input:focus {
+  border-color: rgba(41,182,246,.42) !important;
+  box-shadow: 0 0 0 3px rgba(41,182,246,.07) !important;
+}
 
 /* =========================================================
-   TRULEXITY — END OF REDESIGN
+   COMPOSER TOOLBAR
    ========================================================= */
+
+.composer-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  flex: 0 0 100% !important;
+  gap: 6px !important;
+}
+
+/* Keep first 3 controls together */
+.composer-toolbar .left-buttons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:600px) {
+
+  .composer-toolbar {
+    display: grid !important;
+    grid-template-columns:
+      minmax(0,1fr)
+      minmax(0,1fr)
+      minmax(0,1fr)
+      minmax(0,1.25fr)
+      minmax(0,1.25fr) !important;
+
+    gap: 5px !important;
+  }
+
+  .composer-toolbar .left-buttons {
+    display: contents !important;
+  }
+
+  /* Analyzer */
+  .composer-toolbar .left-buttons > div {
+    grid-column: 1 !important;
+  }
+
+  /* Mic */
+  .composer-toolbar .left-buttons > button:nth-of-type(1) {
+    grid-column: 2 !important;
+  }
+
+  /* Voice */
+  .composer-toolbar .left-buttons > button:nth-of-type(2) {
+    grid-column: 3 !important;
+  }
+
+  /* Alloy */
+  .composer-toolbar .voice-select {
+    grid-column: 4 !important;
+  }
+
+  /* Language */
+  .composer-toolbar .language-select {
+    grid-column: 5 !important;
+  }
+
+  .composer-toolbar .language__control,
+  .composer-toolbar .voice__control {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  .composer-toolbar .icon-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  .composer-toolbar .voice-toggle-btn {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    font-size: 10px !important;
+  }
+
+  /* Ask row */
+  .input-box > .main-input {
+    width: 100% !important;
+    min-height: 58px !important;
+    margin-top: 2px !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — SEND BUTTON ALIGNMENT
+   ========================================================= */
+
+.input-box .send-btn {
+  bottom: 7px !important;
+  right: 9px !important;
+}
+
+@media (max-width: 600px) {
+  .input-box .send-btn {
+    bottom: 8px !important;
+    right: 8px !important;
+  }
+}
