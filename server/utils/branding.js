@@ -1,16 +1,16 @@
 const BRAND = {
   company: {
-    name: "TRUVORA",
-    fullName: "Truvora Global AI Technologies",
-    website: "gettruvora.com",
+    name: "TRULEXITY",
+    fullName: "Trulexity Global AI Technologies Pvt Ltd",
+    website: "trulexity.com",
     slogan: "Intelligence • Innovation • Trust",
-    support: "support@gettruvora.com"
+    support: "support@trulexity.com"
   },
 
   document: {
     title: "AI Analysis Report",
     version: "Enterprise Edition",
-    aiEngine: "Truvora AI"
+    aiEngine: "Trulexity AI"
   },
 
   colors: {
@@ -28,8 +28,8 @@ const BRAND = {
   },
 
   footer: {
-    copyright: `© ${new Date().getFullYear()} Truvora Global AI Technologies`,
-    website: "https://gettruvora.com"
+    copyright: `© ${new Date().getFullYear()} Trulexity Global AI Technologies Pvt Ltd`,
+    website: "https://trulexity.com"
   }
 };
 
