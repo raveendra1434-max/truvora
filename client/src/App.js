@@ -1,6 +1,6 @@
 ﻿/*
  *  * TRULEXITY GLOBAL AI — CLEAN APP.JS
- * Preserves the existing Truvora frontend/backend contract.
+ * Preserves the existing Trulexity frontend/backend contract.
  * Web search and agent capability are enabled automatically;
  * the backend decides when they are actually needed.
  */
@@ -63,7 +63,7 @@ import {
 
 function saveChat(chat) {
   localStorage.setItem(
-    `truvora-chat-${Date.now()}`,
+    `trulexity-chat-${Date.now()}`,
     JSON.stringify(chat)
   );
 }
@@ -252,9 +252,42 @@ function App() {
     setMessages] =
     useState([]);
 
-  const [sidebarOpen,
-    setSidebarOpen] =
-    useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(
+  () =>
+    typeof window !== "undefined"
+      ? window.innerWidth > 900
+      : false
+);
+
+/* =====================================================
+   RESPONSIVE SIDEBAR STATE
+   Desktop  = open
+   Mobile   = closed initially
+   ===================================================== */
+
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth <= 900) {
+      setSidebarOpen(false);
+    } else {
+      setSidebarOpen(true);
+    }
+  };
+
+  handleResize();
+
+  window.addEventListener(
+    "resize",
+    handleResize
+  );
+
+  return () => {
+    window.removeEventListener(
+      "resize",
+      handleResize
+    );
+  };
+}, []);
 
   const [chats,
     setChats] =
@@ -281,7 +314,7 @@ function App() {
       if (
         key &&
         key.startsWith(
-          "truvora-chat-"
+          "trulexity-chat-"
         )
       ) {
 
@@ -672,7 +705,7 @@ function App() {
         );
 
         localStorage.setItem(
-          "truvoraLoggedIn",
+          "trulexityLoggedIn",
           "true"
         );
 
@@ -707,7 +740,7 @@ function App() {
         );
 
         localStorage.removeItem(
-          "truvoraLoggedIn"
+          "trulexityLoggedIn"
         );
 
         setLoggedIn(
@@ -2131,7 +2164,7 @@ ${results
           );
 
           localStorage.setItem(
-            "truvoraLoggedIn",
+            "trulexityLoggedIn",
             "true"
           );
 
@@ -3464,10 +3497,12 @@ const handleGenerateDocument =
             className="logo"
           >
 
-            <div
-              className="logo-icon"
-            >
-            </div>
+            <div className="logo-icon">
+  <img
+    src="/logo192.png"
+    alt="Trulexity"
+  />
+</div>
 
 
             <div
@@ -4641,29 +4676,10 @@ const handleGenerateDocument =
                     )}
 
 
-                    {/* COPY */}
-
-                    <CopyToClipboard
-                      text={
-                        msg.text
-                      }
-                    >
-
-                      <button
-                        className="copy-btn"
-                      >
-
-                        <FiCopy />
-
-                      </button>
-
-                    </CopyToClipboard>
-
-
                     {!msg.image && (<>
+  <div className="file-actions-grid"></div>
 
-                    {/* PDF */}
-
+                     {/* PDF */}
                     <button
                       className="copy-btn"
 
@@ -4979,14 +4995,18 @@ const handleGenerateDocument =
           >
 
             <div
-              className="input-box"
-            >
+  className="input-box"
+>
 
-              <div
-                className="left-buttons"
-              >
+  <div
+    className="composer-toolbar"
+  >
 
-                {/* ANALYZE */}
+    <div
+      className="left-buttons"
+    >
+
+      {/* ANALYZE */}
 
                 <div
                   {...getRootProps()}
@@ -5208,10 +5228,11 @@ const handleGenerateDocument =
 
                 menuPlacement="top"
 
-              />
+/>
 
+</div>
 
-              {/* PERSONAL VOICE */}
+{/* PERSONAL VOICE */}
 
               {showPersonalVoice && (
 
