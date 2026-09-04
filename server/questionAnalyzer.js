@@ -5,7 +5,7 @@ async function analyzeQuestion(message, openai) {
       {
         role: "system",
         content: `
-You are the Truvora Question Analyzer.
+You are the Trulexity Question Analyzer.
 
 Analyze the user's question.
 

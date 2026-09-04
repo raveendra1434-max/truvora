@@ -11,7 +11,7 @@ export async function generateXLSX({
 }) {
   const workbook = new ExcelJS.Workbook();
 
-  workbook.creator = "Truvora Global AI";
+  workbook.creator = "Trulexity Global AI";
   workbook.created = new Date();
 
   const sheet = workbook.addWorksheet("AI Report");

@@ -181,7 +181,7 @@ function drawCoverPage(doc, metadata) {
     .font("Helvetica-Bold")
     .fontSize(42)
     .fillColor("#FFFFFF")
-    .text("TRUVORA", 0, 70, {
+    .text("TRULEXITY", 0, 70, {
       align: "center",
     });
 

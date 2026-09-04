@@ -1,6 +1,6 @@
 /**
  * ==========================================================
- * TRUVORA XML REPORT GENERATOR
+ * TRULEXITY XML REPORT GENERATOR
  * ==========================================================
  */
 
@@ -17,7 +17,7 @@ export async function generateXML({
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<truvoraReport>
+<trulexityReport>
   <reportId>${reportId}</reportId>
   <title>${title}</title>
   <generatedAt>${new Date().toISOString()}</generatedAt>
@@ -39,9 +39,9 @@ ${sourceXML}
   </sources>
 
   <metadata>
-    <platform>Truvora</platform>
+    <platform>Trulexity</platform>
     <version>1.0</version>
     <format>xml</format>
   </metadata>
-</truvoraReport>`;
+</trulexityReport>`;
 }

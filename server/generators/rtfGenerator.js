@@ -1,6 +1,6 @@
 /**
  * ==========================================================
- * TRUVORA RTF REPORT GENERATOR
+ * TRULEXITY RTF REPORT GENERATOR
  * ==========================================================
  */
 
@@ -16,7 +16,7 @@ export async function generateRTF({
 
   return `{\\rtf1\\ansi\\deff0
 
-{\\b TRUVORA AI Analysis Report}\\par
+{\\b TRULEXITY AI Analysis Report}\\par
 \\par
 
 {\\b Report ID:} ${reportId}\\par
@@ -40,7 +40,7 @@ ${recommendations}\\par
 ${sourceText}\\par
 
 \\par
-{\\b Platform:} Truvora\\par
+{\\b Platform:} Trulexity\\par
 {\\b Version:} 1.0\\par
 {\\b Format:} RTF\\par
 

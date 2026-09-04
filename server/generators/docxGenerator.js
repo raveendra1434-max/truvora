@@ -20,7 +20,7 @@ export async function generateDOCX({
             heading: HeadingLevel.TITLE,
             children: [
               new TextRun({
-                text: "TRUVORA GLOBAL AI",
+                text: "TRULEXITY GLOBAL AI",
                 bold: true,
                 size: 36
               })

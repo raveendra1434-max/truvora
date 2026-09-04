@@ -1,6 +1,6 @@
 /**
  * ==========================================================
- * TRUVORA JSON REPORT GENERATOR
+ * TRULEXITY JSON REPORT GENERATOR
  * ==========================================================
  */
 
@@ -29,7 +29,7 @@ export async function generateJSON({
       sources: Array.isArray(sources) ? sources : [],
 
       metadata: {
-        platform: "Truvora",
+        platform: "Trulexity",
         version: "1.0",
         format: "json",
       },
