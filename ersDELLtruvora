@@ -1,0 +1,32 @@
+[1mdiff --git a/server/agentMode.js b/server/agentMode.js[m
+[1mindex 8d96ae1..2548644 100644[m
+[1m--- a/server/agentMode.js[m
+[1m+++ b/server/agentMode.js[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-function detectAgentTasks(prompt) {[m
+[32m+[m[32m﻿function detectAgentTasks(prompt) {[m
+   const text = String(prompt || "").toLowerCase();[m
+ [m
+   const tasks = [];[m
+[36m@@ -83,8 +83,13 @@[m [mfunction detectAgentTasks(prompt) {[m
+     tasks.push("rtf");[m
+   }[m
+ [m
+[31m-  // Image generation[m
+[32m+[m[32m// Image generation[m
+[32m+[m[32mconst isImageAnalysis =[m
+[32m+[m[32m  /\b(analyze|analyse|describe|identify|inspect|read|ocr|what do you see|what is in)\b/.test(text) &&[m
+[32m+[m[32m  /\b(image|picture|photo|photograph)\b/.test(text);[m
+[32m+[m
+ if ([m
+[32m+[m[32m  !isImageAnalysis &&[m
+   /\b(create|make|generate|draw|design|render|show|give|produce|build)\b/.test(text) &&[m
+   /\b(image|picture|photo|illustration|logo|poster|wallpaper|artwork|drawing|portrait|icon|banner|graphic)\b/.test(text)[m
+ ) {[m
+[36m@@ -93,4 +98,4 @@[m [mif ([m
+   return [...new Set(tasks)];[m
+ }[m
+ [m
+[31m-export { detectAgentTasks };[m
+\ No newline at end of file[m
+[32m+[m[32mexport { detectAgentTasks };[m

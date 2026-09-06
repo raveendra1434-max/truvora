@@ -197,11 +197,18 @@ const upload =
    PUBLIC FILE URL
 ===================================================== */
 
-function getPublicBaseUrl(req) {
+function getPublicBaseUrl(
+  req
+) {
+
   return (
     process.env.PUBLIC_BASE_URL ||
-    "https://trulexity-api.onrender.com"
-  ).replace(/\/$/, "");
+    `${req.protocol}://${req.get("host")}`
+  ).replace(
+    /\/$/,
+    ""
+  );
+
 }
 
 
@@ -217,6 +224,7 @@ function getUploadUrl(
   )}`;
 
 }
+
 
 /* =====================================================
    OPENAI

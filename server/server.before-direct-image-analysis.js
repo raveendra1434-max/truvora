@@ -197,11 +197,18 @@ const upload =
    PUBLIC FILE URL
 ===================================================== */
 
-function getPublicBaseUrl(req) {
+function getPublicBaseUrl(
+  req
+) {
+
   return (
     process.env.PUBLIC_BASE_URL ||
-    "https://trulexity-api.onrender.com"
-  ).replace(/\/$/, "");
+    `${req.protocol}://${req.get("host")}`
+  ).replace(
+    /\/$/,
+    ""
+  );
+
 }
 
 
@@ -217,6 +224,7 @@ function getUploadUrl(
   )}`;
 
 }
+
 
 /* =====================================================
    OPENAI
@@ -266,10 +274,10 @@ async function askGemini(
 
 
 /* =====================================================
-   TRULEXITY AI COST-SAVING ROUTER
+   TRUVORA AI COST-SAVING ROUTER
 ===================================================== */
 
-async function askTrulexityAgent(
+async function askTruvoraAgent(
   prompt,
   task
 ) {
@@ -343,7 +351,7 @@ async function askTrulexityAgent(
               "system",
 
             content: `
-You are Trulexity's advanced document-generation agent.
+You are Truvora's advanced document-generation agent.
 
 The user wants a ${task} file.
 
@@ -401,7 +409,7 @@ Return only the document content.
 
 
     const geminiPrompt = `
-You are Trulexity's document-generation agent.
+You are Truvora's document-generation agent.
 
 The user wants a ${task} file.
 
@@ -475,7 +483,7 @@ ${prompt}
               "system",
 
             content: `
-You are Trulexity's document-generation agent.
+You are Truvora's document-generation agent.
 
 Generate useful content for a ${task} file.
 
@@ -661,7 +669,7 @@ app.post(
                 "system",
 
               content: `
-You are Trulexity AI's highly accurate visual identification engine.
+You are Truvora AI's highly accurate visual identification engine.
 
 Your job is to inspect the image carefully and determine exactly what is visible.
 
@@ -1240,7 +1248,7 @@ Prices can change. The prices shown above come from live search results and shou
                 "system",
 
               content: `
-You are Trulexity AI's camera analysis assistant.
+You are Truvora AI's camera analysis assistant.
 
 Analyze the image professionally.
 
@@ -1755,7 +1763,7 @@ app.post(
         analysis =
           await askGemini(
             `
-You are Trulexity AI, a professional learning and knowledge assistant.
+You are Truvora AI, a professional learning and knowledge assistant.
 
 Analyze the following YouTube transcript and create useful content for the user.
 
@@ -1995,7 +2003,7 @@ app.post(
       const analysis =
         await askGemini(
           `
-You are Trulexity AI's video analysis engine.
+You are Truvora AI, a professional website analysis assistant.
 
 Analyze the following website content and provide useful information.
 
@@ -2301,7 +2309,7 @@ app.post(
                 "system",
 
               content: `
-You are Trulexity AI's video analysis engine.
+You are Truvora AI's video analysis engine.
 
 Analyze BOTH:
 
@@ -2539,7 +2547,7 @@ app.post(
                 "system",
 
               content: `
-You are Trulexity AI.
+You are Truvora AI.
 
 Analyze the audio transcript professionally.
 
@@ -2779,70 +2787,6 @@ app.post(
       );
 
 
-
-      /* =================================================
-         DIRECT UPLOADED IMAGE ANALYSIS
-      ================================================= */
-
-      if (imageUrl) {
-        console.log("🖼️ DIRECT IMAGE ANALYSIS:", imageUrl);
-
-        try {
-          const imageAnalysisResponse =
-            await openai.chat.completions.create({
-              model: "gpt-4.1",
-              messages: [
-                {
-  role: "system",
-  content: "You are Trulexity Global AI's image analysis assistant. Analyze the uploaded image carefully. Describe what is visible, identify important objects, read visible text when possible, explain the scene clearly, and answer the user's request. Do not invent details."
-},
-                {
-                  role: "user",
-                  content: [
-                    {
-                      type: "text",
-                      text: message || "Analyze this image in detail."
-                    },
-                    {
-                      type: "image_url",
-                      image_url: {
-                        url: imageUrl
-                      }
-                    }
-                  ]
-                }
-              ]
-            });
-
-          const imageAnalysis =
-            imageAnalysisResponse.choices?.[0]?.message?.content ||
-            "Unable to analyze this image.";
-
-          console.log("✅ DIRECT IMAGE ANALYSIS COMPLETE");
-
-          return res.json({
-            success: true,
-            agentMode: false,
-            tasks: [],
-            documents: [],
-            images: [],
-            reply: imageAnalysis,
-            answer: imageAnalysis,
-            sources: []
-          });
-
-        } catch (imageAnalysisError) {
-          console.error("❌ DIRECT IMAGE ANALYSIS FAILED:", imageAnalysisError);
-
-          return res.status(500).json({
-            success: false,
-            error: "Image analysis failed.",
-            details: imageAnalysisError.message
-          });
-        }
-      }
-
-
       const agentTasks =
         imageUrl
           ? detectAgentTasks(message).filter((task) => task !== "image")
@@ -2912,7 +2856,7 @@ app.post(
 
                 ? `Create a high-quality photorealistic image based on this request: ${message}`
 
-                : await askTrulexityAgent(
+                : await askTruvoraAgent(
                     message,
                     task
                   );
@@ -3148,7 +3092,7 @@ app.post(
         );
 
 
-      console.log("===== TRULEXITY WEB DEBUG =====");
+      console.log("===== TRUVORA WEB DEBUG =====");
       console.log("MESSAGE:", message);
       console.log("WEB:", web);
       console.log("ANALYSIS NEEDS WEB:", analysis.needsWeb);
@@ -3657,9 +3601,9 @@ technical term, or the user explicitly requests it.
 
       const systemPrompt = `
 
-You are Trulexity AI.
+You are Truvora AI.
 
-Trulexity is a professional global AI assistant.
+Truvora is a professional global AI assistant.
 
 Your priorities are:
 
@@ -4227,7 +4171,7 @@ app.post(
                 "system",
 
               content: `
-You are Trulexity AI's professional document-analysis assistant.
+You are Truvora AI's professional document-analysis assistant.
 
 Analyze the uploaded document accurately.
 
@@ -4412,10 +4356,10 @@ app.post(
 
 
       const safeTitle =
-  String(
-    title ||
-    "Trulexity Document"
-  ).trim();
+        String(
+          title ||
+          "Truvora Document"
+        ).trim();
 
 
       const reportId =
@@ -5034,7 +4978,8 @@ app.get(
       success:
         true,
 
-      service: "Trulexity Global AI",
+      service:
+        "Truvora Global AI",
 
       status:
         "online",
@@ -5066,10 +5011,10 @@ app.get(
         true,
 
       name:
-  "TRULEXITY",
+        "TRUVORA",
 
       product:
-  "Trulexity Global AI",
+        "Truvora Global AI",
 
       slogan:
         "Intelligence â€¢ Innovation â€¢ Trust",
@@ -5148,8 +5093,8 @@ app.listen(
     );
 
     console.log(
-  "🚀 TRULEXITY GLOBAL AI SERVER"
-);
+      "ðŸš€ TRUVORA GLOBAL AI SERVER"
+    );
 
     console.log(
       `ðŸš€ Server running on port ${PORT}`
@@ -5184,4 +5129,3 @@ app.listen(
   }
 );
 
- 

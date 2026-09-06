@@ -1,6 +1,6 @@
-﻿/*
- *  * TRULEXITY GLOBAL AI — CLEAN APP.JS
- * Preserves the existing Trulexity frontend/backend contract.
+/*
+ * TRUVORA GLOBAL AI — CLEAN APP.JS
+ * Preserves the existing Truvora frontend/backend contract.
  * Web search and agent capability are enabled automatically;
  * the backend decides when they are actually needed.
  */
@@ -54,8 +54,6 @@ import {
 
 import {
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   onAuthStateChanged,
   signOut,
   createUserWithEmailAndPassword,
@@ -65,7 +63,7 @@ import {
 
 function saveChat(chat) {
   localStorage.setItem(
-    `trulexity-chat-${Date.now()}`,
+    `truvora-chat-${Date.now()}`,
     JSON.stringify(chat)
   );
 }
@@ -94,87 +92,7 @@ function App() {
   const [citationPreviewOpen, setCitationPreviewOpen] =
     useState(false);
 
-  /* =====================================================
-     PWA SERVICE WORKER
-  ===================================================== */
 
-  useEffect(() => {
-
-    if ("serviceWorker" in navigator) {
-
-      window.addEventListener("load", () => {
-
-        navigator.serviceWorker
-          .register("/service-worker.js")
-          .then((registration) => {
-
-            console.log(
-              "TRULEXITY SERVICE WORKER REGISTERED:",
-              registration.scope
-            );
-
-          })
-          .catch((error) => {
-
-            console.error(
-              "TRULEXITY SERVICE WORKER REGISTRATION FAILED:",
-              error
-            );
-
-          });
-
-      });
-
-    }
-
-  }, []);
-
-    useEffect(() => {
-    const handleBeforeInstallPrompt = (event) => {
-      event.preventDefault();
-      setDeferredInstallPrompt(event);
-    };
-
-    window.addEventListener(
-      "beforeinstallprompt",
-      handleBeforeInstallPrompt
-    );
-
-    return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
-    };
-  }, []);
-    const handleInstallApp = async () => {
-    if (!deferredInstallPrompt) {
-      return;
-    }
-
-    deferredInstallPrompt.prompt();
-
-    await deferredInstallPrompt.userChoice;
-
-    setDeferredInstallPrompt(null);
-  };
-    useEffect(() => {
-    const handleAppInstalled = () => {
-      setDeferredInstallPrompt(null);
-    };
-
-    window.addEventListener(
-      "appinstalled",
-      handleAppInstalled
-    );
-
-    return () => {
-      window.removeEventListener(
-        "appinstalled",
-        handleAppInstalled
-      );
-    };
-  }, []);
   /* =====================================================
      YOUTUBE URL HANDLING
   ===================================================== */
@@ -299,7 +217,7 @@ function App() {
 
     {
       id: "personal",
-      name: "🎙️ Add Personal Voice"
+      name: "🎤 Add Personal Voice"
     },
 
   ];
@@ -334,42 +252,9 @@ function App() {
     setMessages] =
     useState([]);
 
-  const [sidebarOpen, setSidebarOpen] = useState(
-  () =>
-    typeof window !== "undefined"
-      ? window.innerWidth > 900
-      : false
-);
-
-/* =====================================================
-   RESPONSIVE SIDEBAR STATE
-   Desktop  = open
-   Mobile   = closed initially
-   ===================================================== */
-
-useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth <= 900) {
-      setSidebarOpen(false);
-    } else {
-      setSidebarOpen(true);
-    }
-  };
-
-  handleResize();
-
-  window.addEventListener(
-    "resize",
-    handleResize
-  );
-
-  return () => {
-    window.removeEventListener(
-      "resize",
-      handleResize
-    );
-  };
-}, []);
+  const [sidebarOpen,
+    setSidebarOpen] =
+    useState(true);
 
   const [chats,
     setChats] =
@@ -396,7 +281,7 @@ useEffect(() => {
       if (
         key &&
         key.startsWith(
-          "trulexity-chat-"
+          "truvora-chat-"
         )
       ) {
 
@@ -528,7 +413,7 @@ useEffect(() => {
   const [selectedLanguage,
     setSelectedLanguage] =
     useState("English");
-const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
+
   const languageOptions =
     languageGroups;
 
@@ -711,48 +596,7 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
       unsubscribe();
 
   }, []);
-  /* =====================================================
-     FIREBASE GOOGLE REDIRECT RESULT
-  ===================================================== */
 
-  useEffect(() => {
-
-    getRedirectResult(auth)
-      .then((result) => {
-
-        if (result?.user) {
-
-          console.log(
-            "GOOGLE REDIRECT LOGIN SUCCESS:",
-            result.user
-          );
-
-          setUser(
-            result.user
-          );
-
-          setLoggedIn(
-            true
-          );
-
-          localStorage.setItem(
-            "trulexityLoggedIn",
-            "true"
-          );
-
-        }
-
-      })
-      .catch((error) => {
-
-        console.error(
-          "GOOGLE REDIRECT LOGIN ERROR:",
-          error
-        );
-
-      });
-
-  }, []);
 
   /* =====================================================
      CAMERA STREAM
@@ -818,30 +662,17 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
 
       try {
 
-        const isIOS =
-  /iPad|iPhone|iPod/.test(
-    navigator.userAgent
-  );
-
-if (isIOS) {
-  await signInWithRedirect(
-    auth,
-    googleProvider
-  );
-  return;
-}
-
-await signInWithPopup(
-  auth,
-  googleProvider
-);
+        await signInWithPopup(
+          auth,
+          googleProvider
+        );
 
         setLoggedIn(
           true
         );
 
         localStorage.setItem(
-          "trulexityLoggedIn",
+          "truvoraLoggedIn",
           "true"
         );
 
@@ -876,7 +707,7 @@ await signInWithPopup(
         );
 
         localStorage.removeItem(
-          "trulexityLoggedIn"
+          "truvoraLoggedIn"
         );
 
         setLoggedIn(
@@ -1007,9 +838,9 @@ await signInWithPopup(
         /* Request TTS */
 
         const response =
-  await fetch(
-  "https://trulexity-api.onrender.com/generate-speech",
-  {
+          await fetch(
+            "https://truvora-backend.onrender.com/tts",
+            {
               method: "POST",
 
               headers: {
@@ -1057,16 +888,10 @@ await signInWithPopup(
 
         /* Download complete audio */
 
-        const secureAudioUrl =
-  data.audioUrl.replace(
-    /^http:\/\//i,
-    "https://"
-  );
-
-const audioResponse =
-  await fetch(
-    secureAudioUrl
-  );
+        const audioResponse =
+          await fetch(
+            data.audioUrl
+          );
 
 
         if (
@@ -1223,7 +1048,7 @@ const audioResponse =
         const userImageMessage = {
           role: "user",
           text:
-            "📸 Captured Image",
+            "📷 Captured Image",
           content:
             imageData,
         };
@@ -1231,7 +1056,7 @@ const audioResponse =
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/analyze-image",
+            "https://truvora-backend.onrender.com/analyze-image",
             {
               method: "POST",
 
@@ -1351,13 +1176,13 @@ const audioResponse =
               minPrice ===
               maxPrice
 
-                ? `?${minPrice.toLocaleString(
+                ? `₹${minPrice.toLocaleString(
                     "en-IN"
                   )}`
 
-                : `?${minPrice.toLocaleString(
+                : `₹${minPrice.toLocaleString(
                     "en-IN"
-                  )} – ?${maxPrice.toLocaleString(
+                  )} – ₹${maxPrice.toLocaleString(
                     "en-IN"
                   )}`;
 
@@ -1383,11 +1208,11 @@ const audioResponse =
 
 
           answer = `
-🔎 What I found
+📦 What I found
 
 ${productName}
 
-🆔 Identification
+🔎 Identification
 
 ${identification}
 
@@ -1399,11 +1224,11 @@ ${confidence}
 
 ${priceRange || "Price unavailable"}
 
-📝 Price Note
+⚠️ Price Note
 
 The exact model was not necessarily identified. The range below is based on matching products found in live shopping results.
 
-🛍️ Matching Products
+🛒 Matching Products
 
 ${results
   .map(
@@ -1415,11 +1240,11 @@ ${results
         item.title ||
         "Product"
       }
-— ${
+💵 ${
         item.price ||
         "Price unavailable"
       }
-— ${
+🏪 ${
         item.source ||
         "Seller unavailable"
       }`
@@ -1523,7 +1348,7 @@ ${results
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/analyze-document",
+            "https://truvora-backend.onrender.com/analyze-document",
             {
               method: "POST",
               body: formData,
@@ -1562,7 +1387,7 @@ ${results
             {
               role: "user",
               text:
-                `📎 Uploaded: ${file.name}`,
+                `📄 Uploaded: ${file.name}`,
             },
 
             {
@@ -1679,7 +1504,7 @@ ${results
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/upload-video",
+            "https://truvora-backend.onrender.com/upload-video",
             {
               method: "POST",
               body: formData,
@@ -1780,7 +1605,7 @@ ${results
 
           const response =
             await fetch(
-              "https://trulexity-api.onrender.com/analyze-youtube",
+              "https://truvora-backend.onrender.com/analyze-youtube",
               {
                 method: "POST",
 
@@ -1884,7 +1709,7 @@ ${results
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/analyze-website",
+            "https://truvora-backend.onrender.com/analyze-website",
             {
               method: "POST",
 
@@ -1991,7 +1816,7 @@ ${results
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/upload-audio",
+            "https://truvora-backend.onrender.com/upload-audio",
             {
               method: "POST",
               body: formData,
@@ -2134,7 +1959,7 @@ ${results
 
               const response =
                 await fetch(
-                  "https://trulexity-api.onrender.com/analyze-document",
+                  "https://truvora-backend.onrender.com/analyze-document",
                   {
                     method:
                       "POST",
@@ -2168,7 +1993,7 @@ ${results
                         "user",
 
                       text:
-                        `📎 Uploaded: ${file.name}`,
+                        `📊 Uploaded: ${file.name}`,
                     },
 
                     {
@@ -2204,7 +2029,7 @@ ${results
 
             const imageResponse =
               await fetch(
-                "https://trulexity-api.onrender.com/upload-image",
+                "https://truvora-backend.onrender.com/upload-image",
                 {
                   method:
                     "POST",
@@ -2275,7 +2100,7 @@ ${results
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/api/login",
+            "https://truvora-backend.onrender.com/api/login",
             {
               method: "POST",
 
@@ -2306,7 +2131,7 @@ ${results
           );
 
           localStorage.setItem(
-            "trulexityLoggedIn",
+            "truvoraLoggedIn",
             "true"
           );
 
@@ -2467,7 +2292,7 @@ ${results
 
         const response =
           await fetch(
-            "https://trulexity-api.onrender.com/ask",
+            "https://truvora-backend.onrender.com/ask",
             {
 
               method:
@@ -2665,55 +2490,55 @@ ${results
 
 
   /* =====================================================
-   DOCUMENT GENERATION
-===================================================== */
+     DOCUMENT GENERATION
+  ===================================================== */
 
-const handleGenerateDocument =
-  async (
-    type,
-    text
-  ) => {
+  const handleGenerateDocument =
+    async (
+      type,
+      text
+    ) => {
 
-    const lastMessage =
-      [...messages]
-        .reverse()
-        .find(
-          (msg) =>
-            msg.role ===
-            "assistant"
-        );
+      const lastMessage =
+        [...messages]
+          .reverse()
+          .find(
+            (msg) =>
+              msg.role ===
+              "assistant"
+          );
 
 
-    const summary = (
+      const summary = (
 
-      text ||
+        text ||
 
-      lastMessage?.text ||
+        lastMessage?.text ||
 
-      lastMessage?.summary ||
+        lastMessage?.summary ||
 
-      lastMessage?.content ||
+        lastMessage?.content ||
 
-      ""
-
-    )
-
-      .replace(
-        /^\s*Quick Answer\s*/i,
         ""
+
       )
 
-      .replace(
-        /^\s*Quick Answer\s*/i,
-        ""
-      )
+        .replace(
+          /^☑\s*Quick Answer\s*/i,
+          ""
+        )
 
-      .trim();
+        .replace(
+          /^✅\s*Quick Answer\s*/i,
+          ""
+        )
+
+        .trim();
 
 
-    try {
+      try {
 
-      const recommendations = `
+        const recommendations = `
 • Verify important information using official sources.
 
 • Review AI-generated content before making important decisions.
@@ -2721,102 +2546,119 @@ const handleGenerateDocument =
 • Cross-check facts from multiple trusted sources.
 
 • Continue monitoring this topic because information may change.
-      `;
+        `;
 
 
-      const sources = [
+        const sources = [
 
-        "https://news.google.com",
+          "https://news.google.com",
 
-        "https://www.reuters.com",
+          "https://www.reuters.com",
 
-        "https://apnews.com",
+          "https://apnews.com",
 
-      ];
+        ];
 
 
-      const response =
-        await fetch(
-          "https://trulexity-api.onrender.com/generate-document",
-          {
-            method: "POST",
+        const response =
+          await fetch(
+            "https://truvora-backend.onrender.com/generate-document",
+            {
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+              method:
+                "POST",
 
-            body:
-              JSON.stringify({
-                type,
-                summary,
-                analysis: summary,
-                recommendations,
-                sources,
-              }),
-          }
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  type,
+
+                  summary,
+
+                  analysis:
+                    summary,
+
+                  recommendations,
+
+                  sources,
+
+                }),
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !data.success
+        ) {
+
+          alert(
+            "Document generation failed."
+          );
+
+          return;
+
+        }
+
+
+        const url =
+          `https://truvora-backend.onrender.com${data.document}?t=${Date.now()}`;
+
+
+        const link =
+          document.createElement(
+            "a"
+          );
+
+
+        link.href =
+          url;
+
+
+        link.download =
+          data.document
+            .split("/")
+            .pop();
+
+
+        document.body.appendChild(
+          link
         );
 
 
-      const data =
-        await response.json();
+        link.click();
 
 
-      if (
-        !data.success
-      ) {
+        document.body.removeChild(
+          link
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "DOCUMENT GENERATION ERROR:",
+          error
+        );
 
         alert(
-          "Document generation failed."
+          "Server error"
         );
-
-        return;
 
       }
 
-
-      /* =================================================
-         DIRECT FILE DOWNLOAD
-      ================================================= */
-
-      const url =
-  data.document;
-
-      const link =
-        document.createElement("a");
-
-      link.href = url;
-
-      link.download =
-        data.document
-          .split("/")
-          .pop();
-
-      document.body.appendChild(
-        link
-      );
-
-      link.click();
-
-      document.body.removeChild(
-        link
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "DOCUMENT GENERATION ERROR:",
-        error
-      );
-
-      alert(
-        "Server error"
-      );
-
-    }
-
-  };
+    };
 
 
   /* =====================================================
@@ -2855,7 +2697,7 @@ const handleGenerateDocument =
       >
 
         <h1>
-          TRULEXITY GLOBAL AI
+          TRUVORA GLOBAL AI
         </h1>
 
 
@@ -2947,7 +2789,7 @@ const handleGenerateDocument =
                 imageUploadRef.current?.click()
               }
             >
-              🖼️ Image
+              🖼 Image
             </button>
 
 
@@ -2990,7 +2832,7 @@ const handleGenerateDocument =
                   ?.click()
               }
             >
-              🎵 Audio
+              🎙 Audio
             </button>
 
 
@@ -3035,7 +2877,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              ? Cancel
+              ❌ Cancel
             </button>
 
 
@@ -3174,7 +3016,7 @@ const handleGenerateDocument =
 
                     const response =
                       await fetch(
-                        "https://trulexity-api.onrender.com/upload-image",
+                        "https://truvora-backend.onrender.com/upload-image",
                         {
                           method:
                             "POST",
@@ -3318,7 +3160,7 @@ const handleGenerateDocument =
           >
 
             <h2>
-              ▶️ YouTube
+              🎥 YouTube
             </h2>
 
 
@@ -3344,7 +3186,7 @@ const handleGenerateDocument =
             <input
               type="text"
 
-              placeholder="🔎 Search YouTube videos..."
+              placeholder="🔍 Search YouTube videos..."
 
               value={
                 youtubeQuery
@@ -3412,7 +3254,7 @@ const handleGenerateDocument =
                 }
               }
             >
-              🔎 Search YouTube
+              🚀 Search YouTube
             </button>
 
 
@@ -3440,7 +3282,7 @@ const handleGenerateDocument =
               >
 
                 <h3>
-                  👁️ Search Preview
+                  📺 Search Preview
                 </h3>
 
 
@@ -3470,7 +3312,7 @@ const handleGenerateDocument =
                     )
                   }
                 >
-                  ? Open YouTube
+                  ▶ Open YouTube
                 </button>
 
               </div>
@@ -3485,7 +3327,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              ? Cancel
+              ❌ Cancel
             </button>
 
           </div>
@@ -3604,7 +3446,7 @@ const handleGenerateDocument =
 
               }}
             >
-              ? Cancel
+              ❌ Cancel
             </button>
 
           </div>
@@ -3639,12 +3481,10 @@ const handleGenerateDocument =
             className="logo"
           >
 
-            <div className="logo-icon">
-  <img
-    src="/logo192.png"
-    alt="Trulexity"
-  />
-</div>
+            <div
+              className="logo-icon"
+            >
+            </div>
 
 
             <div
@@ -3652,7 +3492,7 @@ const handleGenerateDocument =
             >
 
               <h2>
-                TRULEXITY
+                TRUVORA
               </h2>
 
               <p>
@@ -3975,17 +3815,9 @@ const handleGenerateDocument =
             <div
               className="top-title"
             >
-              TRULEXITY GLOBAL AI
+              TRUVORA GLOBAL AI
             </div>
-{deferredInstallPrompt && (
-  <button
-    type="button"
-    className="install-app-btn"
-    onClick={handleInstallApp}
-  >
-    📲 Install Trulexity
-  </button>
-)}
+
 
             {user ? (
 
@@ -4153,7 +3985,7 @@ const handleGenerateDocument =
 
                                     ? msg.content
 
-                                    : `https://trulexity-api.onrender.com${msg.content}`
+                                    : `https://truvora-backend.onrender.com${msg.content}`
 
                               )
 
@@ -4165,7 +3997,7 @@ const handleGenerateDocument =
 
                                   ? msg.image
 
-                                  : `https://trulexity-api.onrender.com${msg.image}`
+                                  : `https://truvora-backend.onrender.com${msg.image}`
 
                               )
 
@@ -4226,7 +4058,7 @@ const handleGenerateDocument =
 
                                         ? msg.image
 
-                                        : `https://trulexity-api.onrender.com${msg.image}`;
+                                        : `https://truvora-backend.onrender.com${msg.image}`;
 
 
                                     const response =
@@ -4255,7 +4087,7 @@ const handleGenerateDocument =
                                       url;
 
                                     a.download =
-                                      "trulexity-image.png"
+                                      "truvora-image.png";
 
 
                                     document.body.appendChild(
@@ -4289,7 +4121,7 @@ const handleGenerateDocument =
 
                             >
 
-                              ? Download Image
+                              ⬇ Download Image
 
                             </button>
 
@@ -4297,6 +4129,151 @@ const handleGenerateDocument =
 
                         )}
 
+
+                        {/* DOCUMENT BUTTONS */}
+
+                        <div
+                          style={{
+
+                            marginTop:
+                              "15px",
+
+                            display:
+                              "flex",
+
+                            gap:
+                              "10px",
+
+                            flexWrap:
+                              "wrap",
+
+                          }}
+                        >
+
+                          <button
+
+                            className="copy-btn"
+
+                            onClick={() =>
+                              handleGenerateDocument(
+                                "pdf",
+                                msg.text ||
+                                msg.content ||
+                                ""
+                              )
+                            }
+
+                          >
+                            📄 PDF
+                          </button>
+
+
+                          <button
+
+                            className="copy-btn"
+
+                            onClick={() =>
+                              handleGenerateDocument(
+                                "docx",
+                                msg.text ||
+                                msg.content ||
+                                ""
+                              )
+                            }
+
+                          >
+                            📝 DOCX
+                          </button>
+
+
+                          <button
+
+                            className="copy-btn"
+
+                            onClick={() =>
+                              handleGenerateDocument(
+                                "xlsx",
+                                msg.text ||
+                                msg.content ||
+                                ""
+                              )
+                            }
+
+                          >
+                            📊 XLSX
+                          </button>
+
+
+                          <button
+
+                            className="copy-btn"
+
+                            onClick={() =>
+                              handleGenerateDocument(
+                                "pptx",
+                                msg.text ||
+                                msg.content ||
+                                ""
+                              )
+                            }
+
+                          >
+                            📽 PPTX
+                          </button>
+
+
+                          <button
+
+                            className="copy-btn"
+
+                            onClick={() =>
+                              handleGenerateDocument(
+                                "md",
+                                msg.text ||
+                                msg.content ||
+                                ""
+                              )
+                            }
+
+                          >
+                            📝 MD
+                          </button>
+
+                        </div>
+
+
+                        {/* GENERATED DOCUMENT LINK */}
+
+                        {msg.document && (
+
+                          <div
+                            style={{
+                              marginTop:
+                                "10px",
+                            }}
+                          >
+
+                            <a
+
+                              href={`https://truvora-backend.onrender.com${msg.document}`}
+
+                              target="_blank"
+
+                              rel="noopener noreferrer"
+
+                              download
+
+                              className="source-link"
+
+                            >
+
+                              ⬇ Download Generated File
+
+                            </a>
+
+                          </div>
+
+                        )}
 
                       </div>
 
@@ -4394,7 +4371,7 @@ const handleGenerateDocument =
 
                               }}
                             >
-                              •
+                              🔗
                             </div>
 
 
@@ -4455,7 +4432,7 @@ const handleGenerateDocument =
 
                         <div
 
-                          className="trulexity-source-feed"
+                          className="truvora-source-feed"
 
                           style={{
 
@@ -4815,7 +4792,7 @@ const handleGenerateDocument =
                             }}
                           >
 
-                            ? Scroll for more sources
+                            ↓ Scroll for more sources
 
                           </div>
 
@@ -4826,10 +4803,27 @@ const handleGenerateDocument =
                     )}
 
 
-                    {!msg.image && (<>
-  <div className="file-actions-grid"></div>
+                    {/* COPY */}
 
-                     {/* PDF */}
+                    <CopyToClipboard
+                      text={
+                        msg.text
+                      }
+                    >
+
+                      <button
+                        className="copy-btn"
+                      >
+
+                        <FiCopy />
+
+                      </button>
+
+                    </CopyToClipboard>
+
+
+                    {/* PDF */}
+
                     <button
                       className="copy-btn"
 
@@ -4842,7 +4836,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📄 PDF
+                      📕 PDF
                     </button>
 
 
@@ -4860,7 +4854,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📘 DOCX
+                      📝 DOCX
                     </button>
 
 
@@ -4896,7 +4890,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      📽️ PPTX
+                      📽 PPTX
                     </button>
 
 
@@ -4968,7 +4962,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      {} JSON
+                      📄 JSON
                     </button>
 
 
@@ -4986,7 +4980,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      🗂️ XML
+                      📄 XML
                     </button>
 
 
@@ -5008,8 +5002,6 @@ const handleGenerateDocument =
                     </button>
 
 
-
-                    </>)}
                     {/* READ ALOUD */}
 
                     <button
@@ -5042,7 +5034,7 @@ const handleGenerateDocument =
 
                             await navigator.share({
                               title:
-                                 "Trulexity AI",
+                                "Truvora AI",
 
                               text:
                                 msg.text ||
@@ -5072,7 +5064,7 @@ const handleGenerateDocument =
                       }}
 
                     >
-                      Copy
+                      📤
                     </button>
 
 
@@ -5089,7 +5081,7 @@ const handleGenerateDocument =
                       }
 
                     >
-                      Save
+                      💾
                     </button>
 
 
@@ -5145,18 +5137,14 @@ const handleGenerateDocument =
           >
 
             <div
-  className="input-box"
->
+              className="input-box"
+            >
 
-  <div
-    className="composer-toolbar"
-  >
+              <div
+                className="left-buttons"
+              >
 
-    <div
-      className="left-buttons"
-    >
-
-      {/* ANALYZE */}
+                {/* ANALYZE */}
 
                 <div
                   {...getRootProps()}
@@ -5185,7 +5173,7 @@ const handleGenerateDocument =
 
                   >
 
-                    🎙️
+                    🔍
 
                   </button>
 
@@ -5227,7 +5215,7 @@ const handleGenerateDocument =
 
                 <button
 
-                  className="icon-btn voice-toggle-btn"
+                  className="icon-btn"
 
                   onClick={() =>
                     setVoiceEnabled(
@@ -5239,8 +5227,8 @@ const handleGenerateDocument =
 
                   {
                     voiceEnabled
-                      ? "🎙️ Voice On"
-                      : "🔇 Voice Off"
+                      ? "🔊"
+                      : "🔇"
                   }
 
                 </button>
@@ -5296,7 +5284,7 @@ const handleGenerateDocument =
 
                 }}
 
-                placeholder="🌐 Select Language"
+                placeholder="🌍 Select Language"
 
                 isSearchable
 
@@ -5378,11 +5366,10 @@ const handleGenerateDocument =
 
                 menuPlacement="top"
 
-/>
+              />
 
-</div>
 
-{/* PERSONAL VOICE */}
+              {/* PERSONAL VOICE */}
 
               {showPersonalVoice && (
 
@@ -5399,9 +5386,9 @@ const handleGenerateDocument =
                     </h2>
 
 
-                     <p>
-  Create your personal voice for Trulexity.
-</p>              
+                    <p>
+                      Create your personal voice for Truvora.
+                    </p>
 
 
                     <input
@@ -5491,7 +5478,7 @@ const handleGenerateDocument =
 
                                 const response =
                                   await fetch(
-                                    "https://trulexity-api.onrender.com/upload-personal-voice",
+                                    "https://truvora-backend.onrender.com/upload-personal-voice",
                                     {
                                       method:
                                         "POST",
@@ -5570,7 +5557,7 @@ const handleGenerateDocument =
 
                       >
 
-                        🔴 Record Voice
+                        🎙️ Record Voice
 
                       </button>
 
@@ -5606,7 +5593,7 @@ const handleGenerateDocument =
 
                 className="main-input"
 
-                placeholder="Ask Trulexity anything..."
+                placeholder="Ask Truvora anything..."
 
                 value={
                   input
@@ -5672,9 +5659,3 @@ const handleGenerateDocument =
 
 
 export default App;
-
-
-
-
-
-

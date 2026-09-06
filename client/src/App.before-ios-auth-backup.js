@@ -94,87 +94,7 @@ function App() {
   const [citationPreviewOpen, setCitationPreviewOpen] =
     useState(false);
 
-  /* =====================================================
-     PWA SERVICE WORKER
-  ===================================================== */
 
-  useEffect(() => {
-
-    if ("serviceWorker" in navigator) {
-
-      window.addEventListener("load", () => {
-
-        navigator.serviceWorker
-          .register("/service-worker.js")
-          .then((registration) => {
-
-            console.log(
-              "TRULEXITY SERVICE WORKER REGISTERED:",
-              registration.scope
-            );
-
-          })
-          .catch((error) => {
-
-            console.error(
-              "TRULEXITY SERVICE WORKER REGISTRATION FAILED:",
-              error
-            );
-
-          });
-
-      });
-
-    }
-
-  }, []);
-
-    useEffect(() => {
-    const handleBeforeInstallPrompt = (event) => {
-      event.preventDefault();
-      setDeferredInstallPrompt(event);
-    };
-
-    window.addEventListener(
-      "beforeinstallprompt",
-      handleBeforeInstallPrompt
-    );
-
-    return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
-    };
-  }, []);
-    const handleInstallApp = async () => {
-    if (!deferredInstallPrompt) {
-      return;
-    }
-
-    deferredInstallPrompt.prompt();
-
-    await deferredInstallPrompt.userChoice;
-
-    setDeferredInstallPrompt(null);
-  };
-    useEffect(() => {
-    const handleAppInstalled = () => {
-      setDeferredInstallPrompt(null);
-    };
-
-    window.addEventListener(
-      "appinstalled",
-      handleAppInstalled
-    );
-
-    return () => {
-      window.removeEventListener(
-        "appinstalled",
-        handleAppInstalled
-      );
-    };
-  }, []);
   /* =====================================================
      YOUTUBE URL HANDLING
   ===================================================== */
@@ -528,7 +448,7 @@ useEffect(() => {
   const [selectedLanguage,
     setSelectedLanguage] =
     useState("English");
-const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
+
   const languageOptions =
     languageGroups;
 
@@ -711,48 +631,7 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
       unsubscribe();
 
   }, []);
-  /* =====================================================
-     FIREBASE GOOGLE REDIRECT RESULT
-  ===================================================== */
 
-  useEffect(() => {
-
-    getRedirectResult(auth)
-      .then((result) => {
-
-        if (result?.user) {
-
-          console.log(
-            "GOOGLE REDIRECT LOGIN SUCCESS:",
-            result.user
-          );
-
-          setUser(
-            result.user
-          );
-
-          setLoggedIn(
-            true
-          );
-
-          localStorage.setItem(
-            "trulexityLoggedIn",
-            "true"
-          );
-
-        }
-
-      })
-      .catch((error) => {
-
-        console.error(
-          "GOOGLE REDIRECT LOGIN ERROR:",
-          error
-        );
-
-      });
-
-  }, []);
 
   /* =====================================================
      CAMERA STREAM
@@ -818,23 +697,10 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
 
       try {
 
-        const isIOS =
-  /iPad|iPhone|iPod/.test(
-    navigator.userAgent
-  );
-
-if (isIOS) {
-  await signInWithRedirect(
-    auth,
-    googleProvider
-  );
-  return;
-}
-
-await signInWithPopup(
-  auth,
-  googleProvider
-);
+        await signInWithPopup(
+          auth,
+          googleProvider
+        );
 
         setLoggedIn(
           true
@@ -1057,16 +923,10 @@ await signInWithPopup(
 
         /* Download complete audio */
 
-        const secureAudioUrl =
-  data.audioUrl.replace(
-    /^http:\/\//i,
-    "https://"
-  );
-
-const audioResponse =
-  await fetch(
-    secureAudioUrl
-  );
+        const audioResponse =
+          await fetch(
+            data.audioUrl
+          );
 
 
         if (
@@ -3977,15 +3837,7 @@ const handleGenerateDocument =
             >
               TRULEXITY GLOBAL AI
             </div>
-{deferredInstallPrompt && (
-  <button
-    type="button"
-    className="install-app-btn"
-    onClick={handleInstallApp}
-  >
-    📲 Install Trulexity
-  </button>
-)}
+
 
             {user ? (
 
@@ -4780,7 +4632,7 @@ const handleGenerateDocument =
                                     }}
                                   >
 
-                                    ↗
+                                    ?
 
                                   </div>
 

@@ -128,53 +128,6 @@ function App() {
     }
 
   }, []);
-
-    useEffect(() => {
-    const handleBeforeInstallPrompt = (event) => {
-      event.preventDefault();
-      setDeferredInstallPrompt(event);
-    };
-
-    window.addEventListener(
-      "beforeinstallprompt",
-      handleBeforeInstallPrompt
-    );
-
-    return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
-    };
-  }, []);
-    const handleInstallApp = async () => {
-    if (!deferredInstallPrompt) {
-      return;
-    }
-
-    deferredInstallPrompt.prompt();
-
-    await deferredInstallPrompt.userChoice;
-
-    setDeferredInstallPrompt(null);
-  };
-    useEffect(() => {
-    const handleAppInstalled = () => {
-      setDeferredInstallPrompt(null);
-    };
-
-    window.addEventListener(
-      "appinstalled",
-      handleAppInstalled
-    );
-
-    return () => {
-      window.removeEventListener(
-        "appinstalled",
-        handleAppInstalled
-      );
-    };
-  }, []);
   /* =====================================================
      YOUTUBE URL HANDLING
   ===================================================== */
@@ -528,7 +481,7 @@ useEffect(() => {
   const [selectedLanguage,
     setSelectedLanguage] =
     useState("English");
-const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
+
   const languageOptions =
     languageGroups;
 
@@ -1057,16 +1010,10 @@ await signInWithPopup(
 
         /* Download complete audio */
 
-        const secureAudioUrl =
-  data.audioUrl.replace(
-    /^http:\/\//i,
-    "https://"
-  );
-
-const audioResponse =
-  await fetch(
-    secureAudioUrl
-  );
+        const audioResponse =
+          await fetch(
+            data.audioUrl
+          );
 
 
         if (
@@ -3977,15 +3924,7 @@ const handleGenerateDocument =
             >
               TRULEXITY GLOBAL AI
             </div>
-{deferredInstallPrompt && (
-  <button
-    type="button"
-    className="install-app-btn"
-    onClick={handleInstallApp}
-  >
-    📲 Install Trulexity
-  </button>
-)}
+
 
             {user ? (
 
@@ -4780,7 +4719,7 @@ const handleGenerateDocument =
                                     }}
                                   >
 
-                                    ↗
+                                    ?
 
                                   </div>
 
