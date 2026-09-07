@@ -5156,7 +5156,7 @@ const handleGenerateDocument =
                         )
                       }
                     >
-                      {} JSON
+                      🧩 JSON
                     </button>
 
 
