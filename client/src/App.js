@@ -1175,6 +1175,7 @@ await signInWithPopup(
               headers: {
                 "Content-Type":
                   "application/json",
+                  
               },
 
               body:
@@ -5502,7 +5503,13 @@ const handleGenerateDocument =
                 isSearchable
 
                 menuPlacement="auto"
-
+menuPortalTarget={document.body}
+styles={{
+  menuPortal: (base) => ({
+    ...base,
+    zIndex: 999999,
+  }),
+}}
               />
 
 
@@ -5578,7 +5585,13 @@ const handleGenerateDocument =
                 }
 
                 menuPlacement="top"
-
+menuPortalTarget={document.body}
+styles={{
+  menuPortal: (base) => ({
+    ...base,
+    zIndex: 999999,
+  }),
+}}
 />
 
 </div>

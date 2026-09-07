@@ -3072,20 +3072,47 @@ app.post(
 
 
       /* =================================================
-         QUESTION ANALYSIS
-      ================================================= */
+   QUESTION ANALYSIS
+================================================= */
 
-      const analysis =
-        await analyzeQuestion(
-          message,
-          openai
-        );
+const lowerQuestion = String(message || "").toLowerCase();
 
+const webIntentWords = [
+  "today",
+  "latest",
+  "current",
+  "now",
+  "recent",
+  "news",
+  "weather",
+  "price",
+  "stock",
+  "score",
+  "live",
+  "update",
+  "updates",
+  "2026",
+  "this week",
+  "this month",
+  "right now"
+];
 
-      console.log(
-        "QUESTION ANALYSIS:",
-        analysis
-      );
+const needsWebByLocalCheck =
+  webIntentWords.some(
+    (word) =>
+      lowerQuestion.includes(word)
+  );
+
+const analysis = {
+  needsWeb: needsWebByLocalCheck,
+  category: "general",
+  confidence: "high"
+};
+
+console.log(
+  "QUESTION ANALYSIS:",
+  analysis
+);
 
 
       /* =================================================
