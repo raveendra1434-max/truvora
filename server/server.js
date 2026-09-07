@@ -200,7 +200,7 @@ const upload =
 function getPublicBaseUrl(req) {
   return (
     process.env.PUBLIC_BASE_URL ||
-    "https://trulexity-api.onrender.com"
+    `${req.protocol}://${req.get("host")}`
   ).replace(/\/$/, "");
 }
 
@@ -4419,7 +4419,7 @@ app.post(
 
 
       const reportId =
-        `truvora-${Date.now()}`;
+  `trulexity-${Date.now()}`;
 
 
       const extension =
@@ -4573,7 +4573,21 @@ app.post(
           );
 
       }
+      /* =================================================
+         HTML
+      ================================================= */
 
+      else if (
+        requestedType ===
+        "html"
+      ) {
+
+        generatedFile =
+          await generateHTML(
+            commonData
+          );
+
+      }
 
       /* =================================================
          MARKDOWN

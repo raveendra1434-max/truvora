@@ -517,10 +517,8 @@ useEffect(() => {
   ===================================================== */
 
   const [showCamera,
-    setShowCamera] =
-    useState(false);
-
-
+  setShowCamera] =
+  useState(false);
   /* =====================================================
      LANGUAGE
   ===================================================== */
@@ -577,7 +575,8 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
 
   const audioRef =
     useRef(null);
-
+const voiceEnabledRef =
+  useRef(true);
 
   /* =====================================================
      VOICE RECOGNITION
@@ -755,58 +754,219 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
   }, []);
 
   /* =====================================================
-     CAMERA STREAM
-  ===================================================== */
+ CAMERA STREAM
+===================================================== */
 
-  useEffect(() => {
+useEffect(() => {
 
-    if (!showCamera)
-      return;
+  if (!showCamera)
+    return;
+
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ) {
+
+    console.error(
+      "Camera API not available"
+    );
+
+    return;
+  }
+
+  let cancelled = false;
+  let currentStream = null;
+
+  const startCamera = async () => {
+
+    try {
+
+      const stream =
+        await navigator.mediaDevices.getUserMedia({
+          video: true
+        });
+
+      currentStream = stream;
+
+      if (cancelled) {
+
+        stream
+          .getTracks()
+          .forEach((track) =>
+            track.stop()
+          );
+
+        return;
+      }
+
+      if (videoRef.current) {
+
+        videoRef.current.srcObject =
+          stream;
+
+        await videoRef.current
+          .play()
+          .catch(() => {});
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Camera error:",
+        error
+      );
+
+    }
+  };
+
+  startCamera();
+
+  return () => {
+
+    cancelled = true;
+
+    if (currentStream) {
+
+      currentStream
+        .getTracks()
+        .forEach((track) =>
+          track.stop()
+        );
+    }
+
+    if (videoRef.current) {
+
+      videoRef.current.srcObject =
+        null;
+    }
+
+  };
+
+}, [
+  showCamera
+]);
+
+
+/* =====================================================
+ SWITCH CAMERA
+===================================================== */
+
+const switchCamera = async () => {
+
+  try {
 
     if (
       !navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia
+      !navigator.mediaDevices.enumerateDevices
     ) {
 
       console.error(
-        "Camera API not available"
+        "Camera device enumeration not available"
       );
 
       return;
     }
 
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true
-      })
-      .then(
-        (stream) => {
+    const devices =
+      await navigator.mediaDevices.enumerateDevices();
 
-          if (
-            videoRef.current
-          ) {
-
-            videoRef.current.srcObject =
-              stream;
-
-          }
-
-        }
-      )
-      .catch(
-        (error) => {
-
-          console.error(
-            "Camera error:",
-            error
-          );
-
-        }
+    const videoDevices =
+      devices.filter(
+        (device) =>
+          device.kind === "videoinput"
       );
 
-  }, [
-    showCamera
-  ]);
+    console.log(
+      "AVAILABLE CAMERAS:",
+      videoDevices
+    );
+
+    if (videoDevices.length <= 1) {
+
+      alert(
+        "Only one camera is available on this device."
+      );
+
+      return;
+    }
+
+    const video =
+      videoRef.current;
+
+    const currentStream =
+      video?.srcObject;
+
+    const currentTrack =
+      currentStream
+        ?.getVideoTracks?.()[0];
+
+    const currentDeviceId =
+      currentTrack
+        ?.getSettings?.()
+        ?.deviceId;
+
+    let currentIndex =
+      videoDevices.findIndex(
+        (device) =>
+          device.deviceId ===
+          currentDeviceId
+      );
+
+    if (currentIndex < 0) {
+      currentIndex = 0;
+    }
+
+    const nextIndex =
+      (currentIndex + 1) %
+      videoDevices.length;
+
+    const nextDevice =
+      videoDevices[nextIndex];
+
+    console.log(
+      "SWITCHING TO CAMERA:",
+      nextDevice.label
+    );
+
+    if (currentStream) {
+
+      currentStream
+        .getTracks()
+        .forEach((track) =>
+          track.stop()
+        );
+    }
+
+    const newStream =
+      await navigator.mediaDevices.getUserMedia({
+        video: {
+          deviceId: {
+            exact:
+              nextDevice.deviceId
+          }
+        }
+      });
+
+    if (video) {
+
+      video.srcObject =
+        newStream;
+
+      await video
+        .play()
+        .catch(() => {});
+    }
+
+  } catch (error) {
+
+    console.error(
+      "SWITCH CAMERA ERROR:",
+      error
+    );
+
+  }
+
+};
 
 
   /* =====================================================
@@ -2633,7 +2793,22 @@ ${results
         setMessages(
           finalMessages
         );
+/* =================================================
+   AUTOMATIC VOICE
+================================================= */
 
+if (
+  voiceEnabledRef.current &&
+  currentText.trim()
+) {
+  console.log(
+    "🔊 AUTO VOICE: Speaking AI answer"
+  );
+
+  speakText(
+    currentText
+  );
+}
 
         await saveCurrentChat(
           finalMessages
@@ -2762,17 +2937,19 @@ const handleGenerateDocument =
         await response.json();
 
 
-      if (
-        !data.success
-      ) {
+      if (!response.ok || !data.success) {
+  console.error(
+    "DOCUMENT GENERATION SERVER ERROR:",
+    data.error || `HTTP ${response.status}`
+  );
 
-        alert(
-          "Document generation failed."
-        );
+  alert(
+    data.error ||
+    `Document generation failed (${response.status})`
+  );
 
-        return;
-
-      }
+  return;
+}
 
 
       /* =================================================
@@ -3941,7 +4118,18 @@ const handleGenerateDocument =
                 📸 Capture
 
               </button>
-
+<button
+  type="button"
+  onClick={switchCamera}
+  style={{
+    marginTop: "10px",
+    padding: "10px 18px",
+    borderRadius: "10px",
+    cursor: "pointer"
+  }}
+>
+  🔄 Switch Camera
+</button>
             </div>
 
           )}
@@ -5185,7 +5373,7 @@ const handleGenerateDocument =
 
                   >
 
-                    🎙️
+                    🛠️ 
 
                   </button>
 
@@ -5229,11 +5417,24 @@ const handleGenerateDocument =
 
                   className="icon-btn voice-toggle-btn"
 
-                  onClick={() =>
-                    setVoiceEnabled(
-                      !voiceEnabled
-                    )
-                  }
+                  onClick={() => {
+  const nextVoiceState =
+    !voiceEnabled;
+
+  voiceEnabledRef.current =
+    nextVoiceState;
+
+  setVoiceEnabled(
+    nextVoiceState
+  );
+
+  if (!nextVoiceState) {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }
+}}
 
                 >
 
