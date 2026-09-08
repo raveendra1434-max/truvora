@@ -3159,20 +3159,50 @@ console.log(
          WEB MODE
       ================================================= */
 
-      let autoWeb =
-        Boolean(
-          web ||
-          (
-            (
-              analysis.needsWeb ||
-              needsCurrentInfo
-            ) &&
-            !truvoraProject &&
-            !lowerMessage.includes(
-              "continue truvora"
-            )
-          )
-        );
+      const casualMessage =
+  /^(hi|hello|hey|hai|hii|heyy|good morning|good afternoon|good evening|good night|thanks|thank you|thx|ok|okay|bye|goodbye|who are you|how are you)[!.?,\s]*$/i
+    .test(
+      String(message || "").trim()
+    );
+
+const explicitWebRequest =
+  /\b(search the web|search online|look it up|check online|verify online)\b/i
+    .test(
+      String(message || "")
+    );
+
+let autoWeb =
+  !casualMessage &&
+  Boolean(
+    web ||
+    explicitWebRequest ||
+    (
+      (
+        analysis.needsWeb ||
+        needsCurrentInfo
+      ) &&
+      !truvoraProject &&
+      !lowerMessage.includes(
+        "continue truvora"
+      )
+    )
+  );
+
+console.log(
+  "STRICT WEB GATE:",
+  {
+    casualMessage,
+    explicitWebRequest,
+    requestedWeb: Boolean(web),
+    needsWeb: Boolean(
+      analysis.needsWeb
+    ),
+    needsCurrentInfo: Boolean(
+      needsCurrentInfo
+    ),
+    autoWeb
+  }
+);
 
 
       console.log("===== TRULEXITY WEB DEBUG =====");
@@ -3817,37 +3847,23 @@ GENERAL RULES:
          FORMAT CITATIONS
       ================================================= */
 
-      let finalReply =
-        reply;
+      let finalReply = reply;
+let formattedSources = [];
 
-
-      if (
-        webResults.length > 0
-      ) {
-
-        try {
-
-          finalReply =
-            formatCitations(
-              reply,
-              webResults
-            );
-
-        } catch (
-          citationError
-        ) {
-
-          console.warn(
-            "âš ï¸ Citation formatting failed:",
-            citationError.message
-          );
-
-          finalReply =
-            reply;
-
-        }
-
-      }
+if (webResults.length > 0) {
+  try {
+    formattedSources =
+      formatCitations(
+        webResults
+      );
+  } catch (citationError) {
+    console.warn(
+      "⚠️ Citation formatting failed:",
+      citationError.message
+    );
+    formattedSources = [];
+  }
+}
 
 
       /* =================================================
@@ -3928,7 +3944,7 @@ GENERAL RULES:
           autoWeb,
 
         sources:
-          webResults,
+  formattedSources,
 
         language:
           responseLanguage,

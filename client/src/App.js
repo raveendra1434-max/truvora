@@ -1175,7 +1175,7 @@ await signInWithPopup(
               headers: {
                 "Content-Type":
                   "application/json",
-                  
+
               },
 
               body:
@@ -5216,54 +5216,48 @@ const handleGenerateDocument =
                     </button>
 
 
-                    {/* SHARE */}
+                   {/* COPY */}
 
-                    <button
-                      className="copy-btn"
+<button
+  className="copy-btn"
+  onClick={async () => {
+    try {
+      await navigator.clipboard.writeText(
+        msg.text || ""
+      );
+    } catch (error) {
+      console.error(
+        "Copy error:",
+        error
+      );
+    }
+  }}
+>
+  📋 Copy
+</button>
 
-                      onClick={async () => {
+{/* SHARE */}
 
-                        try {
-
-                          if (
-                            navigator.share
-                          ) {
-
-                            await navigator.share({
-                              title:
-                                 "Trulexity AI",
-
-                              text:
-                                msg.text ||
-                                "",
-                            });
-
-                          } else {
-
-                            await navigator.clipboard.writeText(
-                              msg.text ||
-                              ""
-                            );
-
-                          }
-
-                        } catch (
-                          error
-                        ) {
-
-                          console.error(
-                            "Share error:",
-                            error
-                          );
-
-                        }
-
-                      }}
-
-                    >
-                      Copy
-                    </button>
-
+<button
+  className="copy-btn"
+  onClick={async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Trulexity AI",
+          text: msg.text || "",
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Share error:",
+        error
+      );
+    }
+  }}
+>
+  📤 Share
+</button>
 
                     {/* SAVE */}
 
