@@ -323,7 +323,7 @@ function App() {
 
   const [loggedIn,
     setLoggedIn] =
-    useState(false);
+    useState(true);
 
 
   /* =====================================================
@@ -654,62 +654,7 @@ const voiceEnabledRef =
      FIREBASE AUTH
   ===================================================== */
 
-  useEffect(() => {
-
-    const unsubscribe =
-      onAuthStateChanged(
-        auth,
-        async (
-          currentUser
-        ) => {
-
-          if (currentUser) {
-
-            setUser(
-              currentUser
-            );
-
-            setLoggedIn(
-              true
-            );
-
-            const userChats =
-              await loadUserChats(
-                currentUser.uid
-              );
-
-            setChats(
-              userChats
-            );
-
-            setChatHistory(
-              userChats.map(
-                (chat) =>
-                  chat.messages
-              )
-            );
-
-          } else {
-
-            setUser(null);
-
-            setLoggedIn(
-              false
-            );
-
-            setChats([]);
-
-            setChatHistory([]);
-
-          }
-
-        }
-      );
-
-    return () =>
-      unsubscribe();
-
-  }, []);
+  
   /* =====================================================
      FIREBASE GOOGLE REDIRECT RESULT
   ===================================================== */
