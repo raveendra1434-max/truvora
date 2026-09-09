@@ -3359,126 +3359,139 @@ I can then help build it step by step.`,
          WEB SEARCH
       ================================================= */
 
-      let webResults =
-        [];
+     let webResults = [];
 
+if (autoWeb) {
+  console.log("🌐 RUNNING LIVE WEB SEARCH");
 
-      if (
-        autoWeb
-      ) {
+  // =================================================
+  // TAVILY PRIMARY SEARCH
+  // =================================================
 
-        console.log(
-          "ðŸŒ RUNNING LIVE WEB SEARCH"
+  if (process.env.TAVILY_API_KEY) {
+    try {
+      console.log("🟣 TAVILY SEARCH");
+
+      const tavilyResponse = await axios.post(
+        "https://api.tavily.com/search",
+        {
+          api_key: process.env.TAVILY_API_KEY,
+          query: message,
+          search_depth: "basic",
+          max_results: 8,
+          include_answer: false,
+          include_images: false,
+          include_raw_content: false,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const tavilyResults =
+        tavilyResponse.data?.results || [];
+
+      webResults = tavilyResults
+        .slice(0, 8)
+        .map((item, index) => ({
+          id: index + 1,
+          title: item.title || "",
+          snippet: item.content || "",
+          url: item.url || "",
+          source: (() => {
+            try {
+              return new URL(item.url || "").hostname.replace(
+                "www.",
+                ""
+              );
+            } catch {
+              return "";
+            }
+          })(),
+        }));
+
+      console.log(
+        "🟣 TAVILY RESULTS:",
+        webResults.length
+      );
+
+    } catch (tavilyError) {
+      console.error(
+        "❌ TAVILY SEARCH ERROR:",
+        tavilyError.response?.data ||
+          tavilyError.message
+      );
+    }
+  } else {
+    console.warn(
+      "⚠️ TAVILY_API_KEY is missing"
+    );
+  }
+
+  // =================================================
+  // SERPAPI FALLBACK
+  // =================================================
+
+  if (
+    webResults.length === 0 &&
+    process.env.SERPAPI_KEY
+  ) {
+    try {
+      console.log(
+        "🔵 SERPAPI FALLBACK SEARCH"
+      );
+
+      const searchResponse =
+        await axios.get(
+          "https://serpapi.com/search.json",
+          {
+            params: {
+              engine: "google",
+              q: message,
+              location: "India",
+              gl: "in",
+              hl: "en",
+              num: 8,
+              api_key:
+                process.env.SERPAPI_KEY,
+            },
+          }
         );
 
+      const organicResults =
+        searchResponse.data?.organic_results || [];
 
-        if (
-          !process.env.SERPAPI_KEY
-        ) {
+      webResults = organicResults
+        .slice(0, 8)
+        .map((item, index) => ({
+          id: index + 1,
+          title: item.title || "",
+          snippet: item.snippet || "",
+          url: item.link || "",
+          source: item.source || "",
+        }));
 
-          console.warn(
-            "âš ï¸ SERPAPI_KEY is missing"
-          );
+      console.log(
+        "🔵 SERPAPI FALLBACK RESULTS:",
+        webResults.length
+      );
 
-        } else {
+    } catch (webError) {
+      console.error(
+        "❌ SERPAPI FALLBACK ERROR:",
+        webError.response?.data ||
+          webError.message
+      );
+    }
+  }
 
-          try {
-
-            const searchResponse =
-              await axios.get(
-                "https://serpapi.com/search.json",
-                {
-
-                  params: {
-
-                    engine:
-                      "google",
-
-                    q:
-                      message,
-
-                    location:
-                      "India",
-
-                    gl:
-                      "in",
-
-                    hl:
-                      "en",
-
-                    num:
-                      8,
-
-                    api_key:
-                      process.env.SERPAPI_KEY,
-
-                  },
-
-                }
-              );
-
-
-            const organicResults =
-              searchResponse
-                .data
-                ?.organic_results ||
-              [];
-
-
-            webResults =
-              organicResults
-                .slice(
-                  0,
-                  8
-                )
-                .map(
-                  (
-                    item,
-                    index
-                  ) => ({
-
-                    id:
-                      index + 1,
-
-                    title:
-                      item.title ||
-                      "",
-
-                    snippet:
-                      item.snippet ||
-                      "",
-
-                    url:
-                      item.link ||
-                      "",
-
-                  })
-                );
-
-
-            console.log(
-              "ðŸŒ WEB RESULTS:",
-              webResults.length
-            );
-
-
-          } catch (
-            webError
-          ) {
-
-            console.error(
-              "âŒ WEB SEARCH ERROR:",
-              webError
-                .response
-                ?.data ||
-                webError.message
-            );
-
-          }
-
-        }
-
-      }
+  console.log(
+    "🌐 FINAL WEB RESULTS:",
+    webResults.length
+  );
+}
 
 
       /* =================================================
@@ -3717,6 +3730,20 @@ technical term, or the user explicitly requests it.
 You are Trulexity AI.
 
 Trulexity is a professional global AI assistant.
+
+CURRENT DATE:
+September 8, 2026.
+
+LIVE WEB PRIORITY:
+When LIVE WEB SEARCH RESULTS are provided, they are the primary source of truth for current, latest, recent, today, this week, or time-sensitive questions.
+
+For current-information questions:
+- Prefer the newest information contained in the live web results.
+- Do not rely on your pretrained knowledge when it conflicts with the live results.
+- Do not use an outdated knowledge cutoff to answer a current-information question.
+- Do not say information is current only up to June 2024 or any other old date when newer live results are available.
+- Use the dates shown inside the live search results to determine recency.
+- If the live results do not contain enough information, clearly say what is missing instead of inventing information.
 
 Your priorities are:
 

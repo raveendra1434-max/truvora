@@ -1324,7 +1324,7 @@ const audioResponse =
         setImage(
           imageData
         );
-
+setShowCamera(false);
 
         const userImageMessage = {
           role: "user",
