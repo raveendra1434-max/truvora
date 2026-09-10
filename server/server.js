@@ -2780,7 +2780,7 @@ imageUrl = normalizedImageUrls[0] || null;
       ================================================= */
 const imageEditRequest =
   Boolean(imageUrl) &&
-  /\b(edit|change|modify|replace|remove|add|alter|transform|restyle|retouch|background|darker|brighter|cinematic|anime|3d|cartoon)\b/i.test(
+  /\b(edit|change|modify|replace|remove|add|alter|transform|restyle|retouch|background|darker|brighter|cinematic|anime|3d|cartoon|vintage|retro|classic|old|ancient|historical|historic|1900s|1910s|1920s|1930s|1940s|1950s|1960s|1970s|1980s|1990s|futuristic|future|modern|medieval|victorian|cyberpunk|black\s*and\s*white|sepia|film|photograph|photographic|watercolor|oil\s*painting|sketch|illustration|comic|manga|fantasy|noir|steampunk|surreal)\b/i.test(
     String(message || "")
   );
       if (imageUrl && !imageEditRequest) {
