@@ -3158,7 +3158,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              ? Cancel
+               Cancel
             </button>
 
 
@@ -3593,7 +3593,7 @@ const handleGenerateDocument =
                     )
                   }
                 >
-                  ? Open YouTube
+                   Open YouTube
                 </button>
 
               </div>
@@ -3608,7 +3608,7 @@ const handleGenerateDocument =
                 )
               }
             >
-              ? Cancel
+               Cancel
             </button>
 
           </div>
@@ -3727,7 +3727,7 @@ const handleGenerateDocument =
 
               }}
             >
-              ? Cancel
+               Cancel
             </button>
 
           </div>
@@ -4423,7 +4423,7 @@ const handleGenerateDocument =
 
                             >
 
-                              ? Download Image
+                              Download Image
 
                             </button>
 
@@ -4949,7 +4949,7 @@ const handleGenerateDocument =
                             }}
                           >
 
-                            ? Scroll for more sources
+                             Scroll for more sources
 
                           </div>
 
