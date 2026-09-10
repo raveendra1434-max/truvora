@@ -2689,17 +2689,12 @@ app.post(
          NORMALIZE IMAGE
       ================================================= */
 
-      imageUrl =
-        imageUrl ||
-        (
-          Array.isArray(
-            imageUrls
-          )
-            ? imageUrls.find(
-                Boolean
-              )
-            : null
-        );
+      const normalizedImageUrls = [
+  ...(Array.isArray(imageUrls) ? imageUrls : []),
+  ...(imageUrl ? [imageUrl] : [])
+].filter(Boolean);
+
+imageUrl = normalizedImageUrls[0] || null;
 
 
       console.log(
@@ -2783,8 +2778,12 @@ app.post(
       /* =================================================
          DIRECT UPLOADED IMAGE ANALYSIS
       ================================================= */
-
-      if (imageUrl) {
+const imageEditRequest =
+  Boolean(imageUrl) &&
+  /\b(edit|change|modify|replace|remove|add|alter|transform|restyle|retouch|background|darker|brighter|cinematic|anime|3d|cartoon)\b/i.test(
+    String(message || "")
+  );
+      if (imageUrl && !imageEditRequest) {
         console.log("🖼️ DIRECT IMAGE ANALYSIS:", imageUrl);
 
         try {
@@ -2844,9 +2843,16 @@ app.post(
 
 
       const agentTasks =
-        imageUrl
-          ? detectAgentTasks(message).filter((task) => task !== "image")
-          : detectAgentTasks(message);
+  imageUrl
+    ? imageEditRequest
+      ? (() => {
+          const detected = detectAgentTasks(message);
+          return detected.length > 0
+            ? detected
+            : ["image"];
+        })()
+      : detectAgentTasks(message).filter((task) => task !== "image")
+    : detectAgentTasks(message);
 
 
       console.log(
@@ -2860,9 +2866,9 @@ app.post(
       ================================================= */
 
       if (
-        agentMode &&
+        (agentMode || imageEditRequest) &&
         agentTasks.length > 0 &&
-        !imageUrl
+        (!imageUrl || imageEditRequest)
       ) {
 
         console.log(
@@ -2922,10 +2928,12 @@ app.post(
               await executeAgentTask({
 
                 type:
-                  task,
+  task,
 
-                summary:
-                  generatedContent,
+imageUrl,
+imageUrls,
+summary:
+  generatedContent,
 
                 recommendations:
                   "",
@@ -3041,7 +3049,17 @@ app.post(
                 (item) =>
                   item.document
               ),
+image: (() => {
+  const imageTask = successful.find(
+    (item) => item.type === "image"
+  );
 
+  if (!imageTask?.document) return null;
+
+  const filename = imageTask.document.split("/").pop();
+
+  return getUploadUrl(req, filename);
+})(),
           reply:
             successful.length > 0
 
