@@ -2571,9 +2571,8 @@ ${results
 
       try {
 
-        const response =
-          await fetch(
-            "http://localhost:5000/ask",
+        const response = await fetch(
+  "https://trulexity-api.onrender.com/ask",
             {
 
               method:
