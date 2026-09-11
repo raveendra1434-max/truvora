@@ -2576,8 +2576,6 @@ ${results
                    * required.
                    */
 
-                  web:
-                    true,
 
                   agentMode:
                     true,

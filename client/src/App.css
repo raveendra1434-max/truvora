@@ -3628,11 +3628,11 @@ input[type="search"]::placeholder{
 @media (max-width:600px){
 
   .bubble{
-    display:grid !important;
-    grid-template-columns:repeat(7, minmax(0, 1fr)) !important;
-    column-gap:3px !important;
-    row-gap:4px !important;
-  }
+  display:grid !important;
+  grid-template-columns:repeat(7, minmax(0, 1fr)) !important;
+  column-gap:3px !important;
+  row-gap:4px !important;
+}
 
   /* Keep the actual answer/content full width */
   .bubble > *:not(.copy-btn):not(.file-actions-grid){
@@ -3913,4 +3913,130 @@ input[type="search"]::placeholder{
     font-size:10px;
   }
 
+}
+/* =========================================================
+   TRULEXITY — FINAL MOBILE DOCUMENT BUTTON FIX
+   ADD-ONLY — OLD CODE UNTOUCHED
+   ========================================================= */
+
+@media (max-width:600px){
+
+  .bubble{
+    display:block !important;
+    white-space:normal !important;
+    word-break:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  .bubble > .copy-btn{
+    display:inline-flex !important;
+
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:27px !important;
+    min-height:27px !important;
+    max-height:27px !important;
+
+    margin:2px 3px 2px 0 !important;
+    padding:0 3px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    white-space:nowrap !important;
+    overflow:visible !important;
+
+    font-size:9px !important;
+    line-height:1 !important;
+
+    vertical-align:middle !important;
+  }
+
+  .bubble > .file-actions-grid{
+    display:none !important;
+  }
+}
+
+@media (max-width:340px){
+
+  .bubble > .copy-btn{
+    height:25px !important;
+    min-height:25px !important;
+
+    margin:2px 2px 2px 0 !important;
+    padding:0 2px !important;
+
+    font-size:8.5px !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — 320px FINAL 7 + 7 ACTION BUTTONS
+   ADD-ONLY — OLD CODE UNTOUCHED
+   ========================================================= */
+
+@media (max-width:340px){
+
+  .bubble .message-actions > button,
+  .bubble .message-actions .file-actions-grid > button,
+  .bubble > .copy-btn{
+
+    flex:0 0 calc((100% - 12px) / 7) !important;
+
+    width:calc((100% - 12px) / 7) !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    font-size:8px !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .bubble .message-actions{
+    gap:2px !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — USER BUBBLE SAVE BUTTON
+   FORCE EXACTLY 7 + 7
+   ADD-ONLY — OLD CODE UNTOUCHED
+   ========================================================= */
+
+@media (max-width:340px){
+
+  .user-message .bubble > .copy-btn{
+    display:inline-flex !important;
+
+    flex:0 0 calc((100% - 12px) / 7) !important;
+    width:calc((100% - 12px) / 7) !important;
+
+    min-width:0 !important;
+    max-width:none !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  .user-message .bubble{
+    white-space:normal !important;
+  }
 }

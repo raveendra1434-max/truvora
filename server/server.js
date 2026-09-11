@@ -3109,7 +3109,6 @@ const webIntentWords = [
   "live",
   "update",
   "updates",
-  "2026",
   "this week",
   "this month",
   "right now"
@@ -3742,7 +3741,11 @@ technical term, or the user explicitly requests it.
       /* =================================================
          SYSTEM PROMPT
       ================================================= */
-
+const currentDate = new Date().toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
       const systemPrompt = `
 
 You are Trulexity AI.
@@ -3750,7 +3753,7 @@ You are Trulexity AI.
 Trulexity is a professional global AI assistant.
 
 CURRENT DATE:
-September 8, 2026.
+${currentDate}.
 
 LIVE WEB PRIORITY:
 When LIVE WEB SEARCH RESULTS are provided, they are the primary source of truth for current, latest, recent, today, this week, or time-sensitive questions.
