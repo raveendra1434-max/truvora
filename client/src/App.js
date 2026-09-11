@@ -98,36 +98,6 @@ function App() {
      PWA SERVICE WORKER
   ===================================================== */
 
-  useEffect(() => {
-
-    if ("serviceWorker" in navigator) {
-
-      window.addEventListener("load", () => {
-
-        navigator.serviceWorker
-          .register("/service-worker.js")
-          .then((registration) => {
-
-            console.log(
-              "TRULEXITY SERVICE WORKER REGISTERED:",
-              registration.scope
-            );
-
-          })
-          .catch((error) => {
-
-            console.error(
-              "TRULEXITY SERVICE WORKER REGISTRATION FAILED:",
-              error
-            );
-
-          });
-
-      });
-
-    }
-
-  }, []);
 
     useEffect(() => {
     const handleBeforeInstallPrompt = (event) => {
