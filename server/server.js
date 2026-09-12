@@ -1556,7 +1556,6 @@ async function splitAudioIntoChunks(
 /* =====================================================
    PART 1 END
 ===================================================== */
-
 /* =====================================================
    YOUTUBE ANALYSIS
 ===================================================== */
@@ -1564,11 +1563,9 @@ async function splitAudioIntoChunks(
 app.post(
   "/analyze-youtube",
   async (req, res) => {
-
     try {
-
       console.log(
-        "ðŸ”¥ NEW YOUTUBE ANALYSIS REQUEST"
+        "🔥 NEW YOUTUBE ANALYSIS REQUEST"
       );
 
       const { url } = req.body;
@@ -1579,32 +1576,28 @@ app.post(
       );
 
       if (!url) {
-
         return res.status(400).json({
           success: false,
           error:
             "YouTube URL is required",
         });
-
       }
 
       let text = "";
+      let transcriptLanguage = "";
 
       try {
-
         const videoId =
           url.match(
-            /(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/
+            /(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([A-Za-z0-9_-]{11})/
           )?.[1];
 
         if (!videoId) {
-
           return res.status(400).json({
             success: false,
             error:
               "Invalid YouTube URL",
           });
-
         }
 
         console.log(
@@ -1612,8 +1605,8 @@ app.post(
           videoId
         );
 
-        const subtitleFile =
-          `youtube-${videoId}.en.vtt`;
+        const subtitlePrefix =
+          `youtube-${videoId}.`;
 
         const outputTemplate =
           `youtube-${videoId}.%(ext)s`;
@@ -1625,6 +1618,7 @@ app.post(
             "--write-auto-subs",
             "--sub-langs",
             "en",
+            "--ignore-errors",
             "--sub-format",
             "vtt",
             "--no-playlist",
@@ -1633,26 +1627,42 @@ app.post(
             `https://www.youtube.com/watch?v=${videoId}`,
           ],
           {
-            encoding:
-              "utf8",
-            stdio:
-              "pipe",
+            encoding: "utf8",
+            stdio: "pipe",
           }
         );
 
+        const subtitleFile =
+          fs
+            .readdirSync(process.cwd())
+            .find(
+              (file) =>
+                file.startsWith(
+                  subtitlePrefix
+                ) &&
+                file.endsWith(".vtt")
+            );
+
         if (
+          !subtitleFile ||
           !fs.existsSync(
             subtitleFile
           )
         ) {
-
           return res.status(200).json({
             success: false,
             error:
               "This YouTube video does not have an accessible transcript. Please try another video.",
           });
-
         }
+
+        transcriptLanguage =
+          subtitleFile.split(".")[1] || "";
+
+        console.log(
+          "YOUTUBE TRANSCRIPT LANGUAGE:",
+          transcriptLanguage
+        );
 
         const subtitleText =
           fs.readFileSync(
@@ -1693,12 +1703,12 @@ app.post(
             .trim();
 
         console.log(
-          "âœ… FINAL TRANSCRIPT LENGTH:",
+          "✅ FINAL TRANSCRIPT LENGTH:",
           text.length
         );
 
         console.log(
-          "âœ… FINAL TRANSCRIPT PREVIEW:",
+          "✅ FINAL TRANSCRIPT PREVIEW:",
           text.substring(
             0,
             500
@@ -1710,15 +1720,13 @@ app.post(
         );
 
         console.log(
-          "âœ… YouTube subtitles extracted:",
+          "✅ YouTube subtitles extracted:",
           text.length,
           "characters"
         );
-
       } catch (
         err
       ) {
-
         console.error(
           "YouTube subtitle extraction failed:",
           err
@@ -1727,9 +1735,8 @@ app.post(
         return res.status(200).json({
           success: false,
           error:
-            "This YouTube video does not have an accessible transcript. Please try another video.",
+            "This YouTube video does not have an accessible transcript. The video may be private, restricted, unavailable, or have captions disabled. Please try another video.",
         });
-
       }
 
       const transcriptForAI =
@@ -1751,7 +1758,6 @@ app.post(
       let analysis;
 
       try {
-
         analysis =
           await askGemini(
             `
@@ -1759,41 +1765,53 @@ You are Trulexity AI, a professional learning and knowledge assistant.
 
 Analyze the following YouTube transcript and create useful content for the user.
 
+LANGUAGE RULE:
+
+- Detect the language of the transcript automatically.
+- Write the complete explanation in the same language as the transcript.
+- Do not switch to English unless the transcript itself is English or the user explicitly requests English.
+- Preserve important technical terms when appropriate, while explaining them clearly in the transcript language.
+- Keep headings, explanations, examples, study notes, questions, answers, quiz questions, and takeaways in the transcript language.
+
+The detected transcript language is:
+
+${transcriptLanguage}
+
 Your response must contain these sections:
 
-ðŸ“‹ SUMMARY
+📋 SUMMARY
 
 Give a clear, easy-to-understand summary of the entire video.
 
-ðŸ“š DETAILED EXPLANATION
+📚 DETAILED EXPLANATION
 
 Explain the important concepts from the video in simple language.
 
-ðŸ“Œ KEY POINTS
+📌 KEY POINTS
 
 List the most important things the user should remember.
 
-ðŸ“– IMPORTANT TERMS
+📖 IMPORTANT TERMS
 
 List important technical or subject-specific terms and explain each one.
 
-ðŸ’¡ EXAMPLES
+💡 EXAMPLES
 
 Include useful examples mentioned or explained in the video.
 
-ðŸ“ STUDY NOTES
+📝 STUDY NOTES
 
 Create organized notes that a student can use for revision.
 
-â“ QUESTIONS AND ANSWERS
+❓ QUESTIONS AND ANSWERS
 
 Create useful questions and answers based only on the video content.
 
-ðŸ§  QUICK QUIZ
+🧠 QUICK QUIZ
 
 Create 5 multiple-choice questions with the correct answers.
 
-ðŸŽ¯ IMPORTANT TAKEAWAYS
+🎯 IMPORTANT TAKEAWAYS
 
 Give the final lessons or conclusions from the video.
 
@@ -1804,6 +1822,10 @@ Rules:
 - Use simple, clear language.
 - Make the result useful for students as well as general users.
 - Use headings and readable formatting.
+- Explain difficult concepts clearly.
+- If the transcript is educational, organize the explanation so it is useful for studying and revision.
+- If the transcript contains formulas, definitions, steps, examples, or important facts, preserve and explain them clearly.
+- Do not ask the user to provide a transcript.
 
 TRANSCRIPT START
 
@@ -1812,21 +1834,17 @@ ${transcriptForAI}
 TRANSCRIPT END
 
 Now analyze the transcript above.
-Do not ask the user to provide a transcript.
 `
           );
-
       } catch (
         error
       ) {
-
         console.error(
           "YouTube AI analysis failed:",
           error
         );
 
         throw error;
-
       }
 
       console.log(
@@ -1834,41 +1852,28 @@ Do not ask the user to provide a transcript.
       );
 
       return res.json({
-
-        success:
-          true,
-
-        transcript:
-          text,
-
+        success: true,
+        transcript: text,
+        transcriptLanguage:
+          transcriptLanguage || null,
         analysis,
-
       });
-
     } catch (
       error
     ) {
-
       console.error(
         "YouTube Error:",
         error
       );
 
       return res.status(500).json({
-
-        success:
-          false,
-
+        success: false,
         error:
           error.message,
-
       });
-
     }
-
   }
 );
-
 
 /* =====================================================
    WEBSITE ANALYSIS

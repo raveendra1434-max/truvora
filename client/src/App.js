@@ -293,7 +293,7 @@ function App() {
 
   const [loggedIn,
     setLoggedIn] =
-    useState(true);
+    useState(false);
 
 
   /* =====================================================
@@ -884,59 +884,25 @@ const switchCamera = async () => {
 };
 
 
-  /* =====================================================
-     GOOGLE LOGIN
-  ===================================================== */
+ /* =====================================================
+   GOOGLE LOGIN
+===================================================== */
 
-  const handleGoogleLogin =
-    async () => {
+const handleGoogleLogin = async () => {
+  try {
+    await signInWithRedirect(auth, googleProvider);
+  } catch (error) {
+    console.error(
+      "GOOGLE LOGIN ERROR:",
+      error
+    );
 
-      try {
-
-        const isIOS =
-  /iPad|iPhone|iPod/.test(
-    navigator.userAgent
-  );
-
-if (isIOS) {
-  await signInWithRedirect(
-    auth,
-    googleProvider
-  );
-  return;
-}
-
-await signInWithPopup(
-  auth,
-  googleProvider
-);
-
-        setLoggedIn(
-          true
-        );
-
-        localStorage.setItem(
-          "trulexityLoggedIn",
-          "true"
-        );
-
-      } catch (error) {
-
-        console.error(
-          "GOOGLE LOGIN ERROR:",
-          error
-        );
-
-        alert(
-          "Google login failed: " +
-          error.message
-        );
-
-      }
-
-    };
-
-
+    alert(
+      "Google login failed: " +
+      error.message
+    );
+  }
+};
   /* =====================================================
      LOGOUT
   ===================================================== */
@@ -1818,128 +1784,127 @@ ${results
 
     };
 
+/* =====================================================
+   YOUTUBE ANALYSIS
+===================================================== */
 
-  /* =====================================================
-     YOUTUBE ANALYSIS
-  ===================================================== */
+const handleYouTube =
+  async (query) => {
+    if (
+      !query?.trim()
+    )
+      return;
 
-  const handleYouTube =
-    async (query) => {
+    const trimmedQuery =
+      query.trim();
 
-      if (
-        !query?.trim()
-      )
-        return;
+    const urlMatch =
+      trimmedQuery.match(
+        /(?:youtube\.com\/watch\?v=|youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/live\/)([A-Za-z0-9_-]{10,11})/
+      );
 
+    try {
+      if (urlMatch) {
+        const videoId =
+          urlMatch[1];
 
-      const trimmedQuery =
-        query.trim();
+        const youtubeUrl =
+          `https://www.youtube.com/watch?v=${videoId}`;
 
+        setShowYouTubeSearch(false);
+        setYoutubeQuery("");
 
-      const urlMatch =
-        trimmedQuery.match(
-          /(?:youtube\.com\/watch\?v=|youtube\.com\/shorts\/|youtu\.be\/)([A-Za-z0-9_-]{10,11})/
-        );
-
-
-      try {
-
-        if (urlMatch) {
-
-          const videoId =
-            urlMatch[1];
-
-
-          const youtubeUrl =
-            `https://www.youtube.com/watch?v=${videoId}`;
-
-setShowYouTubeSearch(false);
-setYoutubeQuery("");
-          const response =
-            await fetch(
-              "https://trulexity-api.onrender.com/analyze-youtube",
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json",
-                },
-
-                body:
-                  JSON.stringify({
-                    url:
-                      youtubeUrl,
-                  }),
-              }
-            );
-
-
-          const data =
-            await response.json();
-
-
-          if (
-            !data.success
-          ) {
-
-            alert(
-              data.error ||
-              "YouTube analysis failed."
-            );
-
-            return;
-
-          }
-
-
-          setMessages(
-            (prev) => [
-
-              ...prev,
-
-              {
-                role:
-                  "assistant",
-
-                text:
-                  data.analysis ||
-                  "No analysis returned.",
+        const response =
+          await fetch(
+            "https://trulexity-api.onrender.com/analyze-youtube",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json",
               },
-
-            ]
+              body:
+                JSON.stringify({
+                  url:
+                    youtubeUrl,
+                }),
+            }
           );
 
+        const data =
+          await response.json();
 
-          setShowYouTubeSearch(
-            false
+        if (
+          !data.success
+        ) {
+          alert(
+            data.error ||
+              "YouTube analysis failed."
           );
-
-          setYoutubeQuery(
-            ""
-          );
-
-
           return;
-
         }
 
-      } catch (error) {
+        const analysisText =
+          data.analysis ||
+          "No analysis returned.";
 
-        console.error(
-          "YOUTUBE ERROR:",
-          error
+        /* =========================================
+           SHOW YOUTUBE AI ANALYSIS IN CHAT
+        ========================================= */
+
+        setMessages(
+          (prev) => [
+            ...prev,
+            {
+              role:
+                "assistant",
+              text:
+                analysisText,
+            },
+          ]
         );
 
-        alert(
-          "Unable to process YouTube."
+        /* =========================================
+           AUTOMATIC YOUTUBE PDF
+        ========================================= */
+
+        try {
+          await handleGenerateDocument(
+            "pdf",
+            analysisText
+          );
+        } catch (
+          pdfError
+        ) {
+          console.error(
+            "YOUTUBE AUTO PDF ERROR:",
+            pdfError
+          );
+        }
+
+        setShowYouTubeSearch(
+          false
         );
 
+        setYoutubeQuery(
+          ""
+        );
+
+        return;
       }
+    } catch (
+      error
+    ) {
+      console.error(
+        "YOUTUBE ERROR:",
+        error
+      );
 
-    };
-
-
+      alert(
+        "Unable to process YouTube."
+      );
+    }
+  };
   /* =====================================================
      WEBSITE ANALYSIS
   ===================================================== */
