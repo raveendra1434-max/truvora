@@ -631,18 +631,20 @@ const voiceEnabledRef =
 
   useEffect(() => {
 
-    getRedirectResult(auth)
-      .then((result) => {
+  const unsubscribe =
+    onAuthStateChanged(
+      auth,
+      (currentUser) => {
 
-        if (result?.user) {
+        if (currentUser) {
 
           console.log(
-            "GOOGLE REDIRECT LOGIN SUCCESS:",
-            result.user
+            "FIREBASE AUTH SUCCESS:",
+            currentUser
           );
 
           setUser(
-            result.user
+            currentUser
           );
 
           setLoggedIn(
@@ -654,19 +656,30 @@ const voiceEnabledRef =
             "true"
           );
 
+        } else {
+
+          console.log(
+            "FIREBASE AUTH: No user"
+          );
+
+          setUser(null);
+
+          setLoggedIn(false);
+
+          localStorage.removeItem(
+            "trulexityLoggedIn"
+          );
+
         }
 
-      })
-      .catch((error) => {
+      }
+    );
 
-        console.error(
-          "GOOGLE REDIRECT LOGIN ERROR:",
-          error
-        );
+  return () => {
+    unsubscribe();
+  };
 
-      });
-
-  }, []);
+}, []);
 
   /* =====================================================
  CAMERA STREAM
@@ -2879,7 +2892,7 @@ const handleGenerateDocument =
      LOGIN SCREEN
   ===================================================== */
 
-  if (!loggedIn) {
+  if (false) {
 
     return (
 
