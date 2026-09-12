@@ -1853,7 +1853,8 @@ ${results
           const youtubeUrl =
             `https://www.youtube.com/watch?v=${videoId}`;
 
-
+setShowYouTubeSearch(false);
+setYoutubeQuery("");
           const response =
             await fetch(
               "https://trulexity-api.onrender.com/analyze-youtube",
@@ -2543,7 +2544,7 @@ ${results
 
         const response = await fetch(
   "https://trulexity-api.onrender.com/ask",
-            {
+  {
 
               method:
                 "POST",
@@ -3022,13 +3023,13 @@ const handleGenerateDocument =
 
 
             <button
-              type="button"
-              onClick={() =>
-                documentUploadRef.current?.click()
-              }
-            >
-              📄 Document
-            </button>
+  type="button"
+  onClick={() =>
+    documentUploadRef.current?.click()
+  }
+>
+  📄 Document
+</button>
 
 
             <button
@@ -3154,18 +3155,18 @@ const handleGenerateDocument =
                     e.target.files?.[0];
 
                   if (!file)
-                    return;
+  return;
 
+setShowAnalyzeMenu(false);
 
-                  try {
+try {
+  await handlePdfUpload(
+    file
+  );
 
-                    await handlePdfUpload(
-                      file
-                    );
-
-                    setShowAnalyzeMenu(
-                      false
-                    );
+  setShowAnalyzeMenu(
+    false
+  );
 
                   } catch (error) {
 
@@ -3210,7 +3211,7 @@ const handleGenerateDocument =
                   if (
                     e.target.files?.[0]
                   ) {
-
+setShowAnalyzeMenu(false);
                     handleVideoUpload(
                       e.target.files[0]
                     );
@@ -3249,7 +3250,7 @@ const handleGenerateDocument =
 
                   if (!file)
                     return;
-
+setShowAnalyzeMenu(false);
 
                   try {
 
@@ -3374,7 +3375,7 @@ const handleGenerateDocument =
                   if (
                     e.target.files?.[0]
                   ) {
-
+setShowAnalyzeMenu(false);
                     handleAudioUpload(
                       e.target.files[0]
                     );
