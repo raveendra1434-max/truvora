@@ -60,6 +60,7 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  OAuthProvider,
 } from "firebase/auth";
 
 
@@ -903,7 +904,11 @@ const switchCamera = async () => {
 
 const handleGoogleLogin = async () => {
   try {
-    await signInWithRedirect(auth, googleProvider);
+    await signInWithPopup(
+      auth,
+      googleProvider
+    );
+
   } catch (error) {
     console.error(
       "GOOGLE LOGIN ERROR:",
@@ -916,41 +921,63 @@ const handleGoogleLogin = async () => {
     );
   }
 };
+
+
+const handleAppleLogin = async () => {
+  try {
+    const provider =
+      new OAuthProvider("apple.com");
+
+    await signInWithPopup(
+      auth,
+      provider
+    );
+
+  } catch (error) {
+    console.error(
+      "APPLE LOGIN ERROR:",
+      error
+    );
+
+    alert(
+      "Apple login failed: " +
+      error.message
+    );
+  }
+};
   /* =====================================================
      LOGOUT
   ===================================================== */
 
   const handleLogout =
-    async () => {
+  async () => {
 
-      try {
+    try {
 
-        await signOut(
-          auth
-        );
+      await signOut(
+        auth
+      );
 
-        localStorage.removeItem(
-          "trulexityLoggedIn"
-        );
+      setLoggedIn(false);
 
-        setLoggedIn(
-          false
-        );
+      localStorage.removeItem(
+        "trulexityLoggedIn"
+      );
 
-        setUsername("");
+      setUsername("");
 
-        setPassword("");
+      setPassword("");
 
-      } catch (error) {
+    } catch (error) {
 
-        console.error(
-          "Logout error:",
-          error
-        );
+      console.error(
+        "Logout error:",
+        error
+      );
 
-      }
+    }
 
-    };
+  };
 
 
   /* =====================================================
