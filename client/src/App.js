@@ -293,8 +293,12 @@ function App() {
     useState("");
 
   const [loggedIn,
-    setLoggedIn] =
-    useState(false);
+  setLoggedIn] =
+  useState(false);
+
+const [showLogin,
+  setShowLogin] =
+  useState(false);
 
 
   /* =====================================================
@@ -908,7 +912,7 @@ const handleGoogleLogin = async () => {
       auth,
       googleProvider
     );
-
+     setShowLogin(false);
   } catch (error) {
     console.error(
       "GOOGLE LOGIN ERROR:",
@@ -932,7 +936,7 @@ const handleAppleLogin = async () => {
       auth,
       provider
     );
-
+    setShowLogin(false);
   } catch (error) {
     console.error(
       "APPLE LOGIN ERROR:",
@@ -959,7 +963,7 @@ const handleAppleLogin = async () => {
       );
 
       setLoggedIn(false);
-
+      setShowLogin(true);
       localStorage.removeItem(
         "trulexityLoggedIn"
       );
@@ -2919,7 +2923,7 @@ const handleGenerateDocument =
      LOGIN SCREEN
   ===================================================== */
 
-  if (false) {
+  if (showLogin) {
 
     return (
 
