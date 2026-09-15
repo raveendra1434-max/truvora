@@ -4439,3 +4439,686 @@ input[type="search"]::placeholder{
     flex-shrink:0 !important;
   }
 }
+/* =========================================================
+   TRULEXITY — FINAL AI ANSWER TEXT LAYOUT FIX
+   MOBILE ONLY
+   KEEP 2-ROW ACTION BUTTONS
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* AI answer/content must use normal document flow */
+  .message:not(.user-message) .bubble{
+    display:block !important;
+    width:fit-content !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    word-break:normal !important;
+    overflow-wrap:break-word !important;
+  }
+
+  /* Keep answer content full width inside the bubble */
+  .message:not(.user-message) .bubble > *:not(.message-actions):not(.copy-btn){
+    grid-column:auto !important;
+    width:auto !important;
+    max-width:100% !important;
+  }
+
+  /* Action buttons remain the 7 × 2 grid */
+  .message:not(.user-message) .bubble .message-actions{
+    display:grid !important;
+    grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+    grid-template-rows:repeat(2,30px) !important;
+    grid-auto-flow:row !important;
+    gap:4px !important;
+    width:100% !important;
+    height:64px !important;
+    overflow:hidden !important;
+  }
+
+}
+/* =========================================================
+   MOBILE MESSAGE ACTIONS — EXACTLY 2 ROWS
+   7 BUTTONS PER ROW
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .message-actions {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, auto) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 8px !important;
+    align-items: center !important;
+  }
+
+  .message-actions .copy-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 5px 1px !important;
+    margin: 0 !important;
+    font-size: 7px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 1px !important;
+    box-sizing: border-box !important;
+  }
+
+  .message-actions .copy-btn svg {
+    width: 9px !important;
+    height: 9px !important;
+    flex-shrink: 0 !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — FINAL MOBILE AI ACTION FIX
+   USER MESSAGE: NO ACTION BUTTONS
+   AI ANSWER: EXACTLY 2 ROWS
+   DESKTOP UNTOUCHED
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* -------------------------------------------------------
+     USER MESSAGE
+     Hide all PDF / DOCX / XLSX / etc. buttons from "hi"
+     ------------------------------------------------------- */
+
+  .user-message .message-actions{
+    display:none !important;
+  }
+
+
+  /* -------------------------------------------------------
+     AI ANSWER
+     14 actions = 7 buttons × 2 rows
+     ------------------------------------------------------- */
+
+  .message:not(.user-message) .message-actions{
+    display:grid !important;
+
+    grid-template-columns:
+      repeat(7, minmax(0, 1fr)) !important;
+
+    grid-template-rows:
+      repeat(2, auto) !important;
+
+    grid-auto-flow:row !important;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    gap:4px !important;
+
+    margin-top:8px !important;
+    padding:2px 0 !important;
+
+    overflow:visible !important;
+  }
+
+
+  /* Every AI action button */
+
+  .message:not(.user-message) .message-actions > button{
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 !important;
+    padding:0 2px !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+
+    border-radius:6px !important;
+  }
+
+
+  /* Keep speaker icon visible */
+
+  .message:not(.user-message) .message-actions > button svg{
+    width:10px !important;
+    height:10px !important;
+
+    flex-shrink:0 !important;
+  }
+
+}
+/* =========================================================
+   TRULEXITY — FINAL CORRECT MOBILE ACTION LAYOUT
+   USER MESSAGE = NO FILE BUTTONS
+   AI ANSWER = 7 + 7 BUTTONS
+   DESKTOP UNTOUCHED
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* =======================================================
+     1. USER MESSAGE
+     Completely remove PDF/DOCX/XLSX/etc. from "hi"
+     ======================================================= */
+
+  .user-message .bubble .message-actions{
+    display:none !important;
+  }
+
+  .user-message .bubble .file-actions-grid{
+    display:none !important;
+  }
+
+  .user-message .bubble > .copy-btn{
+    display:none !important;
+  }
+
+
+  /* =======================================================
+     2. AI ANSWER
+     Action area = exactly 7 columns
+     ======================================================= */
+
+  .message:not(.user-message) .bubble .message-actions{
+
+    display:grid !important;
+
+    grid-template-columns:
+      repeat(7, minmax(0, 1fr)) !important;
+
+    grid-template-rows:
+      repeat(2, 28px) !important;
+
+    grid-auto-flow:row !important;
+    grid-auto-rows:28px !important;
+
+    gap:4px !important;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    height:60px !important;
+    min-height:60px !important;
+    max-height:60px !important;
+
+    margin:8px 0 0 0 !important;
+    padding:0 !important;
+
+    overflow:hidden !important;
+
+    box-sizing:border-box !important;
+  }
+
+
+  /* =======================================================
+     3. FILE CONTAINER
+     Do not let it create its own row
+     ======================================================= */
+
+  .message:not(.user-message)
+  .bubble
+  .message-actions
+  .file-actions-grid{
+
+    display:contents !important;
+  }
+
+
+  /* =======================================================
+     4. AI ACTION BUTTONS
+     ======================================================= */
+
+  .message:not(.user-message)
+  .bubble
+  .message-actions > button,
+
+  .message:not(.user-message)
+  .bubble
+  .message-actions
+  .file-actions-grid > button{
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    flex:none !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    border-radius:6px !important;
+  }
+
+
+  /* =======================================================
+     5. ICONS
+     ======================================================= */
+
+  .message:not(.user-message)
+  .bubble
+  .message-actions
+  button svg{
+
+    width:9px !important;
+    height:9px !important;
+
+    flex-shrink:0 !important;
+  }
+
+
+  /* =======================================================
+     6. SAVE BUTTON
+     ======================================================= */
+
+  .message:not(.user-message)
+  .bubble > .copy-btn{
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+
+    border-radius:6px !important;
+  }
+
+}
+/* =========================================================
+   TRULEXITY — FINAL AI BUTTON ROW FIX
+   MOBILE ONLY
+   7 BUTTONS × 2 ROWS
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* AI answer action wrapper */
+  .message-actions{
+    display:grid !important;
+
+    grid-template-columns:repeat(7, 1fr) !important;
+    grid-template-rows:repeat(2, 28px) !important;
+
+    grid-auto-flow:row !important;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    height:60px !important;
+
+    gap:3px !important;
+
+    padding:0 !important;
+    margin:8px 0 0 0 !important;
+
+    overflow:hidden !important;
+
+    box-sizing:border-box !important;
+  }
+
+
+  /* File button wrapper must NOT create its own layout */
+  .message-actions .file-actions-grid{
+    display:contents !important;
+  }
+
+
+  /* ALL ACTION BUTTONS */
+  .message-actions button,
+  .message-actions .file-actions-grid button{
+
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+
+    overflow:hidden !important;
+
+    text-overflow:clip !important;
+
+    border-radius:5px !important;
+  }
+
+
+  /* ICONS */
+  .message-actions button svg{
+    width:9px !important;
+    height:9px !important;
+
+    flex-shrink:0 !important;
+  }
+
+
+  /* SAVE BUTTON IF OUTSIDE ACTION WRAPPER */
+  .bubble > .copy-btn{
+
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    font-size:8px !important;
+
+    box-sizing:border-box !important;
+  }
+
+}
+
+
+/* =========================================================
+   USER MESSAGE — NEVER SHOW ACTION FILE BUTTONS
+   ========================================================= */
+
+@media (max-width:600px){
+
+  .user-message .message-actions,
+  .user-message .file-actions-grid,
+  .user-message .bubble > .copy-btn{
+
+    display:none !important;
+  }
+
+}
+/* =========================================================
+   TRULEXITY — FINAL MOBILE AI DOCUMENT BUTTON GRID
+   AI ANSWER ONLY
+   EXACTLY 2 ROWS
+   7 BUTTONS PER ROW
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* -------------------------------------------------------
+     AI BUBBLE
+     Make the bubble itself the 7-column grid
+     ------------------------------------------------------- */
+
+  .message:not(.user-message) .bubble{
+
+    display:grid !important;
+
+    grid-template-columns:
+      repeat(7, minmax(0, 1fr)) !important;
+
+    column-gap:3px !important;
+    row-gap:4px !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     AI ANSWER CONTENT
+     Keep the actual text full width
+     ------------------------------------------------------- */
+
+  .message:not(.user-message) .bubble
+  > *:not(.copy-btn):not(.file-actions-grid){
+
+    grid-column:1 / -1 !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     OLD EMPTY FILE CONTAINER
+     It is empty in your current App.js
+     ------------------------------------------------------- */
+
+  .message:not(.user-message) .bubble
+  > .file-actions-grid{
+
+    display:none !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     PDF → SAVE
+     All 14 buttons become grid items
+     ------------------------------------------------------- */
+
+  .message:not(.user-message) .bubble
+  > .copy-btn{
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+
+    overflow:hidden !important;
+
+    text-overflow:clip !important;
+
+    border-radius:5px !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     BUTTON ICONS
+     ------------------------------------------------------- */
+
+  .message:not(.user-message) .bubble
+  > .copy-btn svg{
+
+    width:9px !important;
+    height:9px !important;
+
+    flex-shrink:0 !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     USER MESSAGE
+     NEVER SHOW ACTION BUTTONS
+     ------------------------------------------------------- */
+
+  .user-message .bubble
+  > .copy-btn,
+
+  .user-message .bubble
+  .message-actions,
+
+  .user-message .bubble
+  .file-actions-grid{
+
+    display:none !important;
+
+  }
+
+}
+/* =========================================================
+   TRULEXITY — MOBILE AI ANSWER FIX
+   ANSWER FULL WIDTH
+   FILE BUTTONS — 2 ROWS
+   7 BUTTONS PER ROW
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* AI bubble must NOT be a grid */
+  .message:not(.user-message) .bubble{
+    display:block !important;
+    width:auto !important;
+    box-sizing:border-box !important;
+  }
+
+
+  /* Keep the actual AI answer normal/full width */
+  .message:not(.user-message) .bubble
+  > *:not(.copy-btn):not(.file-actions-grid){
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+
+  /* Empty old container */
+  .message:not(.user-message) .bubble
+  > .file-actions-grid{
+    display:none !important;
+  }
+
+
+  /* =======================================================
+     AI DOCUMENT / ACTION BUTTONS
+     7 PER ROW
+     ======================================================= */
+
+  .message:not(.user-message) .bubble
+  > .copy-btn{
+
+    display:inline-flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    vertical-align:top !important;
+
+    width:calc((100% - 18px) / 7) !important;
+
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 1px 4px 1px !important;
+    padding:0 1px !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+
+    overflow:hidden !important;
+
+    text-overflow:clip !important;
+
+    border-radius:5px !important;
+  }
+
+
+  /* Read Aloud icon */
+  .message:not(.user-message) .bubble
+  > .copy-btn svg{
+    width:9px !important;
+    height:9px !important;
+    flex-shrink:0 !important;
+  }
+
+
+  /* User message stays untouched */
+  .user-message .bubble
+  > .copy-btn{
+    display:none !important;
+  }
+
+}
