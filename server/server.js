@@ -3098,38 +3098,10 @@ image: (() => {
    QUESTION ANALYSIS
 ================================================= */
 
-const lowerQuestion = String(message || "").toLowerCase();
-
-const webIntentWords = [
-  "today",
-  "latest",
-  "current",
-  "now",
-  "recent",
-  "news",
-  "weather",
-  "price",
-  "stock",
-  "score",
-  "live",
-  "update",
-  "updates",
-  "this week",
-  "this month",
-  "right now"
-];
-
-const needsWebByLocalCheck =
-  webIntentWords.some(
-    (word) =>
-      lowerQuestion.includes(word)
-  );
-
-const analysis = {
-  needsWeb: needsWebByLocalCheck,
-  category: "general",
-  confidence: "high"
-};
+const analysis = await analyzeQuestion(
+  message,
+  openai
+);
 
 console.log(
   "QUESTION ANALYSIS:",
@@ -3140,48 +3112,11 @@ console.log(
       /* =================================================
          CURRENT INFORMATION DETECTION
       ================================================= */
-
-      const currentInfoWords = [
-
-        "latest",
-
-        "today",
-
-        "current",
-
-        "recent",
-
-        "news",
-
-        "breaking",
-
-        "this week",
-
-        "this month",
-
-        "now",
-
-        "update",
-
-        "updates",
-
-      ];
-
-
-      const needsCurrentInfo =
-        currentInfoWords.some(
-          (word) =>
-            lowerMessage.includes(
-              word
-            )
-        );
-
-
       /* =================================================
-         WEB MODE
-      ================================================= */
+   WEB MODE
+================================================= */
 
-      const casualMessage =
+const casualMessage =
   /^(hi|hello|hey|hai|hii|heyy|good morning|good afternoon|good evening|good night|thanks|thank you|thx|ok|okay|bye|goodbye|who are you|how are you)[!.?,\s]*$/i
     .test(
       String(message || "").trim()
@@ -3199,14 +3134,11 @@ let autoWeb =
     web ||
     explicitWebRequest ||
     (
-      (
-        analysis.needsWeb ||
-        needsCurrentInfo
-      ) &&
-      !truvoraProject &&
-      !lowerMessage.includes(
-        "continue truvora"
-      )
+analysis.needsWeb &&
+!truvoraProject &&
+!lowerMessage.includes(
+  "continue truvora"
+)
     )
   );
 
@@ -3219,23 +3151,27 @@ console.log(
     needsWeb: Boolean(
       analysis.needsWeb
     ),
-    needsCurrentInfo: Boolean(
-      needsCurrentInfo
-    ),
     autoWeb
   }
 );
 
+console.log("===== TRULEXITY WEB DEBUG =====");
+console.log("MESSAGE:", message);
+console.log("WEB:", web);
+console.log(
+  "ANALYSIS NEEDS WEB:",
+  analysis.needsWeb
+);
+console.log(
+  "TRUVORA PROJECT:",
+  truvoraProject
+);
+console.log(
+  "AUTO WEB:",
+  autoWeb
+);
 
-      console.log("===== TRULEXITY WEB DEBUG =====");
-      console.log("MESSAGE:", message);
-      console.log("WEB:", web);
-      console.log("ANALYSIS NEEDS WEB:", analysis.needsWeb);
-      console.log("NEEDS CURRENT INFO:", needsCurrentInfo);
-      console.log("TRUVORA PROJECT:", truvoraProject);
-      console.log("AUTO WEB:", autoWeb);
-
-      console.log("WEB MODE:", autoWeb);
+console.log("WEB MODE:", autoWeb);
       /* =================================================
          CONTINUE TRUVORA
       ================================================= */

@@ -4039,3 +4039,403 @@ input[type="search"]::placeholder{
     white-space:normal !important;
   }
 }
+/* =========================================================
+   TRULEXITY — FINAL MOBILE ACTION + COMPOSER FIX
+   14 AI ACTIONS = EXACTLY 2 ROWS
+   SEND BUTTON ALWAYS INSIDE INPUT
+   DESKTOP COMPLETELY UNTOUCHED
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* =======================================================
+     AI ACTION BUTTONS
+     7 buttons per row × 2 rows = 14 buttons
+     ======================================================= */
+
+  .bubble .message-actions{
+    display:grid !important;
+
+    grid-template-columns:
+      repeat(7, minmax(0, 1fr)) !important;
+
+    grid-template-rows:
+      repeat(2, 30px) !important;
+
+    grid-auto-flow:row !important;
+    grid-auto-rows:30px !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+
+    height:64px !important;
+    min-height:64px !important;
+    max-height:64px !important;
+
+    gap:4px !important;
+
+    margin-top:8px !important;
+    padding:0 !important;
+
+    overflow:hidden !important;
+    box-sizing:border-box !important;
+  }
+
+  /* Old empty container must not create another row */
+  .bubble .message-actions .file-actions-grid{
+    display:contents !important;
+  }
+
+  /* Every action button occupies exactly one grid cell */
+  .bubble .message-actions > button,
+  .bubble .message-actions .file-actions-grid > button{
+
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:30px !important;
+    min-height:30px !important;
+    max-height:30px !important;
+
+    margin:0 !important;
+    padding:0 2px !important;
+
+    flex:none !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    border-radius:6px !important;
+  }
+
+  .bubble .message-actions button svg{
+    width:10px !important;
+    height:10px !important;
+    flex-shrink:0 !important;
+  }
+
+
+  /* =======================================================
+     COMPOSER — NEVER ALLOW SEND BUTTON OUTSIDE
+     ======================================================= */
+
+  .input-area{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
+  }
+
+  .input-box{
+    position:relative !important;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
+  }
+
+  .main-input{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    /* Reserve permanent space for Send */
+    padding-right:62px !important;
+
+    overflow-x:hidden !important;
+  }
+
+  .send-btn{
+    position:absolute !important;
+
+    right:12px !important;
+    bottom:12px !important;
+
+    width:40px !important;
+    min-width:40px !important;
+
+    height:40px !important;
+    min-height:40px !important;
+
+    max-width:40px !important;
+    max-height:40px !important;
+
+    z-index:50 !important;
+
+    box-sizing:border-box !important;
+
+    margin:0 !important;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width:340px){
+
+  .bubble .message-actions{
+    grid-template-columns:
+      repeat(7, minmax(0,1fr)) !important;
+
+    grid-template-rows:
+      repeat(2, 27px) !important;
+
+    grid-auto-rows:27px !important;
+
+    height:58px !important;
+    min-height:58px !important;
+    max-height:58px !important;
+
+    gap:3px !important;
+  }
+
+  .bubble .message-actions > button,
+  .bubble .message-actions .file-actions-grid > button{
+
+    height:27px !important;
+    min-height:27px !important;
+    max-height:27px !important;
+
+    font-size:7.5px !important;
+    padding:0 1px !important;
+  }
+
+  .send-btn{
+    right:10px !important;
+    bottom:10px !important;
+  }
+
+  .main-input{
+    padding-right:56px !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — FINAL USER FILE ACTIONS
+   360px MOBILE = EXACTLY 2 ROWS
+   7 BUTTONS PER ROW
+   SAVE INCLUDED IN ROW 2
+   DESKTOP UNTOUCHED
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* Make the user bubble the final 7-column grid */
+  .user-message .bubble{
+    display:grid !important;
+    grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+    grid-auto-rows:30px !important;
+    column-gap:3px !important;
+    row-gap:4px !important;
+  }
+
+  /* Keep normal user text across the full bubble */
+  .user-message .bubble > *:not(.message-actions):not(.copy-btn){
+    grid-column:1 / -1 !important;
+  }
+
+  /* Remove the action wrapper as a layout box */
+  .user-message .bubble .message-actions{
+    display:contents !important;
+  }
+
+  /* All file/action buttons */
+  .user-message .bubble .message-actions > button,
+  .user-message .bubble .message-actions .file-actions-grid > button{
+
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:30px !important;
+    min-height:30px !important;
+    max-height:30px !important;
+
+    margin:0 !important;
+    padding:0 2px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    border-radius:6px !important;
+  }
+
+  /* SAVE = final grid item, therefore row 2 */
+  .user-message .bubble > .copy-btn{
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:30px !important;
+    min-height:30px !important;
+    max-height:30px !important;
+
+    margin:0 !important;
+    padding:0 2px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    border-radius:6px !important;
+  }
+
+  /* Keep icons small and visible */
+  .user-message .bubble .message-actions button svg,
+  .user-message .bubble > .copy-btn svg{
+    width:10px !important;
+    height:10px !important;
+    flex-shrink:0 !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — FINAL 14 ACTION BUTTON FIX
+   MOBILE ONLY
+   7 BUTTONS + 7 BUTTONS
+   SAVE INCLUDED IN ROW 2
+   ========================================================= */
+
+@media (max-width:600px){
+
+  /* The bubble itself becomes the 7-column grid */
+  .bubble{
+    display:grid !important;
+    grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+    column-gap:3px !important;
+    row-gap:4px !important;
+  }
+
+  /* Normal answer text uses full width */
+  .bubble > *:not(.message-actions):not(.copy-btn){
+    grid-column:1 / -1 !important;
+  }
+
+  /* IMPORTANT:
+     Remove message-actions as a grid item.
+     Its buttons become direct grid items. */
+  .bubble .message-actions{
+    display:contents !important;
+  }
+
+  /* Every action button */
+  .bubble .message-actions > button,
+  .bubble .message-actions .file-actions-grid > button{
+
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    border-radius:6px !important;
+  }
+
+  /* File container must disappear as a layout box */
+  .bubble .message-actions .file-actions-grid{
+    display:contents !important;
+  }
+
+  /* SAVE BUTTON
+     This becomes item #14 and therefore goes
+     into the 7th column of row 2. */
+  .bubble > .copy-btn{
+
+    display:flex !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    height:28px !important;
+    min-height:28px !important;
+    max-height:28px !important;
+
+    margin:0 !important;
+    padding:0 1px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+
+    border-radius:6px !important;
+  }
+
+  /* Keep icons visible */
+  .bubble .message-actions button svg,
+  .bubble > .copy-btn svg{
+    width:9px !important;
+    height:9px !important;
+    flex-shrink:0 !important;
+  }
+}
