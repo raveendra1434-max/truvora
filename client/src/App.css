@@ -5122,3 +5122,29 @@ input[type="search"]::placeholder{
   }
 
 }
+/* =========================================================
+   TRULEXITY — MOBILE IMAGE MESSAGE FIX
+   Keep uploaded image in normal document flow
+   ========================================================= */
+
+@media (max-width:600px){
+
+  .user-message .bubble{
+    display:block !important;
+    width:auto !important;
+    max-width:93% !important;
+    grid-template-columns:none !important;
+    grid-auto-rows:auto !important;
+    grid-auto-flow:initial !important;
+  }
+
+  .user-message .bubble img{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+    object-fit:contain !important;
+    position:static !important;
+  }
+
+}
