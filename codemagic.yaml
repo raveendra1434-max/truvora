@@ -7,6 +7,7 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
+        CI: "false"
         XCODE_PROJECT: "client/ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
 
