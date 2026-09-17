@@ -1,0 +1,37 @@
+workflows:
+  ios-workflow:
+    name: Trulexity iOS
+    max_build_duration: 120
+
+    environment:
+      xcode: latest
+      cocoapods: default
+      vars:
+        XCODE_PROJECT: "client/ios/App/App.xcodeproj"
+        XCODE_SCHEME: "App"
+
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          cd client
+          npm ci
+
+      - name: Build web app
+        script: |
+          cd client
+          npm run build
+
+      - name: Sync Capacitor iOS
+        script: |
+          cd client
+          npx cap sync ios
+
+      - name: Build iOS project
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
