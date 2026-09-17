@@ -3,9 +3,15 @@ workflows:
     name: Trulexity iOS
     max_build_duration: 120
 
+    integrations:
+      app_store_connect: Codemagic Trulexity
+
     environment:
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.trulexity.app
       vars:
         CI: "false"
         XCODE_PROJECT: "client/ios/App/App.xcodeproj"
@@ -26,6 +32,9 @@ workflows:
         script: |
           cd client
           npx cap sync ios
+
+      - name: Set up code signing settings on Xcode project
+        script: xcode-project use-profiles
 
       - name: Build iOS project
         script: |
