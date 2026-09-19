@@ -4936,8 +4936,7 @@ setShowAnalyzeMenu(false);
 
                     )}
 
-
-                    {msg.role === "assistant" && !msg.image && (<>
+  {!msg.image && (<>
   <div className="file-actions-grid"></div>
 
                      {/* PDF */}

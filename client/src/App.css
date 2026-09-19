@@ -5148,3 +5148,616 @@ input[type="search"]::placeholder{
   }
 
 }
+/* Hide chat symbols but keep their space */
+.avatar{
+  visibility:hidden !important;
+}
+/* =========================================================
+   TRULEXITY — FINAL MOBILE RESPONSIVE LAYOUT
+   iPHONE + ANDROID
+   320px → 600px
+   AI ANSWER VISIBLE
+   14 ACTION BUTTONS = 7 × 2
+   NO HORIZONTAL PAGE SCROLL
+   ========================================================= */
+
+@media (max-width: 600px){
+
+  /* =======================================================
+     GLOBAL MOBILE SAFETY
+     ======================================================= */
+
+  html,
+  body,
+  #root{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden !important;
+  }
+
+  .app,
+  .main{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow-x:hidden !important;
+  }
+
+  /* =======================================================
+     HEADER
+     ======================================================= */
+
+  .topbar{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    height:58px !important;
+    min-height:58px !important;
+
+    padding-left:10px !important;
+    padding-right:10px !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .top-title{
+    font-size:16px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  /* =======================================================
+     CHAT AREA
+     ======================================================= */
+
+  .messages{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .message{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+  }
+
+  /* =======================================================
+     HIDE AVATAR SYMBOL
+     KEEP ITS SPACE
+     ======================================================= */
+
+  .avatar{
+    visibility:hidden !important;
+    flex-shrink:0 !important;
+  }
+
+  /* =======================================================
+     AI ANSWER
+     NEVER TURN THE ANSWER ITSELF INTO A GRID
+     ======================================================= */
+
+  .message:not(.user-message) .bubble{
+    display:block !important;
+
+    width:auto !important;
+    max-width:calc(100% - 38px) !important;
+
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    white-space:normal !important;
+    word-break:normal !important;
+    overflow-wrap:anywhere !important;
+
+    overflow:hidden !important;
+  }
+
+  /* Every actual answer element uses normal flow */
+
+  .message:not(.user-message) .bubble
+  > *:not(.message-actions):not(.copy-btn):not(.file-actions-grid){
+
+    display:block !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    box-sizing:border-box !important;
+
+    min-width:0 !important;
+  }
+
+  /* =======================================================
+     CODE
+     ======================================================= */
+
+  .message:not(.user-message) .bubble pre{
+    width:100% !important;
+    max-width:100% !important;
+
+    overflow-x:auto !important;
+
+    box-sizing:border-box !important;
+
+    white-space:pre !important;
+  }
+
+  /* =======================================================
+     IMAGES
+     ======================================================= */
+
+  .bubble img{
+    display:block !important;
+
+    width:auto !important;
+    max-width:100% !important;
+
+    height:auto !important;
+
+    object-fit:contain !important;
+  }
+
+  /* =======================================================
+     TABLES
+     ======================================================= */
+
+  .bubble table{
+    display:block !important;
+
+    width:max-content !important;
+    max-width:none !important;
+
+    min-width:100% !important;
+
+    overflow-x:auto !important;
+  }
+
+  /* =======================================================
+     OLD EMPTY FILE CONTAINER
+     ======================================================= */
+
+  .message:not(.user-message) .bubble
+  > .file-actions-grid{
+    display:none !important;
+  }
+
+  /* =======================================================
+     AI ACTION BUTTONS
+     14 BUTTONS
+     7 PER ROW
+     ======================================================= */
+
+  .message:not(.user-message) .bubble
+  .message-actions{
+
+    display:grid !important;
+
+    grid-template-columns:
+      repeat(7, minmax(0, 1fr)) !important;
+
+    
+      grid-auto-rows:34px !important;
+
+    grid-auto-flow:row !important;
+
+    gap:4px !important;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    height:auto !important;
+
+    margin-top:10px !important;
+    padding:0 !important;
+
+    box-sizing:border-box !important;
+
+    overflow:visible !important;
+  }
+
+  /* Every action button */
+
+  .message:not(.user-message) .bubble
+  .message-actions > button{
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+
+    height:34px !important;
+    min-height:34px !important;
+    max-height:34px !important;
+
+    margin:0 !important;
+
+    padding:0 2px !important;
+
+    box-sizing:border-box !important;
+
+    font-size:8px !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+
+    border-radius:6px !important;
+
+    touch-action:manipulation !important;
+  }
+
+  /* Icons stay visible */
+
+  .message:not(.user-message) .bubble
+  .message-actions > button svg{
+
+    width:11px !important;
+    height:11px !important;
+
+    flex:0 0 auto !important;
+
+    margin-right:2px !important;
+  }
+
+  /* =======================================================
+     USER MESSAGE
+     ======================================================= */
+
+  .user-message .bubble{
+
+    display:block !important;
+
+    width:auto !important;
+
+    max-width:93% !important;
+
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .user-message .bubble img{
+
+    display:block !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    height:auto !important;
+
+    object-fit:contain !important;
+  }
+
+  /* =======================================================
+     COMPOSER
+     ======================================================= */
+
+  .input-area{
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
+
+    padding-left:8px !important;
+    padding-right:8px !important;
+
+    padding-bottom:
+      max(10px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .input-box{
+
+    position:relative !important;
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
+  }
+
+  /* =======================================================
+     TOOLBAR
+     ======================================================= */
+
+  .composer-toolbar{
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    display:flex !important;
+    align-items:center !important;
+
+    flex-wrap:nowrap !important;
+
+    gap:4px !important;
+
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+
+    scrollbar-width:none !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .composer-toolbar::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .left-buttons{
+
+    display:flex !important;
+    align-items:center !important;
+
+    flex:0 0 auto !important;
+
+    gap:4px !important;
+
+    min-width:max-content !important;
+  }
+
+  .icon-btn{
+
+    flex:0 0 36px !important;
+
+    width:36px !important;
+    min-width:36px !important;
+
+    height:36px !important;
+    min-height:36px !important;
+
+    padding:0 !important;
+
+    touch-action:manipulation !important;
+  }
+
+  /* =======================================================
+     LANGUAGE + VOICE
+     ======================================================= */
+
+  .composer-toolbar .language-select,
+  .composer-toolbar .voice-select{
+
+    flex:0 0 auto !important;
+
+    width:120px !important;
+    min-width:120px !important;
+    max-width:120px !important;
+
+    margin:0 !important;
+  }
+
+  .composer-toolbar
+  .language__control,
+  .composer-toolbar
+  .voice__control{
+
+    width:100% !important;
+
+    height:36px !important;
+    min-height:36px !important;
+    max-height:36px !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .composer-toolbar
+  .language__single-value,
+  .composer-toolbar
+  .voice__single-value,
+  .composer-toolbar
+  .language__placeholder,
+  .composer-toolbar
+  .voice__placeholder{
+
+    font-size:11px !important;
+
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  /* =======================================================
+     TEXT INPUT
+     ======================================================= */
+
+  .main-input{
+
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+
+    box-sizing:border-box !important;
+
+    min-height:62px !important;
+
+    padding:
+      12px
+      58px
+      12px
+      12px !important;
+
+    overflow-x:hidden !important;
+
+    font-size:14px !important;
+
+    line-height:1.5 !important;
+  }
+
+  /* =======================================================
+     SEND BUTTON
+     ======================================================= */
+
+  .send-btn{
+
+    position:absolute !important;
+
+    right:12px !important;
+    bottom:12px !important;
+
+    width:40px !important;
+    min-width:40px !important;
+
+    height:40px !important;
+    min-height:40px !important;
+
+    max-width:40px !important;
+    max-height:40px !important;
+
+    z-index:50 !important;
+
+    margin:0 !important;
+
+    box-sizing:border-box !important;
+
+    touch-action:manipulation !important;
+  }
+
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   iPHONE SE / SMALL ANDROID
+   ========================================================= */
+
+@media (max-width:340px){
+
+  .top-title{
+    font-size:14px !important;
+  }
+
+  .messages{
+    padding-left:6px !important;
+    padding-right:6px !important;
+  }
+
+  .message:not(.user-message) .bubble{
+    max-width:calc(100% - 34px) !important;
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+
+  .message:not(.user-message) .bubble
+  .message-actions{
+
+    grid-template-columns:
+  repeat(4, minmax(0, 1fr)) !important;
+
+    gap:3px !important;
+  }
+
+  .message:not(.user-message) .bubble
+  .message-actions > button{
+
+    height:32px !important;
+    min-height:32px !important;
+
+    font-size:7px !important;
+  }
+
+  .message:not(.user-message) .bubble
+  .message-actions > button svg{
+
+    width:9px !important;
+    height:9px !important;
+  }
+
+  .composer-toolbar .language-select,
+  .composer-toolbar .voice-select{
+
+    width:105px !important;
+    min-width:105px !important;
+  }
+
+  .main-input{
+    min-height:58px !important;
+
+    padding-right:55px !important;
+  }
+
+  .send-btn{
+    right:10px !important;
+    bottom:10px !important;
+  }
+}
+
+/* =========================================================
+   iPHONE / ANDROID SAFE AREA
+   ========================================================= */
+
+@supports (padding-bottom: env(safe-area-inset-bottom)){
+
+  .input-area{
+
+    padding-bottom:
+      max(
+        10px,
+        env(safe-area-inset-bottom)
+      ) !important;
+  }
+}
+/* =========================================================
+   MOBILE AI ANSWER — REMOVE INVISIBLE AVATAR SPACE
+   ========================================================= */
+
+@media (max-width:600px){
+
+  .message:not(.user-message) .avatar{
+    display:none !important;
+  }
+
+  .message:not(.user-message) .bubble{
+    max-width:100% !important;
+    width:100% !important;
+  }
+
+}
+/* MOBILE — USER MESSAGE RIGHT SAFE AREA */
+@media (max-width:600px){
+
+  .user-message .bubble{
+    position:relative !important;
+    right:10px !important;
+    margin-right:0 !important;
+    max-width:85% !important;
+    box-sizing:border-box !important;
+  }
+
+}
+/* MOBILE USER MESSAGE — RIGHT EDGE SPACE */
+@media (max-width:600px) {
+
+  .message.user-message {
+    width:calc(100% - 12px) !important;
+    max-width:none !important;
+    margin-left:0 !important;
+    margin-right:12px !important;
+    box-sizing:border-box !important;
+  }
+
+}
