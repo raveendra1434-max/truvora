@@ -5968,3 +5968,131 @@ input[type="search"]::placeholder{
     box-sizing: border-box !important;
   }
 }
+/* =========================================================
+   TRULEXITY — FINAL iPHONE WIDTH LOCK
+   NO HORIZONTAL MOVEMENT
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  html,
+  body,
+  #root,
+  .app,
+  .main,
+  .messages,
+  .input-area,
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* TOOLBAR MUST FIT INSIDE THE PHONE */
+  .composer-toolbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+
+    gap: 3px !important;
+    box-sizing: border-box !important;
+
+    touch-action: none !important;
+  }
+
+  /* ICONS + VOICE */
+  .composer-toolbar .left-buttons {
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    gap: 3px !important;
+
+    overflow: hidden !important;
+  }
+
+  .composer-toolbar .left-buttons > div,
+  .composer-toolbar .left-buttons > .icon-btn {
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+  }
+
+  .composer-toolbar .voice-toggle-btn {
+    flex: 0 0 55px !important;
+    width: 55px !important;
+    min-width: 55px !important;
+    max-width: 55px !important;
+  }
+
+  /* ENGLISH */
+  .composer-toolbar .language-select,
+
+  /* ALLOY */
+  .composer-toolbar .voice-select {
+    flex: 1 1 0 !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+  }
+
+  .composer-toolbar .language__control,
+  .composer-toolbar .voice__control {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .composer-toolbar .language__single-value,
+  .composer-toolbar .voice__single-value {
+    max-width: 100% !important;
+
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* TEXT BOX */
+  .main-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* SEND BUTTON STAYS INSIDE */
+  .send-btn {
+    right: 10px !important;
+  }
+
+  /* MESSAGE BUBBLES */
+  .message,
+  .bubble {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .message:not(.user-message) .bubble {
+    max-width: calc(100% - 38px) !important;
+    overflow-x: hidden !important;
+  }
+}
