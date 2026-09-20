@@ -454,7 +454,7 @@ useEffect(() => {
 
   const [voiceEnabled,
     setVoiceEnabled] =
-    useState(true);
+    useState(false);
 
   const [showAnalyzeMenu,
     setShowAnalyzeMenu] =
@@ -551,7 +551,7 @@ const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
   const audioRef =
     useRef(null);
 const voiceEnabledRef =
-  useRef(true);
+  useRef(false);
 
   /* =====================================================
      VOICE RECOGNITION
