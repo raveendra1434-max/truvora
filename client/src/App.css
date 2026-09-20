@@ -6373,3 +6373,157 @@ input[type="search"]::placeholder{
     overscroll-behavior-x: none !important;
   }
 }
+/* =========================================================
+   TRULEXITY — iPHONE FINAL NO-PAN COMPOSER
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  .app,
+  .main,
+  .messages,
+  .input-area,
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  /* Composer toolbar — NEVER horizontally scroll */
+  .composer-toolbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+
+    gap: 3px !important;
+    box-sizing: border-box !important;
+
+    touch-action: pan-y !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  /* Left buttons */
+  .composer-toolbar .left-buttons {
+    flex: 0 1 96px !important;
+    width: 96px !important;
+    min-width: 96px !important;
+    max-width: 96px !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    gap: 2px !important;
+
+    overflow: hidden !important;
+  }
+
+  /* Analyzer + microphone */
+  .composer-toolbar .left-buttons > div,
+  .composer-toolbar .left-buttons > .icon-btn {
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+  }
+
+  /* Voice button */
+  .composer-toolbar .voice-toggle-btn {
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* English + Alloy */
+  .composer-toolbar .language-select,
+  .composer-toolbar .voice-select {
+    flex: 1 1 0 !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .composer-toolbar .language__control,
+  .composer-toolbar .voice__control {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .composer-toolbar .language__single-value,
+  .composer-toolbar .voice__single-value {
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* Text area */
+  .main-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Send button */
+  .send-btn {
+    right: 10px !important;
+    max-width: calc(100% - 20px) !important;
+  }
+}
+/* =========================================================
+   TRULEXITY — iPHONE INPUT FLEX WIDTH FIX
+   Prevent Safari from horizontally panning the composer
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .main-input {
+    flex: 0 1 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    /* iPhone Safari should not zoom/pan the focused field */
+    font-size: 16px !important;
+  }
+}
