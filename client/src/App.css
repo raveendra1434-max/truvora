@@ -5831,3 +5831,76 @@ input[type="search"]::placeholder{
     max-width: calc(100% - 24px);
   }
 }
+/* =========================================================
+   TRULEXITY — FINAL iPHONE COMPOSER LOCK
+   NO HORIZONTAL MOVEMENT
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .input-area,
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .composer-toolbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+    touch-action: none !important;
+  }
+
+  .composer-toolbar .left-buttons {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .composer-toolbar .language-select,
+  .composer-toolbar .voice-select {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .composer-toolbar .language__control,
+  .composer-toolbar .voice__control {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .main-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .send-btn {
+    right: 10px !important;
+  }
+}
