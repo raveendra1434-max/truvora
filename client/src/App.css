@@ -6096,3 +6096,280 @@ input[type="search"]::placeholder{
     overflow-x: hidden !important;
   }
 }
+/* =========================================================
+   TRULEXITY — DEFINITIVE iPHONE VIEWPORT LOCK
+   MOBILE ONLY
+   DESKTOP UNTOUCHED
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  /* ---------- HARD VIEWPORT LOCK ---------- */
+
+  html,
+  body,
+  #root,
+  .app,
+  .main,
+  .messages,
+  .input-area,
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: clip !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  .app,
+  .main {
+    position: relative !important;
+  }
+
+  /* ---------- MESSAGE WIDTH ---------- */
+
+  .message {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: clip !important;
+  }
+
+  .bubble,
+  .message:not(.user-message) .bubble,
+  .user-message .bubble {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .message:not(.user-message) .bubble {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ---------- COMPOSER CONTAINER ---------- */
+
+  .input-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+
+    overflow-x: clip !important;
+    box-sizing: border-box !important;
+  }
+
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    padding: 6px !important;
+
+    overflow-x: clip !important;
+    box-sizing: border-box !important;
+  }
+
+  /* =======================================================
+     TOOLBAR
+     Use GRID so children CANNOT create horizontal scrolling
+     ======================================================= */
+
+  .composer-toolbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      104px
+      minmax(0, 1fr)
+      minmax(0, 1fr) !important;
+
+    align-items: center !important;
+
+    gap: 4px !important;
+
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+
+    touch-action: pan-y !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  /* ---------- LEFT TOOLS ---------- */
+
+  .composer-toolbar .left-buttons {
+    width: 104px !important;
+    min-width: 104px !important;
+    max-width: 104px !important;
+
+    flex: none !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    align-items: center !important;
+
+    gap: 2px !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* WRENCH + MICROPHONE */
+
+  .composer-toolbar .left-buttons > div,
+  .composer-toolbar .left-buttons > .icon-btn {
+    flex: 0 0 28px !important;
+
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .composer-toolbar .left-buttons > div .icon-btn {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+
+    height: 32px !important;
+  }
+
+  /* VOICE */
+
+  .composer-toolbar .voice-toggle-btn {
+    flex: 0 0 42px !important;
+
+    width: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+
+    height: 32px !important;
+    min-height: 32px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    font-size: 9px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* =======================================================
+     ENGLISH + ALLOY
+     ======================================================= */
+
+  .composer-toolbar .language-select,
+  .composer-toolbar .voice-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    flex: 1 1 auto !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .composer-toolbar .language__control,
+  .composer-toolbar .voice__control {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .composer-toolbar .language__value-container,
+  .composer-toolbar .voice__value-container {
+    min-width: 0 !important;
+
+    padding-left: 6px !important;
+    padding-right: 3px !important;
+
+    overflow: hidden !important;
+  }
+
+  .composer-toolbar .language__single-value,
+  .composer-toolbar .voice__single-value {
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    font-size: 11px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* ---------- TEXT BOX ---------- */
+
+  .main-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+  }
+
+  /* ---------- SEND BUTTON ---------- */
+
+  .send-btn {
+    right: 10px !important;
+    bottom: 10px !important;
+
+    width: 40px !important;
+    min-width: 40px !important;
+
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  /* ---------- NO HORIZONTAL TOUCH PAN ---------- */
+
+  .input-area,
+  .input-box,
+  .composer-toolbar,
+  .main-input {
+    overscroll-behavior-x: none !important;
+  }
+}
