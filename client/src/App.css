@@ -5761,3 +5761,73 @@ input[type="search"]::placeholder{
   }
 
 }
+/* =========================================================
+   FINAL iPHONE COMPOSER LOCK
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  html,
+  body,
+  #root,
+  .app,
+  .main {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  .input-area {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden !important;
+    box-sizing: border-box;
+  }
+
+  .input-box {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden !important;
+  }
+
+  /* DO NOT allow the toolbar to slide sideways */
+  .left-buttons {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden !important;
+    flex-wrap: nowrap;
+  }
+
+  /* Keep selectors inside the phone */
+  .language-select,
+  .voice-select {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: auto !important;
+    flex: 1 1 0 !important;
+  }
+
+  .language__control,
+  .voice__control {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Prevent input from creating horizontal overflow */
+  .main-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* Send button stays inside input */
+  .send-btn {
+    right: 12px !important;
+    max-width: calc(100% - 24px);
+  }
+}
