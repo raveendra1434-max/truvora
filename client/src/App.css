@@ -5904,3 +5904,67 @@ input[type="search"]::placeholder{
     right: 10px !important;
   }
 }
+/* =========================================================
+   TRULEXITY — FINAL MOBILE COMPOSER NO-SWIPE LOCK
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .input-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .input-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-wrap: wrap !important;
+
+    overflow: hidden !important;
+  }
+
+  /* IMPORTANT:
+     Do NOT allow the toolbar to scroll sideways */
+  .composer-toolbar,
+  .left-buttons {
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+
+    scrollbar-width: none !important;
+
+    touch-action: none !important;
+  }
+
+  .composer-toolbar::-webkit-scrollbar,
+  .left-buttons::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .left-buttons {
+    width: 100% !important;
+    flex: 0 1 auto !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .composer-toolbar {
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .main-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
