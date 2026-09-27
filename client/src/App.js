@@ -2875,50 +2875,67 @@ const handleGenerateDocument =
 }
 
 
-      /* =================================================
-         DIRECT FILE DOWNLOAD
-      ================================================= */
+     /* =================================================
+   OPEN / DOWNLOAD GENERATED DOCUMENT
+================================================= */
 
-      const url =
+const url =
   data.document;
 
-      const link =
-        document.createElement("a");
+const officeTypes = [
+  "docx",
+  "pptx"
+];
 
-      link.href = url;
+if (
+  officeTypes.includes(
+    type.toLowerCase()
+  )
+) {
+  const officeViewerUrl =
+    `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`;
 
-      link.download =
-        data.document
-          .split("/")
-          .pop();
+  window.location.href =
+    officeViewerUrl;
 
-      document.body.appendChild(
-        link
-      );
+  return;
+}
 
-      link.click();
+/* PDF and other formats */
 
-      document.body.removeChild(
-        link
-      );
+const link =
+  document.createElement("a");
 
+link.href = url;
 
-    } catch (error) {
+link.download =
+  data.document
+    .split("/")
+    .pop();
 
-      console.error(
-        "DOCUMENT GENERATION ERROR:",
-        error
-      );
+document.body.appendChild(
+  link
+);
 
-      alert(
-        "Server error"
-      );
+link.click();
 
-    }
+document.body.removeChild(
+  link
+);
+      } catch (error) {
 
-  };
+        console.error(
+          "DOCUMENT GENERATION ERROR:",
+          error
+        );
 
+        alert(
+          "Server error"
+        );
 
+      }
+
+    };
   /* =====================================================
      LOGIN SCREEN
   ===================================================== */
@@ -5801,7 +5818,6 @@ styles={{
 
 
 export default App;
-
 
 
 

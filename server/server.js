@@ -4559,7 +4559,7 @@ app.post(
       }
 
 
-      /* =================================================
+           /* =================================================
          XLSX
       ================================================= */
 
@@ -4567,74 +4567,116 @@ app.post(
         requestedType ===
         "xlsx"
       ) {
-const xlsxCompletion =
-  await openai.chat.completions.create({
-    model: "gpt-4.1-mini",
-    messages: [
-      {
-        role: "system",
-        content: `
+
+        const xlsxCompletion =
+          await openai.chat.completions.create({
+            model: "gpt-4.1-mini",
+
+            response_format: {
+              type: "json_object"
+            },
+
+            messages: [
+              {
+                role: "system",
+
+                content: `
 You are a professional technical writer.
 
-Create a complete, detailed professional document based on the user's request.
+Create structured content for an Excel AI report.
 
-Structure the document with:
-Title
-Table of Contents
-Introduction
-Detailed sections and chapters
-Examples where appropriate
-Advantages
-Disadvantages
-Applications
-Future Scope
-Conclusion
+Return ONLY valid JSON with exactly these three fields:
 
-Write the actual detailed content.
-Do not explain what you are doing.
-Return only the finished document.
-`,
-      },
-      {
-        role: "user",
-        content: `
+{
+  "summary": "...",
+  "analysis": "...",
+  "recommendations": "..."
+}
+
+Rules:
+
+SUMMARY:
+- Give a clear and useful overview of the user's request.
+- Keep it reasonably concise.
+- Do not repeat the entire detailed analysis.
+
+ANALYSIS:
+- Provide the detailed analysis of the user's request.
+- Include important explanations, sections, examples, facts, advantages, disadvantages, applications, future scope, or other relevant details when appropriate.
+- Make this the main detailed part of the report.
+- Do not duplicate the summary unnecessarily.
+
+RECOMMENDATIONS:
+- Give practical recommendations related to the user's request.
+- Use clear bullet points where appropriate.
+
+Do not include Markdown code fences.
+Do not explain the JSON format.
+Return only valid JSON.
+`
+              },
+
+              {
+                role: "user",
+
+                content: `
 User request:
 
 ${content || documentContent || ""}
 
-Return the complete finished document.
-`,
-      },
-    ],
-  });
+Create the structured Excel report now.
+`
+              }
+            ]
+          });
 
-const xlsxFullContent =
-  xlsxCompletion.choices[0].message.content;
+        let xlsxData;
 
-commonData.summary =
-  xlsxFullContent;
+        try {
+          xlsxData =
+            JSON.parse(
+              xlsxCompletion.choices[0].message.content
+            );
+        } catch (parseError) {
 
-commonData.analysis =
-  xlsxFullContent;
+          console.error(
+            "XLSX JSON PARSE ERROR:",
+            parseError
+          );
 
-commonData.recommendations = `
-Recommendations
+          xlsxData = {
+            summary:
+              String(
+                xlsxCompletion.choices[0].message.content ||
+                ""
+              ),
 
-• Verify important information using official sources.
+            analysis:
+              String(
+                xlsxCompletion.choices[0].message.content ||
+                ""
+              ),
 
-• Review AI-generated content before making important decisions.
+            recommendations:
+              "Review the generated AI content and verify important information using trusted sources."
+          };
+        }
 
-• Cross-check important facts using multiple trusted sources.
+        commonData.summary =
+          xlsxData.summary || "";
 
-• Continue monitoring information because it may change.
-`;
+        commonData.analysis =
+          xlsxData.analysis || "";
+
+        commonData.recommendations =
+          xlsxData.recommendations || "";
+
         generatedFile =
           await generateXLSX(
             commonData
           );
 
       }
-
 
       /* =================================================
          PPTX
