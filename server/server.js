@@ -4400,13 +4400,13 @@ app.post(
           );
 
 
-      const documentContent =
-        String(
-          content ||
-          summary ||
-          analysis ||
-          ""
-        ).trim();
+      let documentContent =
+  String(
+    content ||
+    summary ||
+    analysis ||
+    ""
+  ).trim();
 
 
       if (
@@ -4442,6 +4442,9 @@ app.post(
 
       }
 
+/* =================================================
+   GENERATE FULL PROFESSIONAL DOCUMENT CONTENT
+================================================= */
 
       const safeTitle =
   String(
@@ -4564,7 +4567,67 @@ app.post(
         requestedType ===
         "xlsx"
       ) {
+const xlsxCompletion =
+  await openai.chat.completions.create({
+    model: "gpt-4.1-mini",
+    messages: [
+      {
+        role: "system",
+        content: `
+You are a professional technical writer.
 
+Create a complete, detailed professional document based on the user's request.
+
+Structure the document with:
+Title
+Table of Contents
+Introduction
+Detailed sections and chapters
+Examples where appropriate
+Advantages
+Disadvantages
+Applications
+Future Scope
+Conclusion
+
+Write the actual detailed content.
+Do not explain what you are doing.
+Return only the finished document.
+`,
+      },
+      {
+        role: "user",
+        content: `
+User request:
+
+${content || documentContent || ""}
+
+Return the complete finished document.
+`,
+      },
+    ],
+  });
+
+const xlsxFullContent =
+  xlsxCompletion.choices[0].message.content;
+
+commonData.summary =
+  xlsxFullContent;
+
+commonData.analysis =
+  xlsxFullContent;
+
+commonData.recommendations = `
+Recommendations
+
+• Verify important information using official sources.
+
+• Review AI-generated content before making important decisions.
+
+• Cross-check important facts using multiple trusted sources.
+
+• Continue monitoring information because it may change.
+`;
         generatedFile =
           await generateXLSX(
             commonData
