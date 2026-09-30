@@ -3815,15 +3815,27 @@ setShowAnalyzeMenu(false);
 
               setMessages([]);
 
-              setInput("");
+setInput("");
 
-              setPdfText("");
+setPdfText("");
 
-              setImage(null);
+setImage(null);
 
-              setCurrentChatId(
-                null
-              );
+setTypingText("");
+
+setLoading(false);
+
+setStopGeneration(true);
+
+resetTranscript();
+
+localStorage.removeItem(
+  "current-chat"
+);
+
+setCurrentChatId(
+  `chat-${Date.now()}`
+);
 
             }}
           >
