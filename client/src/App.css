@@ -2938,7 +2938,7 @@ video{
     max-width:86vw !important;
     height:100dvh !important;
 
-    z-index:5000 !important;
+    z-index:10000 !important;
 
     transform:translateX(-105%) !important;
     opacity:0 !important;
