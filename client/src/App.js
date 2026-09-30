@@ -3743,7 +3743,12 @@ setShowAnalyzeMenu(false);
         {/* ==============================================
             SIDEBAR
         =============================================== */}
-
+{sidebarOpen && (
+  <div
+    className="sidebar-overlay"
+    onClick={() => setSidebarOpen(false)}
+  />
+)}
         <div
           className={`sidebar ${
             sidebarOpen
