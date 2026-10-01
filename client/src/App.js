@@ -2640,82 +2640,82 @@ const handleYouTube =
 
 
         /* =================================================
-           STREAM / TYPE EFFECT
-        ================================================= */
+   STREAM / TYPE EFFECT
+================================================= */
 
-        for (
-          const char
-          of data.reply || ""
-        ) {
+const replyText =
+  data.reply ||
+  data.answer ||
+  data.response ||
+  "";
 
-          if (
-            stopGeneration
-          ) {
+for (
+  const char
+  of replyText
+) {
 
-            break;
+  if (
+    stopGeneration
+  ) {
 
-          }
+    break;
 
+  }
 
-          currentText +=
-            char;
+  currentText +=
+    char;
 
+  setTypingText(
+    currentText
+  );
 
-          setTypingText(
-            currentText
-          );
+  await new Promise(
+    (resolve) =>
+      setTimeout(
+        resolve,
+        8
+      )
+  );
 
+}
 
-          await new Promise(
-            (resolve) =>
-              setTimeout(
-                resolve,
-                8
-              )
-          );
+const finalMessages = [
 
-        }
+  ...updatedMessages,
 
+  {
+    role:
+      "assistant",
 
-        const finalMessages = [
+    text:
+      currentText,
 
-          ...updatedMessages,
+    image:
+      data.image ||
+      (
+        data.type ===
+        "image"
 
-          {
+          ? data.document
 
-            role:
-              "assistant",
+          : null
+      ),
 
-            text:
-              currentText,
+    document:
+      data.document ||
+      null,
 
-            image:
-              data.image ||
-              (
-                data.type ===
-                "image"
+    sources:
+      data.sources ||
+      [],
 
-                  ? data.document
+  },
 
-                  : null
-              ),
+];
 
-            document:
-              data.document ||
-              null,
-
-            sources:
-              data.sources ||
-              [],
-
-          },
-
-        ];
-
-
-        setMessages(
-          finalMessages
-        );
+setMessages(
+  finalMessages
+);
 /* =================================================
    AUTOMATIC VOICE
 ================================================= */

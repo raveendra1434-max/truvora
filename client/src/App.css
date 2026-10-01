@@ -6636,3 +6636,49 @@ input[type="search"]::placeholder{
     background-position: 200% center;
   }
 }
+/* =========================================================
+   TRULEXITY — FINAL MOBILE USER MESSAGE ACTION FIX
+   USER QUESTIONS MUST NEVER SHOW DOCUMENT/ACTION BUTTONS
+   AI ANSWERS KEEP THEIR BUTTONS
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  /* Hide all document/action buttons from USER messages */
+  .user-message .bubble > .copy-btn {
+    display: none !important;
+  }
+
+  .user-message .bubble > .file-actions-grid {
+    display: none !important;
+  }
+
+  .user-message .bubble .message-actions {
+    display: none !important;
+  }
+
+}
+/* =========================================================
+   TRULEXITY — FINAL MOBILE MESSAGE ACTION FIX
+   USER MESSAGE = NO ACTION BUTTONS
+   AI MESSAGE = ACTION BUTTONS
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  /* USER MESSAGE: hide every action button */
+  .message.user-message > .copy-btn,
+  .message.user-message > .file-actions-grid,
+  .message.user-message .message-actions,
+  .message.user-message .file-actions-grid,
+  .message.user-message .copy-btn {
+    display: none !important;
+  }
+
+  /* AI MESSAGE: keep action buttons */
+  .message:not(.user-message) > .copy-btn,
+  .message:not(.user-message) .copy-btn {
+    display: inline-flex !important;
+  }
+
+}
