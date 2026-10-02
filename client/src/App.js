@@ -50,6 +50,8 @@ import {
   googleProvider,
   saveChatToCloud,
   loadUserChats,
+  sendDirectMessage,
+  listenToDirectMessages,
 } from "./firebase";
 
 import {
@@ -73,7 +75,8 @@ function saveChat(chat) {
 
 
 function App() {
-
+  const [chatMode, setChatMode] =
+    useState("ai");
   /* =====================================================
      CITATIONS
   ===================================================== */
@@ -309,6 +312,11 @@ const [showLogin,
     setMessages] =
     useState([]);
 
+    const [directMessages,
+  setDirectMessages] =
+  useState([]);
+
+
   const [sidebarOpen, setSidebarOpen] = useState(
   () =>
     typeof window !== "undefined"
@@ -413,6 +421,33 @@ useEffect(() => {
     setUser] =
     useState(null);
 
+const [chatPartnerId,
+  setChatPartnerId] =
+  useState("");
+    useEffect(() => {
+
+    if (
+      chatMode !== "user" ||
+      !user?.uid ||
+      !chatPartnerId
+    ) {
+      return;
+    }
+
+    const unsubscribe =
+      listenToDirectMessages(
+        user.uid,
+        chatPartnerId,
+        setDirectMessages
+      );
+
+    return unsubscribe;
+
+  }, [
+    chatMode,
+    user,
+    chatPartnerId,
+  ]);
   const [chatHistory,
     setChatHistory] =
     useState([]);
@@ -2647,7 +2682,14 @@ const replyText =
   data.reply ||
   data.answer ||
   data.response ||
+  data.message ||
+  data.result ||
   "";
+
+console.log(
+  "FINAL AI REPLY TEXT:",
+  replyText
+);
 
 for (
   const char
@@ -3845,7 +3887,21 @@ setCurrentChatId(
             New Chat
 
           </button>
+          {/* USER CHAT */}
 
+          <button
+            className="new-chat"
+            onClick={() => {
+              setChatMode("user");
+              setSidebarOpen(false);
+            }}
+          >
+
+            <FiUser />
+
+            User Chat
+
+          </button>
 
           {/* SEARCH */}
 

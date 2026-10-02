@@ -1,0 +1,8 @@
+[33mcommit 95ec0ce7962a91cb8b3b6b78bdab8ca7b6f69ac5[m
+Author: Raveendra G <raveendra1434@gmail.com>
+Date:   Tue Aug 25 07:41:36 2026 -0700
+
+    Connect website analyzer to production API
+
+ client/src/App.js | 4 [32m++[m[31m--[m
+ 1 file changed, 2 insertions(+), 2 deletions(-)

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<truvoraReport>
+  <reportId>truvora-1787617331041</reportId>
+  <title>Truvora Document</title>
+  <generatedAt>2026-08-25T00:22:11.042Z</generatedAt>
+
+  <summary><![CDATA[
+Hello! How can I assist you today?
+  ]]></summary>
+
+  <analysis><![CDATA[
+Hello! How can I assist you today?
+  ]]></analysis>
+
+  <recommendations><![CDATA[
+
+• Verify important information using official sources.
+
+• Review AI-generated content before making important decisions.
+
+• Cross-check facts from multiple trusted sources.
+
+• Continue monitoring this topic because information may change.
+      
+  ]]></recommendations>
+
+  <sources>
+<source>https://news.google.com</source>
+<source>https://www.reuters.com</source>
+<source>https://apnews.com</source>
+  </sources>
+
+  <metadata>
+    <platform>Truvora</platform>
+    <version>1.0</version>
+    <format>xml</format>
+  </metadata>
+</truvoraReport>

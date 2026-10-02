@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "report": {
+    "id": "trulexity-1788781297199",
+    "title": "Trulexity Document",
+    "generatedAt": "2026-09-07T11:41:37.199Z",
+    "content": {
+      "summary": "Trulexity JSON filename test",
+      "analysis": "Testing the new filename",
+      "recommendations": "Test successful"
+    },
+    "sources": [],
+    "metadata": {
+      "platform": "Trulexity",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

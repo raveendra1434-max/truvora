@@ -1,0 +1,7 @@
+.env
+node_modules/
+server/node_modules/
+client/node_modules/
+.vscode/
+server/uploads/
+server/memory/memory.json

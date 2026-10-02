@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "truvora-1787617330494",
+    "title": "Truvora Document",
+    "generatedAt": "2026-08-25T00:22:10.496Z",
+    "content": {
+      "summary": "Hello! How can I assist you today?",
+      "analysis": "Hello! How can I assist you today?",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n      "
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

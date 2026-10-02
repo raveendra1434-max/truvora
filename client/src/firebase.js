@@ -11,6 +11,8 @@ import {
   setDoc,
   collection,
   getDocs,
+  addDoc,
+  onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
 
@@ -258,4 +260,142 @@ export const loadUserChats = async (
 
     return [];
   }
+};
+/* SEND DIRECT USER MESSAGE */
+
+export const sendDirectMessage = async (
+  senderId,
+  receiverId,
+  text
+) => {
+  try {
+    if (!senderId || !receiverId || !text?.trim()) {
+      return null;
+    }
+
+    const conversationId = [
+      senderId,
+      receiverId,
+    ]
+      .sort()
+      .join("_");
+
+    await setDoc(
+      doc(
+        db,
+        "directChats",
+        conversationId
+      ),
+      {
+        participants: [
+          senderId,
+          receiverId,
+        ],
+        updatedAt:
+          serverTimestamp(),
+      },
+      {
+        merge: true,
+      }
+    );
+
+    const messageRef =
+      await addDoc(
+        collection(
+          db,
+          "directChats",
+          conversationId,
+          "messages"
+        ),
+        {
+          senderId,
+          text: text.trim(),
+          createdAt:
+            serverTimestamp(),
+        }
+      );
+
+    console.log(
+      "✅ DIRECT MESSAGE SENT:",
+      messageRef.id
+    );
+
+    return {
+      conversationId,
+      messageId:
+        messageRef.id,
+    };
+
+  } catch (error) {
+
+    console.error(
+      "❌ DIRECT MESSAGE ERROR:",
+      error
+    );
+
+    return null;
+  }
+};
+/* LISTEN FOR DIRECT MESSAGES */
+
+export const listenToDirectMessages = (
+  senderId,
+  receiverId,
+  callback
+) => {
+  if (
+    !senderId ||
+    !receiverId ||
+    !callback
+  ) {
+    return () => {};
+  }
+
+  const conversationId = [
+    senderId,
+    receiverId,
+  ]
+    .sort()
+    .join("_");
+
+  const messagesRef =
+    collection(
+      db,
+      "directChats",
+      conversationId,
+      "messages"
+    );
+
+  return onSnapshot(
+    messagesRef,
+    (snapshot) => {
+      const messages =
+        snapshot.docs.map(
+          (messageDoc) => ({
+            id: messageDoc.id,
+            ...messageDoc.data(),
+          })
+        );
+
+      messages.sort(
+        (a, b) => {
+          const aTime =
+            a.createdAt?.toMillis?.() || 0;
+
+          const bTime =
+            b.createdAt?.toMillis?.() || 0;
+
+          return aTime - bTime;
+        }
+      );
+
+      callback(messages);
+    },
+    (error) => {
+      console.error(
+        "❌ DIRECT MESSAGE LISTENER ERROR:",
+        error
+      );
+    }
+  );
 };

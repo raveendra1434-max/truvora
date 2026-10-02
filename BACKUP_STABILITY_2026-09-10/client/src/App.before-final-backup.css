@@ -1,0 +1,2078 @@
+/* ============================================================
+   TRUVORA GLOBAL AI — CLEAN RESPONSIVE UI
+   Desktop • Laptop • Tablet • iPhone • Android • iPad
+   ============================================================ */
+
+:root {
+  --truvora-blue: #1565c0;
+  --truvora-blue-2: #0d47a1;
+  --truvora-accent: #29b6f6;
+
+  --bg: #07111f;
+  --bg-soft: #0b1728;
+  --panel: #0d1b2e;
+  --panel-2: #101f34;
+  --panel-3: #14263d;
+
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  --text: #f4f8ff;
+  --muted: #91a1b6;
+  --muted-2: #65768d;
+
+  --danger: #ff6b6b;
+  --success: #52d273;
+
+  --radius: 18px;
+
+  --shadow:
+    0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(21, 101, 192, 0.18),
+      transparent 38%
+    ),
+    var(--bg);
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--truvora-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   APP
+   ============================================================ */
+
+.truvora-app {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+
+  display: flex;
+
+  overflow: hidden;
+
+  background: var(--bg);
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.truvora-sidebar {
+  position: relative;
+  z-index: 30;
+
+  flex: 0 0 280px;
+
+  width: 280px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px 14px 14px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #091626 0%,
+      #07111f 100%
+    );
+
+  border-right: 1px solid var(--border);
+
+  box-shadow:
+    14px 0 40px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
+}
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-height: 52px;
+
+  padding:
+    4px
+    8px
+    18px;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  color: white;
+
+  font-size: 21px;
+  font-weight: 800;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--truvora-blue),
+      var(--truvora-accent)
+    );
+
+  box-shadow:
+    0 8px 25px
+    rgba(21, 101, 192, 0.32);
+}
+
+.brand-name {
+  font-size: 16px;
+
+  line-height: 1.15;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+}
+
+.brand-subtitle {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+}
+
+/* ============================================================
+   NEW CHAT
+   ============================================================ */
+
+.new-chat-button {
+  width: 100%;
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.24);
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(21, 101, 192, 0.95),
+      rgba(13, 71, 161, 0.95)
+    );
+
+  color: #fff;
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
+
+  box-shadow:
+    0 8px 22px
+    rgba(21, 101, 192, 0.20);
+}
+
+.new-chat-button:hover {
+  filter: brightness(1.08);
+
+  transform:
+    translateY(-1px);
+}
+
+.new-chat-button:active {
+  transform: scale(0.99);
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+.chat-search {
+  width: 100%;
+  height: 42px;
+
+  margin:
+    12px
+    0
+    18px;
+
+  padding:
+    0
+    13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color: var(--text);
+
+  outline: none;
+}
+
+.chat-search::placeholder {
+  color: var(--muted-2);
+}
+
+.chat-search:focus {
+  border-color:
+    rgba(41, 182, 246, 0.55);
+
+  background:
+    rgba(255, 255, 255, 0.065);
+}
+
+/* ============================================================
+   SIDEBAR LABEL
+   ============================================================ */
+
+.sidebar-label {
+  padding:
+    0
+    8px
+    9px;
+
+  color: var(--muted-2);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.13em;
+}
+
+/* ============================================================
+   CHAT HISTORY
+   ============================================================ */
+
+.chat-history {
+  min-height: 0;
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding-right: 2px;
+
+  scrollbar-width: thin;
+}
+
+.history-item {
+  width: 100%;
+  min-height: 42px;
+
+  display: block;
+
+  margin-bottom: 4px;
+
+  padding:
+    10px
+    11px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 11px;
+
+  background: transparent;
+
+  color: #b8c6d8;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.history-item:hover {
+  color: #fff;
+
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  border-color:
+    var(--border);
+}
+
+/* ============================================================
+   SIDEBAR FOOTER
+   ============================================================ */
+
+.sidebar-footer {
+  padding:
+    14px
+    8px
+    2px;
+
+  border-top:
+    1px solid
+    var(--border);
+
+  color: #b8c6d8;
+
+  font-size: 12px;
+}
+
+.sidebar-footer small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: var(--muted-2);
+
+  font-size: 10px;
+}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+
+.truvora-main {
+  min-width: 0;
+  min-height: 0;
+
+  flex: 1;
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(21, 101, 192, 0.07),
+      transparent 35%
+    ),
+    var(--bg);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.truvora-header {
+  height: 64px;
+  min-height: 64px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    0
+    20px;
+
+  border-bottom:
+    1px solid
+    var(--border);
+
+  background:
+    rgba(7, 17, 31, 0.78);
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+}
+
+.menu-button {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color: #eaf2ff;
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+.menu-button:hover {
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+.header-title {
+  flex: 1;
+
+  min-width: 0;
+
+  color: #edf5ff;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.07em;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.logout-button {
+  min-height: 38px;
+
+  padding:
+    0
+    13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #aebdd0;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.logout-button:hover {
+  color: #fff;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   CHAT AREA
+   ============================================================ */
+
+.chat-area {
+  width: 100%;
+
+  max-width: 980px;
+
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  margin:
+    0
+    auto;
+
+  padding:
+    30px
+    28px
+    170px;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+}
+
+/* ============================================================
+   MESSAGE
+   ============================================================ */
+
+.message-row {
+  width: 100%;
+
+  display: flex;
+
+  gap: 12px;
+
+  margin:
+    0
+    auto
+    24px;
+
+  animation:
+    messageIn
+    0.18s
+    ease-out;
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+.user-row {
+  flex-direction: row-reverse;
+}
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+
+.message-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: grid;
+  place-items: center;
+
+  margin-top: 2px;
+
+  border-radius: 11px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.assistant-avatar {
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--truvora-blue),
+      var(--truvora-accent)
+    );
+
+  box-shadow:
+    0 6px 18px
+    rgba(21, 101, 192, 0.22);
+}
+
+.user-avatar {
+  color: #d9e5f4;
+
+  background:
+    #1a2b40;
+
+  border:
+    1px solid
+    var(--border-strong);
+}
+
+/* ============================================================
+   MESSAGE CONTENT
+   ============================================================ */
+
+.message-content {
+  min-width: 0;
+
+  max-width:
+    min(78%, 760px);
+}
+
+.user-row .message-content {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+}
+
+/* ============================================================
+   MESSAGE BUBBLE
+   ============================================================ */
+
+.message-bubble {
+  width: fit-content;
+
+  max-width: 100%;
+
+  padding:
+    14px
+    16px;
+
+  border-radius: 17px;
+
+  overflow-wrap: anywhere;
+}
+
+.assistant-bubble {
+  background:
+    rgba(13, 27, 46, 0.92);
+
+  border:
+    1px solid
+    var(--border);
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, 0.10);
+
+  border-top-left-radius: 6px;
+}
+
+.user-bubble {
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1565c0,
+      #0d47a1
+    );
+
+  border:
+    1px solid
+    rgba(41, 182, 246, 0.20);
+
+  border-top-right-radius: 6px;
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.16);
+}
+
+/* ============================================================
+   MESSAGE TEXT
+   ============================================================ */
+
+.message-text {
+  color: #eaf1fb;
+
+  font-size: 15px;
+
+  line-height: 1.72;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+}
+
+.user-bubble .message-text {
+  color: #fff;
+}
+
+/* ============================================================
+   TIME
+   ============================================================ */
+
+.message-time {
+  margin-top: 6px;
+
+  padding:
+    0
+    3px;
+
+  color: var(--muted-2);
+
+  font-size: 10px;
+}
+
+/* ============================================================
+   IMAGES
+   ============================================================ */
+
+.chat-image {
+  display: block;
+
+  width: 100%;
+
+  max-width: 520px;
+
+  max-height: 520px;
+
+  margin:
+    0
+    0
+    12px;
+
+  border-radius: 14px;
+
+  object-fit: contain;
+
+  background:
+    #06101c;
+
+  border:
+    1px solid
+    var(--border);
+}
+
+/* ============================================================
+   TYPING
+   ============================================================ */
+
+.typing-bubble {
+  min-width: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.typing-bubble span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background:
+    #7d91aa;
+
+  animation:
+    typing
+    1.1s
+    infinite
+    ease-in-out;
+}
+
+.typing-bubble span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.typing-bubble span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+@keyframes typing {
+  0%,
+  70%,
+  100% {
+    opacity: 0.35;
+
+    transform:
+      translateY(0);
+  }
+
+  35% {
+    opacity: 1;
+
+    transform:
+      translateY(-3px);
+  }
+}
+
+/* ============================================================
+   MESSAGE MARKDOWN
+   ============================================================ */
+
+.message-text a {
+  color: #66c8ff;
+
+  text-decoration: underline;
+
+  text-underline-offset: 2px;
+}
+
+.message-text strong {
+  color: #fff;
+}
+
+.message-text code {
+  padding:
+    2px
+    5px;
+
+  border-radius: 5px;
+
+  background:
+    rgba(0, 0, 0, 0.25);
+
+  font-size: 0.9em;
+}
+
+.message-text pre {
+  max-width: 100%;
+
+  overflow-x: auto;
+
+  margin:
+    12px
+    0;
+
+  padding: 13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 12px;
+
+  background:
+    #050c15;
+
+  -webkit-overflow-scrolling:
+    touch;
+}
+
+.message-text pre code {
+  padding: 0;
+
+  background: transparent;
+}
+
+/* ============================================================
+   SOURCES
+   ============================================================ */
+
+.sources,
+.shopping-results {
+  margin-top: 15px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid
+    var(--border);
+}
+
+.sources-title {
+  margin-bottom: 8px;
+
+  color: #b9c9dc;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.05em;
+}
+
+.source-link {
+  display: block;
+
+  width: 100%;
+
+  margin:
+    3px
+    0;
+
+  padding:
+    6px
+    0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #66c8ff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  line-height: 1.45;
+}
+
+.source-link:hover {
+  color: #9bddff;
+
+  text-decoration: underline;
+}
+
+/* ============================================================
+   PRODUCT RESULTS
+   ============================================================ */
+
+.product-result {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 9px;
+
+  padding: 10px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.product-result img {
+  width: 58px;
+  height: 58px;
+
+  flex: 0 0 58px;
+
+  object-fit: cover;
+
+  border-radius: 9px;
+
+  background:
+    #07111f;
+}
+
+.product-result strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #eaf2ff;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+/* ============================================================
+   TRANSCRIPT
+   ============================================================ */
+
+.transcript-box {
+  margin-top: 13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  overflow: hidden;
+}
+
+.transcript-box summary {
+  padding:
+    10px
+    12px;
+
+  color: #b8c8db;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.transcript-box > div {
+  max-height: 280px;
+
+  overflow: auto;
+
+  padding:
+    0
+    12px
+    12px;
+
+  color: #899bb0;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+}
+
+/* ============================================================
+   MESSAGE ACTIONS
+   ============================================================ */
+
+.message-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-top: 10px;
+}
+
+.message-actions button {
+  min-height: 31px;
+
+  padding:
+    5px
+    9px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #9fb0c4;
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.message-actions button:hover {
+  color: #fff;
+
+  border-color:
+    rgba(41, 182, 246, 0.35);
+
+  background:
+    rgba(41, 182, 246, 0.08);
+}
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.error-banner {
+  position: absolute;
+
+  z-index: 15;
+
+  left: 50%;
+
+  bottom: 150px;
+
+  transform:
+    translateX(-50%);
+
+  width:
+    min(90%, 680px);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    11px
+    13px;
+
+  border:
+    1px solid
+    rgba(255, 107, 107, 0.30);
+
+  border-radius: 12px;
+
+  background:
+    rgba(75, 20, 25, 0.94);
+
+  color: #ffd1d1;
+
+  box-shadow:
+    var(--shadow);
+
+  font-size: 12px;
+}
+
+.error-banner button {
+  margin-left: auto;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #ffc3c3;
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+/* ============================================================
+   COMPOSER
+   ============================================================ */
+
+.composer-container {
+  position: absolute;
+
+  z-index: 20;
+
+  left: 50%;
+
+  bottom:
+    max(16px, env(safe-area-inset-bottom));
+
+  transform:
+    translateX(-50%);
+
+  width:
+    min(calc(100% - 40px), 980px);
+
+  padding: 10px;
+
+  border:
+    1px solid
+    var(--border-strong);
+
+  border-radius: 20px;
+
+  background:
+    rgba(11, 23, 40, 0.93);
+
+  box-shadow:
+    0 20px 55px
+    rgba(0, 0, 0, 0.32),
+
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.035);
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+}
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+
+.composer-toolbar {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-bottom: 9px;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  padding-bottom: 2px;
+
+  scrollbar-width: none;
+
+  -webkit-overflow-scrolling:
+    touch;
+}
+
+.composer-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+.composer-toolbar > button {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 0;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #b9c8da;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.composer-toolbar > button:hover {
+  color: #fff;
+
+  background:
+    rgba(255, 255, 255, 0.075);
+
+  border-color:
+    var(--border);
+}
+
+.composer-toolbar > button:active {
+  transform:
+    scale(0.94);
+}
+
+.composer-toolbar .toolbar-active {
+  color: #fff;
+
+  border-color:
+    rgba(41, 182, 246, 0.45);
+
+  background:
+    rgba(21, 101, 192, 0.32);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(41, 182, 246, 0.08);
+}
+
+/* ============================================================
+   SELECTS
+   ============================================================ */
+
+.toolbar-select {
+  height: 36px;
+
+  min-width: 105px;
+
+  max-width: 145px;
+
+  flex: 0 0 auto;
+
+  padding:
+    0
+    9px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 10px;
+
+  background:
+    #122239;
+
+  color: #d8e4f2;
+
+  outline: none;
+
+  cursor: pointer;
+
+  font-size: 11px;
+}
+
+.voice-select {
+  min-width: 100px;
+}
+
+.toolbar-select:focus {
+  border-color:
+    rgba(41, 182, 246, 0.5);
+}
+
+/* ============================================================
+   INPUT
+   ============================================================ */
+
+.composer-input-row {
+  width: 100%;
+
+  min-height: 52px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 8px;
+
+  padding:
+    6px
+    6px
+    6px
+    12px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 15px;
+
+  background:
+    rgba(0, 0, 0, 0.16);
+}
+
+.composer-input-row textarea {
+  width: 100%;
+
+  min-width: 0;
+
+  max-height: 180px;
+
+  min-height: 38px;
+
+  resize: none;
+
+  padding:
+    8px
+    2px;
+
+  border: 0;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #f2f7ff;
+
+  line-height: 1.5;
+
+  font-size: 14px;
+
+  overflow-y: auto;
+}
+
+.composer-input-row textarea::placeholder {
+  color: #62748b;
+}
+
+/* ============================================================
+   SEND BUTTON
+   ============================================================ */
+
+.send-button {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--truvora-blue),
+      var(--truvora-accent)
+    );
+
+  color: #fff;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 18px
+    rgba(21, 101, 192, 0.26);
+
+  transition:
+    transform 0.16s ease,
+    filter 0.16s ease,
+    opacity 0.16s ease;
+}
+
+.send-button:hover:not(:disabled) {
+  filter: brightness(1.08);
+
+  transform:
+    translateY(-1px);
+}
+
+.send-button:active:not(:disabled) {
+  transform:
+    scale(0.94);
+}
+
+.send-button:disabled {
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+.composer-status {
+  min-height: 17px;
+
+  padding:
+    6px
+    4px
+    0;
+
+  color: #61748b;
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.truvora-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(0, 0, 0, 0.66);
+
+  backdrop-filter:
+    blur(7px);
+
+  -webkit-backdrop-filter:
+    blur(7px);
+}
+
+.truvora-modal {
+  width:
+    min(100%, 500px);
+
+  max-height:
+    min(90dvh, 680px);
+
+  overflow: auto;
+
+  padding: 24px;
+
+  border:
+    1px solid
+    var(--border-strong);
+
+  border-radius: 22px;
+
+  background:
+    #0d1b2e;
+
+  box-shadow:
+    0 30px 90px
+    rgba(0, 0, 0, 0.5);
+}
+
+.modal-title {
+  margin-bottom: 7px;
+
+  color: #fff;
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+.modal-description {
+  margin-bottom: 17px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+.modal-input {
+  width: 100%;
+
+  height: 48px;
+
+  padding:
+    0
+    13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background:
+    #081525;
+
+  color: #f1f6ff;
+}
+
+.modal-input:focus {
+  border-color:
+    rgba(41, 182, 246, 0.55);
+}
+
+/* ============================================================
+   MODAL BUTTONS
+   ============================================================ */
+
+.modal-primary,
+.modal-cancel {
+  width: 100%;
+
+  min-height: 45px;
+
+  margin-top: 11px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+}
+
+.modal-primary {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--truvora-blue),
+      var(--truvora-accent)
+    );
+
+  color: #fff;
+}
+
+.modal-primary:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+.modal-cancel {
+  border:
+    1px solid
+    var(--border);
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #aab9cb;
+}
+
+.modal-cancel:hover {
+  color: #fff;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+
+.chat-area::-webkit-scrollbar,
+.chat-history::-webkit-scrollbar,
+.transcript-box > div::-webkit-scrollbar,
+.truvora-modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.chat-area::-webkit-scrollbar-thumb,
+.chat-history::-webkit-scrollbar-thumb,
+.transcript-box > div::-webkit-scrollbar-thumb,
+.truvora-modal::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+
+  background:
+    rgba(255, 255, 255, 0.12);
+}
+
+.chat-area::-webkit-scrollbar-track,
+.chat-history::-webkit-scrollbar-track,
+.transcript-box > div::-webkit-scrollbar-track,
+.truvora-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ============================================================
+   TABLET / IPAD
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .truvora-sidebar {
+    flex-basis: 250px;
+
+    width: 250px;
+  }
+
+  .chat-area {
+    padding-left: 20px;
+
+    padding-right: 20px;
+  }
+
+  .message-content {
+    max-width: 84%;
+  }
+
+  .composer-container {
+    width:
+      min(calc(100% - 28px), 900px);
+  }
+}
+
+/* ============================================================
+   PHONE
+   ============================================================ */
+
+@media (max-width: 680px) {
+  .truvora-app {
+    position: relative;
+  }
+
+  .truvora-sidebar {
+    position: fixed;
+
+    inset:
+      0
+      auto
+      0
+      0;
+
+    z-index: 80;
+
+    width:
+      min(84vw, 310px);
+
+    height: 100dvh;
+
+    padding-top:
+      max(14px, env(safe-area-inset-top));
+
+    padding-bottom:
+      max(12px, env(safe-area-inset-bottom));
+
+    box-shadow:
+      20px 0 60px
+      rgba(0, 0, 0, 0.48);
+  }
+
+  .truvora-main {
+    width: 100%;
+  }
+
+  .truvora-header {
+    height: 58px;
+
+    min-height: 58px;
+
+    padding:
+      0
+      12px;
+
+    padding-top:
+      env(safe-area-inset-top);
+
+    box-sizing: content-box;
+  }
+
+  .header-title {
+    font-size: 12px;
+
+    letter-spacing: 0.05em;
+  }
+
+  .menu-button {
+    width: 38px;
+    height: 38px;
+
+    flex-basis: 38px;
+  }
+
+  .logout-button {
+    min-height: 36px;
+
+    padding:
+      0
+      10px;
+
+    font-size: 11px;
+  }
+
+  .chat-area {
+    padding:
+      18px
+      12px
+      calc(185px + env(safe-area-inset-bottom));
+  }
+
+  .message-row {
+    gap: 8px;
+
+    margin-bottom: 19px;
+  }
+
+  .message-avatar {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+
+    border-radius: 9px;
+
+    font-size: 10px;
+  }
+
+  .message-content {
+    max-width:
+      calc(100% - 38px);
+  }
+
+  .message-bubble {
+    padding:
+      12px
+      13px;
+
+    border-radius: 15px;
+  }
+
+  .message-text {
+    font-size: 14px;
+
+    line-height: 1.62;
+  }
+
+  .message-actions {
+    gap: 5px;
+  }
+
+  .message-actions button {
+    min-height: 34px;
+
+    padding:
+      5px
+      8px;
+  }
+
+  .composer-container {
+    left: 8px;
+
+    right: 8px;
+
+    bottom:
+      max(8px, env(safe-area-inset-bottom));
+
+    transform: none;
+
+    width: auto;
+
+    padding: 8px;
+
+    border-radius: 17px;
+  }
+
+  .composer-toolbar {
+    margin-bottom: 7px;
+
+    gap: 4px;
+  }
+
+  .composer-toolbar > button {
+    width: 34px;
+    height: 34px;
+
+    flex-basis: 34px;
+  }
+
+  .toolbar-select {
+    height: 34px;
+
+    min-width: 94px;
+
+    font-size: 10px;
+  }
+
+  .composer-input-row {
+    min-height: 48px;
+
+    border-radius: 14px;
+
+    padding-left: 10px;
+  }
+
+  .composer-input-row textarea {
+    font-size: 14px;
+  }
+
+  .send-button {
+    width: 38px;
+    height: 38px;
+
+    flex-basis: 38px;
+  }
+
+  .composer-status {
+    font-size: 9px;
+  }
+
+  .error-banner {
+    bottom: 158px;
+
+    width:
+      calc(100% - 24px);
+  }
+
+  .truvora-modal-backdrop {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      12px
+      max(12px, env(safe-area-inset-bottom));
+  }
+
+  .truvora-modal {
+    width: 100%;
+
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+
+  .modal-title {
+    font-size: 17px;
+  }
+}
+
+/* ============================================================
+   SMALL IPHONE
+   ============================================================ */
+
+@media (max-width: 390px) {
+  .header-title {
+    font-size: 11px;
+  }
+
+  .logout-button {
+    padding:
+      0
+      8px;
+  }
+
+  .chat-area {
+    padding-left: 9px;
+
+    padding-right: 9px;
+  }
+
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+
+    flex-basis: 28px;
+  }
+
+  .message-content {
+    max-width:
+      calc(100% - 36px);
+  }
+
+  .message-text {
+    font-size: 13.5px;
+  }
+
+  .composer-container {
+    left: 5px;
+
+    right: 5px;
+  }
+
+  .composer-toolbar > button {
+    width: 32px;
+    height: 32px;
+
+    flex-basis: 32px;
+  }
+
+  .toolbar-select {
+    min-width: 88px;
+  }
+}
+
+/* ============================================================
+   PHONE LANDSCAPE
+   ============================================================ */
+
+@media (max-height: 520px) and (max-width: 900px) {
+  .composer-container {
+    bottom: 5px;
+  }
+
+  .composer-toolbar {
+    margin-bottom: 4px;
+  }
+
+  .composer-status {
+    display: none;
+  }
+
+  .chat-area {
+    padding-bottom: 125px;
+  }
+}
+
+/* ============================================================
+   REDUCE MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}

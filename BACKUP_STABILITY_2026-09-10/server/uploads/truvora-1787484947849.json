@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "truvora-1787484947849",
+    "title": "Truvora Document",
+    "generatedAt": "2026-08-23T11:35:47.850Z",
+    "content": {
+      "summary": "Artificial Intelligence (AI) is the branch of computer science focused on creating systems and machines capable of performing tasks that normally require human intelligence. These tasks include learning, reasoning, problem-solving, understanding natural language, perception, and decision-making.\n\n### Key Aspects of AI:\n- **Learning:** Machines improve their performance by analyzing data and experiences.\n- **Reasoning:** Ability to draw conclusions and make decisions.\n- **Perception:** Interpreting sensory inputs like images, sounds, or text.\n- **Natural Language Processing:** Understanding and generating human language.\n- **Autonomy:** Performing tasks without human intervention.\n\nAI technologies power applications such as virtual assistants, recommendation systems, autonomous vehicles, medical diagnosis, and more.\n\nIf you want, I can provide more detailed explanations, examples, or current AI trends.\n\n📚 Sources  \n[1] What is Artificial Intelligence (AI)? - Google Cloud  \n[2] Artificial intelligence - Wikipedia  \n[3] Artificial Intelligence – IBM Think",
+      "analysis": "Artificial Intelligence (AI) is the branch of computer science focused on creating systems and machines capable of performing tasks that normally require human intelligence. These tasks include learning, reasoning, problem-solving, understanding natural language, perception, and decision-making.\n\n### Key Aspects of AI:\n- **Learning:** Machines improve their performance by analyzing data and experiences.\n- **Reasoning:** Ability to draw conclusions and make decisions.\n- **Perception:** Interpreting sensory inputs like images, sounds, or text.\n- **Natural Language Processing:** Understanding and generating human language.\n- **Autonomy:** Performing tasks without human intervention.\n\nAI technologies power applications such as virtual assistants, recommendation systems, autonomous vehicles, medical diagnosis, and more.\n\nIf you want, I can provide more detailed explanations, examples, or current AI trends.\n\n📚 Sources  \n[1] What is Artificial Intelligence (AI)? - Google Cloud  \n[2] Artificial intelligence - Wikipedia  \n[3] Artificial Intelligence – IBM Think",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n        "
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

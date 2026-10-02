@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "1787070475441",
+    "title": "AI Analysis Report",
+    "generatedAt": "2026-08-18T16:27:55.441Z",
+    "content": {
+      "summary": "This image is a simple, cartoon-style video test frame with clear and colorful elements. Here is a detailed description:\n\n---\n\n**Text Elements:**\n- At the top left, there is large black text reading: \"**TRUVORA VIDEO TEST**\".\n- Below that, to the left, in smaller black text is \"**Scene 3/15**\".\n- At the bottom, in black text, it says: \"**sun ??? car ??? plant ??? flower**\".\n\n---\n\n**Graphic Elements:**\n- Background: The upper portion is a light beige color (sky), and the bottom portion is green (ground).\n- **Sun:** There is a large, solid yellow circle near the top left, representing the sun. Part of the text \"Scene 3/15\" overlays this sun.\n- **Car:** On the bottom left, there is a simple boxy car—brown body with a tan rectangle (presumably the window or roof) and two solid black wheels.\n- **Flower:** On the right side, there is a stylized flower with a green stem and leaves. The flower has a yellow center with a white ring and five red petals.\n- The overall style is blocky, minimalistic, and uses geometric shapes.\n\n---\n\n**General Impression:**\n- The frame is likely part of a children’s educational or demonstration video, given the simplicity of the artwork and the presence of labeled objects (sun, car, flower) with question marks indicating missing or to-be-identified features (possibly for an interactive or testing segment).\n\n---\n\nLet me know if you need further breakdowns or specific information!",
+      "analysis": "This image is a simple, cartoon-style video test frame with clear and colorful elements. Here is a detailed description:\n\n---\n\n**Text Elements:**\n- At the top left, there is large black text reading: \"**TRUVORA VIDEO TEST**\".\n- Below that, to the left, in smaller black text is \"**Scene 3/15**\".\n- At the bottom, in black text, it says: \"**sun ??? car ??? plant ??? flower**\".\n\n---\n\n**Graphic Elements:**\n- Background: The upper portion is a light beige color (sky), and the bottom portion is green (ground).\n- **Sun:** There is a large, solid yellow circle near the top left, representing the sun. Part of the text \"Scene 3/15\" overlays this sun.\n- **Car:** On the bottom left, there is a simple boxy car—brown body with a tan rectangle (presumably the window or roof) and two solid black wheels.\n- **Flower:** On the right side, there is a stylized flower with a green stem and leaves. The flower has a yellow center with a white ring and five red petals.\n- The overall style is blocky, minimalistic, and uses geometric shapes.\n\n---\n\n**General Impression:**\n- The frame is likely part of a children’s educational or demonstration video, given the simplicity of the artwork and the presence of labeled objects (sun, car, flower) with question marks indicating missing or to-be-identified features (possibly for an interactive or testing segment).\n\n---\n\nLet me know if you need further breakdowns or specific information!",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n"
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

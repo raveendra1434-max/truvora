@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "1785028709009",
+    "title": "AI Analysis Report",
+    "generatedAt": "2026-07-26T01:18:29.009Z",
+    "content": {
+      "summary": "AI (Artificial Intelligence) is the technology that allows machines or computers to perform tasks that usually require human intelligence, like understanding language, recognizing images, making decisions, or learning from data.\n\n📖 Explanation  \n- AI mimics human thinking and problem-solving abilities.  \n- It uses algorithms and data to learn patterns and improve over time.  \n- Common examples include voice assistants (like Siri), recommendation systems (like Netflix), and self-driving cars.  \n- AI can be simple (like a calculator) or complex (like deep learning systems that analyze huge amounts of data).  \n\nIn short, AI helps computers do smart things that normally need human brainpower.",
+      "analysis": "AI (Artificial Intelligence) is the technology that allows machines or computers to perform tasks that usually require human intelligence, like understanding language, recognizing images, making decisions, or learning from data.\n\n📖 Explanation  \n- AI mimics human thinking and problem-solving abilities.  \n- It uses algorithms and data to learn patterns and improve over time.  \n- Common examples include voice assistants (like Siri), recommendation systems (like Netflix), and self-driving cars.  \n- AI can be simple (like a calculator) or complex (like deep learning systems that analyze huge amounts of data).  \n\nIn short, AI helps computers do smart things that normally need human brainpower.",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n"
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

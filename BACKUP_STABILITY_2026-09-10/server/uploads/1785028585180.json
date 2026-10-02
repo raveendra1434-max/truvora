@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "1785028585180",
+    "title": "AI Analysis Report",
+    "generatedAt": "2026-07-26T01:16:25.180Z",
+    "content": {
+      "summary": "AI (Artificial Intelligence) is technology that allows machines or computers to perform tasks that usually require human intelligence, like understanding language, recognizing images, making decisions, or learning from experience.\n\n📖 Explanation  \n- AI mimics human thinking and problem-solving abilities.  \n- It uses data and algorithms to learn patterns and improve over time.  \n- Examples include voice assistants (like Siri), recommendation systems (like Netflix), and self-driving cars.  \n- AI can be simple (rules-based) or complex (deep learning with neural networks).  \n\nIn short, AI helps computers act smart and do things humans do, but faster and often more accurately.",
+      "analysis": "AI (Artificial Intelligence) is technology that allows machines or computers to perform tasks that usually require human intelligence, like understanding language, recognizing images, making decisions, or learning from experience.\n\n📖 Explanation  \n- AI mimics human thinking and problem-solving abilities.  \n- It uses data and algorithms to learn patterns and improve over time.  \n- Examples include voice assistants (like Siri), recommendation systems (like Netflix), and self-driving cars.  \n- AI can be simple (rules-based) or complex (deep learning with neural networks).  \n\nIn short, AI helps computers act smart and do things humans do, but faster and often more accurately.",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n"
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

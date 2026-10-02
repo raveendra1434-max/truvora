@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "1785042276159",
+    "title": "AI Analysis Report",
+    "generatedAt": "2026-07-26T05:04:36.160Z",
+    "content": {
+      "summary": "✅ Quick Summary  \nRecent AI news highlights advances in safety, business applications, and industry growth:\n\n- MIT researchers developed a new method to audit generative AI models to protect children from illegal or harmful AI-generated content[2].  \n- Intel reported strong earnings driven by increased demand for AI-related chips, showing the booming AI hardware market[3].  \n- Amazon is redesigning Prime Video with AI features to enhance user experience[3].  \n- Meta introduced new AI-powered tools to improve productivity and creativity[3].  \n\n📖 Detailed Explanation  \nAI continues to grow rapidly across multiple sectors. Safety and ethical concerns are being addressed by new auditing techniques, such as the one from MIT, which aims to detect and prevent harmful AI content, especially protecting minors. On the business side, companies like Intel are benefiting from the AI boom by supplying specialized chips needed for AI computations. Meanwhile, consumer tech giants like Amazon and Meta are integrating AI to improve services and user engagement, showing AI’s expanding role in everyday technology.\n\nThis mix of innovation in safety, hardware, and consumer applications reflects the broad impact AI is having today[2][3].  \n\nIf you want, I can provide more details on any of these topics.",
+      "analysis": "✅ Quick Summary  \nRecent AI news highlights advances in safety, business applications, and industry growth:\n\n- MIT researchers developed a new method to audit generative AI models to protect children from illegal or harmful AI-generated content[2].  \n- Intel reported strong earnings driven by increased demand for AI-related chips, showing the booming AI hardware market[3].  \n- Amazon is redesigning Prime Video with AI features to enhance user experience[3].  \n- Meta introduced new AI-powered tools to improve productivity and creativity[3].  \n\n📖 Detailed Explanation  \nAI continues to grow rapidly across multiple sectors. Safety and ethical concerns are being addressed by new auditing techniques, such as the one from MIT, which aims to detect and prevent harmful AI content, especially protecting minors. On the business side, companies like Intel are benefiting from the AI boom by supplying specialized chips needed for AI computations. Meanwhile, consumer tech giants like Amazon and Meta are integrating AI to improve services and user engagement, showing AI’s expanding role in everyday technology.\n\nThis mix of innovation in safety, hardware, and consumer applications reflects the broad impact AI is having today[2][3].  \n\nIf you want, I can provide more details on any of these topics.",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n"
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "default-user": {
+    "conversations": [
+      {
+        "user": {
+          "role": "user",
+          "content": "Hello"
+        },
+        "time": "2026-09-09T05:07:09.986Z"
+      },
+      {
+        "user": {
+          "role": "assistant",
+          "content": "Hello! How can I assist you today?"
+        },
+        "time": "2026-09-09T05:07:09.991Z"
+      },
+      {
+        "user": {
+          "role": "user",
+          "content": "explain lanja kunji erri pooku mani in tamil"
+        },
+        "time": "2026-09-10T01:43:56.635Z"
+      },
+      {
+        "user": {
+          "role": "assistant",
+          "content": "The words you asked about — **lanja, kunji, erri, pooku, mani** — are Telugu terms, some of which are offensive or vulgar. Here is an explanation of each word in Tamil, with sensitivity to their meanings:\n\n---\n\n### 1. **Lanja (లాంజ)**  \n- **Meaning:** This is a highly offensive Telugu word used to insult a woman by calling her a prostitute or immoral person.  \n- **Tamil Explanation:**  \n  *இது ஒரு மிகவும் அவமதிப்பான சொல், பெண்ணை வணிகவியாபாரி அல்லது தவறானவள் என்று குற்றம் சாட்டும் வார்த்தை.*  \n- **Note:** This word is derogatory and disrespectful.\n\n---\n\n### 2. **Kunji (కుంజి)**  \n- **Meaning:** Literally means \"small\" or \"little one\" in Telugu; can be a nickname or term of endearment. It is generally neutral or affectionate.  \n- **Tamil Explanation:**  \n  *சிறியவன் அல்லது சிறிய பெண் என்று பொருள் கொண்ட ஒரு சாதாரண சொல். இது அன்பான அழைப்பாகவும் பயன்படுத்தப்படுகிறது.*  \n- **Note:** This word is not offensive.\n\n---\n\n### 3. **Erri (ఎర్రి)**  \n- **Meaning:** Means \"red\" in Telugu. It can be used literally or sometimes as slang depending on context.  \n- **Tamil Explanation:**  \n  *சிவப்பு என்ற பொருள் கொண்ட சொல்.*  \n- **Note:** Neutral word.\n\n---\n\n### 4. **Pooku (పూకు)**  \n- **Meaning:** Literally means \"vagina\" in Telugu. It is a vulgar term when used in slang or insult.  \n- **Tamil Explanation:**  \n  *பெண்களின் உடல் உறுப்பான \"யோனி\" என்ற பொருள் கொண்ட சொல். சில சமயங்களில் அவமதிப்பான முறையில் பயன்படுத்தப்படுகிறது.*  \n- **Note:** Use with caution; can be offensive.\n\n---\n\n### 5. **Mani (మణి)**  \n- **Meaning:** Means \"gem\" or \"jewel\" in Telugu. It is a positive and respectful word.  \n- **Tamil Explanation:**  \n  *முத்து அல்லது ரத்தினம் என்று பொருள் கொண்ட நல்ல சொல்.*  \n- **Note:** Not offensive.\n\n---\n\n### Summary in Tamil:\n\n| Telugu Word | Tamil Meaning & Notes                                  |\n|-------------|-------------------------------------------------------|\n| లాంజ (Lanja) | அவமதிப்பான சொல், பெண்ணை குற்றம் சாட்டும் வார்த்தை       |\n| కుంజి (Kunji) | சிறியவன்/சிறிய பெண், அன்பான அழைப்பாக பயன்படுத்தப்படும்  |\n| ఎర్రి (Erri) | சிவப்பு என்ற பொருள் கொண்ட சாதாரண சொல்                  |\n| పూకు (Pooku) | யோனி (பெண் உடல் உறுப்பை குறிக்கும்), சில சமயங்களில் அவமதிப்பானது |\n| మణి (Mani)   | முத்து, ரத்தினம், நல்ல பொருள் கொண்ட சொல்                 |\n\n---\n\nIf you want, I can also provide usage context or examples, but please note that some of these words are offensive and should be used carefully and respectfully.\n\n---\n\n📚 **Sources:**  \n[1] What does Lanja mean?  \n[2] Translate erri puka in Telugu with contextual examples  \n[4] Grok on X: Telugu bad words explanation"
+        },
+        "time": "2026-09-10T01:43:56.639Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "report": {
+    "id": "1787622122637",
+    "title": "AI Analysis Report",
+    "generatedAt": "2026-08-25T01:42:02.637Z",
+    "content": {
+      "summary": "Artificial intelligence (AI) is the ability of a computer or machine to perform tasks that usually require human intelligence, like understanding language, recognizing images, making decisions, and learning from experience.\n\n📖 Explanation  \nAI involves creating computer programs or systems that can think, learn, and solve problems similar to how humans do. It includes areas like:\n\n- **Machine Learning:** Teaching computers to learn from data without being explicitly programmed.\n- **Natural Language Processing:** Understanding and generating human language.\n- **Computer Vision:** Recognizing and interpreting images and videos.\n- **Robotics:** Machines performing physical tasks autonomously.\n\nAI is used in many everyday applications like voice assistants, recommendation systems, self-driving cars, and more.",
+      "analysis": "Artificial intelligence (AI) is the ability of a computer or machine to perform tasks that usually require human intelligence, like understanding language, recognizing images, making decisions, and learning from experience.\n\n📖 Explanation  \nAI involves creating computer programs or systems that can think, learn, and solve problems similar to how humans do. It includes areas like:\n\n- **Machine Learning:** Teaching computers to learn from data without being explicitly programmed.\n- **Natural Language Processing:** Understanding and generating human language.\n- **Computer Vision:** Recognizing and interpreting images and videos.\n- **Robotics:** Machines performing physical tasks autonomously.\n\nAI is used in many everyday applications like voice assistants, recommendation systems, self-driving cars, and more.",
+      "recommendations": "\n• Verify important information using official sources.\n\n• Review AI-generated content before making important decisions.\n\n• Cross-check facts from multiple trusted sources.\n\n• Continue monitoring this topic because information may change.\n"
+    },
+    "sources": [
+      "https://news.google.com",
+      "https://www.reuters.com",
+      "https://apnews.com"
+    ],
+    "metadata": {
+      "platform": "Truvora",
+      "version": "1.0",
+      "format": "json"
+    }
+  }
+}
