@@ -14,6 +14,8 @@ import {
   addDoc,
   onSnapshot,
   serverTimestamp,
+  query,
+where,
 } from "firebase/firestore";
 
 
@@ -398,4 +400,348 @@ export const listenToDirectMessages = (
       );
     }
   );
+};
+
+/* =====================================================
+   RANDOM CHAT - FIND A WAITING USER
+===================================================== */
+
+export const findRandomChatUser = async (
+  currentUserId
+) => {
+
+  try {
+
+    if (!currentUserId) {
+      return null;
+    }
+
+    const queueRef =
+      collection(
+        db,
+        "randomChatQueue"
+      );
+
+    const snapshot =
+      await getDocs(queueRef);
+
+    for (
+      const queueDoc of snapshot.docs
+    ) {
+
+      const data =
+        queueDoc.data();
+
+      if (
+        data.userId &&
+        data.userId !== currentUserId &&
+        data.status === "waiting"
+      ) {
+
+        return {
+          queueId:
+            queueDoc.id,
+
+          userId:
+            data.userId,
+        };
+
+      }
+
+    }
+
+    return null;
+
+  } catch (error) {
+
+    console.error(
+      "❌ RANDOM CHAT SEARCH ERROR:",
+      error
+    );
+
+    return null;
+  }
+};
+/* =====================================================
+   RANDOM CHAT - JOIN QUEUE
+===================================================== */
+
+export const joinRandomChatQueue = async (
+  userId
+) => {
+
+  try {
+
+    if (!userId) {
+      return false;
+    }
+
+    await setDoc(
+      doc(
+        db,
+        "randomChatQueue",
+        userId
+      ),
+      {
+        userId,
+        status: "waiting",
+        joinedAt:
+          serverTimestamp(),
+      },
+      {
+        merge: true,
+      }
+    );
+
+    console.log(
+      "✅ RANDOM CHAT QUEUE JOINED:",
+      userId
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "❌ RANDOM CHAT QUEUE ERROR:",
+      error
+    );
+
+    return false;
+  }
+};
+/* =====================================================
+   RANDOM CHAT - LEAVE QUEUE
+===================================================== */
+
+export const leaveRandomChatQueue = async (
+  userId
+) => {
+
+  try {
+
+    if (!userId) {
+      return false;
+    }
+
+    await setDoc(
+      doc(
+        db,
+        "randomChatQueue",
+        userId
+      ),
+      {
+        status: "left",
+      },
+      {
+        merge: true,
+      }
+    );
+
+    console.log(
+      "✅ RANDOM CHAT QUEUE LEFT:",
+      userId
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "❌ RANDOM CHAT LEAVE ERROR:",
+      error
+    );
+
+    return false;
+  }
+};
+/* =====================================================
+   RANDOM CHAT - CREATE MATCH
+===================================================== */
+
+export const createRandomChatMatch = async (
+  userId,
+  partnerId
+) => {
+
+  try {
+
+    if (
+      !userId ||
+      !partnerId ||
+      userId === partnerId
+    ) {
+      return false;
+    }
+
+    const participants = [
+      userId,
+      partnerId,
+    ].sort();
+
+    const matchId =
+      participants.join("_");
+
+    await setDoc(
+      doc(
+        db,
+        "randomChatMatches",
+        matchId
+      ),
+      {
+        participants,
+        userA: participants[0],
+        userB: participants[1],
+        status: "active",
+        createdAt:
+          serverTimestamp(),
+      },
+      {
+        merge: true,
+      }
+    );
+
+    console.log(
+      "✅ RANDOM CHAT MATCH CREATED:",
+      matchId
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "❌ RANDOM CHAT MATCH ERROR:",
+      error
+    );
+
+    return false;
+  }
+};
+/* =====================================================
+   USER PROFILE - CREATE / UPDATE
+===================================================== */
+
+export const saveUserProfile = async (
+  user
+) => {
+  try {
+    if (!user?.uid) {
+      return false;
+    }
+
+    const displayName =
+      user.displayName?.trim() ||
+      user.email?.split("@")[0] ||
+      "Trulexity User";
+
+    const username =
+      displayName
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+        .slice(0, 20) ||
+      `user${user.uid.slice(0, 8)}`;
+
+    await setDoc(
+      doc(
+        db,
+        "users",
+        user.uid
+      ),
+      {
+        uid: user.uid,
+        username,
+        displayName,
+        email: user.email || "",
+        photoURL: user.photoURL || "",
+        updatedAt: serverTimestamp(),
+      },
+      {
+        merge: true,
+      }
+    );
+
+    console.log(
+      "✅ USER PROFILE SAVED:",
+      username
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "❌ USER PROFILE ERROR:",
+      error
+    );
+
+    return false;
+  }
+};
+/* =====================================================
+   SEARCH USERS BY USERNAME / DISPLAY NAME
+===================================================== */
+
+export const searchUsers = async (
+  searchTerm,
+  currentUserId
+) => {
+  try {
+    const term = searchTerm
+      ?.trim()
+      .toLowerCase();
+
+    if (!term) {
+      return [];
+    }
+
+    const usersRef = collection(
+      db,
+      "users"
+    );
+
+    const snapshot = await getDocs(
+      usersRef
+    );
+
+    const users = snapshot.docs
+      .map((userDoc) => ({
+        id: userDoc.id,
+        ...userDoc.data(),
+      }))
+      .filter((profile) => {
+        if (
+          !profile.uid ||
+          profile.uid === currentUserId
+        ) {
+          return false;
+        }
+
+        const username =
+          String(
+            profile.username || ""
+          ).toLowerCase();
+
+        const displayName =
+          String(
+            profile.displayName || ""
+          ).toLowerCase();
+
+        return (
+          username.includes(term) ||
+          displayName.includes(term)
+        );
+      })
+      .slice(0, 20);
+
+    return users;
+
+  } catch (error) {
+    console.error(
+      "❌ USER SEARCH ERROR:",
+      error
+    );
+
+    return [];
+  }
 };

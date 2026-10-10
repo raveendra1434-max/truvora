@@ -6682,3 +6682,40 @@ input[type="search"]::placeholder{
   }
 
 }
+/* =========================================================
+   USER CHAT - HIDE AI COMPOSER
+   ========================================================= */
+
+.main:has(.user-chat) .input-area {
+  display: none !important;
+}
+/* =====================================================
+   USER CHAT INPUT OVERRIDE
+===================================================== */
+
+.user-chat input {
+  pointer-events: auto !important;
+  user-select: text !important;
+  cursor: text !important;
+  opacity: 1 !important;
+}
+
+.user-chat-user input,
+.user-chat-input input {
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
+  background: #ffffff !important;
+  caret-color: #1565c0 !important;
+}
+
+.user-chat-user input::placeholder,
+.user-chat-input input::placeholder {
+  color: #6b7280 !important;
+  -webkit-text-fill-color: #6b7280 !important;
+  opacity: 1 !important;
+}
+
+.user-chat-input button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}

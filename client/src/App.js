@@ -14,7 +14,7 @@ import {
   useRef,
   useEffect,
 } from "react";
-
+import UserChat from "./components/UserChat/UserChat";
 import {
   FiSend,
   FiPlus,
@@ -52,6 +52,7 @@ import {
   loadUserChats,
   sendDirectMessage,
   listenToDirectMessages,
+  saveUserProfile,
 } from "./firebase";
 
 import {
@@ -686,7 +687,7 @@ const voiceEnabledRef =
           setUser(
             currentUser
           );
-
+saveUserProfile(currentUser);
           setLoggedIn(
             true
           );
@@ -4224,7 +4225,9 @@ setCurrentChatId(
           {/* ============================================
               MESSAGES
           ============================================= */}
-
+{chatMode === "user" && (
+  <UserChat user={user} />
+)}
           <div
             className="messages"
           >
