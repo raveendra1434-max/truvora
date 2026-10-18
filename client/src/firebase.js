@@ -1,5 +1,8 @@
 import { initializeApp } from "firebase/app";
-
+import {
+  getAnalytics,
+  isSupported,
+} from "firebase/analytics";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -38,6 +41,7 @@ const firebaseConfig = {
 
   appId:
     "1:241553183722:web:8bf7e810d7778be2e61893",
+    measurementId: "G-JVKBWPCV5H",
 };
 
 
@@ -46,7 +50,22 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
-
+/* ANALYTICS */
+isSupported()
+  .then((supported) => {
+    if (supported) {
+      getAnalytics(app);
+      console.log("✅ Firebase Analytics initialized");
+    } else {
+      console.log("Firebase Analytics is not supported.");
+    }
+  })
+  .catch((error) => {
+    console.warn(
+      "Firebase Analytics initialization failed:",
+      error
+    );
+  });
 /* AUTH */
 
 export const auth =
@@ -97,19 +116,19 @@ export const saveChatToCloud = async (
     */
 
     await setDoc(
-      doc(
-        db,
-        "users",
-        userId
-      ),
-      {
-        updatedAt:
-          serverTimestamp(),
-      },
-      {
-        merge: true,
-      }
-    );
+  doc(
+    db,
+    "users",
+    userId
+  ),
+  {
+    uid: userId,
+    updatedAt: serverTimestamp(),
+  },
+  {
+    merge: true,
+  }
+);
 
 
     /*
@@ -618,13 +637,12 @@ export const createRandomChatMatch = async (
     return false;
   }
 };
+
 /* =====================================================
    USER PROFILE - CREATE / UPDATE
 ===================================================== */
 
-export const saveUserProfile = async (
-  user
-) => {
+export const saveUserProfile = async (user) => {
   try {
     if (!user?.uid) {
       return false;
@@ -643,11 +661,7 @@ export const saveUserProfile = async (
       `user${user.uid.slice(0, 8)}`;
 
     await setDoc(
-      doc(
-        db,
-        "users",
-        user.uid
-      ),
+      doc(db, "users", user.uid),
       {
         uid: user.uid,
         username,
@@ -656,92 +670,128 @@ export const saveUserProfile = async (
         photoURL: user.photoURL || "",
         updatedAt: serverTimestamp(),
       },
-      {
-        merge: true,
-      }
+      { merge: true }
     );
 
-    console.log(
-      "✅ USER PROFILE SAVED:",
-      username
-    );
+    console.log("✅ USER PROFILE SAVED:", {
+      uid: user.uid,
+      username,
+      displayName,
+    });
 
     return true;
-
   } catch (error) {
-
-    console.error(
-      "❌ USER PROFILE ERROR:",
-      error
-    );
-
+    console.error("❌ USER PROFILE ERROR:", error);
     return false;
   }
 };
+
 /* =====================================================
    SEARCH USERS BY USERNAME / DISPLAY NAME
 ===================================================== */
 
-export const searchUsers = async (
-  searchTerm,
-  currentUserId
-) => {
+
+export const searchUsers = async (searchTerm, currentUserId) => {
   try {
-    const term = searchTerm
-      ?.trim()
-      .toLowerCase();
+    const term = String(searchTerm || "").trim().toLowerCase();
+    if (!term) return [];
 
-    if (!term) {
-      return [];
-    }
+    const snapshot = await getDocs(collection(db, "users"));
+console.log(
+  "USER PROFILE FIELDS:",
+  snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      documentId: doc.id,
+      username: data.username || "(missing)",
+      displayName: data.displayName || "(missing)",
+      name: data.name || "(missing)",
+    };
+  })
+);
+    return snapshot.docs
+      .map((userDoc) => {
+        const data = userDoc.data();
 
-    const usersRef = collection(
-      db,
-      "users"
-    );
-
-    const snapshot = await getDocs(
-      usersRef
-    );
-
-    const users = snapshot.docs
-      .map((userDoc) => ({
-        id: userDoc.id,
-        ...userDoc.data(),
-      }))
+        return {
+          ...data,
+          uid: data.uid || userDoc.id,
+          username: data.username || "",
+          displayName:
+            data.displayName ||
+            data.name ||
+            data.fullName ||
+            "",
+          email: data.email || "",
+          photoURL: data.photoURL || "",
+        };
+      })
       .filter((profile) => {
-        if (
-          !profile.uid ||
-          profile.uid === currentUserId
-        ) {
+        if (!profile.uid || profile.uid === currentUserId) {
           return false;
         }
 
-        const username =
-          String(
-            profile.username || ""
-          ).toLowerCase();
-
-        const displayName =
-          String(
-            profile.displayName || ""
-          ).toLowerCase();
+        const name = profile.displayName.toLowerCase();
+        const username = profile.username.toLowerCase();
+        const email = profile.email.toLowerCase();
 
         return (
+          name.includes(term) ||
           username.includes(term) ||
-          displayName.includes(term)
+          email.includes(term)
         );
       })
-      .slice(0, 20);
+  } catch (error) {
+    console.error("USER SEARCH ERROR:", error);
+    throw error;
+  }
+};
 
-    return users;
+/* LOAD REGISTERED USERS FOR CONTACTS */
+export const loadAllUsers = async (currentUserId) => {
+  try {
+    if (!currentUserId) return [];
 
+    const snapshot = await getDocs(
+      collection(db, "users")
+    );
+console.log("TOTAL USERS IN FIREBASE:", snapshot.size);
+    return snapshot.docs
+      .map((userDoc) => {
+        const data = userDoc.data();
+console.log("CONTACT PROFILE FIELDS:", {
+  uid: data.uid || userDoc.id,
+  displayName: data.displayName,
+  username: data.username,
+  email: data.email,
+  name: data.name,
+  fullName: data.fullName,
+});
+        return {
+          ...data,
+          uid: data.uid || userDoc.id,
+          displayName:
+            data.displayName ||
+            data.name ||
+            data.fullName ||
+            data.username ||
+            data.email?.split("@")[0] ||
+            "Trulexity User",
+          username: data.username || "",
+          photoURL: data.photoURL || "",
+          email: data.email || "",
+        };
+      })
+      .filter(
+        (profile) =>
+          profile.uid &&
+          profile.uid !== currentUserId
+      );
   } catch (error) {
     console.error(
-      "❌ USER SEARCH ERROR:",
+      "❌ LOAD CONTACTS ERROR:",
       error
     );
-
-    return [];
+    throw error;
   }
 };

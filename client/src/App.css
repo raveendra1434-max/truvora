@@ -6719,3 +6719,45 @@ input[type="search"]::placeholder{
   pointer-events: auto !important;
   cursor: pointer !important;
 }
+/* TRULEXITY — ANDROID + IPHONE COMPOSER FIX */
+@media (max-width: 600px) {
+  .input-area,
+  .input-box {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .input-box {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .language-select,
+  .voice-select {
+    flex: 1 1 calc(50% - 8px) !important;
+    width: calc(50% - 8px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .language__control,
+  .voice__control {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .main-input {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .send-btn {
+    right: 12px !important;
+    bottom: 14px !important;
+  }
+}

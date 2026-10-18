@@ -55,6 +55,7 @@ import {
   saveUserProfile,
 } from "./firebase";
 
+
 import {
   signInWithPopup,
   signInWithRedirect,
@@ -64,7 +65,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   OAuthProvider,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
 } from "firebase/auth";
+
 
 
 function saveChat(chat) {
@@ -74,10 +78,67 @@ function saveChat(chat) {
   );
 }
 
-
 function App() {
-  const [chatMode, setChatMode] =
-    useState("ai");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
+
+  const [chatMode, setChatMode] = useState("ai");
+    const setupPhoneRecaptcha = () => {
+    if (window.phoneRecaptchaVerifier) {
+      return window.phoneRecaptchaVerifier;
+    }
+
+    window.phoneRecaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      {
+        size: "normal",
+      }
+    );
+
+    return window.phoneRecaptchaVerifier;
+  };
+
+  const sendPhoneOTP = async () => {
+    try {
+      if (!phoneNumber.trim()) {
+        alert("Please enter your phone number with country code, e.g. +91XXXXXXXXXX");
+        return;
+      }
+
+      const verifier = setupPhoneRecaptcha();
+
+      const result = await signInWithPhoneNumber(
+        auth,
+        phoneNumber.trim(),
+        verifier
+      );
+
+      setConfirmationResult(result);
+      alert("OTP sent successfully. Please check your phone.");
+    } catch (error) {
+      console.error("Phone OTP error:", error);
+      alert(error.message || "Failed to send OTP.");
+    }
+  };
+
+  const verifyPhoneOTP = async () => {
+    try {
+      if (!confirmationResult || !otp.trim()) {
+        alert("Please enter the OTP.");
+        return;
+      }
+
+      await confirmationResult.confirm(otp.trim());
+      setOtp("");
+      setConfirmationResult(null);
+      alert("Phone number verified successfully!");
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      alert("Invalid OTP or verification failed. Please try again.");
+    }
+  };
   /* =====================================================
      CITATIONS
   ===================================================== */
@@ -675,7 +736,7 @@ const voiceEnabledRef =
   const unsubscribe =
     onAuthStateChanged(
       auth,
-      (currentUser) => {
+      async (currentUser) => {
 
         if (currentUser) {
 
@@ -687,7 +748,11 @@ const voiceEnabledRef =
           setUser(
             currentUser
           );
-saveUserProfile(currentUser);
+const profileSaved = await saveUserProfile(currentUser);
+
+if (!profileSaved) {
+  console.error("Trulexity: Failed to save user profile.");
+}
           setLoggedIn(
             true
           );
@@ -3027,8 +3092,6 @@ document.body.removeChild(
         >
           Sign in to continue
         </p>
-
-
         <button
           onClick={
             handleGoogleLogin
