@@ -6886,3 +6886,561 @@ input[type="search"]::placeholder{
     max-width: none !important;
   }
 }
+/*
+  TRULEXITY CHAT THEME ADD-ON
+  Separate CSS patch — preserves existing files.
+*/
+
+/* Theme colors */
+:root {
+  --trulexity-chat-bg: #0E1621;
+  --trulexity-ai-bubble: #17212B;
+  --trulexity-user-bubble: #1565C0;
+  --trulexity-chat-text: #F1F5F9;
+  --trulexity-chat-muted: #A9BACB;
+  --trulexity-chat-border: rgba(148, 163, 184, 0.16);
+}
+
+/* Chat background */
+.messages {
+  background-color: var(--trulexity-chat-bg);
+  color: var(--trulexity-chat-text);
+}
+
+/* AI response bubbles */
+.message:not(.user-message) .bubble {
+  background-color: var(--trulexity-ai-bubble);
+  color: var(--trulexity-chat-text);
+  border: 1px solid var(--trulexity-chat-border);
+  border-radius: 16px;
+}
+
+/* User message bubbles */
+.user-message .bubble {
+  background-color: var(--trulexity-user-bubble);
+  color: #FFFFFF;
+  border: 1px solid rgba(41, 182, 246, 0.24);
+  border-radius: 16px;
+}
+
+/* Readable text */
+.messages .bubble p,
+.messages .bubble li,
+.messages .bubble span {
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+/* Secondary text */
+.messages .timestamp,
+.messages .message-time,
+.messages .message-meta {
+  color: var(--trulexity-chat-muted);
+}
+
+/* =========================================================
+   TRULEXITY — CHAT LAYOUT IMPROVEMENT
+   Paste at the VERY BOTTOM of client/src/App.css
+   ========================================================= */
+
+/* Desktop: use the available chat width */
+.main {
+  min-width: 0;
+  min-height: 0;
+}
+
+.messages {
+  width: 100%;
+  min-width: 0;
+  padding-left: clamp(16px, 3vw, 48px);
+  padding-right: clamp(16px, 3vw, 48px);
+  overscroll-behavior: contain;
+}
+
+.message {
+  width: 100%;
+  max-width: 1180px;
+  min-width: 0;
+}
+
+.bubble {
+  min-width: 0;
+  max-width: min(100%, 1040px);
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Keep long answers, tables and media inside the chat */
+.bubble pre,
+.bubble table,
+.bubble img,
+.bubble video,
+.bubble iframe {
+  max-width: 100%;
+}
+
+.bubble pre {
+  overflow-x: auto;
+}
+
+.bubble table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Keep the input area aligned and visible */
+.input-area {
+  flex: 0 0 auto;
+  width: 100%;
+  padding-left: clamp(12px, 3vw, 40px);
+  padding-right: clamp(12px, 3vw, 40px);
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.input-box {
+  max-width: 1180px;
+  min-width: 0;
+}
+
+.main-input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Tablet and mobile */
+@media screen and (max-width: 900px) {
+  .messages {
+    padding: 20px 14px 22px;
+  }
+
+  .message {
+    max-width: 100%;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .bubble {
+    max-width: 100%;
+    padding: 13px 14px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .input-area {
+    padding: 10px 12px max(10px, env(safe-area-inset-bottom));
+  }
+
+  .input-box {
+    max-width: 100%;
+    border-radius: 16px;
+  }
+}
+
+/* Small mobile screens */
+@media screen and (max-width: 600px) {
+  html,
+  body,
+  #root,
+  .app,
+  .main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    min-width: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .top-title {
+    min-width: 0;
+    max-width: 65vw;
+    font-size: 15px;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .messages {
+    padding: 14px 10px 16px;
+  }
+
+  .message {
+    margin-bottom: 14px;
+  }
+
+  .bubble {
+    padding: 11px 12px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .input-area {
+    padding: 8px 8px max(8px, env(safe-area-inset-bottom));
+  }
+
+  .input-box {
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .main-input {
+    font-size: 16px;
+  }
+}
+/* Trulexity: Keep the chat workspace responsive */
+.main {
+  min-width: 0;
+  flex: 1;
+  overflow-x: hidden;
+}
+
+.messages {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.message {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bubble {
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .messages {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .bubble {
+    max-width: 100%;
+  }
+}
+
+/* TRULEXITY — Final chat spacing adjustment */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.messages {
+  flex: 1 1 auto;
+  min-height: 0;
+  box-sizing: border-box;
+  padding-top: 20px;
+  padding-bottom: 24px;
+  scroll-behavior: smooth;
+}
+
+.message {
+  margin-bottom: 18px;
+}
+
+.bubble {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* Keep the composer at the bottom */
+.input-area {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding-top: 12px;
+}
+
+@media (max-width: 600px) {
+  .messages {
+    padding: 14px 10px 18px;
+  }
+
+  .message {
+    margin-bottom: 14px;
+  }
+
+  .bubble {
+    line-height: 1.6;
+  }
+
+  .input-area {
+    padding: 8px 8px max(8px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Trulexity — Make user questions dark navy */
+.message.user-message .bubble,
+.user-message .bubble {
+  background: #17212B !important;
+  color: #F1F5F9 !important;
+  border: 1px solid rgba(41, 182, 246, 0.35) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+/* Keep question text readable */
+.message.user-message .bubble p,
+.user-message .bubble p {
+  color: #F1F5F9 !important;
+}
+
+/* Keep hover styling consistent */
+.message.user-message .bubble:hover,
+.user-message .bubble:hover {
+  background: #1B2936 !important;
+}
+
+/* TRULEXITY — Fix chat scrolling and bottom input overlap */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 28px;
+  scroll-behavior: smooth;
+}
+
+.input-area {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  background: #071321;
+}
+
+.message,
+.bubble {
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .messages {
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .input-area {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
+
+/* TRULEXITY — READABILITY IMPROVEMENTS */
+
+/* Comfortable, consistent AI answer typography */
+.message:not(.user-message) .bubble {
+  color: #E6EDF7;
+  font-size: 15px;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+/* Clear headings */
+.message:not(.user-message) .bubble h1,
+.message:not(.user-message) .bubble h2,
+.message:not(.user-message) .bubble h3,
+.message:not(.user-message) .bubble h4 {
+  color: #FFFFFF;
+  line-height: 1.4;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Easier-to-scan paragraphs and lists */
+.message:not(.user-message) .bubble p {
+  margin-bottom: 14px;
+}
+
+.message:not(.user-message) .bubble li {
+  margin-bottom: 7px;
+  line-height: 1.7;
+}
+
+/* Keep long words and links within the message */
+.bubble,
+.bubble p,
+.bubble li,
+.bubble a {
+  overflow-wrap: anywhere;
+}
+
+/* Mobile reading comfort */
+@media (max-width: 600px) {
+  .message:not(.user-message) .bubble {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .message:not(.user-message) .bubble h1 {
+    font-size: 22px;
+  }
+
+  .message:not(.user-message) .bubble h2 {
+    font-size: 19px;
+  }
+
+  .message:not(.user-message) .bubble h3 {
+    font-size: 17px;
+  }
+}
+
+/* TRULEXITY — AI READABILITY + COMPOSER POLISH */
+
+/* 2. AI answer readability */
+.message:not(.user-message) .bubble {
+  color: #E6EDF7;
+  font-size: 15px;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+.message:not(.user-message) .bubble h1,
+.message:not(.user-message) .bubble h2,
+.message:not(.user-message) .bubble h3,
+.message:not(.user-message) .bubble h4 {
+  color: #FFFFFF;
+  line-height: 1.4;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.message:not(.user-message) .bubble p {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.message:not(.user-message) .bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.message:not(.user-message) .bubble li {
+  margin-bottom: 7px;
+  line-height: 1.7;
+}
+
+.message:not(.user-message) .bubble pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.message:not(.user-message) .bubble img,
+.message:not(.user-message) .bubble table {
+  max-width: 100%;
+}
+
+/* 3. Bottom input area — preserve existing controls */
+.input-area {
+  flex-shrink: 0;
+  padding-top: 12px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.input-box {
+  min-width: 0;
+  gap: 9px;
+}
+
+.main-input {
+  min-width: 0;
+  line-height: 1.6 !important;
+}
+
+.main-input:focus {
+  outline: none;
+}
+
+/* Mobile refinements */
+@media (max-width: 600px) {
+  .message:not(.user-message) .bubble {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .message:not(.user-message) .bubble h1 {
+    font-size: 22px;
+  }
+
+  .message:not(.user-message) .bubble h2 {
+    font-size: 19px;
+  }
+
+  .message:not(.user-message) .bubble h3 {
+    font-size: 17px;
+  }
+
+  .input-area {
+    padding-top: 8px;
+  }
+
+  .input-box {
+    gap: 7px;
+  }
+}
+
+/* TRULEXITY — LONG ANSWER READABILITY */
+
+.message:not(.user-message) .bubble {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.message:not(.user-message) .bubble ul,
+.message:not(.user-message) .bubble ol {
+  padding-left: 24px;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+
+.message:not(.user-message) .bubble li {
+  padding-left: 2px;
+  margin-bottom: 8px;
+}
+
+.message:not(.user-message) .bubble blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 3px solid #29B6F6;
+  border-radius: 0 10px 10px 0;
+  background: rgba(41, 182, 246, 0.06);
+}
+
+.message:not(.user-message) .bubble a {
+  color: #69CFFF;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .message:not(.user-message) .bubble ul,
+  .message:not(.user-message) .bubble ol {
+    padding-left: 21px;
+  }
+
+  .message:not(.user-message) .bubble li {
+    margin-bottom: 7px;
+  }
+}
