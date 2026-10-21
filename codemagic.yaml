@@ -1,3 +1,4 @@
+
 workflows:
   ios-workflow:
     name: Trulexity iOS
@@ -32,6 +33,11 @@ workflows:
         script: |
           cd client
           npx cap sync ios
+
+      - name: Increment iOS build number
+        script: |
+          cd "$CM_BUILD_DIR/client/ios/App"
+          agvtool new-version -all 4
 
       - name: Set up code signing settings on Xcode project
         script: xcode-project use-profiles
