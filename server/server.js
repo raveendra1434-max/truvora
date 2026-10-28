@@ -1,4 +1,6 @@
 ﻿import express from "express";
+import { initializeApp, getApps } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI, { toFile } from "openai";
@@ -49,7 +51,9 @@ import {
 } from "./memory/memoryManager.js";
 
 dotenv.config();
-
+if (getApps().length === 0) {
+  initializeApp();
+}
 console.log(
   "SERPAPI KEY LOADED:",
   !!process.env.SERPAPI_KEY
@@ -2657,6 +2661,18 @@ app.post(
   async (req, res) => {
 
     try {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+          success: false,
+          error: "Please log in to use Trulexity AI.",
+        });
+      }
+
+      const idToken = authHeader.split(" ")[1];
+      const decodedToken = await getAuth().verifyIdToken(idToken);
+      req.user = decodedToken;
 
       let {
         message,

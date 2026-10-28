@@ -2583,7 +2583,12 @@ const handleYouTube =
         requestedDocumentType
       );
 
-
+const currentUser = auth.currentUser;
+if (!currentUser) {
+  alert("Please log in to use Trulexity AI.");
+  return;
+}
+const idToken = await currentUser.getIdToken();
       try {
 
         const response = await fetch(
@@ -2594,10 +2599,9 @@ const handleYouTube =
                 "POST",
 
               headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${idToken}`,
+},
               body:
                 JSON.stringify({
 
