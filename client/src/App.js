@@ -2587,12 +2587,20 @@ setStopGeneration(
         requestedDocumentType
       );
 
-const currentUser = auth.currentUser;
+const currentUser = await new Promise((resolve) => {
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+    unsubscribe();
+    resolve(user);
+  });
+});
+
 if (!currentUser) {
-  alert("Please log in to use Trulexity AI.");
+  alert("Please sign in to use Trulexity AI.");
+  setLoading(false);
   return;
 }
-const idToken = await currentUser.getIdToken();
+
+const idToken = await currentUser.getIdToken(true);
       try {
 
         const response = await fetch(
@@ -2698,7 +2706,10 @@ console.log(
   "FINAL AI REPLY TEXT:",
   replyText
 );
-
+console.log(
+  "STOP FLAG BEFORE TYPING:",
+  stopGenerationRef.current
+);
 for (
   const char
   of replyText
