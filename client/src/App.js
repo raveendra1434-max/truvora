@@ -479,8 +479,10 @@ const [chatPartnerId,
     useState("");
 
   const [stopGeneration,
-    setStopGeneration] =
-    useState(false);
+  setStopGeneration] =
+  useState(false);
+
+const stopGenerationRef = useRef(false);
 
 
   /* =====================================================
@@ -2502,9 +2504,11 @@ const handleYouTube =
       }
 
 
-      setStopGeneration(
-        false
-      );
+      stopGenerationRef.current = false;
+
+setStopGeneration(
+  false
+);
 
 
       const userMessage = {
@@ -2701,12 +2705,12 @@ for (
 ) {
 
   if (
-    stopGeneration
-  ) {
+  stopGenerationRef.current
+) {
 
-    break;
+  break;
 
-  }
+}
 
   currentText +=
     char;
@@ -3870,6 +3874,8 @@ setImage(null);
 setTypingText("");
 
 setLoading(false);
+
+stopGenerationRef.current = true;
 
 setStopGeneration(true);
 

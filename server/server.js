@@ -51,8 +51,11 @@ import {
 } from "./memory/memoryManager.js";
 
 dotenv.config();
+
 if (getApps().length === 0) {
-  initializeApp();
+  initializeApp({
+    projectId: process.env.FIREBASE_PROJECT_ID || "truvora-7d3c7",
+  });
 }
 console.log(
   "SERPAPI KEY LOADED:",
