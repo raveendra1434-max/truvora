@@ -2997,6 +2997,116 @@ document.body.removeChild(
       }
 
     };
+
+
+  // PUBLIC WEBSITE PAGES — for AdSense review
+  const publicPath = window.location.pathname
+    .replace(/\/+$/, "")
+    .toLowerCase();
+
+  const publicPages = {
+    "/about": {
+      title: "About Trulexity",
+      paragraphs: [
+        "Trulexity Global AI Technologies aims to make artificial intelligence more accessible and useful.",
+        "Trulexity provides AI-powered tools for information assistance, content creation, document analysis and productivity.",
+        "AI-generated information can contain errors. Users should independently verify important information before relying on it."
+      ]
+    },
+    "/contact": {
+      title: "Contact Us",
+      paragraphs: [
+        "For questions, feedback, technical support or business enquiries, contact us by email.",
+        "Email: trulexityreview@gmail.com"
+      ]
+    },
+    "/privacy": {
+      title: "Privacy Policy",
+      paragraphs: [
+        "Trulexity respects user privacy. Information collected depends on the features you use and the permissions you provide.",
+        "Information may include account details, messages, uploaded files and technical information needed to operate and secure the service.",
+        "Information may be processed by service providers that support authentication, hosting, analytics or AI functionality.",
+        "We take reasonable measures to protect information. No internet transmission or storage system can be guaranteed completely secure.",
+        "Contact us at trulexityreview@gmail.com with privacy questions."
+      ]
+    },
+    "/terms": {
+      title: "Terms of Service",
+      paragraphs: [
+        "By using Trulexity, you agree to use the service lawfully and responsibly.",
+        "AI responses may be inaccurate, incomplete or outdated. You are responsible for evaluating outputs before acting on them.",
+        "Do not misuse the service, interfere with its operation, or use it for unlawful activities.",
+        "Features may change, become unavailable or be subject to additional terms.",
+        "For questions about these terms, contact trulexityreview@gmail.com."
+      ]
+    }
+  };
+
+  const publicPage = publicPages[publicPath];
+
+  if (publicPage) {
+    return (
+      <div style={{
+        minHeight: "100vh",
+        background: "#f7f9fc",
+        color: "#172033",
+        fontFamily: "Arial, sans-serif",
+        padding: "24px",
+        boxSizing: "border-box"
+      }}>
+        <header style={{
+          maxWidth: "850px",
+          margin: "0 auto",
+          paddingBottom: "20px",
+          borderBottom: "1px solid #dce3ed"
+        }}>
+          <a href="/" style={{
+            color: "#1565C0",
+            fontWeight: "bold",
+            fontSize: "22px",
+            textDecoration: "none"
+          }}>
+            Trulexity Global AI
+          </a>
+          <nav style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "16px",
+            marginTop: "18px"
+          }}>
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+          </nav>
+        </header>
+
+        <main style={{
+          maxWidth: "850px",
+          margin: "40px auto",
+          lineHeight: 1.8,
+          minHeight: "50vh"
+        }}>
+          <h1>{publicPage.title}</h1>
+          {publicPage.paragraphs.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </main>
+
+        <footer style={{
+          maxWidth: "850px",
+          margin: "0 auto",
+          paddingTop: "20px",
+          borderTop: "1px solid #dce3ed",
+          fontSize: "14px"
+        }}>
+          © {new Date().getFullYear()} Trulexity Global AI Technologies
+        </footer>
+      </div>
+    );
+  }
+
+
   /* =====================================================
      LOGIN SCREEN
   ===================================================== */
@@ -5904,16 +6014,62 @@ styles={{
 
       </div>
 
+
+      {/* COMPACT PUBLIC WEBSITE FOOTER */}
+      
+      <footer
+  style={{
+    padding: "3px 8px",
+    marginTop: "0px",
+    textAlign: "center",
+    borderTop: "1px solid #1e293b",
+    fontSize: "12px",
+    lineHeight: "16px",
+    color: "#94a3b8",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "3px 10px",
+  }}
+>
+        <a
+          href="/about"
+          style={{ color: "#1685ff", textDecoration: "none" }}
+        >
+          About Us
+        </a>
+
+        <a
+          href="/contact"
+          style={{ color: "#1685ff", textDecoration: "none" }}
+        >
+          Contact Us
+        </a>
+
+        <a
+          href="/privacy"
+          style={{ color: "#1685ff", textDecoration: "none" }}
+        >
+          Privacy Policy
+        </a>
+
+        <a
+          href="/terms"
+          style={{ color: "#1685ff", textDecoration: "none" }}
+        >
+          Terms of Service
+        </a>
+
+        <span>
+          © {new Date().getFullYear()} Trulexity Global AI Technologies
+        </span>
+      </footer>
+
     </>
 
   );
 
 }
 
-
 export default App;
-
-
-
-
-
