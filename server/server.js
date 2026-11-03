@@ -11,6 +11,8 @@ import fs from "fs";
 import { detectAgentTasks } from "./agentMode.js";
 import { executeAgentTask } from "./agentExecutor.js";
 import path from "path";
+import Razorpay from "razorpay";
+import crypto from "crypto";
 
 let personalVoiceFile = null;
 
@@ -51,7 +53,10 @@ import {
 } from "./memory/memoryManager.js";
 
 dotenv.config();
-
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 if (getApps().length === 0) {
   initializeApp({
     projectId: process.env.FIREBASE_PROJECT_ID || "truvora-7d3c7",
@@ -5298,6 +5303,148 @@ app.use(
   }
 );
 
+
+/* =====================================================
+   RAZORPAY PLUS SUBSCRIPTION
+===================================================== */
+
+app.post("/create-plus-subscription", async (req, res) => {
+  try {
+    // Verify Firebase user authentication
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        error: "Please log in to subscribe.",
+      });
+    }
+
+    const idToken = authHeader.split(" ")[1];
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    // Create Razorpay subscription for the authenticated user
+    const subscription = await razorpay.subscriptions.create({
+      plan_id: "plan_TuvCP0orE2TeHK",
+      total_count: 12,
+      quantity: 1,
+      customer_notify: 1,
+      notes: {
+        firebaseUid: decodedToken.uid,
+        planName: "Plus",
+      },
+    });
+
+    return res.json({
+      success: true,
+      subscriptionId: subscription.id,
+    });
+  } catch (error) {
+    console.error("Razorpay subscription error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      error: "Unable to create subscription",
+    });
+  }
+});
+
+/* =====================================================
+   RAZORPAY PLUS PAYMENT VERIFICATION
+===================================================== */
+
+
+app.post("/verify-plus-payment", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        error: "Please log in to verify payment.",
+      });
+    }
+
+    const idToken = authHeader.split(" ")[1];
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const {
+      razorpay_payment_id,
+      razorpay_subscription_id,
+      razorpay_signature,
+    } = req.body;
+
+    if (
+      !razorpay_payment_id ||
+      !razorpay_subscription_id ||
+      !razorpay_signature
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing payment verification details.",
+      });
+    }
+
+    // Verify Razorpay subscription payment signature
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
+      .digest("hex");
+
+    const signaturesMatch =
+      expectedSignature.length === razorpay_signature.length &&
+      crypto.timingSafeEqual(
+        Buffer.from(expectedSignature, "hex"),
+        Buffer.from(razorpay_signature, "hex")
+      );
+
+    if (!signaturesMatch) {
+      return res.status(400).json({
+        success: false,
+        error: "Payment signature verification failed.",
+      });
+    }
+
+    // Fetch subscription directly from Razorpay
+const subscription = await razorpay.subscriptions.fetch(
+  razorpay_subscription_id
+);
+
+// Confirm this subscription belongs to the logged-in Firebase user
+if (subscription.notes?.firebaseUid !== decodedToken.uid) {
+  return res.status(403).json({
+    success: false,
+    error: "Subscription does not belong to this user.",
+  });
+}
+
+// Do not grant paid access unless Razorpay confirms it is active
+if (subscription.status !== "active") {
+  return res.status(400).json({
+    success: false,
+    verified: true,
+    subscriptionStatus: subscription.status,
+    error: "Payment signature verified, but subscription is not active yet.",
+  });
+}
+
+return res.json({
+  success: true,
+  verified: true,
+  subscriptionStatus: subscription.status,
+  userId: decodedToken.uid,
+  subscriptionId: razorpay_subscription_id,
+  paymentId: razorpay_payment_id,
+});
+  } catch (error) {
+    console.error("Razorpay payment verification error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      error: "Unable to verify payment.",
+    });
+  }
+});
 
 /* =====================================================
    SERVER START
