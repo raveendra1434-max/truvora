@@ -5349,6 +5349,95 @@ app.post("/create-plus-subscription", async (req, res) => {
   }
 });
 
+
+/* =====================================================
+   RAZORPAY PREMIUM SUBSCRIPTION
+===================================================== */
+
+app.post("/create-premium-subscription", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        error: "Please log in to subscribe.",
+      });
+    }
+
+    const idToken = authHeader.split(" ")[1];
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const subscription = await razorpay.subscriptions.create({
+      plan_id: "plan_Tw9LoghTuxzRgD",
+      total_count: 12,
+      quantity: 1,
+      customer_notify: 1,
+      notes: {
+        firebaseUid: decodedToken.uid,
+        planName: "Premium",
+      },
+    });
+
+    return res.json({
+      success: true,
+      subscriptionId: subscription.id,
+    });
+  } catch (error) {
+    console.error("Razorpay Premium subscription error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      error: "Unable to create Premium subscription.",
+    });
+  }
+});
+
+
+/* =====================================================
+   RAZORPAY PRO SUBSCRIPTION
+===================================================== */
+
+app.post("/create-pro-subscription", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        error: "Please log in to subscribe.",
+      });
+    }
+
+    const idToken = authHeader.split(" ")[1];
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const subscription = await razorpay.subscriptions.create({
+      plan_id: "plan_Tw9PGaDJoxKpb2",
+      total_count: 12,
+      quantity: 1,
+      customer_notify: 1,
+      notes: {
+        firebaseUid: decodedToken.uid,
+        planName: "Pro",
+      },
+    });
+
+    return res.json({
+      success: true,
+      subscriptionId: subscription.id,
+    });
+  } catch (error) {
+    console.error("Razorpay Pro subscription error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      error: "Unable to create Pro subscription.",
+    });
+  }
+});
+
+
 /* =====================================================
    RAZORPAY PLUS PAYMENT VERIFICATION
 ===================================================== */
@@ -5445,6 +5534,203 @@ return res.json({
     });
   }
 });
+
+
+/* =====================================================
+   RAZORPAY PREMIUM PAYMENT VERIFICATION
+===================================================== */
+
+app.post("/verify-premium-payment", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        error: "Please log in to verify payment.",
+      });
+    }
+
+    const idToken = authHeader.split(" ")[1];
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const {
+      razorpay_payment_id,
+      razorpay_subscription_id,
+      razorpay_signature,
+    } = req.body;
+
+    if (
+      !razorpay_payment_id ||
+      !razorpay_subscription_id ||
+      !razorpay_signature
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing payment verification details.",
+      });
+    }
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
+      .digest("hex");
+
+    const signaturesMatch =
+      expectedSignature.length === razorpay_signature.length &&
+      crypto.timingSafeEqual(
+        Buffer.from(expectedSignature, "hex"),
+        Buffer.from(razorpay_signature, "hex")
+      );
+
+    if (!signaturesMatch) {
+      return res.status(400).json({
+        success: false,
+        error: "Payment signature verification failed.",
+      });
+    }
+
+    const subscription = await razorpay.subscriptions.fetch(
+      razorpay_subscription_id
+    );
+
+    if (
+      subscription.notes?.firebaseUid !== decodedToken.uid ||
+      subscription.notes?.planName !== "Premium" ||
+      subscription.plan_id !== "plan_Tw9LoghTuxzRgD"
+    ) {
+      return res.status(403).json({
+        success: false,
+        error: "Subscription does not match this user and plan.",
+      });
+    }
+
+    if (subscription.status !== "active") {
+      return res.status(400).json({
+        success: false,
+        verified: true,
+        subscriptionStatus: subscription.status,
+        error: "Subscription is not active yet.",
+      });
+    }
+
+    return res.json({
+      success: true,
+      verified: true,
+      planName: "Premium",
+      subscriptionStatus: subscription.status,
+      userId: decodedToken.uid,
+      subscriptionId: razorpay_subscription_id,
+      paymentId: razorpay_payment_id,
+    });
+  } catch (error) {
+    console.error("Razorpay Premium verification error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      error: "Unable to verify Premium payment.",
+    });
+  }
+});
+
+
+/* =====================================================
+   RAZORPAY PRO PAYMENT VERIFICATION
+===================================================== */
+
+app.post("/verify-pro-payment", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        error: "Please log in to verify payment.",
+      });
+    }
+
+    const idToken = authHeader.split(" ")[1];
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const {
+      razorpay_payment_id,
+      razorpay_subscription_id,
+      razorpay_signature,
+    } = req.body;
+
+    if (
+      !razorpay_payment_id ||
+      !razorpay_subscription_id ||
+      !razorpay_signature
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing payment verification details.",
+      });
+    }
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
+      .digest("hex");
+
+    const signaturesMatch =
+      expectedSignature.length === razorpay_signature.length &&
+      crypto.timingSafeEqual(
+        Buffer.from(expectedSignature, "hex"),
+        Buffer.from(razorpay_signature, "hex")
+      );
+
+    if (!signaturesMatch) {
+      return res.status(400).json({
+        success: false,
+        error: "Payment signature verification failed.",
+      });
+    }
+
+    const subscription = await razorpay.subscriptions.fetch(
+      razorpay_subscription_id
+    );
+
+    if (
+      subscription.notes?.firebaseUid !== decodedToken.uid ||
+      subscription.notes?.planName !== "Pro" ||
+      subscription.plan_id !== "plan_Tw9PGaDJoxKpb2"
+    ) {
+      return res.status(403).json({
+        success: false,
+        error: "Subscription does not match this user and plan.",
+      });
+    }
+
+    if (subscription.status !== "active") {
+      return res.status(400).json({
+        success: false,
+        verified: true,
+        subscriptionStatus: subscription.status,
+        error: "Subscription is not active yet.",
+      });
+    }
+
+    return res.json({
+      success: true,
+      verified: true,
+      planName: "Pro",
+      subscriptionStatus: subscription.status,
+      userId: decodedToken.uid,
+      subscriptionId: razorpay_subscription_id,
+      paymentId: razorpay_payment_id,
+    });
+  } catch (error) {
+    console.error("Razorpay Pro verification error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      error: "Unable to verify Pro payment.",
+    });
+  }
+});
+
 
 /* =====================================================
    SERVER START

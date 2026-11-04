@@ -8,7 +8,6 @@
 import "./App.css";
 import { languageGroups } from "./data/languageGroups";
 import Select from "react-select";
-
 import {
   useState,
   useRef,
@@ -75,6 +74,7 @@ function saveChat(chat) {
 
 
 function App() {
+
   const [chatMode, setChatMode] =
     useState("ai");
   /* =====================================================
@@ -323,7 +323,7 @@ const [showLogin,
       ? window.innerWidth > 900
       : false
 );
-
+const [showPricing, setShowPricing] = useState(false);
 /* =====================================================
    RESPONSIVE SIDEBAR STATE
    Desktop  = open
@@ -3000,9 +3000,8 @@ document.body.removeChild(
 
 
   // PUBLIC WEBSITE PAGES — for AdSense review
-  const publicPath = window.location.pathname
-    .replace(/\/+$/, "")
-    .toLowerCase();
+  const publicPath =
+  window.location.pathname.replace(/\/+$/, "").toLowerCase() || "/";
 
   const publicPages = {
     "/about": {
@@ -3105,8 +3104,6 @@ document.body.removeChild(
       </div>
     );
   }
-
-
   /* =====================================================
      LOGIN SCREEN
   ===================================================== */
@@ -4018,6 +4015,18 @@ setCurrentChatId(
             New Chat
 
           </button>
+          
+          {/* UPGRADE PLANS */}
+          <button
+            className="new-chat"
+            onClick={() => {
+              setShowPricing(true);
+              setSidebarOpen(false);
+            }}
+          >
+            💎 Upgrade Plans
+          </button>
+
           {/* USER CHAT */}
 
           <button
@@ -4188,7 +4197,217 @@ setCurrentChatId(
         >
 
 
+          {/* PRICING PLANS */}
+          {showPricing && (
+            <div
+  style={{
+    padding: "24px 16px 100px",
+    width: "100%",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    color: "#e2e8f0",
+    boxSizing: "border-box",
+    flex: "1 1 auto",
+    minHeight: "0",
+    overflowY: "auto",
+    overflowX: "hidden",
+    WebkitOverflowScrolling: "touch",
+  }}
+>
+              <button
+                onClick={() => setShowPricing(false)}
+                style={{ marginBottom: "20px" }}
+              >
+                ← Back to Chat
+              </button>
+<div
+  style={{
+    textAlign: "center",
+    fontSize: "20px",
+    fontWeight: "800",
+    letterSpacing: "1px",
+    color: "#29b6f6",
+    padding: "12px 0 20px",
+  }}
+>
+  TRULEXITY GLOBAL AI
+</div>
+              <h2 style={{ textAlign: "center" }}>
+                Choose Your Trulexity Plan
+              </h2>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    "repeat(auto-fit, minmax(200px, 1fr))",
+                  gap: "16px",
+                  marginTop: "24px",
+                }}
+              >
+                {[
+                  { name: "Free", price: "₹0", limit: "20 requests/day" },
+                  { name: "Plus", price: "₹299/month", limit: "250 requests/day" },
+                  { name: "Premium", price: "₹1,299/month", limit: "Unlimited fair use" },
+                  { name: "Pro", price: "₹4,999/month", limit: "Pro plan access" },
+                ].map((plan) => (
+                  <div
+                    key={plan.name}
+                    style={{
+                      border: "1px solid #334155",
+                      borderRadius: "12px",
+                      padding: "20px",
+                      textAlign: "center",
+                      background: "#0f172a",
+                    }}
+                  >
+                    <h3>{plan.name}</h3>
+                    <h2>{plan.price}</h2>
+                    <p>{plan.limit}</p>
+                    {plan.name === "Free" ? (
+                      <button
+                        onClick={() => setShowPricing(false)}
+                      >
+                        Current Free Option
+                      </button>
+                    ) : (
+ 
+<button
+  onClick={async () => {
+    const planConfig = {
+      Plus: {
+        createEndpoint: "create-plus-subscription",
+        verifyEndpoint: "verify-plus-payment",
+        description: "Plus Monthly Subscription - ₹299",
+      },
+      Premium: {
+        createEndpoint: "create-premium-subscription",
+        verifyEndpoint: "verify-premium-payment",
+        description: "Premium Monthly Subscription - ₹1,299",
+      },
+      Pro: {
+        createEndpoint: "create-pro-subscription",
+        verifyEndpoint: "verify-pro-payment",
+        description: "Pro Monthly Subscription - ₹4,999",
+      },
+    };
+
+    const selectedPlan = planConfig[plan.name];
+
+    if (!selectedPlan) {
+      alert("This plan does not require payment.");
+      return;
+    }
+
+    try {
+      if (!auth.currentUser) {
+        alert("Please sign in before subscribing.");
+        return;
+      }
+
+      if (!window.Razorpay) {
+        alert("Payment checkout could not load. Please refresh and try again.");
+        return;
+      }
+
+      const idToken = await auth.currentUser.getIdToken(true);
+
+      const response = await fetch(
+        `https://trulexity-api.onrender.com/${selectedPlan.createEndpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success || !data.subscriptionId) {
+        throw new Error(data.error || "Could not create your subscription.");
+      }
+
+      const checkout = new window.Razorpay({
+        key: process.env.REACT_APP_RAZORPAY_KEY_ID,
+        subscription_id: data.subscriptionId,
+        name: "Trulexity",
+        description: selectedPlan.description,
+        handler: async (payment) => {
+          try {
+            const verifyResponse = await fetch(
+              `https://trulexity-api.onrender.com/${selectedPlan.verifyEndpoint}`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${idToken}`,
+                },
+                body: JSON.stringify(payment),
+              }
+            );
+
+            const verification = await verifyResponse.json();
+
+            if (
+              !verifyResponse.ok ||
+              !verification.success ||
+              !verification.verified
+            ) {
+              alert(
+                verification.error ||
+                  "Payment verification is pending. Please contact support if money was deducted."
+              );
+              return;
+            }
+
+            alert(
+              `${plan.name} subscription verified successfully. Please allow time for your plan access to update.`
+            );
+          } catch (error) {
+            console.error("Payment verification error:", error);
+            alert(
+              "We couldn't confirm the subscription status. Please contact support before trying to pay again."
+            );
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            console.log("Razorpay checkout closed.");
+          },
+        },
+        theme: {
+          color: "#1565C0",
+        },
+      });
+
+      checkout.on("payment.failed", (event) => {
+        console.error("Razorpay payment failed:", event.error);
+        alert("Payment failed. Please check the details and try again.");
+      });
+
+      checkout.open();
+    } catch (error) {
+      console.error(`${plan.name} subscription error:`, error);
+      alert(error.message || "Unable to start the subscription.");
+    }
+  }}
+>
+  
+  Choose {plan.name}
+</button>
+
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* CAMERA */}
+
+          
 
           {showCamera && (
 
@@ -4283,9 +4502,8 @@ setCurrentChatId(
               TOP BAR
           ============================================= */}
 
-          <div
-            className="topbar"
-          >
+          {!showPricing && (
+  <div className="topbar">
 
             <div
 
@@ -4349,16 +4567,17 @@ setCurrentChatId(
 
             )}
 
-          </div>
+            </div>
+)}
 
 
-          {/* ============================================
-              MESSAGES
-          ============================================= */}
+{/* ============================================
+    MESSAGES
+============================================= */}
 
           <div
-            className="messages"
-          >
+  className="messages"
+>
 
             {messages.map(
               (
@@ -5465,9 +5684,8 @@ setCurrentChatId(
               INPUT AREA
           ============================================= */}
 
-          <div
-            className="input-area"
-          >
+          {!showPricing && (
+  <div className="input-area">
 
             <div
   className="input-box"
@@ -6009,6 +6227,7 @@ styles={{
             </div>
 
           </div>
+)}
 
         </div>
 
