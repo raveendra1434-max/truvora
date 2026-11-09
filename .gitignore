@@ -5,3 +5,5 @@ client/node_modules/
 .vscode/
 server/uploads/
 server/memory/memory.json
+
+**/firebase-service-account*.json

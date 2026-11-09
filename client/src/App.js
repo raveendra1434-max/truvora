@@ -2672,7 +2672,24 @@ const idToken = await currentUser.getIdToken(true);
 
         const data =
           await response.json();
+if (data.code === "DAILY_LIMIT_REACHED") {
+  setMessages((prev) => [
+    ...prev,
+    {
+      role: "assistant",
+      text: `⏳ Daily limit reached!\n\nYour ${data.planName} plan allows ${data.dailyLimit} requests per day. You have used ${data.used} requests.\n\nYour daily limit will reset at midnight (India time). Upgrade your plan to continue using Trulexity AI.`,
+      upgradeRequired: true,
+    },
+  ]);
 
+  setTypingText("");
+  setLoading(false);
+  return;
+}
+
+if (!response.ok) {
+  throw new Error(data.error || `Server error: ${response.status}`);
+}
 
         console.log(
           "SERVER RESPONSE:",
@@ -4670,7 +4687,23 @@ setCurrentChatId(
                       }
 
                     </ReactMarkdown>
-
+{msg.upgradeRequired && (
+  <button
+    onClick={() => setShowPricing(true)}
+    style={{
+      marginTop: "14px",
+      padding: "10px 20px",
+      background: "#1565C0",
+      color: "#ffffff",
+      border: "none",
+      borderRadius: "8px",
+      fontWeight: "bold",
+      cursor: "pointer",
+    }}
+  >
+    💎 Upgrade Plan
+  </button>
+)}
 
                     {/* IMAGE / GENERATED CONTENT */}
 

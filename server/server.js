@@ -1,6 +1,7 @@
 ﻿import express from "express";
-import { initializeApp, getApps } from "firebase-admin/app";
+import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI, { toFile } from "openai";
@@ -58,10 +59,28 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 if (getApps().length === 0) {
-  initializeApp({
+  const firebaseServiceAccountPath =
+  fs.existsSync("/etc/secrets/firebase-service-account.json")
+    ? "/etc/secrets/firebase-service-account.json"
+    : path.resolve("firebase-service-account.json");
+
+  const firebaseOptions = {
     projectId: process.env.FIREBASE_PROJECT_ID || "truvora-7d3c7",
-  });
+  };
+
+  if (fs.existsSync(firebaseServiceAccountPath)) {
+    const serviceAccount = JSON.parse(
+      fs.readFileSync(firebaseServiceAccountPath, "utf8")
+    );
+    firebaseOptions.credential = cert(serviceAccount);
+    console.log("Firebase service account credentials loaded.");
+  } else {
+    console.log("Firebase service account file not found; using default credentials.");
+  }
+
+  initializeApp(firebaseOptions);
 }
+const db = getFirestore();
 console.log(
   "SERPAPI KEY LOADED:",
   !!process.env.SERPAPI_KEY
@@ -2659,7 +2678,85 @@ ${analysis}`;
 /* =====================================================
    PART 2 END
 ===================================================== */
+/* =====================================================
+   DAILY PLAN USAGE CHECK
+===================================================== */
 
+async function checkDailyUsage(uid) {
+  const subscriptionDoc = await db
+    .collection("userSubscriptions")
+    .doc(uid)
+    .get();
+
+  const subscription = subscriptionDoc.exists
+    ? subscriptionDoc.data()
+    : {};
+
+  const planName =
+    subscription.status === "active"
+      ? subscription.planName
+      : "Free";
+
+  // Premium and Pro have unlimited fair use
+  if (planName === "Premium" || planName === "Pro") {
+    return {
+      allowed: true,
+      planName,
+      unlimited: true,
+    };
+  }
+
+  const limits = {
+  Free: 20,
+Plus: 250,
+};
+
+  const dailyLimit = limits[planName] || 20;
+
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+
+  const usageRef = db.collection("dailyUsage").doc(uid);
+
+  return await db.runTransaction(async (transaction) => {
+    const usageDoc = await transaction.get(usageRef);
+
+    const usageData = usageDoc.exists
+      ? usageDoc.data()
+      : {};
+
+    const currentCount =
+      usageData.date === today
+        ? Number(usageData.count || 0)
+        : 0;
+
+    if (currentCount >= dailyLimit) {
+      return {
+        allowed: false,
+        planName,
+        dailyLimit,
+        used: currentCount,
+      };
+    }
+
+    transaction.set(usageRef, {
+      date: today,
+      count: currentCount + 1,
+      updatedAt: new Date(),
+    });
+
+    return {
+      allowed: true,
+      planName,
+      dailyLimit,
+      used: currentCount + 1,
+    };
+  });
+}
 /* =====================================================
    MAIN AI ROUTE
 ===================================================== */
@@ -2731,7 +2828,22 @@ imageUrl = normalizedImageUrls[0] || null;
         imageUrl
       );
 
+        /* =================================================
+           DAILY PLAN USAGE ENFORCEMENT
+        ================================================= */
 
+        const usageCheck = await checkDailyUsage(decodedToken.uid);
+        if (!usageCheck.allowed) {
+          return res.status(429).json({
+            success: false,
+            code: "DAILY_LIMIT_REACHED",
+            error: `You have reached your ${usageCheck.planName} daily limit of ${usageCheck.dailyLimit} requests. Please upgrade your plan to continue.`,
+            planName: usageCheck.planName,
+            dailyLimit: usageCheck.dailyLimit,
+            used: usageCheck.used,
+            upgradeRequired: true,
+          });
+        }
       /* =================================================
          MEMORY
       ================================================= */
@@ -5500,7 +5612,11 @@ const subscription = await razorpay.subscriptions.fetch(
 );
 
 // Confirm this subscription belongs to the logged-in Firebase user
-if (subscription.notes?.firebaseUid !== decodedToken.uid) {
+if (
+  subscription.notes?.firebaseUid !== decodedToken.uid ||
+  subscription.notes?.planName !== "Plus" ||
+  subscription.plan_id !== "plan_TuvCP0orE2TeHK"
+) {
   return res.status(403).json({
     success: false,
     error: "Subscription does not belong to this user.",
@@ -5516,7 +5632,12 @@ if (subscription.status !== "active") {
     error: "Payment signature verified, but subscription is not active yet.",
   });
 }
-
+await db.collection("userSubscriptions").doc(decodedToken.uid).set({
+  planName: "Plus",
+  status: "active",
+  subscriptionId: razorpay_subscription_id,
+  updatedAt: new Date(),
+});
 return res.json({
   success: true,
   verified: true,
@@ -5571,6 +5692,7 @@ app.post("/verify-premium-payment", async (req, res) => {
       });
     }
 
+    // Verify Razorpay payment signature
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
@@ -5590,10 +5712,12 @@ app.post("/verify-premium-payment", async (req, res) => {
       });
     }
 
+    // Fetch subscription directly from Razorpay
     const subscription = await razorpay.subscriptions.fetch(
       razorpay_subscription_id
     );
 
+    // Confirm this subscription belongs to this user and Premium plan
     if (
       subscription.notes?.firebaseUid !== decodedToken.uid ||
       subscription.notes?.planName !== "Premium" ||
@@ -5605,6 +5729,7 @@ app.post("/verify-premium-payment", async (req, res) => {
       });
     }
 
+    // Confirm subscription is active
     if (subscription.status !== "active") {
       return res.status(400).json({
         success: false,
@@ -5613,6 +5738,14 @@ app.post("/verify-premium-payment", async (req, res) => {
         error: "Subscription is not active yet.",
       });
     }
+
+    // Save verified Premium subscription in Firestore
+    await db.collection("userSubscriptions").doc(decodedToken.uid).set({
+      planName: "Premium",
+      status: "active",
+      subscriptionId: razorpay_subscription_id,
+      updatedAt: new Date(),
+    });
 
     return res.json({
       success: true,
@@ -5623,6 +5756,7 @@ app.post("/verify-premium-payment", async (req, res) => {
       subscriptionId: razorpay_subscription_id,
       paymentId: razorpay_payment_id,
     });
+
   } catch (error) {
     console.error("Razorpay Premium verification error:", error.message);
 
@@ -5632,8 +5766,6 @@ app.post("/verify-premium-payment", async (req, res) => {
     });
   }
 });
-
-
 /* =====================================================
    RAZORPAY PRO PAYMENT VERIFICATION
 ===================================================== */
@@ -5669,6 +5801,7 @@ app.post("/verify-pro-payment", async (req, res) => {
       });
     }
 
+    // Verify Razorpay payment signature
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
@@ -5688,10 +5821,12 @@ app.post("/verify-pro-payment", async (req, res) => {
       });
     }
 
+    // Fetch subscription directly from Razorpay
     const subscription = await razorpay.subscriptions.fetch(
       razorpay_subscription_id
     );
 
+    // Confirm subscription belongs to this user and Pro plan
     if (
       subscription.notes?.firebaseUid !== decodedToken.uid ||
       subscription.notes?.planName !== "Pro" ||
@@ -5703,6 +5838,7 @@ app.post("/verify-pro-payment", async (req, res) => {
       });
     }
 
+    // Confirm subscription is active
     if (subscription.status !== "active") {
       return res.status(400).json({
         success: false,
@@ -5711,6 +5847,14 @@ app.post("/verify-pro-payment", async (req, res) => {
         error: "Subscription is not active yet.",
       });
     }
+
+    // Save verified Pro subscription in Firestore
+    await db.collection("userSubscriptions").doc(decodedToken.uid).set({
+      planName: "Pro",
+      status: "active",
+      subscriptionId: razorpay_subscription_id,
+      updatedAt: new Date(),
+    });
 
     return res.json({
       success: true,
@@ -5721,6 +5865,7 @@ app.post("/verify-pro-payment", async (req, res) => {
       subscriptionId: razorpay_subscription_id,
       paymentId: razorpay_payment_id,
     });
+
   } catch (error) {
     console.error("Razorpay Pro verification error:", error.message);
 
@@ -5730,7 +5875,6 @@ app.post("/verify-pro-payment", async (req, res) => {
     });
   }
 });
-
 
 /* =====================================================
    SERVER START

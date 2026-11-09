@@ -103,8 +103,8 @@ a{
 
 .app{
   width:100%;
-  height:100vh;
-  min-height:100vh;
+    height:100dvh;
+  min-height:0;
 
   display:flex;
 
@@ -349,7 +349,8 @@ a{
 
   min-width:0;
 
-  height:100vh;
+  height:100dvh;
+min-height:0;
 
   display:flex;
   flex-direction:column;
