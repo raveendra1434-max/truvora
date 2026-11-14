@@ -421,6 +421,70 @@ useEffect(() => {
     setUser] =
     useState(null);
 
+  const AI_CONSENT_VERSION = "2026-11-13-v1";
+  const [aiConsent, setAiConsent] = useState("checking");
+  const [showAIConsent, setShowAIConsent] = useState(false);
+  const [aiConsentBusy, setAiConsentBusy] = useState(false);
+  const AI_API = "https://trulexity-api.onrender.com";
+
+  const getAIConsentToken = async () => {
+    const current = auth.currentUser;
+    if (!current) throw new Error("Please sign in before using AI features.");
+    return current.getIdToken();
+  };
+
+  const checkAIConsent = async (currentUser) => {
+    if (!currentUser) { setAiConsent("signed-out"); setShowAIConsent(false); return false; }
+    try {
+      const token = await currentUser.getIdToken();
+      const response = await fetch(`${AI_API}/api/ai-consent`, { headers: { Authorization: `Bearer ${token}` } });
+      const data = await response.json();
+      const accepted = response.ok && data.accepted === true && data.version === AI_CONSENT_VERSION;
+      setAiConsent(accepted ? "accepted" : "required");
+      setShowAIConsent(!accepted);
+      return accepted;
+    } catch (error) {
+      console.error("AI consent status check failed:", error);
+      setAiConsent("required"); setShowAIConsent(true); return false;
+    }
+  };
+
+  const acceptAIConsent = async () => {
+    setAiConsentBusy(true);
+    try {
+      const token = await getAIConsentToken();
+      const response = await fetch(`${AI_API}/api/ai-consent`, {
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ accepted: true, version: AI_CONSENT_VERSION })
+      });
+      if (!response.ok) { const data = await response.json().catch(() => ({})); throw new Error(data.error || "Could not save your consent."); }
+      setAiConsent("accepted"); setShowAIConsent(false);
+    } catch (error) { alert(error.message || "Could not save consent. Please try again."); }
+    finally { setAiConsentBusy(false); }
+  };
+
+  const revokeAIConsent = async () => {
+    const token = await getAIConsentToken();
+    const response = await fetch(`${AI_API}/api/ai-consent`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+    if (!response.ok) throw new Error("Could not revoke AI data-sharing consent.");
+    setAiConsent("required"); setShowAIConsent(true);
+  };
+
+  const fetchAI = async (url, options = {}) => {
+    const current = auth.currentUser;
+    if (!current) throw new Error("Please sign in before using AI features.");
+    let status = aiConsent;
+    if (status !== "accepted") {
+      const accepted = await checkAIConsent(current);
+      status = accepted ? "accepted" : "required";
+    }
+    if (status !== "accepted") { setShowAIConsent(true); throw new Error("Please review and accept the third-party AI data-sharing notice first."); }
+    const token = await current.getIdToken();
+    const headers = { ...(options.headers || {}), Authorization: `Bearer ${token}` };
+    return fetch(url, { ...options, headers });
+  };
+
+
 const [chatPartnerId,
   setChatPartnerId] =
   useState("");
@@ -688,6 +752,7 @@ const voiceEnabledRef =
           setUser(
             currentUser
           );
+          checkAIConsent(currentUser);
 
           setLoggedIn(
             true
@@ -1129,7 +1194,7 @@ const handleAppleLogin = async () => {
         /* Request TTS */
 
         const response =
-  await fetch(
+  await fetchAI(
   "https://trulexity-api.onrender.com/generate-speech",
   {
               method: "POST",
@@ -1353,7 +1418,7 @@ setShowCamera(false);
 
 
         const response =
-          await fetch(
+          await fetchAI(
             "https://trulexity-api.onrender.com/analyze-image",
             {
               method: "POST",
@@ -1645,7 +1710,7 @@ ${results
       try {
 
         const response =
-          await fetch(
+          await fetchAI(
             "https://trulexity-api.onrender.com/analyze-document",
             {
               method: "POST",
@@ -1801,7 +1866,7 @@ ${results
       try {
 
         const response =
-          await fetch(
+          await fetchAI(
             "https://trulexity-api.onrender.com/upload-video",
             {
               method: "POST",
@@ -1896,7 +1961,7 @@ const handleYouTube =
         setYoutubeQuery("");
 
         const response =
-          await fetch(
+          await fetchAI(
             "https://trulexity-api.onrender.com/analyze-youtube",
             {
               method: "POST",
@@ -2006,7 +2071,7 @@ const handleYouTube =
       try {
 
         const response =
-          await fetch(
+          await fetchAI(
             "https://trulexity-api.onrender.com/analyze-website",
             {
               method: "POST",
@@ -2113,7 +2178,7 @@ const handleYouTube =
 
 
         const response =
-          await fetch(
+          await fetchAI(
             "https://trulexity-api.onrender.com/upload-audio",
             {
               method: "POST",
@@ -2256,7 +2321,7 @@ const handleYouTube =
 
 
               const response =
-                await fetch(
+                await fetchAI(
                   "https://trulexity-api.onrender.com/analyze-document",
                   {
                     method:
@@ -2603,7 +2668,7 @@ if (!currentUser) {
 const idToken = await currentUser.getIdToken(true);
       try {
 
-        const response = await fetch(
+        const response = await fetchAI(
   "https://trulexity-api.onrender.com/ask",
   {
 
@@ -2912,7 +2977,7 @@ const handleGenerateDocument =
 
 
       const response =
-        await fetch(
+        await fetchAI(
           "https://trulexity-api.onrender.com/generate-document",
           {
             method: "POST",
@@ -3041,7 +3106,9 @@ document.body.removeChild(
       paragraphs: [
         "Trulexity respects user privacy. Information collected depends on the features you use and the permissions you provide.",
         "Information may include account details, messages, uploaded files and technical information needed to operate and secure the service.",
-        "Information may be processed by service providers that support authentication, hosting, analytics or AI functionality.",
+        "For AI features, Trulexity may share your prompts, relevant chat context, uploaded images and documents, audio/video files or transcripts, website URLs and page content, and text submitted for speech generation with OpenAI and Google Gemini. These providers process the information to generate the AI response or output requested by you.",
+        "Trulexity does not send this content to these AI providers for their independent advertising. The providers process submitted content under their applicable service terms and privacy policies; retention and model-improvement practices depend on the provider, service and account configuration. Trulexity retains account and chat data according to its service retention practices and applicable law. You may request deletion by contacting trulexityreview@gmail.com.",
+        "You can decline third-party AI processing and continue using non-AI parts of the service. If you previously accepted, contact trulexityreview@gmail.com to request withdrawal; withdrawal blocks future AI submissions. You may also request deletion of your account data through support.",
         "We take reasonable measures to protect information. No internet transmission or storage system can be guaranteed completely secure.",
         "Contact us at trulexityreview@gmail.com with privacy questions."
       ]
@@ -3213,6 +3280,31 @@ document.body.removeChild(
   return (
 
     <>
+
+      {user && aiConsent === "accepted" && (
+        <button type="button" onClick={async () => {
+          const confirmed = window.confirm("Withdraw permission for Trulexity to send your prompts, uploads and related content to OpenAI and Google Gemini? AI features will be blocked until you accept again.");
+          if (confirmed) { try { await revokeAIConsent(); } catch (error) { alert(error.message); } }
+        }} style={{ position: "fixed", bottom: 12, right: 12, zIndex: 90000, border: "1px solid #9aa8ba", borderRadius: 8, padding: "8px 11px", background: "#fff", color: "#26364a", fontSize: 12, cursor: "pointer" }}>Manage AI privacy consent</button>
+      )}
+
+      {showAIConsent && user && (
+        <div role="dialog" aria-modal="true" aria-labelledby="ai-consent-title" style={{ position: "fixed", inset: 0, zIndex: 100000, background: "rgba(8, 15, 30, 0.78)", display: "flex", alignItems: "center", justifyContent: "center", padding: 18 }}>
+          <div style={{ width: "100%", maxWidth: 540, maxHeight: "90vh", overflowY: "auto", background: "#fff", color: "#172033", borderRadius: 18, padding: 24, boxShadow: "0 20px 70px rgba(0,0,0,.35)" }}>
+            <h2 id="ai-consent-title" style={{ marginTop: 0 }}>Your data and third-party AI</h2>
+            <p>Trulexity uses third-party AI services to provide chat, image, document, audio, video, website and speech features. Before you use these features, please choose whether to share the information needed to process your request.</p>
+            <p><strong>Who receives it:</strong> OpenAI and Google Gemini (Google).</p>
+            <p><strong>What may be sent:</strong> your prompts and relevant chat context; images and documents you upload; audio/video files or extracted transcripts; website URLs and page content; and text submitted for speech generation. Do not submit information you do not want processed by these providers.</p>
+            <p><strong>Purpose:</strong> to analyze your request and generate the AI response or output you asked for. Trulexity sends only the content needed for the selected feature. The providers process data under their applicable terms and privacy policies; their handling and retention may differ by service and account configuration.</p>
+            <p><strong>Your choice:</strong> accepting allows Trulexity to send the relevant content to these providers when you use AI features. Declining means AI features that require these providers will remain unavailable. You can revoke consent later in Privacy settings; revocation blocks future AI requests.</p>
+            <p style={{ fontSize: 13, color: "#526071" }}>Read our <a href="/privacy" target="_blank" rel="noreferrer">Privacy Policy</a> for details about collection, use, retention and deletion.</p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 20 }}>
+              <button type="button" disabled={aiConsentBusy} onClick={acceptAIConsent} style={{ background: "#1565C0", color: "#fff", border: 0, borderRadius: 9, padding: "12px 18px", fontWeight: 700, cursor: "pointer" }}>{aiConsentBusy ? "Saving..." : "Accept and continue"}</button>
+              <button type="button" disabled={aiConsentBusy} onClick={() => { setAiConsent("declined"); setShowAIConsent(false); }} style={{ background: "#eef2f7", color: "#172033", border: "1px solid #cbd5e1", borderRadius: 9, padding: "12px 18px", cursor: "pointer" }}>Decline</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ================================================
           ANALYZE MENU

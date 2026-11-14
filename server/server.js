@@ -129,6 +129,72 @@ app.use(
   })
 );
 
+/* =====================================================
+   THIRD-PARTY AI CONSENT (APPLE 5.1.1 / 5.1.2)
+===================================================== */
+const AI_CONSENT_VERSION = "2026-11-13-v1";
+const aiConsentCollection = db.collection("aiConsents");
+
+async function verifyFirebaseBearer(req) {
+  const header = req.headers.authorization || "";
+  if (!header.startsWith("Bearer ")) {
+    const error = new Error("Please sign in to manage AI privacy consent.");
+    error.status = 401; throw error;
+  }
+  return getAuth().verifyIdToken(header.slice(7));
+}
+
+app.get("/api/ai-consent", async (req, res) => {
+  try {
+    const decoded = await verifyFirebaseBearer(req);
+    const snap = await aiConsentCollection.doc(decoded.uid).get();
+    const record = snap.exists ? snap.data() : null;
+    res.json({ accepted: !!record?.accepted && record?.version === AI_CONSENT_VERSION, version: AI_CONSENT_VERSION });
+  } catch (error) { res.status(error.status || 401).json({ error: error.message || "Unable to read consent." }); }
+});
+
+app.post("/api/ai-consent", async (req, res) => {
+  try {
+    const decoded = await verifyFirebaseBearer(req);
+    if (req.body?.accepted !== true || req.body?.version !== AI_CONSENT_VERSION) {
+      return res.status(400).json({ error: "A valid, explicit consent acceptance is required." });
+    }
+    await aiConsentCollection.doc(decoded.uid).set({
+      uid: decoded.uid, accepted: true, version: AI_CONSENT_VERSION,
+      providers: ["OpenAI", "Google Gemini"],
+      acceptedAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+    }, { merge: true });
+    res.json({ success: true, accepted: true, version: AI_CONSENT_VERSION });
+  } catch (error) { res.status(error.status || 500).json({ error: error.message || "Unable to save consent." }); }
+});
+
+app.delete("/api/ai-consent", async (req, res) => {
+  try {
+    const decoded = await verifyFirebaseBearer(req);
+    await aiConsentCollection.doc(decoded.uid).set({
+      uid: decoded.uid, accepted: false, version: AI_CONSENT_VERSION,
+      revokedAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+    }, { merge: true });
+    res.json({ success: true, accepted: false });
+  } catch (error) { res.status(error.status || 500).json({ error: error.message || "Unable to revoke consent." }); }
+});
+
+async function requireAIConsent(req, res, next) {
+  try {
+    const decoded = await verifyFirebaseBearer(req);
+    const snap = await aiConsentCollection.doc(decoded.uid).get();
+    const record = snap.exists ? snap.data() : null;
+    if (!record?.accepted || record.version !== AI_CONSENT_VERSION) {
+      return res.status(403).json({ code: "AI_CONSENT_REQUIRED", error: "Please review and accept Trulexity's third-party AI data-sharing notice before using AI features." });
+    }
+    req.user = decoded;
+    return next();
+  } catch (error) {
+    return res.status(error.status || 401).json({ code: "AI_CONSENT_REQUIRED", error: error.message || "Authentication required." });
+  }
+}
+
+
 
 /* =====================================================
    UPLOADS
@@ -635,6 +701,8 @@ app.post(
 
 app.post(
   "/analyze-image",
+
+  requireAIConsent,
 
   async (
     req,
@@ -1593,6 +1661,7 @@ async function splitAudioIntoChunks(
 
 app.post(
   "/analyze-youtube",
+  requireAIConsent,
   async (req, res) => {
     try {
       console.log(
@@ -1912,6 +1981,7 @@ Now analyze the transcript above.
 
 app.post(
   "/analyze-website",
+  requireAIConsent,
   async (req, res) => {
 
     try {
@@ -2119,9 +2189,11 @@ console.log(
 app.post(
   "/upload-video",
 
-  upload.single(
-    "video"
-  ),
+  requireAIConsent,
+
+upload.single(
+  "video"
+),
 
   async (
     req,
@@ -2482,6 +2554,8 @@ Also analyze the supplied video frame visually.
 app.post(
   "/upload-audio",
 
+    requireAIConsent,
+
   upload.single(
     "audio"
   ),
@@ -2763,21 +2837,11 @@ Plus: 250,
 
 app.post(
   "/ask",
+  requireAIConsent,
   async (req, res) => {
 
     try {
-      const authHeader = req.headers.authorization;
-
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({
-          success: false,
-          error: "Please log in to use Trulexity AI.",
-        });
-      }
-
-      const idToken = authHeader.split(" ")[1];
-      const decodedToken = await getAuth().verifyIdToken(idToken);
-      req.user = decodedToken;
+      const decodedToken = req.user;
 
       let {
         message,
@@ -4121,6 +4185,8 @@ if (webResults.length > 0) {
 app.post(
   "/analyze-document",
 
+    requireAIConsent,
+
   upload.single("file"),
 
   async (
@@ -4506,6 +4572,8 @@ Rules:
 
 app.post(
   "/generate-document",
+
+  requireAIConsent,
 
   async (
     req,
@@ -5203,6 +5271,8 @@ Create the structured Excel report now.
 
 app.post(
   "/generate-speech",
+
+  requireAIConsent,
 
   async (
     req,
